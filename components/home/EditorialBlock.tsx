@@ -16,7 +16,7 @@ export default function EditorialBlock() {
       <Reveal>
         <Photo
           src="/brand_photos/brand-lifestyle-1.jpg"
-          alt={t("editorial.eyebrow")}
+          alt={t("editorial.photo_alt")}
           width={1100}
           height={1380}
           sizes="(min-width: 1024px) 55vw, 100vw"

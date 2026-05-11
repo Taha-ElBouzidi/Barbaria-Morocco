@@ -15,9 +15,10 @@ export default function Hero() {
       {/* Gradient fallback — hero photo TBD (needsShot) */}
       <Photo
         src={null}
-        needsShot
-        fill
         alt={t("hero.headline")}
+        fill
+        priority
+        needsShot
         containerClassName="absolute inset-0"
       />
 

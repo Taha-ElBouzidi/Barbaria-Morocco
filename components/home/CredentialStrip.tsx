@@ -15,7 +15,7 @@ export default function CredentialStrip() {
     <section className="bg-bb-bg-low border-y border-bb-line overflow-hidden">
       <div className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] py-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
         {items.map((item, i) => (
-          <span key={i} className="inline-flex items-center gap-8">
+          <span key={item} className="inline-flex items-center gap-8">
             {item}
             {i < items.length - 1 && (
               <span aria-hidden className="opacity-50">

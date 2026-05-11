@@ -15,7 +15,7 @@ export default function Heritage3Up() {
 
   return (
     <section>
-      {/* Gold pull-quote */}
+      {/* Unattributed brand quote — the voice of the Maison itself. No cite element. */}
       <blockquote className="text-center max-w-[820px] mx-auto">
         <p className="font-display italic text-[clamp(24px,3vw,32px)] leading-[1.4] text-bb-secondary">
           &ldquo;{t("heritage_3up.quote")}&rdquo;
