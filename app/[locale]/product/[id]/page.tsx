@@ -1,7 +1,7 @@
 import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
-import { PRODUCTS, getProduct, productsByWorld } from "@/lib/products";
+import { PRODUCTS, getProduct } from "@/lib/products";
 import { WORLDS } from "@/lib/rituals";
 import ImageStack from "@/components/product/ImageStack";
 import SpecColumn from "@/components/product/SpecColumn";

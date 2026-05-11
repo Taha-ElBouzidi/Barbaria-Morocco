@@ -1,4 +1,5 @@
 import type { Product } from "@/lib/products";
+import DisplayHeading from "@/components/primitives/DisplayHeading";
 
 interface Props { product: Product; lang: "en" | "fr"; }
 
@@ -41,9 +42,9 @@ export default function CooperativeBand({ product, lang }: Props) {
     <section className="bg-bb-primary text-white py-24 lg:py-32">
       <div className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] grid grid-cols-1 lg:grid-cols-[1fr_1fr] gap-12 lg:gap-20 items-start">
         <div className="space-y-6 max-w-[500px]">
-          <h2 className="font-serif text-[clamp(28px,3vw,40px)] leading-[1.15]">
+          <DisplayHeading size="lg" as="h2" className="text-white">
             {c.headline_a} <em className="font-display italic block">{c.headline_b}</em>
-          </h2>
+          </DisplayHeading>
           <p className="text-white/80 leading-relaxed">{c.manifesto}</p>
           <p className="font-display italic text-[20px] text-bb-secondary-fixed-dim">{cooperative}</p>
         </div>
