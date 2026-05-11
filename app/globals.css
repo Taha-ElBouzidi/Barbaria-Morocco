@@ -2,12 +2,48 @@
 @import "tw-animate-css";
 @import "shadcn/tailwind.css";
 
+/* ─── Barbaria Stitch design tokens ─────────────────────── */
+:root {
+  /* Surfaces */
+  --bb-bg:                 #fcf9f3;
+  --bb-bg-low:             #f6f3ed;
+  --bb-bg-mid:             #f0eee8;
+  --bb-bg-high:            #ebe8e2;
+  --bb-bg-highest:         #e5e2dc;
+  --bb-on-surface:         #1c1c18;
+  --bb-on-surface-variant: #434843;
+  --bb-outline:            #737973;
+  --bb-outline-variant:    #c3c8c1;
+  --bb-line:               #d1c7b7;
+
+  /* Brand */
+  --bb-primary:            #1b3022;
+  --bb-primary-container:  #2a4632;
+  --bb-on-primary:         #ffffff;
+  --bb-on-primary-soft:    #819986;
+  --bb-secondary:          #c5a059;
+  --bb-secondary-fixed:    #ffdea5;
+  --bb-secondary-fixed-dim:#e9c176;
+  --bb-tertiary:           #b45f42;
+  --bb-tertiary-soft:      #d77a5b;
+
+  /* Spacing */
+  --bb-section-gap: 128px;
+  --bb-margin-edge: 64px;
+  --bb-gutter:      32px;
+  --bb-container:   1440px;
+}
+
+@media (max-width: 800px) {
+  :root { --bb-margin-edge: 24px; --bb-section-gap: 80px; }
+}
+/* ─────────────────────────────────────────────────────────── */
+
 @custom-variant dark (&:is(.dark *));
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-inter);
   --font-heading: var(--font-playfair);
   --color-ring: var(--ring);
   --color-input: var(--input);
@@ -49,6 +85,27 @@
   /* Food accent — Saffron/Spice */
   --color-saffron:     #C4840A;
   --color-saffron-light: #E8B94F;
+
+  /* === STITCH REDESIGN — bb-* token mappings === */
+  --color-bb-bg:                   var(--bb-bg);
+  --color-bb-bg-low:               var(--bb-bg-low);
+  --color-bb-bg-mid:               var(--bb-bg-mid);
+  --color-bb-bg-high:              var(--bb-bg-high);
+  --color-bb-bg-highest:           var(--bb-bg-highest);
+  --color-bb-primary:              var(--bb-primary);
+  --color-bb-primary-container:    var(--bb-primary-container);
+  --color-bb-on-primary:           var(--bb-on-primary);
+  --color-bb-secondary:            var(--bb-secondary);
+  --color-bb-secondary-fixed-dim:  var(--bb-secondary-fixed-dim);
+  --color-bb-tertiary:             var(--bb-tertiary);
+  --color-bb-line:                 var(--bb-line);
+  --color-bb-on-surface:           var(--bb-on-surface);
+  --color-bb-on-surface-variant:   var(--bb-on-surface-variant);
+  --color-bb-outline:              var(--bb-outline);
+  --color-bb-outline-variant:      var(--bb-outline-variant);
+  --font-display: var(--font-cormorant), "Playfair Display", serif;
+  --font-serif:   var(--font-playfair), "Cormorant Garamond", serif;
+  --font-sans:    var(--font-montserrat), "Inter", system-ui, sans-serif;
 }
 
 :root {
@@ -83,8 +140,7 @@
     outline-offset: 2px;
   }
   body {
-    @apply bg-background text-foreground;
-    font-family: var(--font-inter), sans-serif;
+    @apply bg-bb-bg text-bb-on-surface font-sans antialiased;
   }
   h1, h2, h3, h4 {
     font-family: var(--font-playfair), serif;

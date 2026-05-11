@@ -1,28 +1,36 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display } from "next/font/google";
+import { Playfair_Display, Cormorant_Garamond, Montserrat } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { BASE_URL, CONTACT_EMAIL } from "@/lib/constants";
+import { BASE_URL, CONTACT_EMAIL, INSTAGRAM_HANDLE } from "@/lib/constants";
 import "../globals.css";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import ShellChrome from "@/components/shell/ShellChrome";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
-import { CartProvider } from "@/lib/cart-context";
-import CartStickyBar from "@/components/cosmetics/CartStickyBar";
+import { InquiryProvider } from "@/lib/inquiry-context";
 
-const inter = Inter({
-  variable: "--font-inter",
+const playfair = Playfair_Display({
   subsets: ["latin"],
+  weight: ["500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
   display: "swap",
 });
 
-const playfair = Playfair_Display({
-  variable: "--font-playfair",
+const cormorant = Cormorant_Garamond({
   subsets: ["latin"],
+  weight: ["400", "600", "700"],
   style: ["normal", "italic"],
+  variable: "--font-cormorant",
+  display: "swap",
+});
+
+const montserrat = Montserrat({
+  subsets: ["latin"],
+  weight: ["400", "500", "600"],
+  variable: "--font-montserrat",
   display: "swap",
 });
 
@@ -83,7 +91,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${playfair.variable} h-full antialiased`}
+      className={`${playfair.variable} ${cormorant.variable} ${montserrat.variable} h-full antialiased`}
     >
       <head>
         <link rel="canonical" href={`${BASE_URL}/${locale}`} />
@@ -91,7 +99,7 @@ export default async function LocaleLayout({
         <link rel="alternate" hrefLang="en" href={`${BASE_URL}/en`} />
         <link rel="alternate" hrefLang="x-default" href={`${BASE_URL}/fr`} />
       </head>
-      <body className="min-h-full flex flex-col bg-[#F7F2EA] text-[#2C1A0E]">
+      <body className="min-h-full flex flex-col bg-bb-bg text-bb-on-surface font-sans antialiased">
         <a
           href="#main-content"
           className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-[#2C1A0E] focus:text-[#F7F2EA] focus:rounded-sm focus:text-sm"
@@ -99,13 +107,12 @@ export default async function LocaleLayout({
           Skip to content
         </a>
         <NextIntlClientProvider locale={locale}>
-          <CartProvider>
-            <Navbar locale={locale} />
-            <main id="main-content" className="flex-1">{children}</main>
+          <InquiryProvider>
+            <ShellChrome locale={locale} mainId="main-content">
+              <div className="flex-1">{children}</div>
+            </ShellChrome>
             <WhatsAppFloat />
-            <CartStickyBar />
-            <Footer />
-          </CartProvider>
+          </InquiryProvider>
         </NextIntlClientProvider>
         <Analytics />
         <SpeedInsights />
@@ -128,7 +135,7 @@ export default async function LocaleLayout({
               },
               email: CONTACT_EMAIL,
               sameAs: [
-                "https://instagram.com/barbaria_00",
+                `https://instagram.com/${INSTAGRAM_HANDLE}`,
               ],
             }),
           }}
