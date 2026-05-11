@@ -5,7 +5,7 @@ import { GammeAccordion, TextileAccordion } from "./GammeAccordion";
 import OrderSummary from "./OrderSummary";
 import ShareActions from "./ShareActions";
 import { GAMMES, TEXTILE_PRODUCTS } from "@/lib/products";
-import { useCart } from "@/lib/cart-context";
+import { useCart } from "@/lib/inquiry-context";
 
 export default function OrderConfigurator() {
   const t = useTranslations("order");

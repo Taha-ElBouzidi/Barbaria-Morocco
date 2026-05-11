@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { Plus, Check, ChevronDown } from "lucide-react";
 import Image from "next/image";
 import type { ProductDef } from "@/lib/products";
-import { useCart } from "@/lib/cart-context";
+import { useCart } from "@/lib/inquiry-context";
 import ProductPlaceholder from "@/components/shared/ProductPlaceholder";
 
 export default function CompactProductCard({ product }: { product: ProductDef }) {

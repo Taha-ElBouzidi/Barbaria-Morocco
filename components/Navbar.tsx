@@ -5,7 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import { Menu, X } from "lucide-react";
 import Image from "next/image";
-import { useCart } from "@/lib/cart-context";
+import { useInquiry } from "@/lib/inquiry-context";
 
 const WHATSAPP_NUMBER = "212659658863";
 const INSTAGRAM_HANDLE = "barbaria_00";
@@ -28,7 +28,7 @@ export default function Navbar({ locale }: { locale: string }) {
     { href: "/food",      label: t("food"),       dot: "#C9963A" },
   ];
 
-  const { totalItems } = useCart();
+  const { totalItems } = useInquiry();
   const otherLocale = locale === "fr" ? "en" : "fr";
   const isHeroPage = pathname === "/";
   const isDark = !scrolled && isHeroPage && !menuOpen;

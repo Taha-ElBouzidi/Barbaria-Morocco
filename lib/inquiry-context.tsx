@@ -3,16 +3,16 @@
 import { createContext, useContext, useReducer, useEffect, useCallback } from "react";
 import type { ReactNode } from "react";
 
-export type CartState = Map<string, number>;
+export type InquiryState = Map<string, number>;
 
-type CartAction =
+type InquiryAction =
   | { type: "toggle"; key: string }
   | { type: "setQty"; key: string; qty: number }
   | { type: "remove"; key: string }
   | { type: "clear" }
-  | { type: "hydrate"; state: CartState };
+  | { type: "hydrate"; state: InquiryState };
 
-function cartReducer(state: CartState, action: CartAction): CartState {
+function inquiryReducer(state: InquiryState, action: InquiryAction): InquiryState {
   const next = new Map(state);
   switch (action.type) {
     case "toggle":
@@ -35,13 +35,13 @@ function cartReducer(state: CartState, action: CartAction): CartState {
   }
 }
 
-const STORAGE_KEY = "barbaria-cart";
+const STORAGE_KEY = "bb.inquiry";
 
-function serializeCart(cart: CartState): string {
+function serializeCart(cart: InquiryState): string {
   return JSON.stringify([...cart]);
 }
 
-function deserializeCart(raw: string): CartState {
+function deserializeCart(raw: string): InquiryState {
   try {
     const entries = JSON.parse(raw) as [string, number][];
     return new Map(entries);
@@ -50,8 +50,9 @@ function deserializeCart(raw: string): CartState {
   }
 }
 
-interface CartContextValue {
-  cart: CartState;
+interface InquiryContextValue {
+  // TODO(task-12): rename `cart` property to `items` when retired routes are gone
+  cart: InquiryState;
   toggle: (key: string) => void;
   setQty: (key: string, qty: number) => void;
   remove: (key: string) => void;
@@ -59,16 +60,23 @@ interface CartContextValue {
   totalItems: number;
 }
 
-const CartContext = createContext<CartContextValue | null>(null);
+const InquiryContext = createContext<InquiryContextValue | null>(null);
 
-export function CartProvider({ children }: { children: ReactNode }) {
-  const [cart, dispatch] = useReducer(cartReducer, new Map<string, number>());
+export function InquiryProvider({ children }: { children: ReactNode }) {
+  const [cart, dispatch] = useReducer(inquiryReducer, new Map<string, number>());
 
-  // Hydrate from localStorage on mount
+  // Hydrate from localStorage on mount, with one-shot migration from the legacy key
   useEffect(() => {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      dispatch({ type: "hydrate", state: deserializeCart(raw) });
+    try {
+      const legacy = localStorage.getItem("barbaria-cart");
+      if (legacy && !localStorage.getItem(STORAGE_KEY)) {
+        localStorage.setItem(STORAGE_KEY, legacy);
+        localStorage.removeItem("barbaria-cart");
+      }
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) dispatch({ type: "hydrate", state: deserializeCart(raw) });
+    } catch {
+      // localStorage unavailable (private mode etc.) — proceed with empty state
     }
   }, []);
 
@@ -85,14 +93,17 @@ export function CartProvider({ children }: { children: ReactNode }) {
   const totalItems = [...cart.values()].reduce((sum, qty) => sum + qty, 0);
 
   return (
-    <CartContext.Provider value={{ cart, toggle, setQty, remove, clear, totalItems }}>
+    <InquiryContext.Provider value={{ cart, toggle, setQty, remove, clear, totalItems }}>
       {children}
-    </CartContext.Provider>
+    </InquiryContext.Provider>
   );
 }
 
-export function useCart(): CartContextValue {
-  const ctx = useContext(CartContext);
-  if (!ctx) throw new Error("useCart must be used inside CartProvider");
+export function useInquiry(): InquiryContextValue {
+  const ctx = useContext(InquiryContext);
+  if (!ctx) throw new Error("useInquiry must be used inside InquiryProvider");
   return ctx;
 }
+
+// Temporary alias — removed in Task 12 after retired routes are deleted.
+export const useCart = useInquiry;

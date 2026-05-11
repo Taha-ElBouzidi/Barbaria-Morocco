@@ -8,6 +8,7 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ## 2026-05-11
 
+- 20:30 CET — Task 3: rename cart-context → inquiry-context, storage key migrated to bb.inquiry.
 - 20:05 CET — Task 2: primitives — Reveal, Eyebrow, DisplayHeading, Photo, Icon.
 - 19:30 CET — Task 1: design tokens + next/font wiring landed.
 - 18:15 CET — Sprint 1 implementation plan written: `.project/plans/2026-05-11-stitch-redesign-port.md`. 14 tasks, bite-sized TDD-flavored steps, locked file structure, risk register. Ready for subagent dispatch.

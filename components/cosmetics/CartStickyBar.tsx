@@ -1,6 +1,6 @@
 "use client";
 
-import { useCart } from "@/lib/cart-context";
+import { useCart } from "@/lib/inquiry-context";
 import { Link, usePathname } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import { ArrowRight } from "lucide-react";

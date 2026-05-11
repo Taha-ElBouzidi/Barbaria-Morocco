@@ -2,11 +2,11 @@
 
 import { FaWhatsapp } from "react-icons/fa";
 import { WHATSAPP_NUMBER } from "./Navbar";
-import { useCart } from "@/lib/cart-context";
+import { useInquiry } from "@/lib/inquiry-context";
 import { usePathname } from "@/i18n/navigation";
 
 export default function WhatsAppFloat() {
-  const { totalItems } = useCart();
+  const { totalItems } = useInquiry();
   const pathname = usePathname();
 
   const isOrderPage = pathname === "/order";
