@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -42,9 +42,18 @@ export default function TwoStepForm({ locale }: Props) {
 
   const [step, setStep] = useState<1 | 2>(1);
   const [submitted, setSubmitted] = useState(false);
+  const [submitting, setSubmitting] = useState(false);
   const [form, setForm] = useState<FormData>(INITIAL);
   const [honeypot, setHoneypot] = useState("");
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+
+  const successRef = useRef<HTMLHeadingElement>(null);
+
+  useEffect(() => {
+    if (submitted) {
+      successRef.current?.focus();
+    }
+  }, [submitted]);
 
   const update = (field: keyof FormData, value: string) => {
     setForm((prev) => ({ ...prev, [field]: value }));
@@ -73,23 +82,26 @@ export default function TwoStepForm({ locale }: Props) {
     if (validateStep1()) setStep(2);
   };
 
+  const inquiryItems: MailtoItem[] = useMemo(
+    () =>
+      [...cart.entries()]
+        .map(([id, qty]) => ({ product: getProduct(id), qty }))
+        .filter((x): x is MailtoItem => Boolean(x.product)),
+    [cart]
+  );
+
+  const mailtoUrl = useMemo(
+    () => buildMailto({ ...form, locale: currentLocale || locale }, inquiryItems),
+    [form, currentLocale, locale, inquiryItems]
+  );
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Honeypot: silently abort if filled by a bot
     if (honeypot) return;
-    if (!validateStep2()) return;
-
-    const inquiryItems: MailtoItem[] = [...cart.entries()]
-      .map(([id, qty]) => ({ product: getProduct(id)!, qty }))
-      .filter((x) => x.product);
-
-    const mailtoUrl = buildMailto(
-      { ...form, locale: currentLocale || locale },
-      inquiryItems
-    );
-
+    if (!validateStep2() || !validateStep1()) return;
+    setSubmitting(true);
     window.location.href = mailtoUrl;
-    setSubmitted(true);
+    setTimeout(() => setSubmitted(true), 80);
   };
 
   if (submitted) {
@@ -98,9 +110,13 @@ export default function TwoStepForm({ locale }: Props) {
         <span className="text-bb-secondary">
           <Icon name="check" size={64} strokeWidth={1.2} />
         </span>
-        <DisplayHeading size="lg" as="h2">
+        <h2
+          ref={successRef}
+          tabIndex={-1}
+          className="font-serif font-normal text-bb-on-surface text-[clamp(32px,4vw,72px)] leading-[1.05] tracking-[-0.015em] outline-none"
+        >
           {t("success_title")}
-        </DisplayHeading>
+        </h2>
         <p className="font-sans text-[16px] text-bb-on-surface-variant max-w-[380px]">
           {t("success_body")}
         </p>
@@ -137,47 +153,60 @@ export default function TwoStepForm({ locale }: Props) {
 
           <div className="space-y-8">
             <div>
-              <label className={LABEL_CLASS}>{t("f_company")}</label>
+              <label htmlFor="field-company" className={LABEL_CLASS}>{t("f_company")}</label>
               <input
+                id="field-company"
                 type="text"
                 value={form.company}
                 onChange={(e) => update("company", e.target.value)}
                 placeholder={t("f_company")}
                 className={cn(INPUT_CLASS, errors.company && "border-bb-tertiary")}
                 autoComplete="organization"
+                aria-required="true"
+                aria-invalid={!!errors.company}
+                aria-describedby={errors.company ? "err-company" : undefined}
               />
-              {errors.company && <p className={ERROR_CLASS}>{errors.company}</p>}
+              {errors.company && <p id="err-company" className={ERROR_CLASS}>{errors.company}</p>}
             </div>
 
             <div>
-              <label className={LABEL_CLASS}>{t("f_contact_name")}</label>
+              <label htmlFor="field-contact-name" className={LABEL_CLASS}>{t("f_contact_name")}</label>
               <input
+                id="field-contact-name"
                 type="text"
                 value={form.contactName}
                 onChange={(e) => update("contactName", e.target.value)}
                 placeholder={t("f_contact_name")}
                 className={cn(INPUT_CLASS, errors.contactName && "border-bb-tertiary")}
                 autoComplete="name"
+                aria-required="true"
+                aria-invalid={!!errors.contactName}
+                aria-describedby={errors.contactName ? "err-contact-name" : undefined}
               />
-              {errors.contactName && <p className={ERROR_CLASS}>{errors.contactName}</p>}
+              {errors.contactName && <p id="err-contact-name" className={ERROR_CLASS}>{errors.contactName}</p>}
             </div>
 
             <div>
-              <label className={LABEL_CLASS}>{t("f_email")}</label>
+              <label htmlFor="field-email" className={LABEL_CLASS}>{t("f_email")}</label>
               <input
+                id="field-email"
                 type="email"
                 value={form.email}
                 onChange={(e) => update("email", e.target.value)}
                 placeholder={t("f_email")}
                 className={cn(INPUT_CLASS, errors.email && "border-bb-tertiary")}
                 autoComplete="email"
+                aria-required="true"
+                aria-invalid={!!errors.email}
+                aria-describedby={errors.email ? "err-email" : undefined}
               />
-              {errors.email && <p className={ERROR_CLASS}>{errors.email}</p>}
+              {errors.email && <p id="err-email" className={ERROR_CLASS}>{errors.email}</p>}
             </div>
 
             <div>
-              <label className={LABEL_CLASS}>{t("f_phone")}</label>
+              <label htmlFor="field-phone" className={LABEL_CLASS}>{t("f_phone")}</label>
               <input
+                id="field-phone"
                 type="tel"
                 value={form.phone}
                 onChange={(e) => update("phone", e.target.value)}
@@ -210,21 +239,26 @@ export default function TwoStepForm({ locale }: Props) {
 
           <div className="space-y-8">
             <div>
-              <label className={LABEL_CLASS}>{t("f_quantity")}</label>
+              <label htmlFor="field-quantity" className={LABEL_CLASS}>{t("f_quantity")}</label>
               <input
+                id="field-quantity"
                 type="number"
                 min={1}
                 value={form.quantity}
                 onChange={(e) => update("quantity", e.target.value)}
                 placeholder={t("f_quantity")}
                 className={cn(INPUT_CLASS, errors.quantity && "border-bb-tertiary")}
+                aria-required="true"
+                aria-invalid={!!errors.quantity}
+                aria-describedby={errors.quantity ? "err-quantity" : undefined}
               />
-              {errors.quantity && <p className={ERROR_CLASS}>{errors.quantity}</p>}
+              {errors.quantity && <p id="err-quantity" className={ERROR_CLASS}>{errors.quantity}</p>}
             </div>
 
             <div>
-              <label className={LABEL_CLASS}>{t("f_event_date")}</label>
+              <label htmlFor="field-event-date" className={LABEL_CLASS}>{t("f_event_date")}</label>
               <input
+                id="field-event-date"
                 type="date"
                 value={form.eventDate}
                 onChange={(e) => update("eventDate", e.target.value)}
@@ -233,11 +267,15 @@ export default function TwoStepForm({ locale }: Props) {
             </div>
 
             <div>
-              <label className={LABEL_CLASS}>{t("f_occasion")}</label>
+              <label htmlFor="field-occasion" className={LABEL_CLASS}>{t("f_occasion")}</label>
               <select
+                id="field-occasion"
                 value={form.occasion}
                 onChange={(e) => update("occasion", e.target.value)}
                 className={cn(INPUT_CLASS, "cursor-pointer", errors.occasion && "border-bb-tertiary")}
+                aria-required="true"
+                aria-invalid={!!errors.occasion}
+                aria-describedby={errors.occasion ? "err-occasion" : undefined}
               >
                 <option value="">{t("f_occasion")}</option>
                 <option value="yearend">{t("f_occasion_yearend")}</option>
@@ -247,12 +285,13 @@ export default function TwoStepForm({ locale }: Props) {
                 <option value="wedding">{t("f_occasion_wedding")}</option>
                 <option value="other">{t("f_occasion_other")}</option>
               </select>
-              {errors.occasion && <p className={ERROR_CLASS}>{errors.occasion}</p>}
+              {errors.occasion && <p id="err-occasion" className={ERROR_CLASS}>{errors.occasion}</p>}
             </div>
 
             <div>
-              <label className={LABEL_CLASS}>{t("f_message")}</label>
+              <label htmlFor="field-message" className={LABEL_CLASS}>{t("f_message")}</label>
               <textarea
+                id="field-message"
                 value={form.message}
                 onChange={(e) => update("message", e.target.value)}
                 placeholder={t("f_message")}
@@ -276,13 +315,12 @@ export default function TwoStepForm({ locale }: Props) {
 
             <button
               type="submit"
-              data-mailto={(() => {
-                const inquiryItems: MailtoItem[] = [...cart.entries()]
-                  .map(([id, qty]) => ({ product: getProduct(id)!, qty }))
-                  .filter((x) => x.product);
-                return buildMailto({ ...form, locale: currentLocale || locale }, inquiryItems);
-              })()}
-              className="font-sans text-[12px] uppercase tracking-[0.18em] bg-bb-primary text-bb-on-primary px-8 py-3.5 hover:bg-bb-secondary transition-colors flex items-center gap-2"
+              disabled={submitting || submitted}
+              data-mailto={mailtoUrl}
+              className={cn(
+                "font-sans text-[12px] uppercase tracking-[0.18em] bg-bb-primary text-bb-on-primary px-8 py-3.5 hover:bg-bb-secondary transition-colors flex items-center gap-2",
+                (submitting || submitted) && "opacity-50 cursor-not-allowed"
+              )}
             >
               {t("submit")} <Icon name="arrow-up-right" size={14} />
             </button>

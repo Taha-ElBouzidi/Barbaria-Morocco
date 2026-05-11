@@ -578,6 +578,8 @@
     "success_title": "Nous vous répondrons dans les 24h.",
     "success_body": "Votre concierge a été assigné.",
     "sidebar_title": "Votre Sélection",
+    "sidebar_count": "{count} pièces sélectionnées",
+    "sidebar_empty": "Aucune pièce sélectionnée.",
     "direct_lines": "Lignes directes",
     "atelier": "Atelier"
   },

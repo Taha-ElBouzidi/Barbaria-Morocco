@@ -19,13 +19,13 @@ export default function InquirySidebar({ lang }: Props) {
       <div className="space-y-4">
         <Eyebrow tone="gold">{t("sidebar_title")}</Eyebrow>
         <p className="font-sans text-[12px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
-          {cart.size === 0 ? "—" : `${cart.size} pieces selected`}
+          {cart.size === 0 ? "—" : t("sidebar_count", { count: cart.size })}
         </p>
       </div>
 
       {items.length === 0 ? (
         <p className="font-display italic text-[18px] text-bb-on-surface-variant">
-          No pieces selected yet.
+          {t("sidebar_empty")}
         </p>
       ) : (
         <ul className="space-y-4 max-h-[400px] overflow-y-auto pr-2">

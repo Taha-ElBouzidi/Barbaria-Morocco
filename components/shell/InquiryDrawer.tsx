@@ -2,21 +2,13 @@
 
 import { useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import Icon from "@/components/primitives/Icon";
 import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import { useInquiry } from "@/lib/inquiry-context";
+import { getProduct } from "@/lib/products";
 import { cn } from "@/lib/utils";
-
-// Temporary product-lookup stub — Task 6 introduces lib/products.ts. Until then,
-// the drawer shows the product id as its name. This shim is deleted in Task 6.
-function getProductDisplayName(id: string): string {
-  return id
-    .split("-")
-    .map((s) => s.charAt(0).toUpperCase() + s.slice(1))
-    .join(" ");
-}
 
 interface InquiryDrawerProps {
   open: boolean;
@@ -25,6 +17,8 @@ interface InquiryDrawerProps {
 
 export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
   const t = useTranslations("nav");
+  const locale = useLocale();
+  const lang: "en" | "fr" = locale === "fr" ? "fr" : "en";
   const { cart, setQty, remove, clear } = useInquiry();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
@@ -143,10 +137,8 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
                   <div className="flex flex-1 flex-col gap-2">
                     {/* Name */}
                     <p className="font-sans text-[14px] font-medium tracking-[0.02em] text-bb-on-surface">
-                      {getProductDisplayName(productId)}
+                      {getProduct(productId)?.name[lang] ?? productId}
                     </p>
-                    {/* Spec line */}
-                    {/* TODO(task-6): replace with real product data — MOQ, formats, hero image — from lib/products.ts */}
                     <p className="font-sans text-[12px] text-bb-on-surface-variant">
                       MOQ — · ID: {productId}
                     </p>
@@ -158,7 +150,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
                           onClick={() => setQty(productId, qty - 1)}
                           disabled={qty <= 1}
                           className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm border border-bb-line text-bb-on-surface transition-opacity hover:opacity-70 disabled:opacity-30"
-                          aria-label={t("inquiry_decrease", { name: getProductDisplayName(productId) })}
+                          aria-label={t("inquiry_decrease", { name: getProduct(productId)?.name[lang] ?? productId })}
                         >
                           <Icon name="minus" size={12} />
                         </button>
@@ -168,7 +160,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
                         <button
                           onClick={() => setQty(productId, qty + 1)}
                           className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm border border-bb-line text-bb-on-surface transition-opacity hover:opacity-70"
-                          aria-label={t("inquiry_increase", { name: getProductDisplayName(productId) })}
+                          aria-label={t("inquiry_increase", { name: getProduct(productId)?.name[lang] ?? productId })}
                         >
                           <Icon name="plus" size={12} />
                         </button>
@@ -178,7 +170,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
                       <button
                         onClick={() => remove(productId)}
                         className="p-1 text-bb-on-surface-variant transition-opacity hover:opacity-70"
-                        aria-label={t("inquiry_remove", { name: getProductDisplayName(productId) })}
+                        aria-label={t("inquiry_remove", { name: getProduct(productId)?.name[lang] ?? productId })}
                       >
                         <Icon name="close" size={16} />
                       </button>
