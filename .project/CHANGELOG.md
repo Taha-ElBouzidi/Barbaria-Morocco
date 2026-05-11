@@ -8,6 +8,7 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ## 2026-05-11
 
+- 00:30 CET — Task 10: editorial pages — Story (3 chapters) + Ateliers (6 cooperatives) + Journal (1 feature + 5 standards).
 - 23:55 CET — Task 9: PDP at /product/[id] — sticky image stack, spec column, proof strip, ritual steps, cooperative band, related row.
 - 23:15 CET — Task 8: Category page /rituals/[world] with sub-chips + filter rail + sortable grid.
 - 22:45 CET — Task 7: Home — Hero + CredentialStrip + EditorialBlock + BentoRituals + Heritage3Up. ShellChrome main top-padding removed; hero pages render edge-to-edge.
