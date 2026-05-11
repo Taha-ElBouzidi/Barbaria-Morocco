@@ -1,0 +1,16 @@
+# Changelog
+
+Real-time log of non-trivial actions on this codebase. Every commit, decision, scaffold, or scoping move gets one entry. Newest first.
+
+Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
+
+---
+
+## 2026-05-11
+
+- 17:30 CET — Scope expanded mid-session: user added admin dashboard + SQL DB + analytics ask. Refused to fold into Sprint 1; decomposed into 3 sequential sprints (redesign port → DB+admin → inquiry backend+analytics). Backlog created at `.project/specs/_backlog.md`.
+- 17:00 CET — Spec written for Sprint 1 (Stitch redesign port) at `.project/specs/2026-05-11-stitch-redesign-port-design.md`. Locks taxonomy mapping: 3 rituals (Hammam/Botanical/Heritage), `/food` retires (was "Coming soon" placeholder, never shipped), oils + serums migrate into Botanical, existing textile into Heritage.
+- 16:45 CET — `.project/` governance scaffolded: `CHANGELOG.md` (this file), `DECISIONS.md`, `specs/_backlog.md`.
+- 16:30 CET — Build verified green on cloned `master`: Next 16.2.1 + Turbopack, 5.8s compile, all routes type-clean. One warning: lockfile root inferred wrong (fixed in same commit by setting `turbopack.root` in `next.config.ts`).
+- 16:15 CET — Branch `feat/stitch-redesign` cut off `master`.
+- 16:00 CET — Repo cloned from `github.com/Taha-ElBouzidi/barbaria-morocco-website` to `D:\dev\Havok\BARBARIA\LATEST\`. `npm install` clean (651 packages, 11 vulns — deferred to follow-up audit).
