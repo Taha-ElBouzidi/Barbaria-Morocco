@@ -37,11 +37,11 @@ function inquiryReducer(state: InquiryState, action: InquiryAction): InquiryStat
 
 const STORAGE_KEY = "bb.inquiry";
 
-function serializeCart(cart: InquiryState): string {
+function serializeInquiry(cart: InquiryState): string {
   return JSON.stringify([...cart]);
 }
 
-function deserializeCart(raw: string): InquiryState {
+function deserializeInquiry(raw: string): InquiryState {
   try {
     const entries = JSON.parse(raw) as [string, number][];
     return new Map(entries);
@@ -74,15 +74,20 @@ export function InquiryProvider({ children }: { children: ReactNode }) {
         localStorage.removeItem("barbaria-cart");
       }
       const raw = localStorage.getItem(STORAGE_KEY);
-      if (raw) dispatch({ type: "hydrate", state: deserializeCart(raw) });
+      if (raw) dispatch({ type: "hydrate", state: deserializeInquiry(raw) });
     } catch {
       // localStorage unavailable (private mode etc.) — proceed with empty state
     }
   }, []);
 
+  // TODO(task-12): pre-existing race — persist effect runs on mount with empty initial state,
+  // briefly writing "[]" to localStorage before hydrate dispatch applies. Functional impact is
+  // negligible in single-tab usage (second persist run restores the hydrated value), but fix
+  // by switching useReducer to lazy initialization (init function reads localStorage once,
+  // returns initial Map). Deferred to Task 12 to keep this rename minimal.
   // Persist to localStorage on change
   useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, serializeCart(cart));
+    localStorage.setItem(STORAGE_KEY, serializeInquiry(cart));
   }, [cart]);
 
   const toggle = useCallback((key: string) => dispatch({ type: "toggle", key }), []);
