@@ -8,6 +8,7 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ## 2026-05-11
 
+- 19:30 CET — Task 1: design tokens + next/font wiring landed.
 - 18:15 CET — Sprint 1 implementation plan written: `.project/plans/2026-05-11-stitch-redesign-port.md`. 14 tasks, bite-sized TDD-flavored steps, locked file structure, risk register. Ready for subagent dispatch.
 - 17:30 CET — Scope expanded mid-session: user added admin dashboard + SQL DB + analytics ask. Refused to fold into Sprint 1; decomposed into 3 sequential sprints (redesign port → DB+admin → inquiry backend+analytics). Backlog created at `.project/specs/_backlog.md`.
 - 17:00 CET — Spec written for Sprint 1 (Stitch redesign port) at `.project/specs/2026-05-11-stitch-redesign-port-design.md`. Locks taxonomy mapping: 3 rituals (Hammam/Botanical/Heritage), `/food` retires (was "Coming soon" placeholder, never shipped), oils + serums migrate into Botanical, existing textile into Heritage.
