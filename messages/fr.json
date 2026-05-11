@@ -24,7 +24,24 @@
     "inquiry_request": "Demander un Devis",
     "inquiry_decrease": "Diminuer la quantité de {name}",
     "inquiry_increase": "Augmenter la quantité de {name}",
-    "inquiry_remove": "Retirer {name} de la demande"
+    "inquiry_remove": "Retirer {name} de la demande",
+    "menu_eyebrow": "NOS RITUELS",
+    "menu_heading": "Les Trois Mondes.",
+    "menu_subtitle": "L'héritage en trois mouvements.",
+    "menu_discover": "DÉCOUVRIR",
+    "menu_corporate": "ENTREPRISES",
+    "discover_story": "Notre Histoire et Mission",
+    "discover_ateliers": "Dans les Ateliers",
+    "discover_journal": "Le Journal",
+    "corporate_b2b": "Concierge B2B",
+    "corporate_bespoke": "Personnalisation sur Mesure",
+    "corporate_logistics": "Logistique et Délais",
+    "menu_cta": "Demander le Catalogue",
+    "menu_whatsapp": "WhatsApp",
+    "menu_email": "Email",
+    "menu_hammam": "Le Rituel du Hammam",
+    "menu_botanical": "Soins Botaniques",
+    "menu_heritage": "Cadeaux Héritage"
   },
   "home": {
     "hero": {
@@ -32,19 +49,21 @@
       "headline": "Héritage. Raffiné. Offert.",
       "lede": "Une maison marocaine de cadeaux B2B, composant des rituels artisanaux pour les occasions corporate.",
       "cta_primary": "Explorer les Rituels",
-      "cta_secondary": "Conciergerie B2B"
+      "cta_secondary": "Conciergerie B2B",
+      "alt": "Composition éditoriale Barbaria: artisanat marocain photographié en lumière naturelle."
     },
     "strip": {
       "item_1": "100% Sourcé au Maroc",
       "item_2": "30+ Coopératives Berbères",
       "item_3": "Fabriqué à la Commande",
-      "item_4": "Délai de 4 Semaines"
+      "item_4": "Délai de 4 Semaines",
+      "aria": "Crédentials de la maison"
     },
     "editorial": {
       "eyebrow": "L'Art du Cadeau Réfléchi",
       "photo_alt": "Mains d'une artisane de coopérative berbère, pressant à froid l'huile d'argan à l'aube",
       "headline": "Un objet devient un geste.",
-      "p1": "Chaque pièce Barbaria porte la main d'un artisan marocain et la saison de son terroir. Nous les composons en cadeaux qui ont du sens — pour l'acheteur, pour le destinataire, pour la coopérative qui les a façonnés.",
+      "p1": "Chaque pièce Barbaria porte la main d'un artisan marocain et la saison de son terroir. Nous les composons en cadeaux qui ont du sens: pour l'acheteur, pour le destinataire, pour la coopérative qui les a façonnés.",
       "p2": "Pas de modèles prêts à l'emploi. Chaque demande commence par une conversation.",
       "cta": "Lire notre histoire"
     },
@@ -113,14 +132,14 @@
     "ch1_number": "01",
     "ch1_title": "Origine",
     "ch1_p1": "Fondée en 1972 par Hassan El Bouzidi, acheteur de parfums ayant quitté Casablanca pour l'Atlas afin de sourcer l'argan, la rose et le safran directement auprès des coopératives.",
-    "ch1_p2": "Un demi-siècle plus tard, Barbaria demeure une entreprise familiale — et désormais une maison de cadeaux B2B composant des rituels pour les occasions corporate.",
+    "ch1_p2": "Un demi-siècle plus tard, Barbaria demeure une entreprise familiale, désormais une maison de cadeaux B2B composant des rituels pour les occasions corporate.",
     "ch2_number": "02",
     "ch2_title": "Méthode",
     "ch2_p1": "Chaque pièce est fabriquée à la commande. Le savon noir est pressé dès réception de la commande; les coffrets en cèdre sont taillés dans du bois séché trois ans; l'eau de rose est distillée une fois, à l'aube.",
     "ch2_p2": "Nous n'entreposons pas. Nous composons, nous expédions, nous clôturons le dossier.",
     "ch3_number": "03",
     "ch3_title": "L'Objet",
-    "ch3_p1": "Un objet n'est pas un produit. C'est un geste — envers le destinataire, envers l'artisan qui l'a façonné, envers le terroir qu'il incarne.",
+    "ch3_p1": "Un objet n'est pas un produit. C'est un geste: envers le destinataire, envers l'artisan qui l'a façonné, envers le terroir qu'il incarne.",
     "ch3_p2": "Notre travail est de maintenir ce lien court, nommé et traçable.",
     "pull_quote": "Ce que vous offrez porte qui vous êtes."
   },
@@ -133,7 +152,7 @@
   "journal": {
     "hero_eyebrow": "Journal",
     "hero_headline": "Notes de terrain, dépêches, portraits.",
-    "meta_description": "Notes de terrain, dépêches, portraits — six pièces éditoriales depuis l'atelier Barbaria et ses partenaires coopératifs à travers le Maroc."
+    "meta_description": "Notes de terrain, dépêches, portraits. Six pièces éditoriales depuis l'atelier Barbaria et ses partenaires coopératifs à travers le Maroc."
   },
   "contact": {
     "hero_eyebrow": "Conciergerie B2B",

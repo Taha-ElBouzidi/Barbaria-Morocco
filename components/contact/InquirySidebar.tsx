@@ -20,7 +20,7 @@ export default function InquirySidebar({ lang }: Props) {
       <div className="space-y-4">
         <Eyebrow tone="green">{t("sidebar_title")}</Eyebrow>
         <p className="font-sans text-[12px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
-          {cart.size === 0 ? "—" : t("sidebar_count", { count: cart.size })}
+          {cart.size === 0 ? "0" : t("sidebar_count", { count: cart.size })}
         </p>
       </div>
 

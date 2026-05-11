@@ -19,7 +19,7 @@ export interface MailtoItem { product: Product; qty: number; }
 
 export function buildMailto(form: InquiryFormData, items: MailtoItem[]): string {
   const lang = form.locale === "fr" ? "fr" : "en";
-  const subject = `B2B Inquiry — ${form.company || form.contactName || "Maison"} — ${items.length} item(s)`;
+  const subject = `B2B Inquiry: ${form.company || form.contactName || "Maison"} (${items.length} item(s))`;
 
   const lines: string[] = [];
   lines.push("BARBARIA · B2B Inquiry");
@@ -42,7 +42,7 @@ export function buildMailto(form: InquiryFormData, items: MailtoItem[]): string 
   lines.push(`── Inquiry list (${items.length}) ──`);
   const trimmed = items.slice(0, 20);
   for (const { product, qty } of trimmed) {
-    lines.push(`• ${product.name[lang]} × ${qty} (MOQ ${product.moq}, lead ${product.lead}) — ${product.id}`);
+    lines.push(`• ${product.name[lang]} x ${qty} (MOQ ${product.moq}, lead ${product.lead}) [${product.id}]`);
   }
   if (items.length > trimmed.length) {
     lines.push(`...and ${items.length - trimmed.length} more (full list available on request)`);

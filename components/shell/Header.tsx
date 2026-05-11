@@ -50,17 +50,42 @@ export default function Header({ locale, onOpenMenu, onOpenInquiry }: HeaderProp
         </Link>
 
         <nav className="hidden lg:flex items-center gap-10 font-sans text-[13px] tracking-[0.04em] uppercase">
-          {(["hammam", "botanical", "heritage"] as const).map((world) => (
-            <Link
-              key={world}
-              href={`/rituals/${world}`}
-              className={cn("transition-opacity hover:opacity-70", textColor)}
-            >
-              {t(world)}
-            </Link>
-          ))}
-          <Link href="/story" className={cn(textColor)}>{t("story")}</Link>
-          <Link href="/journal" className={cn(textColor)}>{t("journal")}</Link>
+          {(["hammam", "botanical", "heritage"] as const).map((world) => {
+            const href = `/rituals/${world}`;
+            const isActive = pathname === href || pathname.startsWith(`${href}/`);
+            return (
+              <Link
+                key={world}
+                href={href}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "pb-0.5 border-b transition-opacity hover:opacity-70",
+                  isActive ? "border-bb-secondary" : "border-transparent",
+                  textColor
+                )}
+              >
+                {t(world)}
+              </Link>
+            );
+          })}
+          {(["story", "journal"] as const).map((key) => {
+            const href = `/${key}`;
+            const isActive = pathname === href || pathname.startsWith(`${href}/`);
+            return (
+              <Link
+                key={key}
+                href={href}
+                aria-current={isActive ? "page" : undefined}
+                className={cn(
+                  "pb-0.5 border-b transition-opacity hover:opacity-70",
+                  isActive ? "border-bb-secondary" : "border-transparent",
+                  textColor
+                )}
+              >
+                {t(key)}
+              </Link>
+            );
+          })}
         </nav>
 
         <div className="flex items-center gap-2">

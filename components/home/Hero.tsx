@@ -12,13 +12,11 @@ export default function Hero() {
 
   return (
     <section className="relative h-[90vh] min-h-[640px] overflow-hidden">
-      {/* Gradient fallback — hero photo TBD (needsShot) */}
       <Photo
-        src={null}
-        alt={t("hero.headline")}
+        src="/brand_photos/brand-lifestyle-3.jpg"
+        alt={t("hero.alt")}
         fill
         priority
-        needsShot
         containerClassName="absolute inset-0"
       />
 

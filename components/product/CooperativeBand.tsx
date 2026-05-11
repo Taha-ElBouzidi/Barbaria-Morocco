@@ -8,13 +8,13 @@ const COPY = {
     headline_a: "An object,",
     headline_b: "a cooperative.",
     manifesto:
-      "Every Barbaria piece carries the name of the artisan or cooperative that made it. We compensate fairly and credit always — because the people who shape these objects are the ones who give them meaning.",
+      "Every Barbaria piece carries the name of the artisan or cooperative that made it. We compensate fairly and credit always, because the people who shape these objects are the ones who give them meaning.",
   },
   fr: {
     headline_a: "Un objet,",
     headline_b: "une coopérative.",
     manifesto:
-      "Chaque pièce Barbaria porte le nom de l'artisane ou de la coopérative qui l'a façonnée. Nous rémunérons équitablement et créditons toujours — car ce sont les mains qui donnent leur sens à ces objets.",
+      "Chaque pièce Barbaria porte le nom de l'artisane ou de la coopérative qui l'a façonnée. Nous rémunérons équitablement et créditons toujours, car ce sont les mains qui donnent leur sens à ces objets.",
   },
 };
 

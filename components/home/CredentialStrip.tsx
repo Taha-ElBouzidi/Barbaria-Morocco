@@ -9,19 +9,19 @@ export default function CredentialStrip() {
     t("strip.item_2"),
     t("strip.item_3"),
     t("strip.item_4"),
-  ] as const;
+  ];
 
+  // Content is doubled so translateX(-50%) creates a seamless loop.
   return (
-    <section className="bg-bb-bg-low border-y border-bb-line overflow-hidden">
-      <div className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] py-4 flex flex-wrap items-center justify-center gap-x-8 gap-y-2 font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
-        {items.map((item, i) => (
-          <span key={item} className="inline-flex items-center gap-8">
-            {item}
-            {i < items.length - 1 && (
-              <span aria-hidden className="opacity-50">
-                ·
-              </span>
-            )}
+    <section
+      className="bg-bb-bg-low border-y border-bb-line overflow-hidden py-4"
+      aria-label={t("strip.aria")}
+    >
+      <div className="bb-marquee flex whitespace-nowrap font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
+        {[...items, ...items].map((item, i) => (
+          <span key={i} aria-hidden className="inline-flex items-center gap-8 px-8">
+            <span>{item}</span>
+            <span className="opacity-50">·</span>
           </span>
         ))}
       </div>

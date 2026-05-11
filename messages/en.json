@@ -24,7 +24,24 @@
     "inquiry_request": "Request Quote",
     "inquiry_decrease": "Decrease quantity of {name}",
     "inquiry_increase": "Increase quantity of {name}",
-    "inquiry_remove": "Remove {name} from inquiry"
+    "inquiry_remove": "Remove {name} from inquiry",
+    "menu_eyebrow": "OUR RITUALS",
+    "menu_heading": "The Three Worlds.",
+    "menu_subtitle": "Heritage in three movements.",
+    "menu_discover": "DISCOVER",
+    "menu_corporate": "CORPORATE",
+    "discover_story": "Our Story & Mission",
+    "discover_ateliers": "Inside The Ateliers",
+    "discover_journal": "The Journal",
+    "corporate_b2b": "B2B Concierge",
+    "corporate_bespoke": "Bespoke Customisation",
+    "corporate_logistics": "Logistics & Lead Times",
+    "menu_cta": "Request the Catalogue",
+    "menu_whatsapp": "WhatsApp",
+    "menu_email": "Email",
+    "menu_hammam": "The Hammam Ritual",
+    "menu_botanical": "Botanical Care",
+    "menu_heritage": "Heritage Gifts"
   },
   "home": {
     "hero": {
@@ -32,19 +49,21 @@
       "headline": "Heritage. Refined. Gifted.",
       "lede": "A Moroccan B2B gifting house composing artisan rituals for corporate occasions.",
       "cta_primary": "Explore the Rituals",
-      "cta_secondary": "B2B Concierge"
+      "cta_secondary": "B2B Concierge",
+      "alt": "A Barbaria editorial composition: Moroccan artisan craft photographed in natural light."
     },
     "strip": {
       "item_1": "100% Sourced from Morocco",
       "item_2": "30+ Berber Cooperatives",
       "item_3": "Made-to-Order",
-      "item_4": "4-Week Lead"
+      "item_4": "4-Week Lead",
+      "aria": "Brand credentials"
     },
     "editorial": {
       "eyebrow": "The Art of Considered Gifting",
       "photo_alt": "Hands of a Berber cooperative artisan, cold-pressing argan oil at first light",
       "headline": "An object becomes a gesture.",
-      "p1": "Every Barbaria piece carries the hand of a Moroccan artisan and the season of its terroir. We compose them into gifts that mean something — to the buyer, to the recipient, to the cooperative that made them.",
+      "p1": "Every Barbaria piece carries the hand of a Moroccan artisan and the season of its terroir. We compose them into gifts that mean something: to the buyer, to the recipient, to the cooperative that made them.",
       "p2": "No off-the-shelf templates. Every inquiry begins with a conversation.",
       "cta": "Read our story"
     },
@@ -113,14 +132,14 @@
     "ch1_number": "01",
     "ch1_title": "Origin",
     "ch1_p1": "Founded in 1972 by Hassan El Bouzidi, a fragrance buyer who left Casablanca for the Atlas to source argan, rose and saffron directly from the cooperatives.",
-    "ch1_p2": "Half a century later, Barbaria remains a family enterprise — and now a B2B gifting house composing rituals for corporate occasions.",
+    "ch1_p2": "Half a century later, Barbaria remains a family enterprise, now a B2B gifting house composing rituals for corporate occasions.",
     "ch2_number": "02",
     "ch2_title": "Method",
     "ch2_p1": "Every piece is made-to-order. Black soap is pressed when the order lands; cedar boxes are carved from three-year-aged wood; rose water is distilled once at dawn.",
     "ch2_p2": "We do not warehouse. We compose, we ship, we close the file.",
     "ch3_number": "03",
     "ch3_title": "Object",
-    "ch3_p1": "An object is not a product. It is a gesture — to the recipient, to the artisan who made it, to the terroir it carries.",
+    "ch3_p1": "An object is not a product. It is a gesture: to the recipient, to the artisan who made it, to the terroir it carries.",
     "ch3_p2": "Our work is to keep that line short, named, and traceable.",
     "pull_quote": "What you give carries who you are."
   },
@@ -133,7 +152,7 @@
   "journal": {
     "hero_eyebrow": "Journal",
     "hero_headline": "Field notes, dispatches, portraits.",
-    "meta_description": "Field notes, dispatches, portraits — six editorial pieces from the Barbaria atelier and its cooperative partners across Morocco."
+    "meta_description": "Field notes, dispatches, portraits. Six editorial pieces from the Barbaria atelier and its cooperative partners across Morocco."
   },
   "contact": {
     "hero_eyebrow": "B2B Concierge",
