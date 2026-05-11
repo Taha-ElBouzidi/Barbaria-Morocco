@@ -16,7 +16,18 @@
     "journal": "Journal",
     "inquiry": "Demande",
     "inquiry_aria": "Liste de demande, {count} articles",
-    "menu": "Ouvrir le menu"
+    "menu": "Ouvrir le menu",
+    "menu_title": "Menu",
+    "menu_close": "Fermer le menu",
+    "menu_aria": "Menu de navigation",
+    "inquiry_title": "Votre Demande",
+    "inquiry_close": "Fermer la liste de demande",
+    "inquiry_aria_drawer": "Panneau de liste de demande",
+    "inquiry_empty": "Votre liste de demande est vide.",
+    "inquiry_empty_lede": "Parcourez les rituels pour commencer à composer votre sélection.",
+    "inquiry_explore": "Explorer les Rituels",
+    "inquiry_clear": "Tout effacer",
+    "inquiry_request": "Demander un Devis"
   },
   "home": {
     "tagline": "L'authenticité marocaine. La rareté d'une création.",
@@ -392,11 +403,21 @@
     "email_label": "Email"
   },
   "footer": {
-    "tagline": "L'authenticité marocaine. La rareté d'une création.",
-    "collections": "Collections",
-    "links": "Liens",
-    "follow": "Nous suivre",
-    "copyright": "© 2026 Barbaria Morocco. Tous droits réservés."
+    "maison": "Maison",
+    "catalogue": "Catalogue",
+    "concierge": "Conciergerie",
+    "address": "Avenue Hassan II · Marrakech · Maroc",
+    "rights": "© 2026 Barbaria Morocco · Beauté Ancestrale, Excellence Contemporaine.",
+    "story": "Histoire",
+    "ateliers": "Ateliers",
+    "journal": "Journal",
+    "hammam": "Rituel Hammam",
+    "botanical": "Soins Botaniques",
+    "heritage": "Cadeaux du Patrimoine",
+    "contact": "Contact",
+    "whatsapp": "WhatsApp",
+    "instagram": "Instagram",
+    "email": "Email"
   },
   "order": {
     "title": "Composer Votre Commande",

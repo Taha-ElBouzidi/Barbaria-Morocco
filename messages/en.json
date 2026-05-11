@@ -16,7 +16,18 @@
     "journal": "Journal",
     "inquiry": "Inquiry",
     "inquiry_aria": "Inquiry list, {count} items",
-    "menu": "Open menu"
+    "menu": "Open menu",
+    "menu_title": "Menu",
+    "menu_close": "Close menu",
+    "menu_aria": "Navigation menu",
+    "inquiry_title": "Your Inquiry",
+    "inquiry_close": "Close inquiry list",
+    "inquiry_aria_drawer": "Inquiry list panel",
+    "inquiry_empty": "Your inquiry list is empty.",
+    "inquiry_empty_lede": "Browse the rituals to begin composing your selection.",
+    "inquiry_explore": "Explore Rituals",
+    "inquiry_clear": "Clear all",
+    "inquiry_request": "Request Quote"
   },
   "home": {
     "tagline": "Moroccan authenticity. The rarity of a creation.",
@@ -392,11 +403,21 @@
     "email_label": "Email"
   },
   "footer": {
-    "tagline": "Moroccan authenticity. The rarity of a creation.",
-    "collections": "Collections",
-    "links": "Links",
-    "follow": "Follow us",
-    "copyright": "© 2026 Barbaria Morocco. All rights reserved."
+    "maison": "Maison",
+    "catalogue": "Catalogue",
+    "concierge": "Concierge",
+    "address": "Avenue Hassan II · Marrakech · Morocco",
+    "rights": "© 2026 Barbaria Morocco · Ancestral Beauty, Contemporary Excellence.",
+    "story": "Story",
+    "ateliers": "Ateliers",
+    "journal": "Journal",
+    "hammam": "Hammam Ritual",
+    "botanical": "Botanical Care",
+    "heritage": "Heritage Gifts",
+    "contact": "Contact",
+    "whatsapp": "WhatsApp",
+    "instagram": "Instagram",
+    "email": "Email"
   },
   "order": {
     "title": "Build Your Order",

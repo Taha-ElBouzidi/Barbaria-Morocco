@@ -8,6 +8,7 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ## 2026-05-11
 
+- 21:30 CET — Task 5: Footer + MenuDrawer + InquiryDrawer wired into ShellChrome.
 - 21:00 CET — Task 4: Header (sticky transparent→sand) + ShellChrome wrapper.
 - 20:30 CET — Task 3: rename cart-context → inquiry-context, storage key migrated to bb.inquiry.
 - 20:05 CET — Task 2: primitives — Reveal, Eyebrow, DisplayHeading, Photo, Icon.

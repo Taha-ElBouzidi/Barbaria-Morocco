@@ -2,15 +2,21 @@
 
 import { useState } from "react";
 import Header from "./Header";
+import Footer from "./Footer";
+import MenuDrawer from "./MenuDrawer";
+import InquiryDrawer from "./InquiryDrawer";
 
-export default function ShellChrome({ locale, children, mainId }: { locale: string; children: React.ReactNode; mainId?: string }) {
+export default function ShellChrome({
+  locale,
+  mainId,
+  children,
+}: {
+  locale: string;
+  mainId?: string;
+  children: React.ReactNode;
+}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [inquiryOpen, setInquiryOpen] = useState(false);
-
-  // MenuDrawer + InquiryDrawer mount in Task 5. For now, the open setters are no-ops in terms
-  // of UI — they just toggle state. The drawers themselves come in the next task.
-  void menuOpen;
-  void inquiryOpen;
 
   return (
     <>
@@ -19,7 +25,12 @@ export default function ShellChrome({ locale, children, mainId }: { locale: stri
         onOpenMenu={() => setMenuOpen(true)}
         onOpenInquiry={() => setInquiryOpen(true)}
       />
-      <main id={mainId} className="pt-[72px]">{children}</main>
+      <MenuDrawer open={menuOpen} onClose={() => setMenuOpen(false)} />
+      <InquiryDrawer open={inquiryOpen} onClose={() => setInquiryOpen(false)} />
+      <main id={mainId} className="pt-[72px]">
+        {children}
+      </main>
+      <Footer />
     </>
   );
 }
