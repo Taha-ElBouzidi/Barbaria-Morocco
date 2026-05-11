@@ -488,6 +488,7 @@
     "whatsapp_footer": "\n\nMerci !"
   },
   "rituals": {
+    "all": "Tout",
     "filter_by": "Filtrer par",
     "f_ingredient": "Ingrédient Principal",
     "f_application": "Application",

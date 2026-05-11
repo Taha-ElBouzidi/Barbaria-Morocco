@@ -5,14 +5,12 @@ import Icon from "@/components/primitives/Icon";
 import SubChips from "./SubChips";
 import FilterRail from "./FilterRail";
 import ProductGrid from "./ProductGrid";
-import type { World, SubCat } from "@/lib/rituals";
+import type { SubCat } from "@/lib/rituals";
 import type { Product } from "@/lib/products";
 
 interface Props {
-  world: World;
   subs: SubCat[];
   products: Product[];
-  locale: string;
   lang: "en" | "fr";
 }
 
@@ -61,7 +59,7 @@ export default function CategoryContent({ subs, products, lang }: Props) {
 
   return (
     <>
-      <SubChips subs={subs} active={activeSub} onChange={setActiveSub} lang={lang} allLabel="All" />
+      <SubChips subs={subs} active={activeSub} onChange={setActiveSub} lang={lang} allLabel={t("all")} />
       <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] py-12 lg:py-16 grid grid-cols-1 lg:grid-cols-[280px_1fr] gap-12 lg:gap-16">
         <FilterRail selected={selected} onToggle={toggleFacet} onClear={clearFacets} />
         <div>

@@ -1,5 +1,5 @@
 import { notFound } from "next/navigation";
-import { setRequestLocale, getTranslations } from "next-intl/server";
+import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { WORLDS, SUBCATS, type RitualId } from "@/lib/rituals";
 import { productsByWorld } from "@/lib/products";
@@ -45,7 +45,7 @@ export default async function RitualPage({ params }: PageProps) {
   return (
     <>
       <CategoryHero world={w} lang={lang} />
-      <CategoryContent world={w} subs={subs} products={products} locale={locale} lang={lang} />
+      <CategoryContent subs={subs} products={products} lang={lang} />
     </>
   );
 }
