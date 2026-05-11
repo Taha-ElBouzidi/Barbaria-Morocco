@@ -39,7 +39,7 @@ export default async function JournalPage({ params }: PageProps) {
       <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] mb-20 lg:mb-28">
         <div className="max-w-[820px] space-y-6">
           <Reveal>
-            <Eyebrow tone="gold">{t("hero_eyebrow")}</Eyebrow>
+            <Eyebrow tone="green">{t("hero_eyebrow")}</Eyebrow>
           </Reveal>
           <Reveal delayMs={80}>
             <DisplayHeading size="xl" as="h1">
@@ -68,7 +68,7 @@ export default async function JournalPage({ params }: PageProps) {
                 containerClassName="aspect-[4/3]"
               />
               <div className="space-y-4">
-                <Eyebrow tone="gold">{feature.kicker[lang]}</Eyebrow>
+                <Eyebrow tone="green">{feature.kicker[lang]}</Eyebrow>
                 <h2 className="font-serif text-[clamp(28px,3vw,40px)] leading-[1.2]">
                   {feature.headline[lang]}
                 </h2>
@@ -102,7 +102,7 @@ export default async function JournalPage({ params }: PageProps) {
                 containerClassName="aspect-[4/5]"
               />
               <div className="space-y-3">
-                <Eyebrow tone="gold">{c.kicker[lang]}</Eyebrow>
+                <Eyebrow tone="green">{c.kicker[lang]}</Eyebrow>
                 <h3 className="font-serif text-[22px] leading-[1.3]">{c.headline[lang]}</h3>
                 <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
                   {formatJournalDate(c.date, lang)}

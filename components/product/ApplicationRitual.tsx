@@ -30,7 +30,7 @@ export default async function ApplicationRitual({ product, lang }: Props) {
   return (
     <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] py-20 lg:py-28">
       <div className="space-y-3 mb-12 text-center">
-        <Eyebrow tone="gold">{t("ritual_eyebrow")}</Eyebrow>
+        <Eyebrow tone="green">{t("ritual_eyebrow")}</Eyebrow>
         <DisplayHeading size="lg" as="h2">
           <em className="font-display italic">{t("ritual_headline")}</em>
         </DisplayHeading>
@@ -38,7 +38,7 @@ export default async function ApplicationRitual({ product, lang }: Props) {
       <ol className="grid grid-cols-1 md:grid-cols-3 gap-12">
         {steps.map(([title, body], i) => (
           <Reveal key={i} delayMs={i * 80} as="li" className="space-y-4">
-            <span className="font-display text-[clamp(48px,5vw,72px)] leading-none text-bb-secondary">
+            <span className="font-display text-[clamp(48px,5vw,72px)] leading-none text-bb-primary">
               {String(i + 1).padStart(2, "0")}
             </span>
             <h3 className="font-serif text-[22px] leading-[1.3] text-bb-on-surface">{title}</h3>

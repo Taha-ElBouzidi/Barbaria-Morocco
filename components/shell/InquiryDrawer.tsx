@@ -88,7 +88,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
         {/* Header */}
         <div className="flex items-center justify-between border-b border-bb-line px-8 py-6">
           <div className="flex items-baseline gap-3">
-            <Eyebrow tone="gold">{t("inquiry_title")}</Eyebrow>
+            <Eyebrow tone="green">{t("inquiry_title")}</Eyebrow>
             <span className="font-sans text-[11px] text-bb-on-surface-variant">
               ({cart.size})
             </span>

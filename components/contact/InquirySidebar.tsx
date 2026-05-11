@@ -18,7 +18,7 @@ export default function InquirySidebar({ lang }: Props) {
   return (
     <aside className="lg:sticky lg:top-[88px] lg:self-start space-y-10">
       <div className="space-y-4">
-        <Eyebrow tone="gold">{t("sidebar_title")}</Eyebrow>
+        <Eyebrow tone="green">{t("sidebar_title")}</Eyebrow>
         <p className="font-sans text-[12px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
           {cart.size === 0 ? "—" : t("sidebar_count", { count: cart.size })}
         </p>
@@ -46,14 +46,14 @@ export default function InquirySidebar({ lang }: Props) {
       )}
 
       <div className="border-t border-bb-line pt-8 space-y-4">
-        <Eyebrow tone="gold">{t("direct_lines")}</Eyebrow>
+        <Eyebrow tone="green">{t("direct_lines")}</Eyebrow>
         <ul className="space-y-2 font-sans text-[14px] text-bb-on-surface">
           <li><a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="hover:text-bb-secondary transition-colors inline-flex items-center gap-2">WhatsApp <Icon name="arrow-up-right" size={12} /></a></li>
           <li><a href="mailto:concierge@barbariamorocco.com" className="hover:text-bb-secondary transition-colors">concierge@barbariamorocco.com</a></li>
         </ul>
       </div>
       <div className="space-y-2">
-        <Eyebrow tone="gold">{t("atelier")}</Eyebrow>
+        <Eyebrow tone="green">{t("atelier")}</Eyebrow>
         <address className="not-italic font-sans text-[14px] text-bb-on-surface-variant leading-relaxed">
           Avenue Hassan II<br />
           Marrakech, Morocco

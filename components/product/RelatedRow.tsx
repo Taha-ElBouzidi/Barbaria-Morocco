@@ -11,7 +11,7 @@ export default async function RelatedRow({ products, lang }: Props) {
   return (
     <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] py-20 lg:py-28">
       <div className="space-y-3 mb-12">
-        <Eyebrow tone="gold">{t("related")}</Eyebrow>
+        <Eyebrow tone="green">{t("related")}</Eyebrow>
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16">
         {products.map((p) => (

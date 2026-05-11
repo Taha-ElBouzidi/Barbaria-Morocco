@@ -147,7 +147,7 @@ export default function TwoStepForm({ locale }: Props) {
       {step === 1 && (
         <div className="space-y-10">
           <div className="flex items-baseline gap-6">
-            <span className="font-serif text-[48px] leading-none text-bb-secondary">{t("step1_number")}</span>
+            <span className="font-serif text-[48px] leading-none text-bb-primary">{t("step1_number")}</span>
             <DisplayHeading size="md" as="h2">{t("step1_title")}</DisplayHeading>
           </div>
 
@@ -233,7 +233,7 @@ export default function TwoStepForm({ locale }: Props) {
       {step === 2 && (
         <div className="space-y-10">
           <div className="flex items-baseline gap-6">
-            <span className="font-serif text-[48px] leading-none text-bb-secondary">{t("step2_number")}</span>
+            <span className="font-serif text-[48px] leading-none text-bb-primary">{t("step2_number")}</span>
             <DisplayHeading size="md" as="h2">{t("step2_title")}</DisplayHeading>
           </div>
 

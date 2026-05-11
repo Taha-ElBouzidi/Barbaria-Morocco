@@ -13,6 +13,27 @@ Format:
 
 ---
 
+## 2026-05-11 — Eyebrow tone audit for WCAG AA contrast
+
+**Context:** The Stitch handoff uses `tone="gold"` on Eyebrow components universally. Gold (`#c5a059`) on cream sand (`#fcf9f3`) gives 2.33:1 contrast — fails WCAG 2 AA's 4.5:1 minimum for small text (Eyebrows are 11px caps). Axe-core flagged this on every page during Task 13 a11y tests.
+
+**Decision:** Two-surface policy on Eyebrow `tone`:
+- Dark surfaces (hero photo overlays, `bg-bb-primary` bands, dark card gradients): keep `tone="gold"` — gold on dark green is ~5.9:1, passes AA.
+- Light surfaces (default cream `bg-bb-bg`, `bg-bb-bg-low`): use `tone="green"` — dark green (`#1b3022`) on cream is ~13:1, passes AA with headroom.
+
+**Alternatives considered:**
+- *Darken `--bb-secondary` globally* — rejected: brand visual identity shifts (handoff explicitly chose aged-gold `#c5a059`).
+- *Increase Eyebrow font size to qualify as "large text" (3:1 threshold)* — rejected: editorial design intent is small caps; bigger eyebrows undermine typography hierarchy.
+- *Use `tone="muted"` everywhere on light surfaces* — rejected: muted gray loses the editorial label feel.
+
+**Consequences:**
+- Eyebrows on hero pages (Home, Category, Story, BentoRituals overlay cards) stay gold — visually consistent on dark backgrounds.
+- Eyebrows on light editorial pages (Footer, Sidebar, ProductCard, SpecColumn, RelatedRow, Ateliers grid, Journal grid, EditorialBlock, ApplicationRitual, Contact, drawer headers) now render dark green — gives those pages a slightly more "calm" feel, less gold accent.
+- Non-Eyebrow `text-bb-secondary` display elements on light surfaces (Heritage3Up blockquote, TwoStepForm step numbers, ApplicationRitual step ordinals) also migrated to `text-bb-primary` — same contrast logic.
+- All axe-core WCAG 2 AA scans pass with zero serious/critical violations.
+
+---
+
 ## 2026-05-11 — Permanent (308) redirects for retired routes
 
 **Context:** Task 12 retired 5 legacy routes (`/cosmetics`, `/food`, `/textile`, `/order`, `/about`) and pointed them at new IA equivalents. Next.js `redirects` config supports `permanent: true` (308) or `permanent: false` (307).

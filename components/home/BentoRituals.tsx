@@ -16,7 +16,7 @@ export default function BentoRituals() {
       {/* Section heading */}
       <div className="space-y-3 mb-12 lg:mb-16">
         <Reveal>
-          <Eyebrow tone="gold">{t("bento.section_eyebrow")}</Eyebrow>
+          <Eyebrow tone="green">{t("bento.section_eyebrow")}</Eyebrow>
         </Reveal>
         <Reveal delayMs={80}>
           <DisplayHeading size="lg">{t("bento.section_headline")}</DisplayHeading>

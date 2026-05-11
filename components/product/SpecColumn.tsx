@@ -32,7 +32,7 @@ export default function SpecColumn({ product, world, lang }: Props) {
 
   return (
     <div className="space-y-8 lg:pt-4">
-      <Eyebrow tone="gold">{world.eyebrow[lang]}{product.ritual ? ` · ${product.ritual}` : ""}</Eyebrow>
+      <Eyebrow tone="green">{world.eyebrow[lang]}{product.ritual ? ` · ${product.ritual}` : ""}</Eyebrow>
       <DisplayHeading size="lg" as="h1">{product.name[lang]}</DisplayHeading>
       <p className="font-display italic text-[clamp(20px,1.6vw,24px)] leading-[1.4] text-bb-on-surface-variant">
         {product.short[lang]}

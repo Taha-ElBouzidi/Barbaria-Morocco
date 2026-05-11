@@ -26,7 +26,7 @@ export default function EditorialBlock() {
 
       <div className="space-y-6 lg:pl-8">
         <Reveal delayMs={80}>
-          <Eyebrow tone="gold">{t("editorial.eyebrow")}</Eyebrow>
+          <Eyebrow tone="green">{t("editorial.eyebrow")}</Eyebrow>
         </Reveal>
 
         <Reveal delayMs={160}>

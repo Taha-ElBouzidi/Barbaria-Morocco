@@ -35,7 +35,7 @@ export default async function AteliersPage({ params }: PageProps) {
       <div className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] mb-20 lg:mb-28">
         <div className="max-w-[820px] space-y-6">
           <Reveal>
-            <Eyebrow tone="gold">{t("hero_eyebrow")}</Eyebrow>
+            <Eyebrow tone="green">{t("hero_eyebrow")}</Eyebrow>
           </Reveal>
           <Reveal delayMs={80}>
             <DisplayHeading size="xl" as="h1">
@@ -64,7 +64,7 @@ export default async function AteliersPage({ params }: PageProps) {
               sizes="(min-width:1024px) 30vw, (min-width:768px) 45vw, 100vw"
               containerClassName="aspect-square"
             />
-            <Eyebrow tone="gold">
+            <Eyebrow tone="green">
               {a.region} · {t("since", { year: a.since })}
             </Eyebrow>
             <h2 className="font-serif text-[28px] leading-[1.2] text-bb-on-surface">{a.name}</h2>

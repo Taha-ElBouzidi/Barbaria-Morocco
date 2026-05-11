@@ -21,7 +21,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3 lg:gap-16">
           {/* Column 1 — Maison */}
           <div className="flex flex-col gap-6">
-            <Eyebrow tone="gold">{t("maison")}</Eyebrow>
+            <Eyebrow tone="green">{t("maison")}</Eyebrow>
             <nav className="flex flex-col gap-4">
               <Link
                 href="/story"
@@ -46,7 +46,7 @@ export default function Footer() {
 
           {/* Column 2 — Catalogue */}
           <div className="flex flex-col gap-6">
-            <Eyebrow tone="gold">{t("catalogue")}</Eyebrow>
+            <Eyebrow tone="green">{t("catalogue")}</Eyebrow>
             <nav className="flex flex-col gap-4">
               <Link
                 href="/rituals/hammam"
@@ -71,7 +71,7 @@ export default function Footer() {
 
           {/* Column 3 — Concierge */}
           <div className="flex flex-col gap-6">
-            <Eyebrow tone="gold">{t("concierge")}</Eyebrow>
+            <Eyebrow tone="green">{t("concierge")}</Eyebrow>
             <nav className="flex flex-col gap-4">
               <Link
                 href="/contact"

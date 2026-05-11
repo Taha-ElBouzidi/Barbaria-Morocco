@@ -34,7 +34,7 @@ export default function ProductCard({ product, lang }: Props) {
         />
       </Link>
       <div className="space-y-3">
-        {primaryTag && <Eyebrow tone="gold">{primaryTag}</Eyebrow>}
+        {primaryTag && <Eyebrow tone="green">{primaryTag}</Eyebrow>}
         <Link href={`/product/${product.id}`}>
           <h3 className="font-serif text-[22px] leading-[1.25] text-bb-on-surface group-hover:text-bb-primary transition-colors">
             {product.name[lang]}

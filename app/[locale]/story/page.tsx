@@ -109,7 +109,7 @@ export default async function StoryPage({ params }: PageProps) {
             </Reveal>
             <div className={`space-y-6 ${ch.reverse ? "lg:order-1 lg:pr-8" : "lg:pl-8"}`}>
               <Reveal>
-                <Eyebrow tone="gold">{ch.num}</Eyebrow>
+                <Eyebrow tone="green">{ch.num}</Eyebrow>
               </Reveal>
               <Reveal delayMs={80}>
                 <DisplayHeading size="lg" as="h2" className="font-display italic">{ch.title}</DisplayHeading>
