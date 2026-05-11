@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter, Playfair_Display, Cormorant_Garamond, Montserrat } from "next/font/google";
+import { Playfair_Display, Cormorant_Garamond, Montserrat } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
@@ -13,16 +13,11 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 import { CartProvider } from "@/lib/cart-context";
 import CartStickyBar from "@/components/cosmetics/CartStickyBar";
 
-const inter = Inter({
-  variable: "--font-inter",
-  subsets: ["latin"],
-  display: "swap",
-});
-
 const playfair = Playfair_Display({
-  variable: "--font-playfair",
   subsets: ["latin"],
   weight: ["500", "600"],
+  style: ["normal", "italic"],
+  variable: "--font-playfair",
   display: "swap",
 });
 
@@ -98,7 +93,7 @@ export default async function LocaleLayout({
   return (
     <html
       lang={locale}
-      className={`${inter.variable} ${playfair.variable} ${cormorant.variable} ${montserrat.variable} h-full antialiased`}
+      className={`${playfair.variable} ${cormorant.variable} ${montserrat.variable} h-full antialiased`}
     >
       <head>
         <link rel="canonical" href={`${BASE_URL}/${locale}`} />
