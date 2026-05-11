@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Header from "./Header";
 
-export default function ShellChrome({ locale, children }: { locale: string; children: React.ReactNode }) {
+export default function ShellChrome({ locale, children, mainId }: { locale: string; children: React.ReactNode; mainId?: string }) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
@@ -19,7 +19,7 @@ export default function ShellChrome({ locale, children }: { locale: string; chil
         onOpenMenu={() => setMenuOpen(true)}
         onOpenInquiry={() => setInquiryOpen(true)}
       />
-      <main className="pt-[72px]">{children}</main>
+      <main id={mainId} className="pt-[72px]">{children}</main>
     </>
   );
 }

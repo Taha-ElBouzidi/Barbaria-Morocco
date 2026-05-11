@@ -110,8 +110,8 @@ export default async function LocaleLayout({
         </a>
         <NextIntlClientProvider locale={locale}>
           <InquiryProvider>
-            <ShellChrome locale={locale}>
-              <div id="main-content" className="flex-1">{children}</div>
+            <ShellChrome locale={locale} mainId="main-content">
+              <div className="flex-1">{children}</div>
             </ShellChrome>
             <WhatsAppFloat />
             <CartStickyBar />

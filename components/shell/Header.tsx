@@ -5,6 +5,7 @@ import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import Icon from "@/components/primitives/Icon";
 import { useInquiry } from "@/lib/inquiry-context";
+import { cn } from "@/lib/utils";
 
 interface HeaderProps {
   locale: string;
@@ -35,19 +36,15 @@ export default function Header({ locale, onOpenMenu, onOpenInquiry }: HeaderProp
 
   return (
     <header
-      className={[
+      className={cn(
         "fixed inset-x-0 top-0 z-50 transition-colors duration-300",
-        scrolled
-          ? "bg-bb-bg border-b border-bb-line"
-          : isHero
-          ? "bg-transparent"
-          : "bg-bb-bg border-b border-bb-line",
-      ].join(" ")}
+        scrolled || !isHero ? "bg-bb-bg border-b border-bb-line" : "bg-transparent"
+      )}
     >
       <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-[var(--bb-margin-edge)]">
         <Link
           href="/"
-          className={["font-serif text-[20px] tracking-[0.02em]", isDark ? "text-white" : "text-bb-primary"].join(" ")}
+          className={cn("font-serif text-[20px] tracking-[0.02em]", isDark ? "text-white" : "text-bb-primary")}
         >
           Barbaria
         </Link>
@@ -57,31 +54,36 @@ export default function Header({ locale, onOpenMenu, onOpenInquiry }: HeaderProp
             <Link
               key={world}
               href={`/rituals/${world}`}
-              className={`transition-opacity hover:opacity-70 ${textColor}`}
+              className={cn("transition-opacity hover:opacity-70", textColor)}
             >
               {t(world)}
             </Link>
           ))}
-          <Link href="/story" className={textColor}>{t("story")}</Link>
-          <Link href="/journal" className={textColor}>{t("journal")}</Link>
+          <Link href="/story" className={cn(textColor)}>{t("story")}</Link>
+          <Link href="/journal" className={cn(textColor)}>{t("journal")}</Link>
         </nav>
 
-        <div className="flex items-center gap-4">
+        <div className="flex items-center gap-2">
           <Link
             href={pathname}
             locale={otherLocale}
-            className={`font-sans text-[12px] uppercase tracking-[0.18em] ${textColor}`}
+            className={cn("p-2 font-sans text-[12px] uppercase tracking-[0.18em]", textColor)}
+            aria-label={`Switch to ${otherLocale === "fr" ? "Français" : "English"}`}
           >
             {otherLocale.toUpperCase()}
           </Link>
           <button
             onClick={onOpenInquiry}
-            className={`flex items-center gap-2 font-sans text-[12px] uppercase tracking-[0.18em] ${textColor}`}
+            className={cn("p-2 flex items-center gap-2 font-sans text-[12px] uppercase tracking-[0.18em]", textColor)}
             aria-label={t("inquiry_aria", { count: totalItems })}
           >
             {t("inquiry")} ({totalItems})
           </button>
-          <button onClick={onOpenMenu} className={textColor} aria-label={t("menu")}>
+          <button
+            onClick={onOpenMenu}
+            className={cn("p-3", textColor)}
+            aria-label={t("menu")}
+          >
             <Icon name="menu" size={20} />
           </button>
         </div>
