@@ -56,6 +56,48 @@
         "desc": "Épices, coffrets cadeaux et saveurs du Maroc  - une nouvelle collection à venir.",
         "cta": "Être notifié"
       }
+    },
+    "hero": {
+      "eyebrow": "Maison de Terroir · Est. 1972",
+      "headline": "Héritage. Raffiné. Offert.",
+      "lede": "Une maison marocaine de cadeaux B2B, composant des rituels artisanaux pour les occasions corporate.",
+      "cta_primary": "Explorer les Rituels",
+      "cta_secondary": "Conciergerie B2B"
+    },
+    "strip": {
+      "item_1": "100% Sourcé au Maroc",
+      "item_2": "30+ Coopératives Berbères",
+      "item_3": "Fabriqué à la Commande",
+      "item_4": "Délai de 4 Semaines"
+    },
+    "editorial": {
+      "eyebrow": "L'Art du Cadeau Réfléchi",
+      "headline": "Un objet devient un geste.",
+      "p1": "Chaque pièce Barbaria porte la main d'un artisan marocain et la saison de son terroir. Nous les composons en cadeaux qui ont du sens — pour l'acheteur, pour le destinataire, pour la coopérative qui les a façonnés.",
+      "p2": "Pas de modèles prêts à l'emploi. Chaque demande commence par une conversation.",
+      "cta": "Lire notre histoire"
+    },
+    "bento": {
+      "section_eyebrow": "Trois Univers",
+      "section_headline": "Un Héritage.",
+      "hammam_eyebrow": "Purification",
+      "hammam_title": "Le Rituel du Hammam",
+      "botanical_eyebrow": "Vitalité",
+      "botanical_title": "Soins Botaniques",
+      "heritage_eyebrow": "Ancrage",
+      "heritage_title": "Cadeaux Héritage",
+      "compose_eyebrow": "Sur Mesure",
+      "compose_title": "Composez votre propre sélection cadeau",
+      "compose_lede": "Mêlez les rituels en une sélection bespoke que votre maison signe."
+    },
+    "heritage_3up": {
+      "quote": "Chaque rituel préserve un héritage. Chaque cadeau responsabilise un artisan.",
+      "c1_title": "Ingrédients d'origine unique",
+      "c1_body": "Pressés à froid, distillés à la main, jamais mélangés.",
+      "c2_title": "Partenariats coopératifs",
+      "c2_body": "Six ateliers, équitablement rémunérés, nommés sur chaque produit.",
+      "c3_title": "Éditions, non du stock",
+      "c3_body": "Fabriqué à la commande à l'atelier, en volume adapté à l'occasion."
     }
   },
   "cosmetics": {
@@ -443,5 +485,103 @@
     "cta_subtitle": "Composez votre sélection et partagez-la directement avec notre équipe.",
     "whatsapp_header": "Bonjour Barbaria Morocco,\n\nJe souhaite commander :\n\n",
     "whatsapp_footer": "\n\nMerci !"
+  },
+  "rituals": {
+    "filter_by": "Filtrer par",
+    "f_ingredient": "Ingrédient Principal",
+    "f_application": "Application",
+    "f_format": "Conditionnement",
+    "f_packaging": "Emballage",
+    "f_certif": "Certification",
+    "sort": "Trier",
+    "sort_recommended": "Recommandé",
+    "sort_az": "A → Z",
+    "sort_moq": "MOQ croissant",
+    "moq_pill": "MOQ {n}",
+    "add_to_inquiry": "Ajouter à la Demande",
+    "added": "Ajouté",
+    "view": "Voir le produit",
+    "showing": "Affichage de {count} pièces"
+  },
+  "product": {
+    "moq": "Commande minimum",
+    "formats": "Conditionnements",
+    "lead": "Délai de fabrication",
+    "origin": "Origine",
+    "packaging": "Emballage",
+    "certification": "Certification",
+    "add_to_inquiry": "Ajouter à la Demande",
+    "added": "Ajouté ✓",
+    "download_spec": "Télécharger la Fiche Technique (PDF)",
+    "ritual_eyebrow": "Mode d'Emploi",
+    "ritual_headline": "Le Rituel",
+    "related": "Pièces complémentaires"
+  },
+  "story": {
+    "hero_eyebrow": "Maison de Terroir",
+    "hero_headline": "Barbaria, depuis 1972.",
+    "hero_lede": "Trois générations d'artisanat marocain, une maison éditoriale.",
+    "ch1_number": "01",
+    "ch1_title": "Origine",
+    "ch1_p1": "Fondée en 1972 par Hassan El Bouzidi, acheteur de parfums ayant quitté Casablanca pour l'Atlas afin de sourcer l'argan, la rose et le safran directement auprès des coopératives.",
+    "ch1_p2": "Un demi-siècle plus tard, Barbaria demeure une entreprise familiale — et désormais une maison de cadeaux B2B composant des rituels pour les occasions corporate.",
+    "ch2_number": "02",
+    "ch2_title": "Méthode",
+    "ch2_p1": "Chaque pièce est fabriquée à la commande. Le savon noir est pressé dès réception de la commande; les coffrets en cèdre sont taillés dans du bois séché trois ans; l'eau de rose est distillée une fois, à l'aube.",
+    "ch2_p2": "Nous n'entreposons pas. Nous composons, nous expédions, nous clôturons le dossier.",
+    "ch3_number": "03",
+    "ch3_title": "L'Objet",
+    "ch3_p1": "Un objet n'est pas un produit. C'est un geste — envers le destinataire, envers l'artisan qui l'a façonné, envers le terroir qu'il incarne.",
+    "ch3_p2": "Notre travail est de maintenir ce lien court, nommé et traçable.",
+    "pull_quote": "Ce que vous offrez porte qui vous êtes."
+  },
+  "ateliers": {
+    "hero_eyebrow": "Nos Coopératives",
+    "hero_headline": "Six ateliers, un Royaume.",
+    "hero_lede": "Barbaria collabore avec six coopératives marocaines dans les traditions de l'argan, de la rose, de la céramique, du cèdre, du tissage et de l'argile.",
+    "since": "Partenaire depuis {year}"
+  },
+  "journal": {
+    "hero_eyebrow": "Journal",
+    "hero_headline": "Notes de terrain, dépêches, portraits.",
+    "kicker_field": "Notes de Terrain",
+    "kicker_portrait": "Portrait",
+    "kicker_dispatch": "Dépêche",
+    "kicker_ritual": "Rituel"
+  },
+  "contact_b2b": {
+    "hero_eyebrow": "Conciergerie B2B",
+    "hero_headline": "Parlez-nous de l'occasion.",
+    "step1_number": "01",
+    "step1_title": "Votre Maison",
+    "f_company": "Entreprise",
+    "f_contact_name": "Nom du contact",
+    "f_email": "Email",
+    "f_phone": "Téléphone / WhatsApp",
+    "step2_number": "02",
+    "step2_title": "L'Occasion",
+    "f_quantity": "Quantité",
+    "f_event_date": "Date de l'événement",
+    "f_occasion": "Occasion",
+    "f_occasion_yearend": "Fin d'année",
+    "f_occasion_onboarding": "Intégration",
+    "f_occasion_anniversary": "Anniversaire",
+    "f_occasion_press": "Presse",
+    "f_occasion_wedding": "Mariage / corporate",
+    "f_occasion_other": "Autre",
+    "f_message": "Parlez-nous de l'occasion",
+    "next": "Suivant",
+    "back": "Retour",
+    "submit": "Demander un Devis",
+    "success_title": "Nous vous répondrons dans les 24h.",
+    "success_body": "Votre concierge a été assigné.",
+    "sidebar_title": "Votre Sélection",
+    "direct_lines": "Lignes directes",
+    "atelier": "Atelier"
+  },
+  "common": {
+    "moq_short": "MOQ",
+    "lead_weeks": "{n} semaines",
+    "and_more": "et {n} de plus"
   }
 }

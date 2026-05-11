@@ -56,6 +56,48 @@
         "desc": "Spices, gift boxes and flavors of Morocco  - a new collection coming soon.",
         "cta": "Get notified"
       }
+    },
+    "hero": {
+      "eyebrow": "Maison de Terroir · Est. 1972",
+      "headline": "Heritage. Refined. Gifted.",
+      "lede": "A Moroccan B2B gifting house composing artisan rituals for corporate occasions.",
+      "cta_primary": "Explore the Rituals",
+      "cta_secondary": "B2B Concierge"
+    },
+    "strip": {
+      "item_1": "100% Sourced from Morocco",
+      "item_2": "30+ Berber Cooperatives",
+      "item_3": "Made-to-Order",
+      "item_4": "4-Week Lead"
+    },
+    "editorial": {
+      "eyebrow": "The Art of Considered Gifting",
+      "headline": "An object becomes a gesture.",
+      "p1": "Every Barbaria piece carries the hand of a Moroccan artisan and the season of its terroir. We compose them into gifts that mean something — to the buyer, to the recipient, to the cooperative that made them.",
+      "p2": "No off-the-shelf templates. Every inquiry begins with a conversation.",
+      "cta": "Read our story"
+    },
+    "bento": {
+      "section_eyebrow": "Three Worlds",
+      "section_headline": "One Heritage.",
+      "hammam_eyebrow": "Purification",
+      "hammam_title": "The Hammam Ritual",
+      "botanical_eyebrow": "Vitality",
+      "botanical_title": "Botanical Care",
+      "heritage_eyebrow": "Grounding",
+      "heritage_title": "Heritage Gifts",
+      "compose_eyebrow": "Custom",
+      "compose_title": "Compose your own gift edit",
+      "compose_lede": "Mix the rituals into a bespoke selection your maison signs off on."
+    },
+    "heritage_3up": {
+      "quote": "Every ritual preserves a legacy. Every gift empowers an artisan.",
+      "c1_title": "Single-origin ingredients",
+      "c1_body": "Cold-pressed, hand-distilled, never blended.",
+      "c2_title": "Cooperative partnerships",
+      "c2_body": "Six ateliers, fairly compensated, named on every product.",
+      "c3_title": "Editions, not stock",
+      "c3_body": "Made-to-order at the atelier, in volume that matches the moment."
     }
   },
   "cosmetics": {
@@ -443,5 +485,103 @@
     "cta_subtitle": "Build your selection and share it directly with our team.",
     "whatsapp_header": "Hello Barbaria Morocco,\n\nI would like to order:\n\n",
     "whatsapp_footer": "\n\nThank you!"
+  },
+  "rituals": {
+    "filter_by": "Filter by",
+    "f_ingredient": "Primary Ingredient",
+    "f_application": "Application",
+    "f_format": "Format",
+    "f_packaging": "Packaging",
+    "f_certif": "Certification",
+    "sort": "Sort",
+    "sort_recommended": "Recommended",
+    "sort_az": "A → Z",
+    "sort_moq": "MOQ ascending",
+    "moq_pill": "MOQ {n}",
+    "add_to_inquiry": "Add to Inquiry",
+    "added": "Added",
+    "view": "View product",
+    "showing": "Showing {count} pieces"
+  },
+  "product": {
+    "moq": "Minimum order",
+    "formats": "Formats",
+    "lead": "Lead time",
+    "origin": "Origin",
+    "packaging": "Packaging",
+    "certification": "Certification",
+    "add_to_inquiry": "Add to Inquiry",
+    "added": "Added ✓",
+    "download_spec": "Download Spec Sheet (PDF)",
+    "ritual_eyebrow": "How to Use",
+    "ritual_headline": "The Ritual",
+    "related": "Complementary pieces"
+  },
+  "story": {
+    "hero_eyebrow": "Maison de Terroir",
+    "hero_headline": "Barbaria, since 1972.",
+    "hero_lede": "Three generations of Moroccan craft, one editorial maison.",
+    "ch1_number": "01",
+    "ch1_title": "Origin",
+    "ch1_p1": "Founded in 1972 by Hassan El Bouzidi, a fragrance buyer who left Casablanca for the Atlas to source argan, rose and saffron directly from the cooperatives.",
+    "ch1_p2": "Half a century later, Barbaria remains a family enterprise — and now a B2B gifting house composing rituals for corporate occasions.",
+    "ch2_number": "02",
+    "ch2_title": "Method",
+    "ch2_p1": "Every piece is made-to-order. Black soap is pressed when the order lands; cedar boxes are carved from three-year-aged wood; rose water is distilled once at dawn.",
+    "ch2_p2": "We do not warehouse. We compose, we ship, we close the file.",
+    "ch3_number": "03",
+    "ch3_title": "Object",
+    "ch3_p1": "An object is not a product. It is a gesture — to the recipient, to the artisan who made it, to the terroir it carries.",
+    "ch3_p2": "Our work is to keep that line short, named, and traceable.",
+    "pull_quote": "What you give carries who you are."
+  },
+  "ateliers": {
+    "hero_eyebrow": "Our Cooperatives",
+    "hero_headline": "Six ateliers, one Kingdom.",
+    "hero_lede": "Barbaria works with six Moroccan cooperatives across argan, rose, ceramic, cedar, weaving and clay traditions.",
+    "since": "Partner since {year}"
+  },
+  "journal": {
+    "hero_eyebrow": "Journal",
+    "hero_headline": "Field notes, dispatches, portraits.",
+    "kicker_field": "Field Notes",
+    "kicker_portrait": "Portrait",
+    "kicker_dispatch": "Dispatch",
+    "kicker_ritual": "Ritual"
+  },
+  "contact_b2b": {
+    "hero_eyebrow": "B2B Concierge",
+    "hero_headline": "Tell us about the moment.",
+    "step1_number": "01",
+    "step1_title": "Your Maison",
+    "f_company": "Company",
+    "f_contact_name": "Contact name",
+    "f_email": "Email",
+    "f_phone": "Phone / WhatsApp",
+    "step2_number": "02",
+    "step2_title": "The Occasion",
+    "f_quantity": "Quantity",
+    "f_event_date": "Event date",
+    "f_occasion": "Occasion",
+    "f_occasion_yearend": "Year-end",
+    "f_occasion_onboarding": "Onboarding",
+    "f_occasion_anniversary": "Anniversary",
+    "f_occasion_press": "Press",
+    "f_occasion_wedding": "Wedding / corporate",
+    "f_occasion_other": "Other",
+    "f_message": "Tell us about the moment",
+    "next": "Next",
+    "back": "Back",
+    "submit": "Request Quote",
+    "success_title": "We'll be in touch within 24h.",
+    "success_body": "Your concierge has been assigned.",
+    "sidebar_title": "Your Selection",
+    "direct_lines": "Direct lines",
+    "atelier": "Atelier"
+  },
+  "common": {
+    "moq_short": "MOQ",
+    "lead_weeks": "{n} weeks",
+    "and_more": "and {n} more"
   }
 }
