@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { cn } from "@/lib/utils";
 
 interface RevealProps {
   children: React.ReactNode;
@@ -42,7 +43,7 @@ export default function Reveal({ children, delayMs = 0, as = "div", className }:
   return (
     <Tag
       ref={ref}
-      className={className}
+      className={cn(className)}
       style={{
         opacity: shown ? 1 : 0,
         transform: shown ? "translateY(0)" : "translateY(16px)",
