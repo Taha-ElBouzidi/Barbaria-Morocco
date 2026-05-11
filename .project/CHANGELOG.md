@@ -8,6 +8,7 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ## 2026-05-11
 
+- 05:30 CET — Task 12: 301-redirected /cosmetics, /food, /textile, /order, /about → new IA; deleted retired routes, components, legacy exports; renamed contact_b2b → contact namespace.
 - 04:15 CET — Task 11: Contact 2-step concierge form + sticky inquiry sidebar + mailto submit.
 - 00:30 CET — Task 10: editorial pages — Story (3 chapters) + Ateliers (6 cooperatives) + Journal (1 feature + 5 standards).
 - 23:55 CET — Task 9: PDP at /product/[id] — sticky image stack, spec column, proof strip, ritual steps, cooperative band, related row.

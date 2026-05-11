@@ -1,13 +1,7 @@
 {
   "nav": {
     "home": "Home",
-    "cosmetics": "Cosmetics",
-    "textile": "Textile",
-    "food": "Food",
-    "about": "About",
     "contact": "Contact",
-    "collections": "Collections",
-    "order": "Order",
     "hammam": "Hammam",
     "botanical": "Botanical",
     "heritage": "Heritage",
@@ -33,30 +27,6 @@
     "inquiry_remove": "Remove {name} from inquiry"
   },
   "home": {
-    "tagline": "Moroccan authenticity. The rarity of a creation.",
-    "headline": "Barbaria Morocco",
-    "subheadline": "Three worlds. One heritage  - artisanal, natural, living Morocco.",
-    "cta": "Discover our collections",
-    "categories": {
-      "cosmetics": {
-        "label": "Cosmetics",
-        "tagline": "Natural skincare",
-        "desc": "Argan Oil, Black Soap, Sugar Body Scrub  - formulated by Berber craftswomen.",
-        "cta": "Discover"
-      },
-      "textile": {
-        "label": "Textile",
-        "tagline": "100% handmade",
-        "desc": "Unique bags and pouches woven from traditional Moroccan carpet fabric.",
-        "cta": "Discover"
-      },
-      "food": {
-        "label": "Food",
-        "tagline": "Coming soon",
-        "desc": "Spices, gift boxes and flavors of Morocco  - a new collection coming soon.",
-        "cta": "Get notified"
-      }
-    },
     "hero": {
       "eyebrow": "Maison de Terroir · Est. 1972",
       "headline": "Heritage. Refined. Gifted.",
@@ -100,392 +70,6 @@
       "c3_title": "Editions, not stock",
       "c3_body": "Made-to-order at the atelier, in volume that matches the moment."
     }
-  },
-  "cosmetics": {
-    "title": "Natural Cosmetics",
-    "subtitle": "Premium skincare formulated with the finest ingredients from Morocco, by hands that know.",
-    "tagline_page": "Clean beauty · Made in Morocco",
-    "add_to_cart": "Add",
-    "added": "Added",
-    "view_cart": "View order",
-    "cart_bar": "{count} product(s) selected",
-    "featured_title": "Our Products",
-    "view": "View product",
-    "products": {
-      "huile-argan": {
-        "name": "Pure Argan Oil",
-        "tagline": "Liquid gold from Morocco",
-        "description": "Morocco's finest oil, cold-pressed by first mechanical press with no solvents. Golden, light, non-greasy. Rich in vitamin E and omega 6-9.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Pure Argan Oil."
-      },
-      "huile-figue": {
-        "name": "Prickly Pear Seed Oil",
-        "tagline": "Ultra rare - 1 ton of fruit per liter",
-        "description": "The world's richest plant-based source of vitamin E. 1 ton of prickly pears for 1 liter of oil - cold mechanical extraction. Deep cellular regeneration and intense anti-wrinkle action.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Prickly Pear Seed Oil."
-      },
-      "huile-saad": {
-        "name": "S'ad Oil (Chufa)",
-        "tagline": "Ancestral feminine tradition",
-        "description": "Chufa seed oil with a unique earthy-sweet natural fragrance. Used by Moroccan women as a body perfume and hair treatment for centuries. Gentle on sensitive skin.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco S'ad Oil."
-      },
-      "huile-ricin": {
-        "name": "Pure Castor Oil",
-        "tagline": "Multi-use, cold-pressed",
-        "description": "Cold-pressed, thick and nourishing. Stimulates hair growth, strengthens eyebrows and lashes, deeply moisturizes dry areas. 100% pure with no additives or preservatives.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Pure Castor Oil."
-      },
-      "huile-rose": {
-        "name": "Pure Rose Oil",
-        "tagline": "Luxury - Dades Valley",
-        "description": "Rosa Damascena essential oil from the Dades Valley. A few drops are enough. One of the most precious oils in the world - powerful anti-wrinkle, regenerating, with an exceptional floral fragrance.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Pure Rose Oil."
-      },
-      "huile-nigelle": {
-        "name": "Pure Black Seed Oil",
-        "tagline": "The blessed seed - Habba Sawda",
-        "description": "Cold-pressed, a powerful natural anti-inflammatory. Very high demand in the Arab world for its virtues. Anti-hair loss, purifies the scalp, treats problematic skin.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Pure Black Seed Oil."
-      },
-      "serum-anti-age": {
-        "name": "Royal Anti-Age Serum",
-        "tagline": "Morocco's most powerful trio",
-        "description": "Prickly Pear regenerates cells, Argan deeply nourishes, Rose illuminates and plumps. Intense anti-wrinkle, visible results in 4 weeks. The best-seller of the range.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Royal Anti-Age Serum."
-      },
-      "serum-eclat": {
-        "name": "Radiance & Even Skin Serum",
-        "tagline": "Natural golden effect on skin",
-        "description": "Argan + Prickly Pear + S'ad oil. S'ad brings a natural golden note to the skin. Illuminates the complexion, evens skin tone, reduces dark spots.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Radiance Serum."
-      },
-      "serum-cheveux": {
-        "name": "Strengthening Hair Serum",
-        "tagline": "Anti-hair loss, complete formula",
-        "description": "Castor (growth & thickness) + Black Seed (anti-loss, scalp) + Argan (shine). The most complete natural hair formula. Stimulates growth, nourishes the scalp.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Hair Serum."
-      },
-      "serum-sourcils": {
-        "name": "Eyebrow & Lash Serum",
-        "tagline": "Growth and density in 3 weeks",
-        "description": "Pure densifying Castor + regenerating Prickly Pear + soothing Rose. Serum formula for the delicate eye area. Densifies brows and lashes, stimulates growth without irritation.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Eyebrow & Lash Serum."
-      },
-      "serum-contour-yeux": {
-        "name": "Eye Contour Serum",
-        "tagline": "The gentlest for the most delicate area",
-        "description": "Ultra-concentrated Prickly Pear + decongesting S'ad + toning Rose. Anti-wrinkle eye contour, reduces dark circles, plumps the delicate skin around the eyes.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Eye Contour Serum."
-      },
-      "serum-corps": {
-        "name": "Anti-Stretch Mark Body Serum",
-        "tagline": "Natural prevention and reduction",
-        "description": "Repairing Argan + firming Castor + regenerating Black Seed. Prevents and fades stretch marks, firms skin, improves elasticity. Long-term use.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Body Serum."
-      },
-      "gommage-nila": {
-        "name": "Nila, Argan & Orange Blossom Scrub",
-        "tagline": "Barbaria's signature scrub",
-        "description": "Barbaria Morocco's signature scrub. Pure Nila (indigo) + Argan + Orange Blossom Water. Beautiful natural blue-black color. Deeply purifies, detoxifies, leaves skin renewed.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Nila Scrub."
-      },
-      "gommage-aker-fassi": {
-        "name": "Aker Fassi & Rose Scrub",
-        "tagline": "Natural radiance and luminosity",
-        "description": "Aker fassi (pomegranate bark from Fès) + Dades Rose Water + Cane Sugar. Exfoliates, illuminates, plumps. Beautiful natural pink color. Highly appreciated in spas.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Aker Fassi Scrub."
-      },
-      "masque-ghassoul-rose": {
-        "name": "Ghassoul & Rose Water Mask",
-        "tagline": "Ancestral deep purification",
-        "description": "Ghassoul (volcanic clay from Morocco's Middle Atlas, unique to Morocco) + pure Rose Water. Absorbs impurities and excess sebum, tightens pores. Velvety, soft skin.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Ghassoul Mask."
-      },
-      "gommage-sidr": {
-        "name": "Sidr & Argan Scrub",
-        "tagline": "The sacred ancestral cleanser",
-        "description": "Sidr leaf powder (sacred jujube) + Argan Oil + natural Honey. Used for centuries as a sacred cleanser in Moroccan tradition. Cleanses, fortifies, softens.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Sidr Scrub."
-      },
-      "gommage-levres": {
-        "name": "Aker Fassi & Honey Lip Scrub",
-        "tagline": "Traditional Moroccan lip care",
-        "description": "Aker fassi + natural Honey + fine Sugar. The most traditional lip care used by Moroccan women. Gently exfoliates and naturally tints lips pink. No makeup needed.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Lip Scrub."
-      },
-      "masque-corps": {
-        "name": "Ghassoul & Argan Body Mask",
-        "tagline": "Complete body treatment post-hammam",
-        "description": "Ghassoul + Argan + Orange Blossom Water. Complete body mask after scrubbing. Seals in the benefits of the hammam. Ultra-soft skin. Ideal in spa protocols.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Body Mask."
-      },
-      "eau-rose": {
-        "name": "Pure Dades Rose Water",
-        "tagline": "Morocco's universal classic",
-        "description": "Rosa Damascena steam-distilled in the Dades Valley. The most used product in Moroccan households. Tones, tightens pores, illuminates. Cosmetic and culinary use.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Rose Water."
-      },
-      "eau-fleur-oranger": {
-        "name": "Pure Orange Blossom Water",
-        "tagline": "Tradition of Fès and Meknès",
-        "description": "Citrus Aurantium distilled in Fès and Meknès. The most used floral water in Morocco. Soothing and anti-stress, brightens complexion. Cosmetic, culinary and aromatic use.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Orange Blossom Water."
-      },
-      "hydrolat-romarin": {
-        "name": "Rosemary Hydrolat",
-        "tagline": "2026 hair care trend",
-        "description": "Rosmarinus Officinalis from Moroccan mountains. Global hair trend for 2026. Very popular in Europe for hair growth. Stimulates circulation, reduces hair loss.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Rosemary Hydrolat."
-      },
-      "hydrolat-lavande": {
-        "name": "Atlas Lavender Hydrolat",
-        "tagline": "Soothing and naturally healing",
-        "description": "Atlas lavender artisanally distilled. Superior quality to ordinary lavender. Soothing, healing, anti-acne. Suitable for sensitive skin and babies.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Atlas Lavender Hydrolat."
-      },
-      "hydrolat-neroli": {
-        "name": "Neroli Hydrolat",
-        "tagline": "Luxury anti-aging for mature skin",
-        "description": "Bitter orange blossom water, more concentrated and luxurious than the classic. Powerful anti-wrinkle, cellular regeneration. Luxury tonic with a deep, intoxicating floral scent.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Neroli Hydrolat."
-      },
-      "brume-rose-oranger": {
-        "name": "Rose & Orange Blossom Toning Mist",
-        "tagline": "Morocco's iconic duo",
-        "description": "Morocco's two iconic hydrolats united: Dades Rose + Fès Orange Blossom. Double toning and soothing action. Unique Moroccan floral fragrance. The ideal gift.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Rose & Orange Blossom Mist."
-      },
-      "savon-nila-oranger": {
-        "name": "Beldi Nila & Orange Blossom Soap",
-        "tagline": "The signature hammam soap",
-        "description": "Beldi base (fermented black olive) + Nila (pure indigo) + Orange Blossom. Beautiful natural bluish color. Intense purification, natural detox. The signature soap of the range.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Nila & Orange Blossom Soap."
-      },
-      "savon-aker-rose": {
-        "name": "Beldi Aker Fassi & Rose Soap",
-        "tagline": "Radiance and even complexion",
-        "description": "Beldi base + Aker fassi (natural pomegranate pigment) + Dades Rose Water. Exfoliating and illuminating. Sublime natural pink color. Leaves skin rosy and luminous.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Aker Fassi Soap."
-      },
-      "savon-saad-musc": {
-        "name": "Beldi S'ad & White Musk Soap",
-        "tagline": "The most luxurious - Gulf & Arab countries",
-        "description": "Beldi base + S'ad oil + natural white musk. Warm, woody, enveloping fragrance without alcohol. Purifies and scents lastingly. The most luxurious soap in the range.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco S'ad & Musk Soap."
-      },
-      "savon-ghassoul-argan": {
-        "name": "Beldi Ghassoul & Argan Soap",
-        "tagline": "Triple action - complete and nourishing",
-        "description": "Triple action: beldi base cleanses, ghassoul purifies and absorbs, Argan nourishes. The most complete soap in the Moroccan hammam. Ideal for dry and combination skin.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Ghassoul Soap."
-      },
-      "savon-sidr-nigelle": {
-        "name": "Beldi Sidr & Black Seed Soap",
-        "tagline": "Special hammam hair care",
-        "description": "Formula specially designed for hair washing at the hammam. Sidr (sacred jujube) + Black Seed + beldi base. Natural shampoo alternative. Fortifying, anti-dandruff.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Sidr Soap."
-      },
-      "savon-henne-jasmin": {
-        "name": "Beldi Henna & Jasmine Soap",
-        "tagline": "Intense natural floral fragrance",
-        "description": "Beldi base + pure natural Henna (fortifying) + Moroccan Jasmine (perfuming). Natural soft orange color. Strengthens hair and skin, scented with fresh jasmine.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Henna & Jasmine Soap."
-      },
-      "massage-argan-oud": {
-        "name": "Argan & Oud Massage Oil",
-        "tagline": "Premium - Gulf tradition",
-        "description": "Argan + natural Oud extract. Oud is a profound cultural tradition in Gulf countries. Woody, warm, luxurious fragrance. Deeply nourishes, lastingly perfumes.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Argan & Oud Oil."
-      },
-      "massage-argan-rose": {
-        "name": "Argan & Rose Massage Oil",
-        "tagline": "The luxury spa favorite",
-        "description": "Argan + Dades Rose essential oil. The luxurious classic of spa treatments. Exceptional natural floral fragrance. Nourishes and regenerates, skin as soft as silk.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Argan & Rose Oil."
-      },
-      "massage-figue-saad": {
-        "name": "Prickly Pear & S'ad Body Oil",
-        "tagline": "Care and fragrance in one gesture",
-        "description": "Ultra-nourishing Prickly Pear + S'ad oil with its unique earthy-sweet natural fragrance. Ultra-silky skin, fast absorption without greasy film. An ancestral feminine gesture.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Prickly Pear & S'ad Oil."
-      },
-      "massage-argan-jasmin": {
-        "name": "Argan & Jasmine Massage Oil",
-        "tagline": "Relaxing and intoxicating",
-        "description": "Argan + Moroccan Jasmine. Intoxicating floral fragrance, natural relaxant. For a full-body relaxing massage. Ideal in the evening before sleep, stress and muscle tension.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Argan & Jasmine Oil."
-      },
-      "massage-argan-musc": {
-        "name": "Argan & White Musk Body Oil",
-        "tagline": "Natural musk without alcohol",
-        "description": "Argan + natural white musk. Soft, warm, enveloping fragrance, alcohol-free - respects all cultural values. Very high demand in Gulf and Morocco. Perfumes all day.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Argan & Musk Oil."
-      },
-      "massage-argan-cannelle": {
-        "name": "Warming Argan & Cinnamon Oil",
-        "tagline": "Natural warming, draining effect",
-        "description": "Argan + natural Moroccan Cinnamon. Natural warming effect, stimulates circulation. Ideal for muscle massage and drainage. Unique spiced and intoxicating fragrance.",
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Warming Cinnamon Oil."
-      }
-    },
-    "gammes": {
-      "huiles-pures": {
-        "name": "Pure Oils",
-        "tagline": "Single ingredient · Cold pressed · Zero additives"
-      },
-      "serums": {
-        "name": "Concentrated Serums",
-        "tagline": "Pure oil blends · Targeted formulas · Zero chemistry"
-      },
-      "hammam": {
-        "name": "Hammam Ritual",
-        "tagline": "Scrubs · Masks · Ancestral ingredients"
-      },
-      "eaux-florales": {
-        "name": "Floral Waters & Hydrolats",
-        "tagline": "Artisanal steam distillation · Zero alcohol"
-      },
-      "savons-noirs": {
-        "name": "Natural Black Soaps",
-        "tagline": "Beldi base · Naturally scented · Zero SLS"
-      },
-      "huiles-massage": {
-        "name": "Scented Massage Oils",
-        "tagline": "Argan or Prickly Pear base · Body & spa rituals"
-      }
-    },
-    "ingredients": {
-      "title": "Our Ingredients",
-      "subtitle": "Straight from the heart of Morocco.",
-      "argan": { "name": "Pure Argan", "desc": "Cold-pressed at Berber cooperatives in the Atlas. Rich in vitamin E and essential fatty acids." },
-      "orange": { "name": "Orange Blossom", "desc": "Steam-distilled. Soothing, regenerating, with a delicate floral fragrance." },
-      "nila": { "name": "Nila", "desc": "A natural blue pigment used for centuries in North African skincare. Purifying and detoxifying." }
-    }
-  },
-  "textile": {
-    "title": "Artisanal Textile",
-    "subtitle": "Every Moroccan carpet carries a story. We give it a new life.",
-    "tagline_page": "100% handmade · Made in Morocco",
-    "story": "Patterns passed through generations, artisan hands that have woven dreams, traditions and emotions for centuries. At Barbaria Morocco, we transform these precious fabrics into unique pieces.",
-    "impact": "Carrying a Barbaria bag means adopting a piece of history and taking part in a real social impact.",
-    "products": {
-      "sac_femme": {
-        "name": "Women's Handbag",
-        "tagline": "The elegance of a story",
-        "description": "Entirely handmade from authentic Moroccan carpet fabric. Genuine leather handles. Each piece is unique  - no two bags are alike.",
-        "details": ["Authentic Moroccan carpet fabric", "Genuine leather handles", "One-of-a-kind piece", "Handmade in Morocco"],
-        "whatsapp_msg": "Hello, I would like to order a Barbaria Morocco Women's Handbag.",
-        "order": "Order on WhatsApp",
-        "instagram": "View on Instagram"
-      },
-      "sac_homme": {
-        "name": "Men's Shoulder Bag",
-        "tagline": "With exclusive Pins",
-        "description": "Men's shoulder bag in Berber fabric with camel leather. Comes with exclusive Barbaria pins  - gold enamel Moroccan carpet motifs. Authenticity and luxury.",
-        "details": ["Berber fabric and camel leather", "Gold enamel pins included", "Zip closure", "Handmade in Morocco"],
-        "whatsapp_msg": "Hello, I would like to order a Barbaria Morocco Men's Shoulder Bag.",
-        "order": "Order on WhatsApp",
-        "instagram": "View on Instagram"
-      },
-      "pouche": {
-        "name": "Pouche",
-        "tagline": "Moroccan art in miniature",
-        "description": "Berber fabric pouch with hand-embroidered geometric patterns. Perfect as a makeup bag or travel accessory. One-of-a-kind piece.",
-        "details": ["Natural Berber fabric", "Hand-embroidered geometry", "Zip closure", "Unique piece"],
-        "whatsapp_msg": "Hello, I would like to order a Barbaria Morocco Pouche.",
-        "order": "Order on WhatsApp",
-        "instagram": "View on Instagram"
-      },
-      "pins": {
-        "name": "Pins by Collection",
-        "tagline": "Moroccan art in miniature",
-        "description": "Pin collections paying tribute to the heritage of each Moroccan city. Fès, Marrakech, Casablanca, Sahara, Essaouira, North/Chamal  - each city has its symbols.",
-        "collections": ["Fès Collection  - Fassi Hat, Babouche, Takchita", "Marrakech Collection  - Tanjia, Koutoubia, Palm Tree", "North/Chamal  - Cap Spartel, Chefchaouen, Fishing Boat", "Casablanca  - Hassan II Mosque, Tramway, Corniche", "Sahara  - Dromedary, Bivouac, Touareg", "Essaouira  - Seagull, Fortress, Gnawa"],
-        "whatsapp_msg": "Hello, I would like to order Barbaria Morocco Pins.",
-        "order": "Order on WhatsApp",
-        "instagram": "View on Instagram"
-      }
-    }
-  },
-  "food": {
-    "title": "Food",
-    "subtitle": "Coming soon",
-    "desc": "Moroccan spices, gift boxes and flavors of the land. A new collection in preparation.",
-    "notify": "Get notified at launch",
-    "notify_msg": "Hello, I would like to be notified of the launch of the Barbaria Morocco Food range.",
-    "whatsapp": "Contact us on WhatsApp"
-  },
-  "about": {
-    "title": "Our Story",
-    "subtitle": "Barbaria Morocco",
-    "story_1": "Born in the heart of Morocco, Barbaria Morocco is a brand built on a deep conviction: the finest creations are those shaped together by nature and human hands.",
-    "story_2": "We work directly with Berber cooperatives and local artisans  - women weavers, soap masters, oil pressers  - to create products that carry a true story.",
-    "story_3": "Using or wearing a Barbaria product means adopting a piece of Moroccan history and supporting a real social impact on artisan families.",
-    "values_title": "Our Values",
-    "values": {
-      "natural": { "title": "Natural", "desc": "100% natural origin ingredients, free from parabens and sulfates." },
-      "artisanal": { "title": "Artisanal", "desc": "Handmade by Moroccan artisans using ancestral recipes and techniques." },
-      "moroccan": { "title": "Moroccan", "desc": "Rooted in Morocco's heritage  - from the Sahara to the Atlas, from Fès to Essaouira." }
-    },
-    "gallery_title": "In Photos"
-  },
-  "contact": {
-    "title": "Contact Us",
-    "subtitle": "A question? An order? We reply within 24 hours.",
-    "form": {
-      "name": "Your name",
-      "email": "Your email",
-      "message": "Your message",
-      "submit": "Send",
-      "sending": "Sending...",
-      "success": "Message sent! We'll get back to you within 24 hours.",
-      "error": "Something went wrong. Please try again."
-    },
-    "or": "Or reach us directly",
-    "phone_label": "Direct Call",
-    "whatsapp": "WhatsApp",
-    "instagram": "Instagram",
-    "email_label": "Email"
-  },
-  "footer": {
-    "maison": "Maison",
-    "catalogue": "Catalogue",
-    "concierge": "Concierge",
-    "address": "Avenue Hassan II · Marrakech · Morocco",
-    "rights": "© 2026 Barbaria Morocco · Ancestral Beauty, Contemporary Excellence.",
-    "story": "Story",
-    "ateliers": "Ateliers",
-    "journal": "Journal",
-    "hammam": "Hammam Ritual",
-    "botanical": "Botanical Care",
-    "heritage": "Heritage Gifts",
-    "contact": "Contact",
-    "whatsapp": "WhatsApp",
-    "instagram": "Instagram",
-    "email": "Email"
-  },
-  "order": {
-    "title": "Build Your Order",
-    "subtitle": "Select your products and quantities. Share your order via WhatsApp or email.",
-    "summary_title": "Your Order",
-    "summary_empty": "No products selected",
-    "summary_items": "item(s)",
-    "share_whatsapp": "WhatsApp",
-    "share_email": "Send by Email",
-    "share_call": "Call",
-    "share_copy": "Copy",
-    "share_copied": "Copied!",
-    "clear": "Clear all",
-    "quantity": "Qty",
-    "section_cosmetics": "Natural Cosmetics",
-    "section_textile": "Artisanal Textile",
-    "section_food": "Food",
-    "food_coming_soon": "Coming soon - contact us to pre-order",
-    "cta_title": "Ready to order?",
-    "cta_subtitle": "Build your selection and share it directly with our team.",
-    "whatsapp_header": "Hello Barbaria Morocco,\n\nI would like to order:\n\n",
-    "whatsapp_footer": "\n\nThank you!"
   },
   "rituals": {
     "all": "All",
@@ -551,7 +135,7 @@
     "hero_headline": "Field notes, dispatches, portraits.",
     "meta_description": "Field notes, dispatches, portraits — six editorial pieces from the Barbaria atelier and its cooperative partners across Morocco."
   },
-  "contact_b2b": {
+  "contact": {
     "hero_eyebrow": "B2B Concierge",
     "hero_headline": "Tell us about the moment.",
     "step1_number": "01",
@@ -582,6 +166,23 @@
     "sidebar_empty": "No pieces selected yet.",
     "direct_lines": "Direct lines",
     "atelier": "Atelier"
+  },
+  "footer": {
+    "maison": "Maison",
+    "catalogue": "Catalogue",
+    "concierge": "Concierge",
+    "address": "Avenue Hassan II · Marrakech · Morocco",
+    "rights": "© 2026 Barbaria Morocco · Ancestral Beauty, Contemporary Excellence.",
+    "story": "Story",
+    "ateliers": "Ateliers",
+    "journal": "Journal",
+    "hammam": "Hammam Ritual",
+    "botanical": "Botanical Care",
+    "heritage": "Heritage Gifts",
+    "contact": "Contact",
+    "whatsapp": "WhatsApp",
+    "instagram": "Instagram",
+    "email": "Email"
   },
   "common": {
     "moq_short": "MOQ",

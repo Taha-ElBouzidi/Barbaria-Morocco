@@ -9,7 +9,7 @@ import Icon from "@/components/primitives/Icon";
 interface Props { lang: "en" | "fr"; }
 
 export default function InquirySidebar({ lang }: Props) {
-  const t = useTranslations("contact_b2b");
+  const t = useTranslations("contact");
   const tNav = useTranslations("nav");
   const { cart, remove } = useInquiry();
   const items = [...cart.entries()].map(([id, qty]) => ({ product: getProduct(id), qty })).filter((x) => x.product);

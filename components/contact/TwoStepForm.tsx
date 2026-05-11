@@ -36,7 +36,7 @@ const INITIAL: FormData = {
 };
 
 export default function TwoStepForm({ locale }: Props) {
-  const t = useTranslations("contact_b2b");
+  const t = useTranslations("contact");
   const currentLocale = useLocale();
   const { cart } = useInquiry();
 

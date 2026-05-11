@@ -1,16 +1,12 @@
 "use client";
 
 import { FaWhatsapp } from "react-icons/fa";
-import { WHATSAPP_NUMBER } from "./Navbar";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
 import { useInquiry } from "@/lib/inquiry-context";
-import { usePathname } from "@/i18n/navigation";
 
 export default function WhatsAppFloat() {
   const { totalItems } = useInquiry();
-  const pathname = usePathname();
-
-  const isOrderPage = pathname === "/order";
-  const lifted = totalItems > 0 && !isOrderPage;
+  const lifted = totalItems > 0;
 
   return (
     <a

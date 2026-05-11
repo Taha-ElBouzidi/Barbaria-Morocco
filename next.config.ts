@@ -40,6 +40,26 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  async redirects() {
+    // FR is the default locale (no prefix). EN gets the /en prefix.
+    // Emit a bare-path variant for FR and a /en-prefixed variant for EN,
+    // each with a wildcard counterpart to catch deep links.
+    const PAIRS: Array<[string, string]> = [
+      ["/cosmetics", "/rituals/botanical"],
+      ["/textile",   "/rituals/heritage"],
+      ["/food",      "/rituals/heritage"],
+      ["/order",     "/contact"],
+      ["/about",     "/story"],
+    ];
+    const out: Array<{ source: string; destination: string; permanent: true }> = [];
+    for (const [from, to] of PAIRS) {
+      out.push({ source: from,                 destination: to,                 permanent: true });
+      out.push({ source: `${from}/:path*`,     destination: to,                 permanent: true });
+      out.push({ source: `/en${from}`,         destination: `/en${to}`,         permanent: true });
+      out.push({ source: `/en${from}/:path*`,  destination: `/en${to}`,         permanent: true });
+    }
+    return out;
+  },
 };
 
 export default withNextIntl(nextConfig);

@@ -14,7 +14,7 @@ export function generateStaticParams() {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
-  const t = await getTranslations({ locale, namespace: "contact_b2b" });
+  const t = await getTranslations({ locale, namespace: "contact" });
   return {
     title: `${t("hero_headline")} | Barbaria Morocco`,
     description: t("hero_headline"),
@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 export default async function ContactPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
-  const t = await getTranslations({ locale, namespace: "contact_b2b" });
+  const t = await getTranslations({ locale, namespace: "contact" });
   const lang = locale === "fr" ? "fr" : "en";
 
   return (

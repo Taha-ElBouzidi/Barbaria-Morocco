@@ -10,7 +10,6 @@ import "../globals.css";
 import ShellChrome from "@/components/shell/ShellChrome";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import { InquiryProvider } from "@/lib/inquiry-context";
-import CartStickyBar from "@/components/cosmetics/CartStickyBar";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -113,7 +112,6 @@ export default async function LocaleLayout({
               <div className="flex-1">{children}</div>
             </ShellChrome>
             <WhatsAppFloat />
-            <CartStickyBar />
           </InquiryProvider>
         </NextIntlClientProvider>
         <Analytics />

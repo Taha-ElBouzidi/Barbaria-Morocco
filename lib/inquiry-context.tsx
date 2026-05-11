@@ -109,6 +109,3 @@ export function useInquiry(): InquiryContextValue {
   if (!ctx) throw new Error("useInquiry must be used inside InquiryProvider");
   return ctx;
 }
-
-// Temporary alias — removed in Task 12 after retired routes are deleted.
-export const useCart = useInquiry;
