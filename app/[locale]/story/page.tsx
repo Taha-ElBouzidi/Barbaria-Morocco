@@ -112,9 +112,7 @@ export default async function StoryPage({ params }: PageProps) {
                 <Eyebrow tone="gold">{ch.num}</Eyebrow>
               </Reveal>
               <Reveal delayMs={80}>
-                <DisplayHeading size="lg" as="h2">
-                  <em className="font-display italic">{ch.title}</em>
-                </DisplayHeading>
+                <DisplayHeading size="lg" as="h2" className="font-display italic">{ch.title}</DisplayHeading>
               </Reveal>
               <Reveal delayMs={160} className="space-y-4 text-bb-on-surface-variant leading-relaxed max-w-[520px]">
                 <p>{ch.p1}</p>

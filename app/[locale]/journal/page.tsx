@@ -20,7 +20,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const t = await getTranslations({ locale, namespace: "journal" });
   return {
     title: `${t("hero_headline")} | Barbaria Morocco`,
-    description: t("hero_headline"),
+    description: t("meta_description"),
   };
 }
 

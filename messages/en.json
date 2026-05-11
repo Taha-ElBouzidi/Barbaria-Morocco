@@ -549,10 +549,7 @@
   "journal": {
     "hero_eyebrow": "Journal",
     "hero_headline": "Field notes, dispatches, portraits.",
-    "kicker_field": "Field Notes",
-    "kicker_portrait": "Portrait",
-    "kicker_dispatch": "Dispatch",
-    "kicker_ritual": "Ritual"
+    "meta_description": "Field notes, dispatches, portraits — six editorial pieces from the Barbaria atelier and its cooperative partners across Morocco."
   },
   "contact_b2b": {
     "hero_eyebrow": "B2B Concierge",

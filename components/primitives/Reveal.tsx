@@ -1,16 +1,15 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, type HTMLAttributes } from "react";
 import { cn } from "@/lib/utils";
 
-interface RevealProps {
+type RevealProps = HTMLAttributes<HTMLElement> & {
   children: React.ReactNode;
   delayMs?: number;
   as?: React.ElementType;
-  className?: string;
-}
+};
 
-export default function Reveal({ children, delayMs = 0, as: Tag = "div", className }: RevealProps) {
+export default function Reveal({ children, delayMs = 0, as: Tag = "div", className, ...rest }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
   // SSR-safe default: visible. Reduced-motion users + above-fold content stay visible.
   // Effect below hides + animates only when motion is allowed AND element is below the fold.
@@ -52,6 +51,7 @@ export default function Reveal({ children, delayMs = 0, as: Tag = "div", classNa
         transition: `opacity 600ms cubic-bezier(.2,.6,.2,1) ${delayMs}ms, transform 600ms cubic-bezier(.2,.6,.2,1) ${delayMs}ms`,
         willChange: shown ? "auto" : "opacity, transform",
       }}
+      {...rest}
     >
       {children}
     </Tag>

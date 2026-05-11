@@ -549,10 +549,7 @@
   "journal": {
     "hero_eyebrow": "Journal",
     "hero_headline": "Notes de terrain, dépêches, portraits.",
-    "kicker_field": "Notes de Terrain",
-    "kicker_portrait": "Portrait",
-    "kicker_dispatch": "Dépêche",
-    "kicker_ritual": "Rituel"
+    "meta_description": "Notes de terrain, dépêches, portraits — six pièces éditoriales depuis l'atelier Barbaria et ses partenaires coopératifs à travers le Maroc."
   },
   "contact_b2b": {
     "hero_eyebrow": "Conciergerie B2B",
