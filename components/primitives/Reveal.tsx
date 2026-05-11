@@ -6,28 +6,33 @@ import { cn } from "@/lib/utils";
 interface RevealProps {
   children: React.ReactNode;
   delayMs?: number;
-  as?: keyof React.JSX.IntrinsicElements;
+  as?: React.ElementType;
   className?: string;
 }
 
-export default function Reveal({ children, delayMs = 0, as = "div", className }: RevealProps) {
+export default function Reveal({ children, delayMs = 0, as: Tag = "div", className }: RevealProps) {
   const ref = useRef<HTMLElement | null>(null);
-  const [shown, setShown] = useState(false);
+  // SSR-safe default: visible. Reduced-motion users + above-fold content stay visible.
+  // Effect below hides + animates only when motion is allowed AND element is below the fold.
+  const [shown, setShown] = useState(true);
 
   useEffect(() => {
     if (typeof window === "undefined") return;
-    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      setShown(true);
-      return;
-    }
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
     const node = ref.current;
     if (!node) return;
+    const rect = node.getBoundingClientRect();
+    // Already in or near viewport — no reveal animation needed.
+    if (rect.top < window.innerHeight) return;
+    // Below the fold — hide and arm the observer.
+    setShown(false);
     const obs = new IntersectionObserver(
       (entries) => {
         for (const e of entries) {
           if (e.isIntersecting) {
             setShown(true);
             obs.disconnect();
+            return;
           }
         }
       },
@@ -37,12 +42,9 @@ export default function Reveal({ children, delayMs = 0, as = "div", className }:
     return () => obs.disconnect();
   }, []);
 
-  // Cast through unknown to avoid the TS union-type complexity error that arises
-  // when JSX intrinsic elements produce a type too complex to represent.
-  const Tag = as as unknown as React.ElementType;
   return (
     <Tag
-      ref={ref}
+      ref={ref as never}
       className={cn(className)}
       style={{
         opacity: shown ? 1 : 0,

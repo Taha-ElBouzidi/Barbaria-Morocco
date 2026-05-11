@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useId } from "react";
 import { cn } from "@/lib/utils";
 
 interface PhotoProps {
@@ -26,6 +27,7 @@ export default function Photo({
   containerClassName,
   needsShot,
 }: PhotoProps) {
+  const noiseId = useId();
   if (!src || needsShot) {
     return (
       <div
@@ -44,11 +46,11 @@ export default function Photo({
           viewBox="0 0 24 24"
           preserveAspectRatio="xMidYMid slice"
         >
-          <filter id="noise">
+          <filter id={noiseId}>
             <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2" />
             <feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 1 0" />
           </filter>
-          <rect width="24" height="24" filter="url(#noise)" />
+          <rect width="24" height="24" filter={`url(#${noiseId})`} />
         </svg>
       </div>
     );

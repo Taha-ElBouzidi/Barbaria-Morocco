@@ -18,7 +18,7 @@ const PATHS: Record<string, string> = {
   leaf: "M5 19c8-2 13-7 14-15-8 1-13 6-14 14m0 0l4-4",
   diamond: "M6 9l6-6 6 6-6 12-6-12zm0 0h12",
   concierge: "M4 18h16M6 18a6 6 0 0112 0M12 6V3",
-  x: "M6 6l12 12M6 18L18 6",
+  x: "M6 6l12 12M6 18L18 6", // alias of close
   phone: "M5 4l3 3-2 2a10 10 0 005 5l2-2 3 3a2 2 0 01-2 2 12 12 0 01-11-11 2 2 0 012-2z",
   calendar: "M5 5h14a1 1 0 011 1v13a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1zM4 10h16M8 3v4M16 3v4",
 };
