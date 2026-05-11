@@ -146,6 +146,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
                       {getProductDisplayName(productId)}
                     </p>
                     {/* Spec line */}
+                    {/* TODO(task-6): replace with real product data — MOQ, formats, hero image — from lib/products.ts */}
                     <p className="font-sans text-[12px] text-bb-on-surface-variant">
                       MOQ — · ID: {productId}
                     </p>
@@ -156,8 +157,8 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
                         <button
                           onClick={() => setQty(productId, qty - 1)}
                           disabled={qty <= 1}
-                          className="flex h-7 w-7 items-center justify-center rounded-sm border border-bb-line text-bb-on-surface transition-opacity hover:opacity-70 disabled:opacity-30"
-                          aria-label={`Decrease quantity of ${getProductDisplayName(productId)}`}
+                          className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm border border-bb-line text-bb-on-surface transition-opacity hover:opacity-70 disabled:opacity-30"
+                          aria-label={t("inquiry_decrease", { name: getProductDisplayName(productId) })}
                         >
                           <Icon name="minus" size={12} />
                         </button>
@@ -166,8 +167,8 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
                         </span>
                         <button
                           onClick={() => setQty(productId, qty + 1)}
-                          className="flex h-7 w-7 items-center justify-center rounded-sm border border-bb-line text-bb-on-surface transition-opacity hover:opacity-70"
-                          aria-label={`Increase quantity of ${getProductDisplayName(productId)}`}
+                          className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm border border-bb-line text-bb-on-surface transition-opacity hover:opacity-70"
+                          aria-label={t("inquiry_increase", { name: getProductDisplayName(productId) })}
                         >
                           <Icon name="plus" size={12} />
                         </button>
@@ -177,7 +178,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
                       <button
                         onClick={() => remove(productId)}
                         className="p-1 text-bb-on-surface-variant transition-opacity hover:opacity-70"
-                        aria-label={`Remove ${getProductDisplayName(productId)} from inquiry`}
+                        aria-label={t("inquiry_remove", { name: getProductDisplayName(productId) })}
                       >
                         <Icon name="close" size={16} />
                       </button>

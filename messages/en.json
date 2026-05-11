@@ -27,7 +27,10 @@
     "inquiry_empty_lede": "Browse the rituals to begin composing your selection.",
     "inquiry_explore": "Explore Rituals",
     "inquiry_clear": "Clear all",
-    "inquiry_request": "Request Quote"
+    "inquiry_request": "Request Quote",
+    "inquiry_decrease": "Decrease quantity of {name}",
+    "inquiry_increase": "Increase quantity of {name}",
+    "inquiry_remove": "Remove {name} from inquiry"
   },
   "home": {
     "tagline": "Moroccan authenticity. The rarity of a creation.",

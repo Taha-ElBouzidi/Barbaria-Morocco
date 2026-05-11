@@ -27,7 +27,10 @@
     "inquiry_empty_lede": "Parcourez les rituels pour commencer à composer votre sélection.",
     "inquiry_explore": "Explorer les Rituels",
     "inquiry_clear": "Tout effacer",
-    "inquiry_request": "Demander un Devis"
+    "inquiry_request": "Demander un Devis",
+    "inquiry_decrease": "Diminuer la quantité de {name}",
+    "inquiry_increase": "Augmenter la quantité de {name}",
+    "inquiry_remove": "Retirer {name} de la demande"
   },
   "home": {
     "tagline": "L'authenticité marocaine. La rareté d'une création.",

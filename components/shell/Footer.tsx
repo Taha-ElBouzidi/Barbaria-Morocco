@@ -102,10 +102,10 @@ export default function Footer() {
               >
                 {t("instagram")}
               </a>
-              <address className="not-italic font-serif text-[13px] italic text-bb-on-surface-variant">
-                {t("address")}
-              </address>
             </nav>
+            <address className="mt-4 font-serif text-[13px] italic text-bb-on-surface-variant">
+              {t("address")}
+            </address>
           </div>
         </div>
 
