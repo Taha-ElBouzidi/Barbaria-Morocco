@@ -13,7 +13,7 @@ export default function Hero() {
   return (
     <section className="relative h-[90vh] min-h-[640px] overflow-hidden">
       <Photo
-        src="/brand_photos/brand-lifestyle-3.jpg"
+        src="/brand_photos/hero-atlas.jpg"
         alt={t("hero.alt")}
         fill
         priority
