@@ -1,20 +1,14 @@
 "use client";
 
-import { useTranslations } from "next-intl";
+import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import Eyebrow from "@/components/primitives/Eyebrow";
+import { cn } from "@/lib/utils";
 
 export default function Footer() {
   const t = useTranslations("footer");
-  const tNav = useTranslations("nav");
+  const locale = useLocale();
   const pathname = usePathname();
-
-  // Lang toggle mirrors Header pattern
-  // We read locale from the pathname prefix via next-intl's usePathname which is locale-stripped,
-  // so we derive the other locale from the HTML lang attribute via a client-side read would be
-  // fragile. Instead, Footer receives no locale prop — it renders both links and lets next-intl
-  // handle active locale highlighting via the `locale` prop on Link.
-  const otherLocaleMap = { en: "fr", fr: "en" } as const;
 
   return (
     <footer className="border-t border-bb-line bg-bb-bg">
@@ -120,19 +114,27 @@ export default function Footer() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <Eyebrow tone="muted">{t("rights")}</Eyebrow>
 
-            {/* Lang toggle — mirrors Header pattern */}
-            <div className="flex items-center gap-4">
-              {(["en", "fr"] as const).map((loc) => (
-                <Link
-                  key={loc}
-                  href={pathname}
-                  locale={loc}
-                  className="font-sans text-[12px] uppercase tracking-[0.18em] text-bb-on-surface-variant transition-opacity hover:opacity-70"
-                  aria-label={`Switch to ${loc === "fr" ? "Français" : "English"}`}
-                >
-                  {loc.toUpperCase()}
-                </Link>
-              ))}
+            {/* Lang toggle — active locale marked for sighted and AT users */}
+            <div className="flex items-center gap-3 font-sans text-[12px] uppercase tracking-[0.18em]">
+              {(["en", "fr"] as const).map((l) => {
+                const isActive = l === locale;
+                return (
+                  <Link
+                    key={l}
+                    href={pathname}
+                    locale={l}
+                    aria-current={isActive ? "page" : undefined}
+                    className={cn(
+                      "transition-colors",
+                      isActive
+                        ? "text-bb-primary font-medium"
+                        : "text-bb-on-surface-variant hover:text-bb-primary"
+                    )}
+                  >
+                    {l.toUpperCase()}
+                  </Link>
+                );
+              })}
             </div>
           </div>
         </div>

@@ -4,6 +4,7 @@ import { useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
 import Icon from "@/components/primitives/Icon";
+import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import { useInquiry } from "@/lib/inquiry-context";
 import { cn } from "@/lib/utils";
@@ -132,14 +133,11 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
             <ul className="flex flex-col divide-y divide-bb-line">
               {items.map(([productId, qty]) => (
                 <li key={productId} className="flex items-start gap-4 py-5">
-                  {/* Thumbnail placeholder — dark-green gradient */}
-                  <div
-                    className="h-20 w-20 shrink-0 rounded-sm"
-                    style={{
-                      background:
-                        "linear-gradient(135deg, var(--color-bb-primary) 0%, #3d5a47 100%)",
-                    }}
-                    aria-hidden
+                  {/* Thumbnail — Photo primitive applies deep-green gradient + noise fallback */}
+                  <Photo
+                    src={null}
+                    alt=""
+                    containerClassName="h-20 w-20 shrink-0"
                   />
 
                   <div className="flex flex-1 flex-col gap-2">
