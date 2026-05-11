@@ -86,6 +86,7 @@ export const FACETS = {
     "Olive",
     "Oud",
     "Honey",
+    "Ghassoul",
     "Castor",
     "Black Seed",
   ],

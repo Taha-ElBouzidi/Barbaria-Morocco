@@ -226,7 +226,7 @@ export const PRODUCTS: Product[] = [
       en: "Volcanic clay washed by the Moulouya river. Draws impurities from the skin and hair without surfactants.",
       fr: "Argile volcanique lavée par le fleuve Moulouya. Capte les impuretés de la peau et des cheveux sans tensioactifs.",
     },
-    tags: ["Purifying", "Recycled card"],
+    tags: ["Ghassoul", "Purifying", "Recycled card"],
     moq: 120,
     formats: ["Pot 200 g"],
     lead: "2 weeks",
@@ -351,7 +351,7 @@ export const PRODUCTS: Product[] = [
   },
   {
     id: "hammam-gift-set",
-    world: "heritage",
+    world: "hammam",
     sub: "sets",
     name: { en: "Hammam Gift Set", fr: "Coffret Hammam" },
     short: {
@@ -382,6 +382,8 @@ export const PRODUCTS: Product[] = [
 
 export const getProduct = (id: string): Product | undefined =>
   PRODUCTS.find((p) => p.id === id);
+
+export const getHeroImage = (p: Product): string | null => p.images[0] ?? null;
 
 // ── Legacy exports — preserved until Task 12 retires the old routes ────────
 // The cosmetics / order / textile pages still import these types and constants.
