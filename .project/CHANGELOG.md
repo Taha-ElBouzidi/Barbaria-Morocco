@@ -8,6 +8,7 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ## 2026-05-11
 
+- 22:45 CET — Task 7: Home — Hero + CredentialStrip + EditorialBlock + BentoRituals + Heritage3Up. ShellChrome main top-padding removed; hero pages render edge-to-edge.
 - 22:10 CET — Task 6: data layer — 17 products, 3 rituals, full i18n catalogue.
 - 21:30 CET — Task 5: Footer + MenuDrawer + InquiryDrawer wired into ShellChrome.
 - 21:00 CET — Task 4: Header (sticky transparent→sand) + ShellChrome wrapper.

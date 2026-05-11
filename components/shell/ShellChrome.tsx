@@ -32,7 +32,13 @@ export default function ShellChrome({
       />
       <MenuDrawer open={menuOpen} onClose={closeMenu} />
       <InquiryDrawer open={inquiryOpen} onClose={closeInquiry} />
-      <main id={mainId} className="pt-[72px]">
+      {/*
+       * Top padding (offset for fixed Header) is intentionally NOT applied here.
+       * Pages that don't use a full-bleed hero MUST add their own top padding (e.g., pt-32 / pt-24).
+       * This lets hero pages (/, /rituals/[world], /story) render edge-to-edge with the header
+       * floating transparently over the top.
+       */}
+      <main id={mainId}>
         {children}
       </main>
       <Footer />
