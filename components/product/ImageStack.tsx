@@ -31,7 +31,7 @@ export default function ImageStack({ product, lang }: Props) {
                 "block aspect-square overflow-hidden border transition-colors",
                 i === activeIdx ? "border-bb-primary" : "border-bb-line hover:border-bb-on-surface-variant"
               )}
-              aria-label={`Image ${i + 1}`}
+              aria-label={`${product.name[lang]}, image ${i + 1} of ${images.length}`}
               aria-pressed={i === activeIdx}
             >
               <Photo

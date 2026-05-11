@@ -48,16 +48,14 @@ export default function CooperativeBand({ product, lang }: Props) {
           <p className="text-white/80 leading-relaxed">{c.manifesto}</p>
           <p className="font-display italic text-[20px] text-bb-secondary-fixed-dim">{cooperative}</p>
         </div>
-        <dl className="grid grid-cols-3 gap-6 lg:gap-8 self-end">
+        <div className="grid grid-cols-3 gap-6 lg:gap-8 self-end" role="list" aria-label={lang === "fr" ? "Statistiques de la coopérative" : "Cooperative statistics"}>
           {stats.map((s, i) => (
-            <div key={i} className="space-y-2">
-              <dt className="font-display text-[clamp(40px,5vw,72px)] leading-none text-bb-secondary-fixed-dim">
-                {s.value}
-              </dt>
-              <dd className="text-white/60 text-[11px] uppercase tracking-[0.18em]">{s.label}</dd>
+            <div key={i} className="space-y-2" role="listitem">
+              <p className="font-display text-[clamp(40px,5vw,72px)] leading-none text-bb-secondary-fixed-dim">{s.value}</p>
+              <p className="text-white/60 text-[11px] uppercase tracking-[0.18em]">{s.label}</p>
             </div>
           ))}
-        </dl>
+        </div>
       </div>
     </section>
   );
