@@ -7,8 +7,8 @@ import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { BASE_URL, CONTACT_EMAIL } from "@/lib/constants";
 import "../globals.css";
-import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
+import ShellChrome from "@/components/shell/ShellChrome";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import { InquiryProvider } from "@/lib/inquiry-context";
 import CartStickyBar from "@/components/cosmetics/CartStickyBar";
@@ -110,8 +110,9 @@ export default async function LocaleLayout({
         </a>
         <NextIntlClientProvider locale={locale}>
           <InquiryProvider>
-            <Navbar locale={locale} />
-            <main id="main-content" className="flex-1">{children}</main>
+            <ShellChrome locale={locale}>
+              <div id="main-content" className="flex-1">{children}</div>
+            </ShellChrome>
             <WhatsAppFloat />
             <CartStickyBar />
             <Footer />

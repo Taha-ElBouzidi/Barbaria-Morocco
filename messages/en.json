@@ -7,7 +7,16 @@
     "about": "About",
     "contact": "Contact",
     "collections": "Collections",
-    "order": "Order"
+    "order": "Order",
+    "hammam": "Hammam",
+    "botanical": "Botanical",
+    "heritage": "Heritage",
+    "story": "Story",
+    "ateliers": "Ateliers",
+    "journal": "Journal",
+    "inquiry": "Inquiry",
+    "inquiry_aria": "Inquiry list, {count} items",
+    "menu": "Open menu"
   },
   "home": {
     "tagline": "Moroccan authenticity. The rarity of a creation.",

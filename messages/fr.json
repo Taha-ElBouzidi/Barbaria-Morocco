@@ -7,7 +7,16 @@
     "about": "À Propos",
     "contact": "Contact",
     "collections": "Collections",
-    "order": "Commander"
+    "order": "Commander",
+    "hammam": "Hammam",
+    "botanical": "Botanique",
+    "heritage": "Héritage",
+    "story": "Histoire",
+    "ateliers": "Ateliers",
+    "journal": "Journal",
+    "inquiry": "Demande",
+    "inquiry_aria": "Liste de demande, {count} articles",
+    "menu": "Ouvrir le menu"
   },
   "home": {
     "tagline": "L'authenticité marocaine. La rareté d'une création.",
