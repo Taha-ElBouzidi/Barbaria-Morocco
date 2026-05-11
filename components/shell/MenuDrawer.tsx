@@ -175,22 +175,6 @@ export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
             >
               {t("corporate_b2b")}
             </Link>
-            {/* TODO(post-polish): wire to dedicated route or #anchor once bespoke page exists */}
-            <Link
-              href="/contact"
-              onClick={onClose}
-              className="font-sans text-[14px] tracking-[0.02em] text-bb-on-surface hover:text-bb-primary transition-colors"
-            >
-              {t("corporate_bespoke")}
-            </Link>
-            {/* TODO(post-polish): wire to dedicated route or #anchor once logistics page exists */}
-            <Link
-              href="/contact"
-              onClick={onClose}
-              className="font-sans text-[14px] tracking-[0.02em] text-bb-on-surface hover:text-bb-primary transition-colors"
-            >
-              {t("corporate_logistics")}
-            </Link>
           </nav>
 
           {/* Spacer pushes CTA toward bottom */}

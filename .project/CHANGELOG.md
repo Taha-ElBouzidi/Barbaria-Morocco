@@ -8,6 +8,7 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ## 2026-05-11
 
+- 20:00 CET. Polish 2: hero photo swapped to user-supplied source (hero-atlas.jpg, 194 KB). MenuDrawer Corporate section trimmed: removed Bespoke Customisation and Logistics & Lead Times rows plus their i18n keys; kept B2B Concierge.
 - 19:30 CET — Post-launch polish: header active state, em-dash audit, rich MenuDrawer (icons + Discover/Corporate sections + CTA), CredentialStrip marquee, hero photo replaces gradient.
 - 18:42 CET — Task 14: Sprint 1 complete. All 40 tests green. Opening PR to master.
 - 06:45 CET — Task 13: Playwright + axe-core test suites — smoke (routes + redirects), functional (inquiry flow + locale + mailto), a11y (4 pages). Smoke (22 tests) and functional (4 tests) all green. A11y (4 tests) BLOCKED on real source bug: `text-bb-secondary` (#c5a059) fails WCAG 2 AA color-contrast (2.33:1 vs 4.5:1 required) on the `#fcf9f3` background across Eyebrow components site-wide. Test fixes applied: (1) `.first()` on Next button to avoid Next.js dev toolbar conflict, (2) exact labels for Quantity/Event date/Occasion to avoid sidebar aria-label matches, (3) selectOption uses exact string "Year-end".

@@ -34,8 +34,6 @@
     "discover_ateliers": "Inside The Ateliers",
     "discover_journal": "The Journal",
     "corporate_b2b": "B2B Concierge",
-    "corporate_bespoke": "Bespoke Customisation",
-    "corporate_logistics": "Logistics & Lead Times",
     "menu_cta": "Request the Catalogue",
     "menu_whatsapp": "WhatsApp",
     "menu_email": "Email",
@@ -50,7 +48,7 @@
       "lede": "A Moroccan B2B gifting house composing artisan rituals for corporate occasions.",
       "cta_primary": "Explore the Rituals",
       "cta_secondary": "B2B Concierge",
-      "alt": "A Barbaria editorial composition: Moroccan artisan craft photographed in natural light."
+      "alt": "Barbaria: a Moroccan editorial composition in natural light."
     },
     "strip": {
       "item_1": "100% Sourced from Morocco",

@@ -34,8 +34,6 @@
     "discover_ateliers": "Dans les Ateliers",
     "discover_journal": "Le Journal",
     "corporate_b2b": "Concierge B2B",
-    "corporate_bespoke": "Personnalisation sur Mesure",
-    "corporate_logistics": "Logistique et Délais",
     "menu_cta": "Demander le Catalogue",
     "menu_whatsapp": "WhatsApp",
     "menu_email": "Email",
@@ -50,7 +48,7 @@
       "lede": "Une maison marocaine de cadeaux B2B, composant des rituels artisanaux pour les occasions corporate.",
       "cta_primary": "Explorer les Rituels",
       "cta_secondary": "Conciergerie B2B",
-      "alt": "Composition éditoriale Barbaria: artisanat marocain photographié en lumière naturelle."
+      "alt": "Barbaria: une composition éditoriale marocaine en lumière naturelle."
     },
     "strip": {
       "item_1": "100% Sourcé au Maroc",
