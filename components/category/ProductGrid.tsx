@@ -4,13 +4,14 @@ import type { Product } from "@/lib/products";
 interface Props {
   products: Product[];
   lang: "en" | "fr";
+  emptyMessage?: string;
 }
 
-export default function ProductGrid({ products, lang }: Props) {
+export default function ProductGrid({ products, lang, emptyMessage }: Props) {
   if (products.length === 0) {
     return (
       <div className="py-24 text-center text-bb-on-surface-variant">
-        <p className="font-serif italic text-[20px]">No pieces match the current filters.</p>
+        <p className="font-serif italic text-[20px]">{emptyMessage}</p>
       </div>
     );
   }

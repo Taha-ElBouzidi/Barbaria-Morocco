@@ -30,7 +30,7 @@ export default function SubChips({ subs, active, onChange, lang, allLabel }: Pro
                     ? "text-bb-primary border-bb-secondary"
                     : "text-bb-on-surface-variant border-transparent hover:text-bb-primary"
                 )}
-                aria-current={isActive ? "page" : undefined}
+                aria-pressed={isActive}
               >
                 {item.label}
               </button>

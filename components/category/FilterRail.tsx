@@ -35,7 +35,7 @@ export default function FilterRail({ selected, onToggle, onClear }: Props) {
             onClick={onClear}
             className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary"
           >
-            Clear ({totalSelected})
+            {t("filter_clear", { count: totalSelected })}
           </button>
         )}
       </div>
@@ -48,6 +48,8 @@ export default function FilterRail({ selected, onToggle, onClear }: Props) {
             <div key={id}>
               <button
                 onClick={() => setOpenAxis(isOpen ? null : id)}
+                aria-expanded={isOpen}
+                aria-controls={`facet-${id}`}
                 className="flex w-full items-center justify-between py-4 font-sans text-[12px] uppercase tracking-[0.12em] text-bb-on-surface"
               >
                 <span>
@@ -57,7 +59,7 @@ export default function FilterRail({ selected, onToggle, onClear }: Props) {
                 <Icon name={isOpen ? "minus" : "plus"} size={14} />
               </button>
               {isOpen && (
-                <ul className="space-y-2 pb-4">
+                <ul id={`facet-${id}`} className="space-y-2 pb-4">
                   {options.map((opt) => {
                     const isChosen = chosen.includes(opt);
                     return (

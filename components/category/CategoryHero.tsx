@@ -30,7 +30,7 @@ export default function CategoryHero({ world, lang }: Props) {
               <DisplayHeading size="xl" as="h1" className="text-white">{world.name[lang]}</DisplayHeading>
             </Reveal>
             <Reveal delayMs={220}>
-              <p className="text-white/80 leading-relaxed max-w-[640px] font-serif italic text-[clamp(18px,1.5vw,22px)]">
+              <p className="text-white/80 leading-relaxed max-w-[640px] font-display italic text-[clamp(18px,1.5vw,22px)]">
                 {world.lede[lang]}
               </p>
             </Reveal>

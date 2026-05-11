@@ -93,7 +93,8 @@ export default function CategoryContent({ subs, products, lang }: Props) {
               ))}
             </div>
           )}
-          <ProductGrid products={filtered} lang={lang} />
+          <h2 className="sr-only">{t("products_section_label")}</h2>
+          <ProductGrid products={filtered} lang={lang} emptyMessage={t("empty_state")} />
         </div>
       </section>
     </>

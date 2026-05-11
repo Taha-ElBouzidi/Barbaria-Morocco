@@ -503,7 +503,10 @@
     "add_to_inquiry": "Ajouter à la Demande",
     "added": "Ajouté",
     "view": "Voir le produit",
-    "showing": "Affichage de {count} pièces"
+    "showing": "Affichage de {count} pièces",
+    "products_section_label": "Produits",
+    "empty_state": "Aucune pièce ne correspond aux filtres actuels.",
+    "filter_clear": "Effacer ({count})"
   },
   "product": {
     "moq": "Commande minimum",

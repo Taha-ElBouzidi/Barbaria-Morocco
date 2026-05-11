@@ -503,7 +503,10 @@
     "add_to_inquiry": "Add to Inquiry",
     "added": "Added",
     "view": "View product",
-    "showing": "Showing {count} pieces"
+    "showing": "Showing {count} pieces",
+    "products_section_label": "Products",
+    "empty_state": "No pieces match the current filters.",
+    "filter_clear": "Clear ({count})"
   },
   "product": {
     "moq": "Minimum order",
