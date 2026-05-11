@@ -4,6 +4,7 @@ import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import { cn } from "@/lib/utils";
+import { INSTAGRAM_HANDLE, WHATSAPP_NUMBER } from "@/lib/constants";
 
 export default function Footer() {
   const t = useTranslations("footer");
@@ -87,7 +88,7 @@ export default function Footer() {
                 {t("email")}
               </a>
               <a
-                href="https://wa.me/212659658863"
+                href={`https://wa.me/${WHATSAPP_NUMBER}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"
@@ -95,7 +96,7 @@ export default function Footer() {
                 {t("whatsapp")}
               </a>
               <a
-                href="https://instagram.com/barbaria_00"
+                href={`https://instagram.com/${INSTAGRAM_HANDLE}`}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"

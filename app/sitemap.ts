@@ -23,11 +23,13 @@ function url(locale: string, path: string): string {
 }
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const now = new Date();
   const entries: MetadataRoute.Sitemap = [];
   for (const locale of LOCALES) {
     for (const r of STATIC_ROUTES) {
       entries.push({
         url: url(locale, r),
+        lastModified: now,
         changeFrequency: "monthly",
         priority: r === "" ? 1 : 0.7,
       });
@@ -35,6 +37,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     for (const p of PRODUCTS) {
       entries.push({
         url: url(locale, `/product/${p.id}`),
+        lastModified: now,
         changeFrequency: "monthly",
         priority: 0.6,
       });

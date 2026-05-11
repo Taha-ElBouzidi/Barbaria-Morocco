@@ -5,7 +5,7 @@ import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Analytics } from "@vercel/analytics/next";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { BASE_URL, CONTACT_EMAIL } from "@/lib/constants";
+import { BASE_URL, CONTACT_EMAIL, INSTAGRAM_HANDLE } from "@/lib/constants";
 import "../globals.css";
 import ShellChrome from "@/components/shell/ShellChrome";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
@@ -135,7 +135,7 @@ export default async function LocaleLayout({
               },
               email: CONTACT_EMAIL,
               sameAs: [
-                "https://instagram.com/barbaria_00",
+                `https://instagram.com/${INSTAGRAM_HANDLE}`,
               ],
             }),
           }}

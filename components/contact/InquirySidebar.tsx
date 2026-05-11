@@ -5,6 +5,7 @@ import { getProduct } from "@/lib/products";
 import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import Icon from "@/components/primitives/Icon";
+import { WHATSAPP_NUMBER } from "@/lib/constants";
 
 interface Props { lang: "en" | "fr"; }
 
@@ -47,7 +48,7 @@ export default function InquirySidebar({ lang }: Props) {
       <div className="border-t border-bb-line pt-8 space-y-4">
         <Eyebrow tone="gold">{t("direct_lines")}</Eyebrow>
         <ul className="space-y-2 font-sans text-[14px] text-bb-on-surface">
-          <li><a href="https://wa.me/212659658863" target="_blank" rel="noopener noreferrer" className="hover:text-bb-secondary transition-colors inline-flex items-center gap-2">WhatsApp <Icon name="arrow-up-right" size={12} /></a></li>
+          <li><a href={`https://wa.me/${WHATSAPP_NUMBER}`} target="_blank" rel="noopener noreferrer" className="hover:text-bb-secondary transition-colors inline-flex items-center gap-2">WhatsApp <Icon name="arrow-up-right" size={12} /></a></li>
           <li><a href="mailto:concierge@barbariamorocco.com" className="hover:text-bb-secondary transition-colors">concierge@barbariamorocco.com</a></li>
         </ul>
       </div>

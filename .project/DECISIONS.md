@@ -13,6 +13,24 @@ Format:
 
 ---
 
+## 2026-05-11 — Permanent (308) redirects for retired routes
+
+**Context:** Task 12 retired 5 legacy routes (`/cosmetics`, `/food`, `/textile`, `/order`, `/about`) and pointed them at new IA equivalents. Next.js `redirects` config supports `permanent: true` (308) or `permanent: false` (307).
+
+**Decision:** `permanent: true` (308 Permanent Redirect). Browsers cache 308s indefinitely.
+
+**Consequences:**
+- SEO juice transfers cleanly from old URLs to new (Google treats 308 identical to 301 for ranking).
+- A user who visits `/cosmetics` once will never re-request it — the browser uses the cached redirect to `/rituals/botanical` for the lifetime of that browser profile.
+- **Irreversibility:** if a destination URL ever changes (e.g. `/rituals/botanical` → `/care/botanical`), users with the cached redirect cannot reach the new destination without clearing cache. To change a destination safely after launch, we would need to introduce a second redirect at the new destination's old name, not modify the existing 308 source.
+- Wildcard sources (`/cosmetics/:path*`) collapse all sub-paths to the bare destination. No legacy production sub-paths existed, so no inbound-link breakage. If we ever introduced sub-paths to the new IA that needed legacy sub-path equivalents, those would need explicit entries.
+
+**Alternatives considered:**
+- `permanent: false` (307) — rejected: temporary redirects don't transfer SEO ranking and would need to be flipped to permanent later anyway.
+- Server-side conditional redirect via `proxy.ts` (middleware) — rejected: more complex, runs on every request, no caching benefit, no SEO advantage over static `redirects`.
+
+---
+
 ## 2026-05-11 — Sprint decomposition for the Stitch redesign
 
 **Context:** User initially asked to "polish the new design and use our photos." Mid-session the ask expanded to include admin dashboard, SQL database, and analytics. The combined work is three independent subsystems with different risk profiles (frontend port = low risk, admin + DB = security and migration risk, analytics = product question).
