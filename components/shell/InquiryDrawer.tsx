@@ -140,7 +140,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
                       {getProduct(productId)?.name[lang] ?? productId}
                     </p>
                     <p className="font-sans text-[12px] text-bb-on-surface-variant">
-                      MOQ — · ID: {productId}
+                      MOQ · ID: {productId}
                     </p>
 
                     <div className="flex items-center justify-between">

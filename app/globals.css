@@ -276,11 +276,26 @@
     }
   }
 
+  /* Credential strip marquee — 40s gentle right-to-left loop */
+  @keyframes bb-marquee {
+    from { transform: translateX(0); }
+    to   { transform: translateX(-50%); }
+  }
+
+  .bb-marquee {
+    animation: bb-marquee 40s linear infinite;
+    will-change: transform;
+  }
+
   /* Respect reduced motion preference */
   @media (prefers-reduced-motion: reduce) {
     .card-hover, .card-hover:hover { transform: none; transition: box-shadow 0.3s; }
     .animate-fade-in-up { animation: none; opacity: 1; }
     .scroll-reveal, .stagger-children > * { animation: none; opacity: 1; transform: none; }
+    .bb-marquee {
+      animation: none;
+      justify-content: center;
+    }
   }
 
   /* Fade in up (hero / initial load) */
