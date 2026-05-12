@@ -8,6 +8,7 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ## 2026-05-12
 
+- 12:05 CET. Slice 1: installed @supabase/supabase-js + @supabase/ssr + drizzle-orm + postgres + zod + drizzle-kit + tsx. Scaffolded .env.example, .env.local (gitignored), drizzle.config.ts.
 - 11:00 CET. Sprint 2 kickoff: spec at `.project/specs/2026-05-12-sprint-2-admin-db-design.md`. Supabase project `jnparcnvkghiuryarbac` (BARBARIA DASH, eu-west-1) provisioned, MCP authenticated, public schema empty and ready for migrations. Phase A scope: products/journal/ateliers CRUD admin + read-only inquiry inbox + audit log.
 
 ---
