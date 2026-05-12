@@ -1,18 +1,15 @@
 import Icon from "@/components/primitives/Icon";
-import type { Product } from "@/lib/products";
+import type { ProductDetail } from "@/lib/data/types";
 
-interface Props { product: Product; lang: "en" | "fr"; }
+interface Props { product: ProductDetail; lang: "en" | "fr"; }
 
-export default function ProofStrip({ product, lang }: Props) {
-  void lang; // future-proof
-  const points =
-    product.proof && product.proof.length > 0
-      ? product.proof.slice(0, 3)
-      : [
-          product.origin ? `Sourced from ${product.origin}` : "Sourced in Morocco",
-          "Made-to-order at the atelier",
-          `Lead time: ${product.lead}`,
-        ];
+export default function ProofStrip({ product, lang: _lang }: Props) {
+  // New DB shape has no `proof` array; build proof points from available fields.
+  const points: string[] = [
+    product.origin ? `Sourced from ${product.origin}` : "Sourced in Morocco",
+    "Made-to-order at the atelier",
+    `Lead time: ${product.lead}`,
+  ];
   const icons: Array<"leaf" | "concierge" | "diamond"> = ["leaf", "concierge", "diamond"];
 
   return (

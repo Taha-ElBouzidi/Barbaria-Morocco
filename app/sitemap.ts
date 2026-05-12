@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { PRODUCTS } from "@/lib/products";
+import { createClient } from "@supabase/supabase-js";
 import { BASE_URL } from "@/lib/constants";
 
 const LOCALES = ["fr", "en"] as const;
@@ -22,7 +22,19 @@ function url(locale: string, path: string): string {
   return `${BASE_URL}/${locale}${path}`;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  // Sitemap runs without an HTTP request context; use a cookie-free anon client.
+  const supabase = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL!,
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
+    { auth: { persistSession: false, autoRefreshToken: false } }
+  );
+  const { data } = await supabase
+    .from("products")
+    .select("slug")
+    .eq("status", "published");
+  const slugs = (data ?? []).map((p: { slug: string }) => p.slug);
+
   const now = new Date();
   const entries: MetadataRoute.Sitemap = [];
   for (const locale of LOCALES) {
@@ -34,9 +46,9 @@ export default function sitemap(): MetadataRoute.Sitemap {
         priority: r === "" ? 1 : 0.7,
       });
     }
-    for (const p of PRODUCTS) {
+    for (const slug of slugs) {
       entries.push({
-        url: url(locale, `/product/${p.id}`),
+        url: url(locale, `/product/${slug}`),
         lastModified: now,
         changeFrequency: "monthly",
         priority: 0.6,

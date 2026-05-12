@@ -5,7 +5,9 @@ import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
-import { JOURNAL, formatJournalDate } from "@/lib/editorial";
+import { getAllJournalCards } from "@/lib/data/journal";
+
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -24,14 +26,24 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+function formatJournalDate(iso: string, locale: "en" | "fr"): string {
+  const d = new Date(iso);
+  return new Intl.DateTimeFormat(locale === "fr" ? "fr-FR" : "en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(d);
+}
+
 export default async function JournalPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "journal" });
   const lang = locale === "fr" ? "fr" : "en";
 
-  const feature = JOURNAL.find((c) => c.feature);
-  const standards = JOURNAL.filter((c) => !c.feature);
+  const cards = await getAllJournalCards(lang);
+  const feature = cards.find((c) => c.feature);
+  const standards = cards.filter((c) => !c.feature);
 
   return (
     <div className="pt-32 lg:pt-40 pb-20 lg:pb-32">
@@ -60,7 +72,7 @@ export default async function JournalPage({ params }: PageProps) {
             <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-16 items-end">
               <Photo
                 src={feature.image}
-                alt={feature.headline[lang]}
+                alt={feature.headline}
                 width={1400}
                 height={1050}
                 needsShot={!feature.image}
@@ -68,9 +80,9 @@ export default async function JournalPage({ params }: PageProps) {
                 containerClassName="aspect-[4/3]"
               />
               <div className="space-y-4">
-                <Eyebrow tone="green">{feature.kicker[lang]}</Eyebrow>
+                <Eyebrow tone="green">{feature.kicker}</Eyebrow>
                 <h2 className="font-serif text-[clamp(28px,3vw,40px)] leading-[1.2]">
-                  {feature.headline[lang]}
+                  {feature.headline}
                 </h2>
                 <p className="font-sans text-[12px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
                   {formatJournalDate(feature.date, lang)}
@@ -84,7 +96,7 @@ export default async function JournalPage({ params }: PageProps) {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
           {standards.map((c, i) => (
             <Reveal
-              key={c.id}
+              key={c.slug}
               as="article"
               delayMs={(i % 3) * 80}
               className={cn(
@@ -94,7 +106,7 @@ export default async function JournalPage({ params }: PageProps) {
             >
               <Photo
                 src={c.image}
-                alt={c.headline[lang]}
+                alt={c.headline}
                 width={800}
                 height={1000}
                 needsShot={!c.image}
@@ -102,8 +114,8 @@ export default async function JournalPage({ params }: PageProps) {
                 containerClassName="aspect-[4/5]"
               />
               <div className="space-y-3">
-                <Eyebrow tone="green">{c.kicker[lang]}</Eyebrow>
-                <h3 className="font-serif text-[22px] leading-[1.3]">{c.headline[lang]}</h3>
+                <Eyebrow tone="green">{c.kicker}</Eyebrow>
+                <h3 className="font-serif text-[22px] leading-[1.3]">{c.headline}</h3>
                 <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
                   {formatJournalDate(c.date, lang)}
                 </p>

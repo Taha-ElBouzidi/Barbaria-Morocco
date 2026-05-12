@@ -85,6 +85,35 @@ Aggregated server-side for Insights view. **No third-party tracking pixels** —
 
 ---
 
+## Sprint 2.5 cleanup
+
+### Authenticated admin test coverage (deferred from Sprint 2 Slice 17)
+
+Sprint 2 ships login-page + route-guard smoke tests + axe scan on /admin/login.
+Authenticated admin coverage is deferred because the Supabase magic-link auth
+fixture is brittle (requires service-role user creation, link generation,
+code extraction, cookie injection, storageState save/load). Approach for
+Sprint 2.5:
+
+1. `tests/fixtures/admin-auth.ts` — exposes a Playwright fixture that:
+   a. Uses the service-role client to ensure a test admin user exists in
+      auth.users + admin_users (idempotent, fixed UUID).
+   b. Calls `supabase.auth.admin.generateLink({ type: 'magiclink', email })`.
+   c. Extracts the code from the returned action_link URL.
+   d. Calls `supabase.auth.exchangeCodeForSession(code)` via a fresh server client
+      to obtain the auth cookies.
+   e. Saves the cookies to a Playwright storageState JSON file.
+2. Authenticated admin tests reuse the storageState:
+   - dashboard renders + stat tile counts > 0
+   - create product flow end to end
+   - status toggle (draft -> published) + revalidate -> public site shows
+   - delete product
+   - inquiries inbox empty state
+   - activity log shows rows
+3. Axe scans on /admin, /admin/products, /admin/products/[id], /admin/journal.
+
+---
+
 ## Out of scope for both sprints (revisit later)
 
 - Customer accounts / buyer login (B2B contacts may want history — but adds significant auth + GDPR surface)

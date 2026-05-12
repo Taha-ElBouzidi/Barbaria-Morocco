@@ -1,6 +1,8 @@
 import { setRequestLocale } from "next-intl/server";
 import { getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
+
+export const revalidate = 60;
 import Hero from "@/components/home/Hero";
 import CredentialStrip from "@/components/home/CredentialStrip";
 import EditorialBlock from "@/components/home/EditorialBlock";

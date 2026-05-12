@@ -2,9 +2,9 @@ import { getTranslations } from "next-intl/server";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
-import type { Product } from "@/lib/products";
+import type { ProductDetail } from "@/lib/data/types";
 
-interface Props { product: Product; lang: "en" | "fr"; }
+interface Props { product: ProductDetail; lang: "en" | "fr"; }
 
 const PLACEHOLDER: Record<"en" | "fr", Array<[string, string]>> = {
   en: [
@@ -22,9 +22,10 @@ const PLACEHOLDER: Record<"en" | "fr", Array<[string, string]>> = {
 export default async function ApplicationRitual({ product, lang }: Props) {
   const t = await getTranslations("product");
 
+  // applicationSteps are already locale-resolved (title + body as plain strings)
   const steps: Array<[string, string]> =
-    product.application && product.application.length >= 3
-      ? product.application.slice(0, 3).map((s) => s[lang])
+    product.applicationSteps && product.applicationSteps.length >= 3
+      ? product.applicationSteps.slice(0, 3).map((s) => [s.title, s.body] as [string, string])
       : PLACEHOLDER[lang];
 
   return (

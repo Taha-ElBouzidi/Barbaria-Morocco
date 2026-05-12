@@ -1,7 +1,7 @@
-import type { Product } from "@/lib/products";
+import type { ProductDetail } from "@/lib/data/types";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 
-interface Props { product: Product; lang: "en" | "fr"; }
+interface Props { product: ProductDetail; lang: "en" | "fr"; }
 
 const COPY = {
   en: {

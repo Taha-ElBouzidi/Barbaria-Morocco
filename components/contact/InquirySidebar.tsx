@@ -1,7 +1,7 @@
 "use client";
 import { useTranslations } from "next-intl";
 import { useInquiry } from "@/lib/inquiry-context";
-import { getProduct } from "@/lib/products";
+import { useProductCatalogue } from "@/lib/data/ProductCatalogueContext";
 import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import Icon from "@/components/primitives/Icon";
@@ -9,11 +9,16 @@ import { WHATSAPP_NUMBER } from "@/lib/constants";
 
 interface Props { lang: "en" | "fr"; }
 
-export default function InquirySidebar({ lang }: Props) {
+export default function InquirySidebar({ lang: _lang }: Props) {
   const t = useTranslations("contact");
   const tNav = useTranslations("nav");
   const { cart, remove } = useInquiry();
-  const items = [...cart.entries()].map(([id, qty]) => ({ product: getProduct(id), qty })).filter((x) => x.product);
+  const catalogue = useProductCatalogue();
+
+  const items = [...cart.entries()].map(([id, qty]) => {
+    const entry = catalogue.get(id);
+    return { id, name: entry?.name ?? id, image: entry?.image ?? null, qty };
+  });
 
   return (
     <aside className="lg:sticky lg:top-[88px] lg:self-start space-y-10">
@@ -30,14 +35,14 @@ export default function InquirySidebar({ lang }: Props) {
         </p>
       ) : (
         <ul className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
-          {items.map(({ product, qty }) => (
-            <li key={product!.id} className="flex items-start gap-3 py-3 border-b border-bb-line/50">
-              <Photo src={product!.images[0] ?? null} alt={product!.name[lang]} width={64} height={64} sizes="64px" containerClassName="h-16 w-16 shrink-0" />
+          {items.map(({ id, name, image, qty }) => (
+            <li key={id} className="flex items-start gap-3 py-3 border-b border-bb-line/50">
+              <Photo src={image} alt={name} width={64} height={64} sizes="64px" containerClassName="h-16 w-16 shrink-0" />
               <div className="flex-1 min-w-0 space-y-1">
-                <h4 className="font-serif text-[14px] text-bb-on-surface truncate">{product!.name[lang]}</h4>
-                <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant">× {qty} · MOQ {product!.moq}</p>
+                <h4 className="font-serif text-[14px] text-bb-on-surface truncate">{name}</h4>
+                <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant">× {qty}</p>
               </div>
-              <button onClick={() => remove(product!.id)} aria-label={tNav("inquiry_remove", { name: product!.name[lang] })} className="p-2 text-bb-on-surface-variant hover:text-bb-primary">
+              <button onClick={() => remove(id)} aria-label={tNav("inquiry_remove", { name })} className="p-2 text-bb-on-surface-variant hover:text-bb-primary">
                 <Icon name="close" size={14} />
               </button>
             </li>

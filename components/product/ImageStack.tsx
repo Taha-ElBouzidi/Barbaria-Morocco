@@ -2,28 +2,30 @@
 import { useState } from "react";
 import Photo from "@/components/primitives/Photo";
 import { cn } from "@/lib/utils";
-import type { Product } from "@/lib/products";
+import type { ProductDetail } from "@/lib/data/types";
 
-interface Props { product: Product; lang: "en" | "fr"; }
+interface Props { product: ProductDetail; lang: "en" | "fr"; }
 
-export default function ImageStack({ product, lang }: Props) {
-  const images = product.images.length > 0 ? product.images : [null];
+export default function ImageStack({ product, lang: _lang }: Props) {
+  const imagePaths = product.images.length > 0
+    ? product.images.map((img) => img.path)
+    : [null];
   const [activeIdx, setActiveIdx] = useState(0);
 
   return (
     <div className="lg:sticky lg:top-[88px] lg:self-start space-y-6">
       <Photo
-        src={images[activeIdx]}
-        alt={product.name[lang]}
+        src={imagePaths[activeIdx] ?? null}
+        alt={product.name}
         width={1100}
         height={1100}
         priority
         sizes="(min-width:1024px) 55vw, 100vw"
         containerClassName="aspect-square"
       />
-      {images.length > 1 && (
+      {imagePaths.length > 1 && (
         <div className="grid grid-cols-4 gap-3">
-          {images.map((src, i) => (
+          {imagePaths.map((src, i) => (
             <button
               key={`${src}-${i}`}
               onClick={() => setActiveIdx(i)}
@@ -31,7 +33,7 @@ export default function ImageStack({ product, lang }: Props) {
                 "block aspect-square overflow-hidden border transition-colors",
                 i === activeIdx ? "border-bb-primary" : "border-bb-line hover:border-bb-on-surface-variant"
               )}
-              aria-label={`${product.name[lang]}, image ${i + 1} of ${images.length}`}
+              aria-label={`${product.name}, image ${i + 1} of ${imagePaths.length}`}
               aria-pressed={i === activeIdx}
             >
               <Photo

@@ -5,12 +5,11 @@ import Icon from "@/components/primitives/Icon";
 import SubChips from "./SubChips";
 import FilterRail from "./FilterRail";
 import ProductGrid from "./ProductGrid";
-import type { SubCat } from "@/lib/rituals";
-import type { Product } from "@/lib/products";
+import type { SubCategory, ProductSummary } from "@/lib/data/types";
 
 interface Props {
-  subs: SubCat[];
-  products: Product[];
+  subs: SubCategory[];
+  products: ProductSummary[];
   lang: "en" | "fr";
 }
 
@@ -24,25 +23,25 @@ export default function CategoryContent({ subs, products, lang }: Props) {
 
   const filtered = useMemo(() => {
     let list = products;
-    if (activeSub) list = list.filter((p) => p.sub === activeSub);
+    if (activeSub) list = list.filter((p) => p.subcategorySlug === activeSub);
     for (const [axis, values] of Object.entries(selected)) {
       if (values.length === 0) continue;
       list = list.filter((p) => values.every((v) => p.tags.includes(v)));
     }
     if (sort === "az") {
-      list = [...list].sort((a, b) => a.name[lang].localeCompare(b.name[lang]));
+      list = [...list].sort((a, b) => a.name.localeCompare(b.name));
     } else if (sort === "moq") {
       list = [...list].sort((a, b) => a.moq - b.moq);
     } else {
-      // recommended: hero items first, then by id
+      // recommended: hero items first, then by slug
       list = [...list].sort((a, b) => {
         if (a.hero && !b.hero) return -1;
         if (!a.hero && b.hero) return 1;
-        return a.id.localeCompare(b.id);
+        return a.slug.localeCompare(b.slug);
       });
     }
     return list;
-  }, [products, activeSub, selected, sort, lang]);
+  }, [products, activeSub, selected, sort]);
 
   const toggleFacet = (axis: string, value: string) => {
     setSelected((prev) => {
