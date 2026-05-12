@@ -18,7 +18,7 @@ const COPY = {
   },
 };
 
-// Stats are illustrative — sprint 2 will pull from CMS.
+// Stats are illustrative, sprint 2 will pull from CMS.
 const STATS = {
   en: [
     { value: "+42%", label: "avg. artisan income" },

@@ -6,7 +6,7 @@ import { requireAdmin } from "@/lib/admin/auth";
 import { FacetSaveSchema } from "@/lib/admin/facets";
 
 // ---------------------------------------------------------------------------
-// saveFacet — create or update a facet value
+// saveFacet, create or update a facet value
 // ---------------------------------------------------------------------------
 
 export async function saveFacet(
@@ -60,7 +60,7 @@ export async function saveFacet(
 }
 
 // ---------------------------------------------------------------------------
-// deleteFacet — blocked if any products reference it
+// deleteFacet, blocked if any products reference it
 // ---------------------------------------------------------------------------
 
 export async function deleteFacet(
@@ -96,7 +96,7 @@ export async function deleteFacet(
 }
 
 // ---------------------------------------------------------------------------
-// reorderFacet — set sort_order
+// reorderFacet, set sort_order
 // ---------------------------------------------------------------------------
 
 export async function reorderFacet(

@@ -132,7 +132,7 @@ export default function TwoStepForm({ locale }: Props) {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-12">
-      {/* Honeypot — invisible to humans, catches bots */}
+      {/* Honeypot, invisible to humans, catches bots */}
       <input
         name="company_website"
         tabIndex={-1}

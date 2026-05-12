@@ -76,7 +76,7 @@ export default function AtelierEditor({ id, initialData }: AtelierEditorProps) {
         setImagePath(json.path);
       }
     } catch {
-      setUploadError("Upload failed — please try again");
+      setUploadError("Upload failed, please try again");
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";

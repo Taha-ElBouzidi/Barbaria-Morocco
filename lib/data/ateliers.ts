@@ -1,6 +1,6 @@
 /**
  * SLICE 12 NOTE: Returns locale-resolved flat shapes.
- * `description` is a plain string for the requested locale — NOT the nested
+ * `description` is a plain string for the requested locale, NOT the nested
  * `{ en, fr }` object from lib/editorial.ts.
  */
 

@@ -71,7 +71,7 @@ export default function RitualEditor({ id, initialData }: RitualEditorProps) {
         setHeroImagePath(json.path);
       }
     } catch {
-      setUploadError("Upload failed — please try again");
+      setUploadError("Upload failed, please try again");
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";

@@ -303,7 +303,7 @@ export default function ProductEditor({
                 onChange={(e) => setSubcategoryId(e.target.value)}
                 className="w-full bg-bb-bg border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
               >
-                <option value="">— none —</option>
+                <option value="">, none ,</option>
                 {subcatOptions.map((sc) => {
                   const enName = sc.translations?.find((t) => t.locale === "en")?.name ?? sc.slug;
                   return (

@@ -75,7 +75,7 @@ export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
         aria-hidden
       />
 
-      {/* Panel — inert when closed so off-screen links are excluded from tab order and AT */}
+      {/* Panel, inert when closed so off-screen links are excluded from tab order and AT */}
       <aside
         ref={panelRef}
         role="dialog"
@@ -92,7 +92,7 @@ export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
         {/* Scrollable body */}
         <div className="flex flex-col flex-1 min-h-0 overflow-y-auto">
 
-          {/* Close button — top-right */}
+          {/* Close button, top-right */}
           <div className="flex justify-end px-6 pt-6 pb-2 shrink-0">
             <button
               ref={closeBtnRef}

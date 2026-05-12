@@ -62,7 +62,7 @@ export default async function JournalPage({ params }: PageProps) {
       </section>
 
       <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] space-y-16">
-        {/* Feature card — 4:3 landscape, article pages deferred */}
+        {/* Feature card, 4:3 landscape, article pages deferred */}
         {feature && (
           <Reveal
             as="article"
@@ -92,7 +92,7 @@ export default async function JournalPage({ params }: PageProps) {
           </Reveal>
         )}
 
-        {/* Standard cards — 4:5 portrait, article pages deferred */}
+        {/* Standard cards, 4:5 portrait, article pages deferred */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
           {standards.map((c, i) => (
             <Reveal

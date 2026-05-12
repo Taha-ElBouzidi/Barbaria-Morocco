@@ -25,7 +25,7 @@ export default function Footer() {
 
         {/* Three-column grid */}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3 lg:gap-16">
-          {/* Column 1 — Maison */}
+          {/* Column 1, Maison */}
           <div className="flex flex-col gap-6">
             <Eyebrow tone="green">{t("maison")}</Eyebrow>
             <nav className="flex flex-col gap-4">
@@ -50,7 +50,7 @@ export default function Footer() {
             </nav>
           </div>
 
-          {/* Column 2 — Catalogue */}
+          {/* Column 2, Catalogue */}
           <div className="flex flex-col gap-6">
             <Eyebrow tone="green">{t("catalogue")}</Eyebrow>
             <nav className="flex flex-col gap-4">
@@ -75,7 +75,7 @@ export default function Footer() {
             </nav>
           </div>
 
-          {/* Column 3 — Concierge */}
+          {/* Column 3, Concierge */}
           <div className="flex flex-col gap-6">
             <Eyebrow tone="green">{t("concierge")}</Eyebrow>
             <nav className="flex flex-col gap-4">
@@ -121,7 +121,7 @@ export default function Footer() {
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <Eyebrow tone="muted">{t("rights")}</Eyebrow>
 
-            {/* Lang toggle — active locale marked for sighted and AT users */}
+            {/* Lang toggle, active locale marked for sighted and AT users */}
             <div className="flex items-center gap-3 font-sans text-[12px] uppercase tracking-[0.18em]">
               {(["en", "fr"] as const).map((l) => {
                 const isActive = l === locale;

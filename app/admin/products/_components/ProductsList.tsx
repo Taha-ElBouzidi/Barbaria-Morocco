@@ -168,7 +168,7 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                       {p.slug}
                     </td>
                     <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant capitalize">
-                      {p.ritual_id ?? "—"}
+                      {p.ritual_id ?? ","}
                     </td>
                     <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant">
                       {p.moq}

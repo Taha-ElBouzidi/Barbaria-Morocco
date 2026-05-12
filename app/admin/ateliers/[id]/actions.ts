@@ -7,7 +7,7 @@ import { requireAdmin } from "@/lib/admin/auth";
 import { AtelierSaveSchema } from "@/lib/admin/ateliers";
 
 // ---------------------------------------------------------------------------
-// saveAtelier — upsert atelier + translations
+// saveAtelier, upsert atelier + translations
 // ---------------------------------------------------------------------------
 
 export async function saveAtelier(

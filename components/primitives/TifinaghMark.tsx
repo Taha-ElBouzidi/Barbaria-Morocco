@@ -1,5 +1,5 @@
 /**
- * TifinaghMark — small inline rendering of the Tifinagh letter ⵣ (Yaz),
+ * TifinaghMark, small inline rendering of the Tifinagh letter ⵣ (Yaz),
  * the iconic Amazigh "freeman" symbol. Used as an ambient brand mark on
  * dividers, footers, and section breaks. Does NOT replace the wordmark logo.
  *

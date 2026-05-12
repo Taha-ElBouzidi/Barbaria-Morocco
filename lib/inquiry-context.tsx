@@ -76,11 +76,11 @@ export function InquiryProvider({ children }: { children: ReactNode }) {
       const raw = localStorage.getItem(STORAGE_KEY);
       if (raw) dispatch({ type: "hydrate", state: deserializeInquiry(raw) });
     } catch {
-      // localStorage unavailable (private mode etc.) — proceed with empty state
+      // localStorage unavailable (private mode etc.), proceed with empty state
     }
   }, []);
 
-  // TODO(task-12): pre-existing race — persist effect runs on mount with empty initial state,
+  // TODO(task-12): pre-existing race, persist effect runs on mount with empty initial state,
   // briefly writing "[]" to localStorage before hydrate dispatch applies. Functional impact is
   // negligible in single-tab usage (second persist run restores the hydrated value), but fix
   // by switching useReducer to lazy initialization (init function reads localStorage once,

@@ -1,6 +1,6 @@
 /**
  * SLICE 12 NOTE: Returns locale-resolved flat shapes.
- * `kicker` and `headline` are plain strings for the requested locale — NOT
+ * `kicker` and `headline` are plain strings for the requested locale, NOT
  * the nested `{ en, fr }` objects from lib/editorial.ts.
  */
 

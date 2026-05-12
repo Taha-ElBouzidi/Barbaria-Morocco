@@ -34,7 +34,7 @@ export default async function AteliersPage({ params }: PageProps) {
 
   return (
     <div className="pt-32 lg:pt-40 pb-20 lg:pb-32">
-      {/* Page header — constrained to 820px for readability */}
+      {/* Page header, constrained to 820px for readability */}
       <div className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] mb-20 lg:mb-28">
         <div className="max-w-[820px] space-y-6">
           <Reveal>

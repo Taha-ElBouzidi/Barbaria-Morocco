@@ -33,7 +33,7 @@ export default function SubcatList({ ritualId, subcategories }: SubcatListProps)
   const [newNameFr, setNewNameFr] = useState("");
   const [newSortOrder, setNewSortOrder] = useState("0");
 
-  // Inline edit state — map of subcatId -> { nameEn, nameFr }
+  // Inline edit state, map of subcatId -> { nameEn, nameFr }
   const [editing, setEditing] = useState<Record<string, { nameEn: string; nameFr: string }>>({});
 
   function getEnName(sc: SubcatRow) {

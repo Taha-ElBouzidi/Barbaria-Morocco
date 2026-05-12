@@ -22,11 +22,11 @@ export default function Hero() {
 
       {/* Dark wash overlay */}
       <div
-        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(27,48,34,0.45),rgba(27,48,34,0.85))]"
+        className="absolute inset-0 bg-[linear-gradient(180deg,rgba(44,24,16,0.45),rgba(44,24,16,0.85))]"
         aria-hidden
       />
 
-      {/* Centered content stack — Amazigh ornament + MAROC line + BARBARIA wordmark + MOROCCO + tagline + CTAs */}
+      {/* Centered content stack, Amazigh ornament + MAROC line + BARBARIA wordmark + MOROCCO + tagline + CTAs */}
       <div className="flex h-full items-center justify-center relative z-10">
         <div className="text-center max-w-[960px] px-[var(--bb-margin-edge)] flex flex-col items-center gap-8">
           <Reveal delayMs={0}>
