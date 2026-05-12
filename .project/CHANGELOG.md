@@ -6,6 +6,12 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ---
 
+## 2026-05-12
+
+- 11:00 CET. Sprint 2 kickoff: spec at `.project/specs/2026-05-12-sprint-2-admin-db-design.md`. Supabase project `jnparcnvkghiuryarbac` (BARBARIA DASH, eu-west-1) provisioned, MCP authenticated, public schema empty and ready for migrations. Phase A scope: products/journal/ateliers CRUD admin + read-only inquiry inbox + audit log.
+
+---
+
 ## 2026-05-11
 
 - 20:00 CET. Polish 2: hero photo swapped to user-supplied source (hero-atlas.jpg, 194 KB). MenuDrawer Corporate section trimmed: removed Bespoke Customisation and Logistics & Lead Times rows plus their i18n keys; kept B2B Concierge.
