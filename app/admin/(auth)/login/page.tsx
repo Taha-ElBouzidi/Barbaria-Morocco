@@ -62,7 +62,7 @@ export default async function LoginPage({ searchParams }: PageProps) {
             </button>
 
             {errorMessage && (
-              <p className="font-sans text-[12px] text-bb-tertiary text-center" role="alert">
+              <p className="font-sans text-[12px] text-bb-primary text-center" role="alert">
                 {errorMessage}
               </p>
             )}
