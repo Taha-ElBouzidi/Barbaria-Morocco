@@ -143,19 +143,28 @@
                                 rgba(201, 160, 89, 0.36),
                                 rgba(201, 160, 89, 0.14) 38%,
                                 transparent 70%);
-    animation: arc-drift 12s ease-in-out infinite;
+    /* Linear timing so velocity is constant through the arc waypoints,
+       no perceived deceleration / stop at the bottom of the curve.
+       The only places the glow rests are the top-left and top-right
+       dwells (held via duplicate-value keyframes at 0-8% and 50-58%). */
+    animation: arc-drift 14s linear infinite;
     pointer-events: none;
     z-index: 1;
   }
-  /* Arc motion: glow swings from top-left, dips down through the lower
-     half to bottom-right, then arcs back up over the top to start.
-     Two soft sinusoids rather than a straight diagonal. */
   @keyframes arc-drift {
-    0%   { transform: translate(-40%, -22%); }
-    25%  { transform: translate(-12%,  28%); }
-    50%  { transform: translate( 40%,  22%); }
-    75%  { transform: translate( 12%, -28%); }
-    100% { transform: translate(-40%, -22%); }
+    /* Dwell at top-left */
+    0%, 8%   { transform: translate(-40%, -22%); }
+    /* Fluid arc through the bottom to top-right */
+    21%      { transform: translate(-22%,   8%); }
+    33%      { transform: translate( -5%,  22%); }
+    44%      { transform: translate( 18%,  18%); }
+    /* Dwell at top-right */
+    50%, 58% { transform: translate( 40%, -22%); }
+    /* Fluid arc back through the bottom to top-left */
+    71%      { transform: translate( 18%,  18%); }
+    83%      { transform: translate( -5%,  22%); }
+    94%      { transform: translate(-22%,   8%); }
+    100%     { transform: translate(-40%, -22%); }
   }
   .effect-d .pepita {
     position: absolute;
