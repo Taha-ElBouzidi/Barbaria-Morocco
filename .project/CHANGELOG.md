@@ -8,6 +8,8 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ## 2026-05-12
 
+- 14:50 CET. Slice 6: storage bucket product-images created (8 MB limit, jpeg/png/webp/avif MIME allowlist, public read). 4 RLS policies on storage.objects scoped to bucket + admin_users membership. Migration files 0003_storage.sql + 0004_lockdown_log_audit.sql committed for repo reproducibility.
+- 14:45 CET. Security audit fix: log_audit() SECURITY DEFINER function was auto-exposed as /rest/v1/rpc/log_audit to anon + authenticated roles (advisor WARN). Revoked EXECUTE from anon/authenticated/public. Triggers still fire (no EXECUTE grant required for trigger invocation). get_advisors(security) back to zero lints.
 - 14:30 CET. Slice 5 apply: 0002_triggers migration applied to Supabase. moddatetime extension enabled, 5 updated_at triggers, log_audit() SECURITY DEFINER function, 7 audit triggers active. Smoke test (insert + update + delete a temp ritual) confirms audit_log captures all 3 operations.
 - 14:10 CET. Slice 5: db/migrations/0002_triggers.sql written. moddatetime extension enabled. 5 BEFORE UPDATE triggers maintain updated_at on rituals/ateliers/products/journal_cards/inquiries. log_audit() SECURITY DEFINER plpgsql function + 7 AFTER triggers track every INSERT/UPDATE/DELETE on tracked entities into audit_log (entity_type passed as trigger argument). Pending MCP apply by controller.
 - 13:30 CET. Slice 4 apply: 0001_rls migration applied to Supabase via MCP. RLS enabled on all 18 public tables, 33 policies created. `get_advisors(security)` returns zero lints (down from 18 critical RLS-disabled warnings post-Slice 3).
