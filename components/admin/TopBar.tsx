@@ -1,7 +1,6 @@
 "use client";
 
 import type { AdminUser } from "@/lib/admin/auth";
-import Link from "next/link";
 
 export default function TopBar({ admin }: { admin: AdminUser }) {
   return (
@@ -10,12 +9,21 @@ export default function TopBar({ admin }: { admin: AdminUser }) {
         <p className="font-sans text-[13px] text-bb-on-surface">{admin.displayName ?? admin.email}</p>
         <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">{admin.role}</p>
       </div>
-      <Link
-        href="/admin/logout"
-        className="font-sans text-[12px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary border border-bb-line px-4 py-2 transition-colors"
-      >
-        Sign out
-      </Link>
+      {/*
+        Logout MUST be a POST form, not a Link. Next.js prefetches every
+        <Link> on the page; if /admin/logout responded to GET (which used to
+        call signOut()), the prefetch would silently log the user out the
+        moment the TopBar rendered. Hard-learned. See proxy.ts session
+        history.
+      */}
+      <form action="/admin/logout" method="POST">
+        <button
+          type="submit"
+          className="font-sans text-[12px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary border border-bb-line px-4 py-2 transition-colors cursor-pointer"
+        >
+          Sign out
+        </button>
+      </form>
     </header>
   );
 }
