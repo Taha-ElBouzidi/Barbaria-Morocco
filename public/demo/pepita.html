@@ -131,6 +131,56 @@
   }
 
   /* ──────────────────────────────────────────
+     OPTION D — hybrid: shimmer sweep + small twinkling pepitas (non-uniform)
+     The recommended pick: takes the diagonal moving glow from C, layers
+     small varied gold pepitas (some stars, some dust dots) that fade
+     in and out on their own random timings. No grid pattern, no uniform
+     dust. Reads as gold dust caught in a passing light.
+     ────────────────────────────────────────── */
+  .effect-d::before {
+    content: ''; position: absolute; inset: -40%;
+    background: radial-gradient(ellipse 38% 52% at center,
+                                rgba(201, 160, 89, 0.28),
+                                rgba(201, 160, 89, 0.10) 38%,
+                                transparent 70%);
+    animation: drift 9s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .effect-d .pepita {
+    position: absolute;
+    color: var(--gold);
+    line-height: 1;
+    pointer-events: none;
+    z-index: 2;
+    text-shadow: 0 0 6px rgba(201, 160, 89, 0.55);
+    animation: pepita-fade var(--dur, 5s) ease-in-out infinite;
+    animation-delay: var(--delay, 0s);
+    opacity: 0;
+  }
+  .effect-d .pepita.dot {
+    width: var(--size, 2px); height: var(--size, 2px);
+    background: var(--gold);
+    border-radius: 50%;
+    text-shadow: none;
+    box-shadow: 0 0 4px rgba(201, 160, 89, 0.6);
+  }
+  @keyframes pepita-fade {
+    0%, 100% { opacity: 0; transform: scale(0.7); }
+    40%      { opacity: var(--peak, 0.85); transform: scale(1); }
+    60%      { opacity: var(--peak, 0.85); transform: scale(1); }
+  }
+
+  /* Highlight the recommended option */
+  .card.recommended {
+    border: 1px solid var(--gold);
+    box-shadow: 0 8px 32px rgba(201, 160, 89, 0.15);
+  }
+  .card.recommended .label .pill {
+    background: var(--gold); color: var(--brown);
+  }
+
+  /* ──────────────────────────────────────────
      Footer (decision row)
      ────────────────────────────────────────── */
   .decision {
@@ -163,7 +213,7 @@
 <header>
   <div class="eyebrow">Barbaria · Brand Direction Demo</div>
   <h1>Sahara Gold Prestige</h1>
-  <p>Three treatments for the brown surfaces. Pick one.</p>
+  <p>Four treatments for the brown surfaces. Option D is the hybrid you asked for.</p>
 </header>
 
 <div class="grid">
@@ -210,30 +260,80 @@
     </div>
   </article>
 
+  <!-- OPTION D — recommended hybrid -->
+  <article class="card recommended">
+    <div class="surface effect-d" id="surfaceD">
+      <div class="glyph">ⵣ</div>
+      <h2>Barbaria</h2>
+      <div class="tag">Option D · Hybrid</div>
+    </div>
+    <div class="label">
+      <span class="pill">D · Hybrid — your pick</span>
+      <h3>Gold dust caught in moving light</h3>
+      <p>The diagonal radial glow from C, sliding slowly across the surface. Layered with 45 small gold pepitas of varied sizes (some four-point stars, some pinprick dots), each fading in and out on its own random rhythm. Non-uniform on purpose: positions, sizes, peak brightnesses and timings are all randomised. Reads as Sahara gold caught in a passing light.</p>
+    </div>
+  </article>
+
 </div>
 
 <div class="decision">
   <div class="eyebrow">Reply with</div>
-  <p>Send <code>A</code>, <code>B</code>, or <code>C</code> and I will apply it to every brown surface in the site.</p>
+  <p>Send <code>D</code> to ship the hybrid, or any of <code>A</code> · <code>B</code> · <code>C</code> if you change your mind. Also tell me if the pepitas should be denser, sparser, more gold, less gold, faster, or slower.</p>
 </div>
 
 <script>
-  // Generate 25 twinkling stars for Option B
+  // OPTION B — uniform-ish twinkling stars
   (function () {
     const root = document.getElementById('surfaceB');
     if (!root) return;
-    const stars = 25;
     const sizes = [9, 11, 13, 15, 17];
-    for (let i = 0; i < stars; i++) {
+    for (let i = 0; i < 25; i++) {
       const s = document.createElement('span');
       s.className = 'star';
       s.textContent = '✦';
       s.style.left = (Math.random() * 92 + 2) + '%';
-      s.style.top = (Math.random() * 92 + 2) + '%';
+      s.style.top  = (Math.random() * 92 + 2) + '%';
       s.style.fontSize = sizes[Math.floor(Math.random() * sizes.length)] + 'px';
       s.style.animationDelay = (Math.random() * 4).toFixed(2) + 's';
       s.style.animationDuration = (3 + Math.random() * 2).toFixed(2) + 's';
       root.appendChild(s);
+    }
+  })();
+
+  // OPTION D — non-uniform pepitas: mix of small stars and tiny dust dots,
+  // each with random position, size, peak opacity, twinkle duration and
+  // start delay. Mixes ✦ (sparkles) and pure dots (dust). The non-uniformity
+  // is intentional — no grid, no even distribution.
+  (function () {
+    const root = document.getElementById('surfaceD');
+    if (!root) return;
+    const count = 45;
+    const glyphs = ['✦', '✦', '✧', '⋆', '·']; // weighted toward sparkles
+    for (let i = 0; i < count; i++) {
+      const isDot = Math.random() < 0.35;
+      const el = document.createElement('span');
+      el.className = 'pepita' + (isDot ? ' dot' : '');
+      if (!isDot) el.textContent = glyphs[Math.floor(Math.random() * glyphs.length)];
+
+      // Spatial jitter, biased away from dead center so the title stays clean
+      const x = Math.random() * 96 + 2;
+      const y = Math.random() * 96 + 2;
+      el.style.left = x + '%';
+      el.style.top  = y + '%';
+
+      // Size jitter: dots 1.2-3.5px, stars 5-12px (small overall)
+      if (isDot) {
+        el.style.setProperty('--size', (1.2 + Math.random() * 2.3).toFixed(1) + 'px');
+      } else {
+        el.style.fontSize = (5 + Math.random() * 7).toFixed(1) + 'px';
+      }
+
+      // Timing and intensity jitter
+      el.style.setProperty('--dur',   (3.5 + Math.random() * 4).toFixed(2) + 's');
+      el.style.setProperty('--delay', (-Math.random() * 5).toFixed(2) + 's');
+      el.style.setProperty('--peak',  (0.4 + Math.random() * 0.55).toFixed(2));
+
+      root.appendChild(el);
     }
   })();
 </script>
