@@ -51,6 +51,13 @@ export async function proxy(request: NextRequest) {
   } = await supabase.auth.getUser();
 
   // Gate protected /admin/* paths.
+  //
+  // Middleware only checks: is there a logged-in user? It does NOT re-verify
+  // admin_users membership here — that's the layout's job (getCurrentAdmin
+  // in app/admin/layout.tsx). Re-querying admin_users in middleware caused
+  // intermittent logouts when the query hiccupped (transient errors triggered
+  // supabase.auth.signOut(), forcibly invalidating an otherwise-valid session).
+  // The login server action already verifies admin_users at sign-in time.
   if (isAdminProtectedPath(pathname)) {
     if (!user) {
       const url = request.nextUrl.clone();
@@ -58,23 +65,6 @@ export async function proxy(request: NextRequest) {
       url.search = "";
       return NextResponse.redirect(url);
     }
-
-    // Confirm user is registered in admin_users (role check beyond JWT).
-    const { data: adminRow, error } = await supabase
-      .from("admin_users")
-      .select("id")
-      .eq("id", user.id)
-      .maybeSingle();
-
-    if (error || !adminRow) {
-      await supabase.auth.signOut();
-      const url = request.nextUrl.clone();
-      url.pathname = "/admin/login";
-      url.search = "?error=unauthorized";
-      return NextResponse.redirect(url);
-    }
-
-    // Authenticated admin — pass through. Skip next-intl on /admin/*.
     return supabaseResponse;
   }
 
