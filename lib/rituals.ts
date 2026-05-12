@@ -16,30 +16,30 @@ export const WORLDS: World[] = [
     name: { en: "The Hammam Ritual", fr: "Le Rituel du Hammam" },
     tagline: { en: "Purification, the cornerstone ritual", fr: "Purification, le rituel fondateur" },
     lede: {
-      en: "Black soap, kessa glove and ghassoul clay; the steam, stone and slow heat of the Moroccan hammam, prepared as a corporate ritual.",
-      fr: "Savon noir, gant kessa et argile ghassoul; la vapeur, la pierre et la chaleur lente du hammam marocain, préparées en rituel corporate.",
+      en: "Beldi black soap, scrubs and ghassoul clay; the steam, stone and slow heat of the Moroccan hammam, prepared for hôtels, spas and B2B private label.",
+      fr: "Savon beldi, gommages et argile ghassoul; la vapeur, la pierre et la chaleur lente du hammam marocain, préparés pour hôtels, spas et marque blanche B2B.",
     },
-    hero: null, // needs shot — Atlas / hammam steam
+    hero: "/brand_photos/sugar-scrub-hammam.jpg",
   },
   {
     id: "botanical",
     eyebrow: { en: "Vitality", fr: "Vitalité" },
     name: { en: "Botanical Care", fr: "Soins Botaniques" },
-    tagline: { en: "Vitality from the High Atlas", fr: "Vitalité du Haut Atlas" },
+    tagline: { en: "Single-origin oils, serums and hydrosols", fr: "Huiles, sérums et hydrolats d'origine unique" },
     lede: {
-      en: "Argan, prickly-pear, neroli and damask rose; single-origin botanicals, cold-pressed and bottled in dark amber glass.",
-      fr: "Argan, figue de barbarie, néroli, rose de Damas; botaniques d'origine unique, pressés à froid en flacons d'ambre.",
+      en: "Argan, prickly pear, neroli, damask rose, S'ad, nigella; cold-pressed botanicals, concentrated serums, steam-distilled hydrosols and fragrance massage oils.",
+      fr: "Argan, figue de barbarie, néroli, rose de Damas, S'ad, nigelle; botaniques pressés à froid, sérums concentrés, hydrolats distillés à la vapeur et huiles de massage parfumées.",
     },
     hero: "/brand_photos/argan-oil-dropper.jpg",
   },
   {
     id: "heritage",
-    eyebrow: { en: "Grounding", fr: "Ancrage" },
-    name: { en: "Heritage Gifts", fr: "Cadeaux Héritage" },
-    tagline: { en: "Grounding in the artisan's hand", fr: "Ancrage par la main de l'artisan" },
+    eyebrow: { en: "Curation", fr: "Curation" },
+    name: { en: "Heritage Packs", fr: "Packs Héritage" },
+    tagline: { en: "Curated B2B packs from the maison", fr: "Packs B2B curatés de la maison" },
     lede: {
-      en: "Berber-woven pouches, hand-loomed throws and engraved cedar boxes; the textile, weave and carpentry of the Kingdom.",
-      fr: "Pochettes berbères tissées, plaids tissés main et coffrets en cèdre gravé; le textile, le tissage et la menuiserie du Royaume.",
+      en: "Three themed packs composing the ritual from cleanse to nourish, built from the maison's six gammes for hôtels, spas and gifting.",
+      fr: "Trois packs thématiques qui composent le rituel du nettoyage au soin, construits à partir des six gammes de la maison pour hôtels, spas et cadeaux.",
     },
     hero: "/brand_photos/gift-box-open.jpg",
   },
@@ -50,27 +50,25 @@ export interface SubCat {
   name: { en: string; fr: string };
 }
 
+// Subcategories aligned with the client's 6 gammes from the B2B catalogue.
+// Mapped onto the existing 3-ritual schema (Sprint 1.5 design decision).
+// Hammam: Rituel Hammam scrubs + masks + Savons Noirs Beldi
+// Botanical: Huiles Pures + Sérums + Hydrolats + Huiles de Massage
+// Heritage: 3 curated B2B Packs
 export const SUBCATS: Record<RitualId, SubCat[]> = {
   hammam: [
-    { id: "soaps",  name: { en: "Soaps & Cleansers", fr: "Savons & Nettoyants" } },
-    { id: "scrubs", name: { en: "Scrubs & Gloves",   fr: "Gommages & Gants" } },
-    { id: "clays",  name: { en: "Clays & Masks",     fr: "Argiles & Masques" } },
-    { id: "waters", name: { en: "Floral Waters",     fr: "Eaux Florales" } },
-    { id: "sets",   name: { en: "Hammam Sets",       fr: "Coffrets Hammam" } },
+    { id: "scrubs", name: { en: "Scrubs",        fr: "Gommages" } },
+    { id: "masks",  name: { en: "Masks",         fr: "Masques" } },
+    { id: "soaps",  name: { en: "Beldi Soaps",   fr: "Savons Beldi" } },
   ],
   botanical: [
-    { id: "face",   name: { en: "Face & Neck",       fr: "Visage & Cou" } },
-    { id: "body",   name: { en: "Body Nourishment",  fr: "Soins Corps" } },
-    { id: "hair",   name: { en: "Hair & Scalp",      fr: "Cheveux & Cuir Chevelu" } },
-    { id: "oils",   name: { en: "Pure Oils",         fr: "Huiles Pures" } },
-    { id: "serums", name: { en: "Serums",            fr: "Sérums" } },
+    { id: "oils",      name: { en: "Pure Oils",      fr: "Huiles Pures" } },
+    { id: "serums",    name: { en: "Concentrated Serums", fr: "Sérums Concentrés" } },
+    { id: "hydrolats", name: { en: "Hydrosols",      fr: "Hydrolats" } },
+    { id: "massage",   name: { en: "Massage Oils",   fr: "Huiles de Massage" } },
   ],
   heritage: [
-    { id: "pouches", name: { en: "Pouches & Bags",   fr: "Pochettes & Sacs" } },
-    { id: "throws",  name: { en: "Throws & Cushions",fr: "Plaids & Coussins" } },
-    { id: "table",   name: { en: "Table & Linen",    fr: "Table & Linge" } },
-    { id: "wood",    name: { en: "Wood & Ceramic",   fr: "Bois & Céramique" } },
-    { id: "boxes",   name: { en: "Engraved Boxes",   fr: "Coffrets Gravés" } },
+    { id: "packs", name: { en: "Curated Packs", fr: "Packs Curatés" } },
   ],
 };
 
@@ -78,20 +76,37 @@ export const FACETS = {
   ingredient: [
     "Pure Argan",
     "Prickly Pear",
-    "Neroli Blossom",
-    "Atlas Cedar",
-    "Damask Rose",
-    "Saffron",
-    "Black Soap",
-    "Olive",
-    "Oud",
-    "Honey",
-    "Ghassoul",
+    "S'ad (Chufa)",
     "Castor",
+    "Damask Rose",
     "Black Seed",
+    "Ghassoul",
+    "Nila (Indigo)",
+    "Aker Fassi",
+    "Sidr",
+    "Henna",
+    "Atlas Lavender",
+    "Neroli",
+    "Rosemary",
+    "Orange Blossom",
+    "Oud",
+    "White Musk",
+    "Jasmine",
+    "Cinnamon",
+    "Beldi Olive",
+    "Honey",
   ],
-  use: ["Hydrating", "Exfoliating", "Anti-age", "Purifying", "Soothing", "Energising"],
-  format: ["30 ml", "50 ml", "100 ml", "200 ml", "Pot 100 g", "Pot 200 g", "Box", "Set"],
-  packaging: ["Amber glass", "Porcelain", "Cedar", "Berber weave", "Recycled card"],
-  certif: ["BIO certified", "Fair trade", "Cruelty free", "Vegan"],
+  use: [
+    "Hydrating",
+    "Exfoliating",
+    "Anti-age",
+    "Purifying",
+    "Soothing",
+    "Energising",
+    "Fortifying",
+    "Massage",
+  ],
+  format: ["30 ml", "50 ml", "100 ml", "200 ml", "Pot 100 g", "Pot 200 g", "Pot 250 g", "Bar 100 g"],
+  packaging: ["Amber glass", "Glass jar", "Ceramic jar", "Cedar box", "Recycled card"],
+  certif: ["100% Natural", "Zero additive", "Cold-pressed", "Cooperative-made", "Made in Morocco"],
 } as const;
