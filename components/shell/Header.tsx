@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { useTranslations } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import Icon from "@/components/primitives/Icon";
+import Wordmark from "@/components/primitives/Wordmark";
 import { useInquiry } from "@/lib/inquiry-context";
 import { cn } from "@/lib/utils";
 
@@ -42,11 +43,8 @@ export default function Header({ locale, onOpenMenu, onOpenInquiry }: HeaderProp
       )}
     >
       <div className="mx-auto flex h-[72px] max-w-[1440px] items-center justify-between px-[var(--bb-margin-edge)]">
-        <Link
-          href="/"
-          className={cn("font-serif text-[20px] tracking-[0.02em]", isDark ? "text-white" : "text-bb-primary")}
-        >
-          Barbaria
+        <Link href="/" aria-label="Barbaria Morocco, home" className="transition-opacity hover:opacity-80">
+          <Wordmark variant="compact" tone={isDark ? "light" : "dark"} />
         </Link>
 
         <nav className="hidden lg:flex items-center gap-10 font-sans text-[13px] tracking-[0.04em] uppercase">

@@ -3,6 +3,7 @@
 import { useTranslations, useLocale } from "next-intl";
 import { Link, usePathname } from "@/i18n/navigation";
 import Eyebrow from "@/components/primitives/Eyebrow";
+import Wordmark from "@/components/primitives/Wordmark";
 import { cn } from "@/lib/utils";
 import { INSTAGRAM_HANDLE, WHATSAPP_NUMBER } from "@/lib/constants";
 
@@ -17,6 +18,11 @@ export default function Footer() {
         className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)]"
         style={{ paddingTop: "96px", paddingBottom: "48px" }}
       >
+        {/* Brand wordmark, centered above the column grid */}
+        <Link href="/" aria-label="Barbaria Morocco, home" className="block transition-opacity hover:opacity-80">
+          <Wordmark variant="stacked" tone="dark" className="mx-auto mb-16 lg:mb-20" />
+        </Link>
+
         {/* Three-column grid */}
         <div className="grid grid-cols-1 gap-12 md:grid-cols-3 lg:gap-16">
           {/* Column 1 — Maison */}

@@ -5,7 +5,7 @@ import { Link } from "@/i18n/navigation";
 import Photo from "@/components/primitives/Photo";
 import Reveal from "@/components/primitives/Reveal";
 import Eyebrow from "@/components/primitives/Eyebrow";
-import DisplayHeading from "@/components/primitives/DisplayHeading";
+import Wordmark from "@/components/primitives/Wordmark";
 
 export default function Hero() {
   const t = useTranslations("home");
@@ -26,32 +26,25 @@ export default function Hero() {
         aria-hidden
       />
 
-      {/* Centered content stack */}
+      {/* Centered content stack — Amazigh ornament + MAROC line + BARBARIA wordmark + MOROCCO + tagline + CTAs */}
       <div className="flex h-full items-center justify-center relative z-10">
-        <div className="text-center max-w-[900px] px-[var(--bb-margin-edge)] space-y-6">
+        <div className="text-center max-w-[960px] px-[var(--bb-margin-edge)] flex flex-col items-center gap-8">
           <Reveal delayMs={0}>
             <Eyebrow tone="gold">{t("hero.eyebrow")}</Eyebrow>
           </Reveal>
 
           <Reveal delayMs={120}>
-            {/*
-             * TODO: italic-last-word polish — split headline into headline_a / headline_b
-             * so the final word can be wrapped in <em className="font-serif italic">.
-             * For now, rendered plain until i18n keys are split.
-             */}
-            <DisplayHeading size="xl" as="h1" className="text-white">
-              {t("hero.headline")}
-            </DisplayHeading>
+            <Wordmark variant="hero" tone="light" />
           </Reveal>
 
-          <Reveal delayMs={220}>
-            <p className="text-white/80 leading-relaxed text-base max-w-[560px] mx-auto">
+          <Reveal delayMs={260}>
+            <p className="font-display italic text-white/85 leading-relaxed text-[clamp(16px,1.6vw,20px)] max-w-[640px] mx-auto">
               {t("hero.lede")}
             </p>
           </Reveal>
 
-          <Reveal delayMs={320}>
-            <div className="flex flex-wrap items-center justify-center gap-4">
+          <Reveal delayMs={360}>
+            <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
               <Link
                 href="/rituals/hammam"
                 className="inline-flex items-center gap-2 px-8 py-4 bg-bb-secondary text-bb-primary font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors"
