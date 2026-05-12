@@ -4,7 +4,9 @@ import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
-import { ATELIERS } from "@/lib/editorial";
+import { getAllAteliers } from "@/lib/data/ateliers";
+
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -27,7 +29,8 @@ export default async function AteliersPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "ateliers" });
-  const lang = locale === "fr" ? "fr" : "en";
+
+  const ateliers = await getAllAteliers(locale === "fr" ? "fr" : "en");
 
   return (
     <div className="pt-32 lg:pt-40 pb-20 lg:pb-32">
@@ -53,8 +56,8 @@ export default async function AteliersPage({ params }: PageProps) {
         className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"
         aria-label={t("hero_headline")}
       >
-        {ATELIERS.map((a, i) => (
-          <Reveal key={a.id} delayMs={(i % 3) * 80} as="article" className="space-y-4">
+        {ateliers.map((a, i) => (
+          <Reveal key={a.slug} delayMs={(i % 3) * 80} as="article" className="space-y-4">
             <Photo
               src={a.image}
               alt={a.name}
@@ -65,10 +68,10 @@ export default async function AteliersPage({ params }: PageProps) {
               containerClassName="aspect-square"
             />
             <Eyebrow tone="green">
-              {a.region} · {t("since", { year: a.since })}
+              {a.region} · {t("since", { year: a.sinceYear })}
             </Eyebrow>
             <h2 className="font-serif text-[28px] leading-[1.2] text-bb-on-surface">{a.name}</h2>
-            <p className="text-bb-on-surface-variant leading-relaxed text-[14px]">{a.description[lang]}</p>
+            <p className="text-bb-on-surface-variant leading-relaxed text-[14px]">{a.description}</p>
           </Reveal>
         ))}
       </section>

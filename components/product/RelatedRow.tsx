@@ -1,9 +1,9 @@
 import { getTranslations } from "next-intl/server";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import ProductCard from "@/components/category/ProductCard";
-import type { Product } from "@/lib/products";
+import type { ProductSummary } from "@/lib/data/types";
 
-interface Props { products: Product[]; lang: "en" | "fr"; }
+interface Props { products: ProductSummary[]; lang: "en" | "fr"; }
 
 export default async function RelatedRow({ products, lang }: Props) {
   if (products.length === 0) return null;
@@ -15,7 +15,7 @@ export default async function RelatedRow({ products, lang }: Props) {
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16">
         {products.map((p) => (
-          <ProductCard key={p.id} product={p} lang={lang} />
+          <ProductCard key={p.slug} product={p} lang={lang} />
         ))}
       </div>
     </section>

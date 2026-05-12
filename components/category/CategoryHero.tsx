@@ -2,22 +2,21 @@ import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
-import type { World } from "@/lib/rituals";
+import type { RitualWorld } from "@/lib/data/types";
 
 interface Props {
-  world: World;
-  lang: "en" | "fr";
+  world: RitualWorld;
 }
 
-export default function CategoryHero({ world, lang }: Props) {
+export default function CategoryHero({ world }: Props) {
   return (
     <section className="relative h-[70vh] min-h-[520px] overflow-hidden">
       <Photo
-        src={world.hero}
-        alt={world.name[lang]}
+        src={world.heroImage}
+        alt={world.name}
         fill
         priority
-        needsShot={!world.hero}
+        needsShot={!world.heroImage}
         containerClassName="absolute inset-0"
         sizes="100vw"
       />
@@ -25,13 +24,13 @@ export default function CategoryHero({ world, lang }: Props) {
       <div className="relative z-10 flex h-full items-end pb-16 lg:pb-24">
         <div className="mx-auto w-full max-w-[1440px] px-[var(--bb-margin-edge)]">
           <div className="max-w-[820px] text-white space-y-4">
-            <Reveal><Eyebrow tone="gold">{world.eyebrow[lang]}</Eyebrow></Reveal>
+            <Reveal><Eyebrow tone="gold">{world.eyebrow}</Eyebrow></Reveal>
             <Reveal delayMs={120}>
-              <DisplayHeading size="xl" as="h1" className="text-white">{world.name[lang]}</DisplayHeading>
+              <DisplayHeading size="xl" as="h1" className="text-white">{world.name}</DisplayHeading>
             </Reveal>
             <Reveal delayMs={220}>
               <p className="text-white/80 leading-relaxed max-w-[640px] font-display italic text-[clamp(18px,1.5vw,22px)]">
-                {world.lede[lang]}
+                {world.lede}
               </p>
             </Reveal>
           </div>

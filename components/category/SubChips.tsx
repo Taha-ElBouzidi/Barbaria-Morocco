@@ -1,19 +1,19 @@
 "use client";
 import { cn } from "@/lib/utils";
-import type { SubCat } from "@/lib/rituals";
+import type { SubCategory } from "@/lib/data/types";
 
 interface Props {
-  subs: SubCat[];
+  subs: SubCategory[];
   active: string | null;
   onChange: (sub: string | null) => void;
   lang: "en" | "fr";
   allLabel: string;
 }
 
-export default function SubChips({ subs, active, onChange, lang, allLabel }: Props) {
+export default function SubChips({ subs, active, onChange, lang: _lang, allLabel }: Props) {
   const items: Array<{ id: string | null; label: string }> = [
     { id: null, label: allLabel },
-    ...subs.map((s) => ({ id: s.id, label: s.name[lang] })),
+    ...subs.map((s) => ({ id: s.id, label: s.name })),
   ];
   return (
     <nav className="border-b border-bb-line">

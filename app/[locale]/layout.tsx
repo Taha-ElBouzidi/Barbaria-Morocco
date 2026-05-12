@@ -10,6 +10,8 @@ import "../globals.css";
 import ShellChrome from "@/components/shell/ShellChrome";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import { InquiryProvider } from "@/lib/inquiry-context";
+import { ProductCatalogueProvider } from "@/lib/data/ProductCatalogueContext";
+import { getMinimalProductMap } from "@/lib/data/products";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -88,6 +90,10 @@ export default async function LocaleLayout({
     notFound();
   }
 
+  const lang = locale === "fr" ? "fr" : "en";
+  const productMap = await getMinimalProductMap(lang);
+  const catalogueEntries = Array.from(productMap.entries());
+
   return (
     <html
       lang={locale}
@@ -108,10 +114,12 @@ export default async function LocaleLayout({
         </a>
         <NextIntlClientProvider locale={locale}>
           <InquiryProvider>
-            <ShellChrome locale={locale} mainId="main-content">
-              <div className="flex-1">{children}</div>
-            </ShellChrome>
-            <WhatsAppFloat />
+            <ProductCatalogueProvider catalogue={catalogueEntries}>
+              <ShellChrome locale={locale} mainId="main-content">
+                <div className="flex-1">{children}</div>
+              </ShellChrome>
+              <WhatsAppFloat />
+            </ProductCatalogueProvider>
           </InquiryProvider>
         </NextIntlClientProvider>
         <Analytics />
