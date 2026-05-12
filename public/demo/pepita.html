@@ -140,12 +140,22 @@
   .effect-d::before {
     content: ''; position: absolute; inset: -40%;
     background: radial-gradient(ellipse 38% 52% at center,
-                                rgba(201, 160, 89, 0.28),
-                                rgba(201, 160, 89, 0.10) 38%,
+                                rgba(201, 160, 89, 0.36),
+                                rgba(201, 160, 89, 0.14) 38%,
                                 transparent 70%);
-    animation: drift 9s ease-in-out infinite;
+    animation: arc-drift 12s ease-in-out infinite;
     pointer-events: none;
     z-index: 1;
+  }
+  /* Arc motion: glow swings from top-left, dips down through the lower
+     half to bottom-right, then arcs back up over the top to start.
+     Two soft sinusoids rather than a straight diagonal. */
+  @keyframes arc-drift {
+    0%   { transform: translate(-40%, -22%); }
+    25%  { transform: translate(-12%,  28%); }
+    50%  { transform: translate( 40%,  22%); }
+    75%  { transform: translate( 12%, -28%); }
+    100% { transform: translate(-40%, -22%); }
   }
   .effect-d .pepita {
     position: absolute;
