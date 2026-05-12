@@ -7,7 +7,7 @@ import { requireAdmin } from "@/lib/admin/auth";
 import { ProductSaveSchema } from "@/lib/admin/products";
 
 // ---------------------------------------------------------------------------
-// saveProduct — upsert all relations atomically
+// saveProduct, upsert all relations atomically
 // ---------------------------------------------------------------------------
 
 export async function saveProduct(
@@ -151,7 +151,7 @@ export async function saveProduct(
 }
 
 // ---------------------------------------------------------------------------
-// setStatus — publish / unpublish
+// setStatus, publish / unpublish
 // ---------------------------------------------------------------------------
 
 export async function setStatus(
@@ -186,7 +186,7 @@ export async function setStatus(
 }
 
 // ---------------------------------------------------------------------------
-// deleteProduct — cascades via FK
+// deleteProduct, cascades via FK
 // ---------------------------------------------------------------------------
 
 export async function deleteProduct(id: string): Promise<{ ok: boolean; error?: string }> {
@@ -214,7 +214,7 @@ export async function deleteProduct(id: string): Promise<{ ok: boolean; error?: 
 }
 
 // ---------------------------------------------------------------------------
-// redirectAfterSave — used by client after successful save
+// redirectAfterSave, used by client after successful save
 // ---------------------------------------------------------------------------
 
 export async function redirectToEdit(id: string) {

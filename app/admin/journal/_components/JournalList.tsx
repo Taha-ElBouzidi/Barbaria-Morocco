@@ -125,7 +125,7 @@ export default function JournalList({ cards }: JournalListProps) {
                     {c.date}
                   </td>
                   <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant">
-                    {c.feature ? "Yes" : "—"}
+                    {c.feature ? "Yes" : ","}
                   </td>
                   <td className="px-4 py-3">
                     <span

@@ -1,6 +1,6 @@
 /**
  * SLICE 12 NOTE: This file returns locale-resolved flat shapes.
- * `name`, `short`, and `lede` are plain strings for the requested locale —
+ * `name`, `short`, and `lede` are plain strings for the requested locale ,
  * NOT the `{ en: string; fr: string }` objects that lib/products.ts provides.
  * Every consumer that destructures `product.name.en` or `product.name.fr`
  * must be updated to use `product.name` directly (already resolved).

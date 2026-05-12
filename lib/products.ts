@@ -29,7 +29,7 @@ export interface Product {
 
 export const PRODUCTS: Product[] = [
   // ============================================================
-  // HAMMAM RITUAL — Gamme 03 (scrubs, masks) + Gamme 05 (beldi soaps)
+  // HAMMAM RITUAL, Gamme 03 (scrubs, masks) + Gamme 05 (beldi soaps)
   // ============================================================
 
   // --- Gamme 03: Rituel Hammam (6) ---
@@ -81,8 +81,8 @@ export const PRODUCTS: Product[] = [
     name: { en: "Ghassoul & Rose Water Mask", fr: "Masque Ghassoul & Eau de Rose" },
     short: { en: "Ancestral purification.", fr: "Purification ancestrale." },
     lede: {
-      en: "Ghassoul, the volcanic clay of the Middle Atlas — unique to Morocco — blended with pure rose water from the Dades. Mix to a cream, apply, draw out impurities, tighten pores, leave the skin velvet-soft.",
-      fr: "Ghassoul, l'argile volcanique du Moyen Atlas — unique au Maroc — mélangé à l'eau de rose pure du Dadès. Mélanger jusqu'à consistance crémeuse, appliquer, absorber les impuretés, resserrer les pores, laisser une peau veloutée.",
+      en: "Ghassoul, the volcanic clay of the Middle Atlas (unique to Morocco), blended with pure rose water from the Dades. Mix to a cream, apply, draw out impurities, tighten pores, leave the skin velvet-soft.",
+      fr: "Ghassoul, l'argile volcanique du Moyen Atlas (unique au Maroc), mélangé à l'eau de rose pure du Dadès. Mélanger jusqu'à consistance crémeuse, appliquer, absorber les impuretés, resserrer les pores, laisser une peau veloutée.",
     },
     tags: ["Ghassoul", "Damask Rose", "Purifying", "Pot 200 g", "100% Natural", "Cooperative-made"],
     moq: 60,
@@ -247,7 +247,7 @@ export const PRODUCTS: Product[] = [
   },
 
   // ============================================================
-  // BOTANICAL CARE — Gamme 01 (oils) + Gamme 02 (serums) + Gamme 04 (hydrosols) + Gamme 06 (massage)
+  // BOTANICAL CARE, Gamme 01 (oils) + Gamme 02 (serums) + Gamme 04 (hydrosols) + Gamme 06 (massage)
   // ============================================================
 
   // --- Gamme 01: Huiles Pures (6) ---
@@ -545,8 +545,8 @@ export const PRODUCTS: Product[] = [
     name: { en: "Neroli Hydrosol", fr: "Hydrolat de Néroli" },
     short: { en: "Luxury anti-age.", fr: "Luxe anti-âge." },
     lede: {
-      en: "Bitter orange blossom water — more concentrated and more luxurious than the classic. Anti-wrinkle and regenerating for mature skin. Deep, enveloping floral fragrance.",
-      fr: "Eau de fleur d'oranger amère — plus concentrée et plus luxueuse que la classique. Anti-rides et régénérante pour peaux matures. Parfum floral profond et envoûtant.",
+      en: "Bitter orange blossom water, more concentrated and more luxurious than the classic. Anti-wrinkle and regenerating for mature skin. Deep, enveloping floral fragrance.",
+      fr: "Eau de fleur d'oranger amère, plus concentrée et plus luxueuse que la classique. Anti-rides et régénérante pour peaux matures. Parfum floral profond et envoûtant.",
     },
     ritual: "Luxe Anti-âge",
     tags: ["Neroli", "Anti-age", "Glass jar", "50 ml", "100 ml"],
@@ -674,7 +674,7 @@ export const PRODUCTS: Product[] = [
   },
 
   // ============================================================
-  // HERITAGE — 3 curated B2B Packs
+  // HERITAGE, 3 curated B2B Packs
   // ============================================================
   {
     id: "pack-nila-oranger",

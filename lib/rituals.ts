@@ -16,8 +16,8 @@ export const WORLDS: World[] = [
     name: { en: "The Hammam Ritual", fr: "Le Rituel du Hammam" },
     tagline: { en: "Purification, the cornerstone ritual", fr: "Purification, le rituel fondateur" },
     lede: {
-      en: "Beldi black soap, scrubs and ghassoul clay; the steam, stone and slow heat of the Moroccan hammam, prepared for hôtels, spas and B2B private label.",
-      fr: "Savon beldi, gommages et argile ghassoul; la vapeur, la pierre et la chaleur lente du hammam marocain, préparés pour hôtels, spas et marque blanche B2B.",
+      en: "Beldi black soap, scrubs and ghassoul clay. The steam, stone and slow heat of the Moroccan hammam.",
+      fr: "Savon beldi, gommages et argile ghassoul. La vapeur, la pierre et la chaleur lente du hammam marocain.",
     },
     hero: "/brand_photos/sugar-scrub-hammam.jpg",
   },
@@ -27,8 +27,8 @@ export const WORLDS: World[] = [
     name: { en: "Botanical Care", fr: "Soins Botaniques" },
     tagline: { en: "Single-origin oils, serums and hydrosols", fr: "Huiles, sérums et hydrolats d'origine unique" },
     lede: {
-      en: "Argan, prickly pear, neroli, damask rose, S'ad, nigella; cold-pressed botanicals, concentrated serums, steam-distilled hydrosols and fragrance massage oils.",
-      fr: "Argan, figue de barbarie, néroli, rose de Damas, S'ad, nigelle; botaniques pressés à froid, sérums concentrés, hydrolats distillés à la vapeur et huiles de massage parfumées.",
+      en: "Argan, prickly pear, neroli, damask rose, S'ad, nigella. Cold-pressed botanicals, concentrated serums, steam-distilled hydrosols and fragrance massage oils.",
+      fr: "Argan, figue de barbarie, néroli, rose de Damas, S'ad, nigelle. Botaniques pressés à froid, sérums concentrés, hydrolats distillés à la vapeur et huiles de massage parfumées.",
     },
     hero: "/brand_photos/argan-oil-dropper.jpg",
   },
@@ -38,8 +38,8 @@ export const WORLDS: World[] = [
     name: { en: "Heritage Packs", fr: "Packs Héritage" },
     tagline: { en: "Curated B2B packs from the maison", fr: "Packs B2B curatés de la maison" },
     lede: {
-      en: "Three themed packs composing the ritual from cleanse to nourish, built from the maison's six gammes for hôtels, spas and gifting.",
-      fr: "Trois packs thématiques qui composent le rituel du nettoyage au soin, construits à partir des six gammes de la maison pour hôtels, spas et cadeaux.",
+      en: "Three themed packs that compose the ritual from cleanse to nourish, built from the maison's six gammes.",
+      fr: "Trois packs thématiques qui composent le rituel du nettoyage au soin, construits à partir des six gammes de la maison.",
     },
     hero: "/brand_photos/gift-box-open.jpg",
   },

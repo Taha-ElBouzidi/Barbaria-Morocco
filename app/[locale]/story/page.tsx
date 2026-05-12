@@ -93,7 +93,7 @@ export default async function StoryPage({ params }: PageProps) {
           sizes="100vw"
         />
         <div
-          className="absolute inset-0 bg-[linear-gradient(180deg,rgba(27,48,34,0.4),rgba(27,48,34,0.8))]"
+          className="absolute inset-0 bg-[linear-gradient(180deg,rgba(44,24,16,0.4),rgba(44,24,16,0.8))]"
           aria-hidden
         />
         <div className="relative z-10 flex h-full items-end pb-16 lg:pb-24">
@@ -164,48 +164,68 @@ export default async function StoryPage({ params }: PageProps) {
         ))}
       </div>
 
-      {/* Amazigh Tifinagh — 6 symbols */}
-      <section className="bg-[var(--bb-bg-low)] border-y border-[var(--bb-line)] py-20 lg:py-32">
+      {/* Amazigh Tifinagh, 6 symbols. Pure cream surface so the page reads
+          uniformly. The previous gap-px + parent-background trick was
+          leaving a 1px sandstone bar bleeding outside the grid; replaced
+          with a single outer border + explicit per-cell borders that stop
+          cleanly at the grid edges. All type sits in gold tones. */}
+      <section className="bg-[var(--bb-bg)] py-20 lg:py-32">
         <div className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)]">
           <div className="text-center max-w-[720px] mx-auto mb-16 lg:mb-20 space-y-5">
             <Reveal>
               <Eyebrow tone="gold">{t("amazigh_eyebrow")}</Eyebrow>
             </Reveal>
             <Reveal delayMs={80}>
-              <DisplayHeading size="lg" as="h2" className="font-display italic">
+              <DisplayHeading size="lg" as="h2" className="font-display italic text-bb-secondary">
                 {t("amazigh_headline")}
               </DisplayHeading>
             </Reveal>
             <Reveal delayMs={160}>
-              <p className="font-display italic text-[clamp(16px,1.4vw,19px)] text-bb-on-surface-variant leading-relaxed">
+              <p className="font-display italic text-[clamp(16px,1.4vw,19px)] text-bb-secondary leading-relaxed">
                 {t("amazigh_intro")}
               </p>
             </Reveal>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[var(--bb-line)]">
-            {SYMBOLS.map((sym) => (
-              <Reveal key={sym.key} className="bg-[var(--bb-bg)]">
-                <div className="p-10 lg:p-12 text-center h-full flex flex-col items-center">
-                  <span
-                    className="font-display text-bb-secondary leading-none mb-6"
-                    style={{ fontSize: "84px" }}
-                    aria-hidden
-                  >
-                    {sym.glyph}
-                  </span>
-                  <p className="font-display italic text-[22px] text-bb-on-surface mb-1">
-                    {sym.name}
-                  </p>
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary mb-4">
-                    {t(`sym_${sym.key}_meaning`)}
-                  </p>
-                  <p className="text-[14px] leading-relaxed text-bb-on-surface-variant max-w-[320px]">
-                    {t(`sym_${sym.key}_desc`)}
-                  </p>
-                </div>
-              </Reveal>
-            ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border border-[var(--bb-line)] bg-[var(--bb-bg)] overflow-hidden">
+            {SYMBOLS.map((sym, idx) => {
+              const totalRows = Math.ceil(SYMBOLS.length / 3);
+              const rowOnLg = Math.floor(idx / 3);
+              const isLastRowOnLg = rowOnLg === totalRows - 1;
+              const isLastColOnLg = (idx + 1) % 3 === 0;
+              const isLastColOnSm = (idx + 1) % 2 === 0;
+              return (
+                <Reveal
+                  key={sym.key}
+                  className={[
+                    "bg-[var(--bb-bg)]",
+                    isLastColOnSm ? "sm:border-r-0" : "sm:border-r border-[var(--bb-line)]",
+                    isLastColOnLg ? "lg:border-r-0" : "lg:border-r lg:border-[var(--bb-line)]",
+                    isLastRowOnLg ? "lg:border-b-0" : "lg:border-b lg:border-[var(--bb-line)]",
+                    idx >= SYMBOLS.length - 2 ? "sm:border-b-0" : "sm:border-b border-[var(--bb-line)]",
+                  ].join(" ")}
+                >
+                  <div className="p-10 lg:p-12 text-center h-full flex flex-col items-center">
+                    <span
+                      className="font-display text-bb-secondary leading-none mb-6"
+                      style={{ fontSize: "84px" }}
+                      aria-hidden
+                    >
+                      {sym.glyph}
+                    </span>
+                    <p className="font-display italic text-[22px] text-bb-secondary mb-1">
+                      {sym.name}
+                    </p>
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary mb-4">
+                      {t(`sym_${sym.key}_meaning`)}
+                    </p>
+                    <p className="text-[14px] leading-relaxed text-bb-secondary/80 max-w-[320px]">
+                      {t(`sym_${sym.key}_desc`)}
+                    </p>
+                  </div>
+                </Reveal>
+              );
+            })}
           </div>
         </div>
       </section>

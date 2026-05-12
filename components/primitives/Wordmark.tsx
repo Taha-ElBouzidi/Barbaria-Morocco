@@ -16,7 +16,7 @@ interface WordmarkProps {
 }
 
 /**
- * Wordmark — typographic brand mark, "BARBARIA / MOROCCO" set in the
+ * Wordmark, typographic brand mark, "BARBARIA / MOROCCO" set in the
  * display serif, optionally crowned by the Amazigh diamond ornament.
  *
  * Variants:
@@ -91,7 +91,7 @@ export default function Wordmark({
     );
   }
 
-  // stacked (default — used in footer, menu drawer)
+  // stacked (default, used in footer, menu drawer)
   return (
     <div className={cn("flex flex-col items-center gap-2.5", className)}>
       <AmazighOrnament size={26} className="text-bb-secondary" />

@@ -1,7 +1,7 @@
 /**
  * SLICE 12 NOTE: Returns locale-resolved flat shapes.
  * `name`, `eyebrow`, `tagline`, and `lede` are plain strings for the
- * requested locale — NOT the nested `{ en, fr }` objects from lib/rituals.ts.
+ * requested locale, NOT the nested `{ en, fr }` objects from lib/rituals.ts.
  */
 
 import { createServerClient } from "@/lib/supabase/server";

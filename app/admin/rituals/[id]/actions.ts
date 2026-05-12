@@ -6,7 +6,7 @@ import { requireAdmin } from "@/lib/admin/auth";
 import { RitualSaveSchema, SubcatSaveSchema } from "@/lib/admin/rituals";
 
 // ---------------------------------------------------------------------------
-// saveRitual — update translations + hero + sort_order (cannot create/delete)
+// saveRitual, update translations + hero + sort_order (cannot create/delete)
 // ---------------------------------------------------------------------------
 
 export async function saveRitual(
@@ -73,7 +73,7 @@ export async function saveRitual(
 }
 
 // ---------------------------------------------------------------------------
-// addSubcat — create a new sub-category under a ritual
+// addSubcat, create a new sub-category under a ritual
 // ---------------------------------------------------------------------------
 
 export async function addSubcat(
@@ -126,7 +126,7 @@ export async function addSubcat(
 }
 
 // ---------------------------------------------------------------------------
-// renameSubcat — update translations for an existing sub-category
+// renameSubcat, update translations for an existing sub-category
 // ---------------------------------------------------------------------------
 
 export async function renameSubcat(
@@ -162,7 +162,7 @@ export async function renameSubcat(
 }
 
 // ---------------------------------------------------------------------------
-// reorderSubcat — set sort_order on a subcat
+// reorderSubcat, set sort_order on a subcat
 // ---------------------------------------------------------------------------
 
 export async function reorderSubcat(
@@ -204,7 +204,7 @@ export async function reorderSubcat(
 }
 
 // ---------------------------------------------------------------------------
-// deleteSubcat — blocked if any products reference it
+// deleteSubcat, blocked if any products reference it
 // ---------------------------------------------------------------------------
 
 export async function deleteSubcat(

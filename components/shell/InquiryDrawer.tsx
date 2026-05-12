@@ -105,7 +105,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
           </button>
         </div>
 
-        {/* Body — scrollable */}
+        {/* Body, scrollable */}
         <div className="flex-1 overflow-y-auto px-8 py-6">
           {!hasItems ? (
             /* Empty state */
@@ -133,7 +133,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
                 const image = entry?.image ?? null;
                 return (
                   <li key={productId} className="flex items-start gap-4 py-5">
-                    {/* Thumbnail — Photo primitive applies deep-green gradient + noise fallback */}
+                    {/* Thumbnail, Photo primitive applies deep-green gradient + noise fallback */}
                     <Photo
                       src={image}
                       alt={name}
@@ -189,7 +189,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
           )}
         </div>
 
-        {/* Footer — sticky */}
+        {/* Footer, sticky */}
         <div className="border-t border-bb-line px-8 py-6">
           <Link
             href="/contact"

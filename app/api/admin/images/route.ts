@@ -6,7 +6,7 @@ const ALLOWED_MIME = new Set(["image/jpeg", "image/png", "image/webp", "image/av
 const MAX_SIZE_BYTES = 8 * 1024 * 1024; // 8 MB
 
 // ---------------------------------------------------------------------------
-// POST /api/admin/images — upload one image to Supabase Storage
+// POST /api/admin/images, upload one image to Supabase Storage
 // ---------------------------------------------------------------------------
 
 export async function POST(req: NextRequest) {
@@ -83,7 +83,7 @@ export async function POST(req: NextRequest) {
       .single();
 
     if (insertError || !inserted) {
-      // Image in storage but no DB row — log and still return success with the path
+      // Image in storage but no DB row, log and still return success with the path
       console.error("[admin/images POST] DB insert failed:", insertError?.message);
     } else {
       imageId = inserted.id;
@@ -94,7 +94,7 @@ export async function POST(req: NextRequest) {
 }
 
 // ---------------------------------------------------------------------------
-// DELETE /api/admin/images?path=...&id=... — remove from storage + DB
+// DELETE /api/admin/images?path=...&id=..., remove from storage + DB
 // ---------------------------------------------------------------------------
 
 export async function DELETE(req: NextRequest) {

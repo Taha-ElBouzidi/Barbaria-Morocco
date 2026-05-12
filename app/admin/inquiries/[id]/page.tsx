@@ -23,7 +23,7 @@ function StatusBadge({ status }: { status: string }) {
 }
 
 function formatDate(iso: string | null | undefined) {
-  if (!iso) return "—";
+  if (!iso) return ",";
   return new Date(iso).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "long",
@@ -53,7 +53,7 @@ export default async function InquiryDetailPage({ params }: PageProps) {
   }>) ?? [];
 
   const replySubject = encodeURIComponent(
-    `Re: Barbaria Concierge inquiry — ${inquiry.company}`
+    `Re: Barbaria Concierge inquiry, ${inquiry.company}`
   );
   const mailtoHref = `mailto:${inquiry.email}?subject=${replySubject}`;
 
@@ -95,9 +95,9 @@ export default async function InquiryDetailPage({ params }: PageProps) {
             {[
               { label: "Contact name", value: inquiry.contact_name },
               { label: "Email", value: inquiry.email },
-              { label: "Phone", value: inquiry.phone ?? "—" },
+              { label: "Phone", value: inquiry.phone ?? "," },
               { label: "Company", value: inquiry.company },
-              { label: "Locale", value: inquiry.locale ?? "—" },
+              { label: "Locale", value: inquiry.locale ?? "," },
               { label: "Received", value: formatDate(inquiry.created_at) },
             ].map(({ label, value }) => (
               <div key={label} className="px-6 py-3 flex gap-4">
@@ -117,9 +117,9 @@ export default async function InquiryDetailPage({ params }: PageProps) {
                 Occasion
               </h2>
               {[
-                { label: "Occasion", value: inquiry.occasion ?? "—" },
+                { label: "Occasion", value: inquiry.occasion ?? "," },
                 { label: "Event date", value: formatDate(inquiry.event_date) },
-                { label: "Quantity", value: inquiry.quantity ?? "—" },
+                { label: "Quantity", value: inquiry.quantity ?? "," },
               ].map(({ label, value }) => (
                 <div key={label} className="px-6 py-3 flex gap-4">
                   <span className="font-sans text-[11px] uppercase tracking-[0.14em] text-bb-on-surface-variant w-32 shrink-0 pt-0.5">

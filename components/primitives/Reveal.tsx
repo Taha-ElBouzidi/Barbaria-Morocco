@@ -21,9 +21,9 @@ export default function Reveal({ children, delayMs = 0, as: Tag = "div", classNa
     const node = ref.current;
     if (!node) return;
     const rect = node.getBoundingClientRect();
-    // Already in or near viewport — no reveal animation needed.
+    // Already in or near viewport, no reveal animation needed.
     if (rect.top < window.innerHeight) return;
-    // Below the fold — hide and arm the observer.
+    // Below the fold, hide and arm the observer.
     setShown(false);
     const obs = new IntersectionObserver(
       (entries) => {

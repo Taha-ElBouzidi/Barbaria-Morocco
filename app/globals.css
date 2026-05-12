@@ -16,11 +16,13 @@
   --bb-outline-variant:    #c3c8c1;
   --bb-line:               #d1c7b7;
 
-  /* Brand */
-  --bb-primary:            #1b3022;
-  --bb-primary-container:  #2a4632;
-  --bb-on-primary:         #ffffff;
-  --bb-on-primary-soft:    #819986;
+  /* Brand. Espresso brown replaces botanical green per client direction
+     (May 2026). Brown reads more "Moroccan terroir" and matches the
+     reference frames + catalogue PDF. Gold (--bb-secondary) is unchanged. */
+  --bb-primary:            #2C1810;
+  --bb-primary-container:  #3d2010;
+  --bb-on-primary:         #fcf9f3;
+  --bb-on-primary-soft:    #8f7a6b;
   --bb-secondary:          #c5a059;
   --bb-secondary-fixed:    #ffdea5;
   --bb-secondary-fixed-dim:#e9c176;
@@ -64,7 +66,7 @@
 
   /* === BARBARIA BRAND PALETTE === */
 
-  /* Global — Moroccan Desert */
+  /* Global, Moroccan Desert */
   --color-sand:        #F7F2EA;   /* warm cream background */
   --color-sand-dark:   #EAD9C0;   /* secondary sand */
   --color-espresso:    #2C1A0E;   /* deep dark brown */
@@ -74,19 +76,19 @@
   --color-linen:       #EDE4D0;   /* natural linen */
   --color-terracotta:  #C86446;   /* warm terracotta */
 
-  /* Cosmetics accent — Pink */
+  /* Cosmetics accent, Pink */
   --color-pink:        #E299A1;
   --color-pink-light:  #F0C4CA;
 
-  /* Textile accent — Leather/Tan */
+  /* Textile accent, Leather/Tan */
   --color-leather:     #A0856A;
   --color-leather-light: #D4C5A9;
 
-  /* Food accent — Saffron/Spice */
+  /* Food accent, Saffron/Spice */
   --color-saffron:     #C4840A;
   --color-saffron-light: #E8B94F;
 
-  /* === STITCH REDESIGN — bb-* token mappings === */
+  /* === STITCH REDESIGN, bb-* token mappings === */
   --color-bb-bg:                   var(--bb-bg);
   --color-bb-bg-low:               var(--bb-bg-low);
   --color-bb-bg-mid:               var(--bb-bg-mid);
@@ -166,7 +168,7 @@
   }
   .noise-texture { position: relative; }
 
-  /* Glass — warm sand context */
+  /* Glass, warm sand context */
   .glass {
     background: rgba(247, 242, 234, 0.60);
     backdrop-filter: blur(16px) saturate(1.5);
@@ -175,7 +177,7 @@
     box-shadow: 0 4px 24px rgba(44, 26, 14, 0.06), inset 0 1px 0 rgba(255,255,255,0.6);
   }
 
-  /* Glass — dark espresso context */
+  /* Glass, dark espresso context */
   .glass-dark {
     background: rgba(44, 26, 14, 0.50);
     backdrop-filter: blur(20px) saturate(1.7);
@@ -276,7 +278,7 @@
     }
   }
 
-  /* Credential strip marquee — 40s gentle right-to-left loop */
+  /* Credential strip marquee, 40s gentle right-to-left loop */
   @keyframes bb-marquee {
     from { transform: translateX(0); }
     to   { transform: translateX(-50%); }

@@ -26,7 +26,7 @@ export default function BentoRituals() {
       {/* Bento grid: Hammam (large, col 1 row-span-2) | Botanical (top right) | Heritage (bottom right) */}
       <div className="grid grid-cols-1 lg:grid-cols-2 lg:grid-rows-[1fr_1fr] gap-6 lg:gap-8">
 
-        {/* Hammam — large, spans both rows on col 1 */}
+        {/* Hammam, large, spans both rows on col 1 */}
         <Link
           href="/rituals/hammam"
           className="lg:row-span-2 group relative overflow-hidden"
@@ -39,7 +39,7 @@ export default function BentoRituals() {
             containerClassName="aspect-[4/5] lg:aspect-auto lg:h-full transition-transform duration-300 group-hover:scale-[1.02]"
           />
           <div
-            className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(27,48,34,0.85))]"
+            className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(44,24,16,0.85))]"
             aria-hidden
           />
           <div className="absolute inset-x-0 bottom-0 p-8 lg:p-10 text-white space-y-2">
@@ -55,7 +55,7 @@ export default function BentoRituals() {
           </div>
         </Link>
 
-        {/* Botanical — small, top right */}
+        {/* Botanical, small, top right */}
         <Link href="/rituals/botanical" className="group relative overflow-hidden">
           <Photo
             src="/brand_photos/argan-oil-dropper.jpg"
@@ -65,7 +65,7 @@ export default function BentoRituals() {
             containerClassName="aspect-[4/3] transition-transform duration-300 group-hover:scale-[1.02]"
           />
           <div
-            className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(27,48,34,0.85))]"
+            className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(44,24,16,0.85))]"
             aria-hidden
           />
           <div className="absolute inset-x-0 bottom-0 p-6 lg:p-8 text-white space-y-2">
@@ -81,7 +81,7 @@ export default function BentoRituals() {
           </div>
         </Link>
 
-        {/* Heritage — medium, bottom right */}
+        {/* Heritage, medium, bottom right */}
         <Link href="/rituals/heritage" className="group relative overflow-hidden">
           <Photo
             src="/brand_photos/gift-box-open.jpg"
@@ -91,7 +91,7 @@ export default function BentoRituals() {
             containerClassName="aspect-[4/3] transition-transform duration-300 group-hover:scale-[1.02]"
           />
           <div
-            className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(27,48,34,0.85))]"
+            className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(44,24,16,0.85))]"
             aria-hidden
           />
           <div className="absolute inset-x-0 bottom-0 p-6 lg:p-8 text-white space-y-2">
@@ -108,7 +108,7 @@ export default function BentoRituals() {
         </Link>
       </div>
 
-      {/* Compose text card — full-width row below the grid */}
+      {/* Compose text card, full-width row below the grid */}
       <Link
         href="/contact"
         className="mt-6 lg:mt-8 block bg-bb-primary text-white p-10 lg:p-12 group"

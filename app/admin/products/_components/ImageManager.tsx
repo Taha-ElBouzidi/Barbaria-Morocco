@@ -59,7 +59,7 @@ export default function ImageManager({ productId, initialImages }: ImageManagerP
         ]);
       }
     } catch {
-      setError("Upload failed — please try again");
+      setError("Upload failed, please try again");
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";

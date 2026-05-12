@@ -77,7 +77,7 @@ export default function JournalEditor({ id, initialData }: JournalEditorProps) {
       const file = files[0];
       const fd = new FormData();
       fd.append("file", file);
-      // Use a generic context path — image route stores it at drafts/{uuid}/{filename}
+      // Use a generic context path, image route stores it at drafts/{uuid}/{filename}
       const res = await fetch("/api/admin/images", { method: "POST", body: fd });
       const json = await res.json();
       if (!res.ok || !json.ok) {
@@ -86,7 +86,7 @@ export default function JournalEditor({ id, initialData }: JournalEditorProps) {
         setImagePath(json.path);
       }
     } catch {
-      setUploadError("Upload failed — please try again");
+      setUploadError("Upload failed, please try again");
     } finally {
       setUploading(false);
       if (fileInputRef.current) fileInputRef.current.value = "";

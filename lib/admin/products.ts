@@ -2,7 +2,7 @@ import { createServiceRoleClient } from "@/lib/supabase/service";
 import { z } from "zod";
 
 // ---------------------------------------------------------------------------
-// Zod schema — shared between create and update
+// Zod schema, shared between create and update
 // ---------------------------------------------------------------------------
 
 export const ProductSaveSchema = z.object({

@@ -19,11 +19,11 @@ const USER_ID_HEADER = "x-bb-user-id";
  *
  * Returns `null` if no signed-in user OR the user is not in admin_users.
  *
- * NOTE: this never calls supabase.auth.getUser() — that would race with
+ * NOTE: this never calls supabase.auth.getUser(), that would race with
  * middleware's call and consume the rolling refresh token, causing random
  * logouts on navigation. The user.id is trusted because it was set by our
  * own middleware AFTER getUser validated server-side. Clients cannot inject
- * the header — middleware strips it from inbound requests before setting.
+ * the header, middleware strips it from inbound requests before setting.
  */
 export async function getCurrentAdmin(): Promise<AdminUser | null> {
   const headerStore = await headers();

@@ -7,7 +7,7 @@ import { requireAdmin } from "@/lib/admin/auth";
 import { JournalSaveSchema } from "@/lib/admin/journal";
 
 // ---------------------------------------------------------------------------
-// saveJournalCard — upsert card + translations
+// saveJournalCard, upsert card + translations
 // ---------------------------------------------------------------------------
 
 export async function saveJournalCard(
@@ -91,7 +91,7 @@ export async function saveJournalCard(
 }
 
 // ---------------------------------------------------------------------------
-// setJournalStatus — publish / unpublish
+// setJournalStatus, publish / unpublish
 // ---------------------------------------------------------------------------
 
 export async function setJournalStatus(

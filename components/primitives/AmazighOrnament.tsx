@@ -1,11 +1,11 @@
 /**
- * AmazighOrnament — the small diamond-and-star motif used above the
+ * AmazighOrnament, the small diamond-and-star motif used above the
  * Barbaria wordmark. Two interlocking narrow diamonds forming a
  * 4-pointed star, a common Amazigh tetraskelion shape. Inherits color
  * from `currentColor`, sized in px via the `size` prop.
  *
  * Distinct from `TifinaghMark` (which renders the unicode glyph ⵣ).
- * This ornament is geometric, decorative, and brand-specific — used
+ * This ornament is geometric, decorative, and brand-specific, used
  * exclusively in the wordmark composition.
  */
 export default function AmazighOrnament({

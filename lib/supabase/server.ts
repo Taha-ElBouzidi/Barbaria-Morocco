@@ -6,7 +6,7 @@ import { cookies } from "next/headers";
  * Reads + writes auth cookies via Next 16's `cookies()` API.
  *
  * Uses the anon key. Operations are RLS-gated. For service-role operations
- * (bypassing RLS), use `lib/supabase/service.ts` instead — but only inside
+ * (bypassing RLS), use `lib/supabase/service.ts` instead, but only inside
  * code paths that have already verified the caller is an admin.
  */
 export async function createServerClient() {
