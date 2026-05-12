@@ -25,14 +25,18 @@ export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Strip any client-injected value of our internal header so it can't be
-  // spoofed before middleware sets the trusted value.
+  // spoofed before middleware sets the trusted value below.
   const upstreamHeaders = new Headers(request.headers);
   upstreamHeaders.delete(USER_ID_HEADER);
 
-  // Set up the Supabase response that we'll mutate cookies into.
-  let supabaseResponse = NextResponse.next({ request: { headers: upstreamHeaders } });
+  // Initial response. setAll (called inside getUser when tokens refresh)
+  // writes Set-Cookie headers DIRECTLY onto this response object —
+  // we never re-create the response or copy cookies by name/value, which
+  // would strip critical options (maxAge, httpOnly, secure, sameSite).
+  let supabaseResponse = NextResponse.next({
+    request: { headers: upstreamHeaders },
+  });
 
-  // Create the Supabase client tied to this request/response.
   const supabase = createServerClient(
     process.env.NEXT_PUBLIC_SUPABASE_URL!,
     process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!,
@@ -42,12 +46,13 @@ export async function proxy(request: NextRequest) {
           return request.cookies.getAll();
         },
         setAll(cookiesToSet) {
+          // Mirror to request cookies so any subsequent SDK calls in this
+          // same middleware invocation see the refreshed tokens.
           for (const { name, value } of cookiesToSet) {
             request.cookies.set(name, value);
           }
-          supabaseResponse = NextResponse.next({
-            request: { headers: upstreamHeaders },
-          });
+          // Write Set-Cookie headers to the existing response (preserves
+          // all cookie options). Do NOT recreate supabaseResponse here.
           for (const { name, value, options } of cookiesToSet) {
             supabaseResponse.cookies.set(name, value, options);
           }
@@ -56,29 +61,31 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  // CRITICAL: refresh the session here, in middleware only. Server Components
-  // must NOT call getUser() — they read the trusted user.id from headers
-  // instead. This avoids the rolling-refresh-token race condition where
-  // two Supabase clients try to refresh the same access token.
+  // The ONLY getUser() call in the app. Layouts/RSCs read user.id from the
+  // trusted header below, never via their own getUser(). This is what kills
+  // the rolling-refresh-token race that was logging users out on nav.
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Set the trusted user-id header (or leave unset). Downstream layouts and
-  // RSCs read this via headers().get(USER_ID_HEADER) to avoid getUser races.
+  // If authenticated, rebuild the response with the trusted user-id header
+  // so downstream RSCs can read it. Preserve cookies by copying Set-Cookie
+  // HEADERS verbatim (preserves maxAge/httpOnly/secure/sameSite — critical;
+  // copying via ResponseCookies.set(name, value) would lose those options
+  // and the browser would treat the session as ephemeral / mis-scoped).
   if (user) {
     upstreamHeaders.set(USER_ID_HEADER, user.id);
-    supabaseResponse = NextResponse.next({
+    const responseWithHeader = NextResponse.next({
       request: { headers: upstreamHeaders },
     });
-    // Re-attach any cookies that were set during getUser()'s refresh.
-    for (const cookie of request.cookies.getAll()) {
-      supabaseResponse.cookies.set(cookie);
+    for (const setCookie of supabaseResponse.headers.getSetCookie()) {
+      responseWithHeader.headers.append("Set-Cookie", setCookie);
     }
+    supabaseResponse = responseWithHeader;
   }
 
-  // Gate protected /admin/* paths — just check session presence.
-  // admin_users membership is verified by the layout (using the header above).
+  // Gate protected /admin/* paths. Middleware only checks session presence;
+  // admin_users membership is verified by the layout via the header above.
   if (isAdminProtectedPath(pathname)) {
     if (!user) {
       const url = request.nextUrl.clone();
@@ -89,20 +96,17 @@ export async function proxy(request: NextRequest) {
     return supabaseResponse;
   }
 
-  // All other /admin/* paths (e.g. /admin/login) skip next-intl; no locale
-  // prefixes inside the admin shell.
+  // /admin/login (and friends) skip next-intl entirely.
   if (pathname.startsWith("/admin")) {
     return supabaseResponse;
   }
 
-  // Public site: hand off to next-intl. Merge Supabase's cookies into the
-  // intl response so any session-refresh writes survive.
+  // Public site: hand to next-intl. Carry over Set-Cookie headers so any
+  // session refresh that happened in middleware survives the handoff.
   const intlResponse = intlMiddleware(request);
-
-  for (const cookie of supabaseResponse.cookies.getAll()) {
-    intlResponse.cookies.set(cookie);
+  for (const setCookie of supabaseResponse.headers.getSetCookie()) {
+    intlResponse.headers.append("Set-Cookie", setCookie);
   }
-
   return intlResponse;
 }
 
