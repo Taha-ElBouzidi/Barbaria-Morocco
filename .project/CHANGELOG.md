@@ -8,6 +8,7 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ## 2026-05-12
 
+- 11:56 CET. Slice 4: db/migrations/0001_rls.sql written. 18 ENABLE RLS statements + 33 policies (anon read on public catalogue with status='published' filter on products + journal_cards; admin read/write on catalogue; admin read on audit_log + inquiry_items; admin read + update on inquiries; admin all on admin_users). Pending MCP apply by controller.
 - 13:15 CET. Slice 3: migration 0000_initial applied to Supabase via MCP `apply_migration`. 18 public tables created, 8 enums, 13 intra-schema FKs, 8 cross-schema FKs to auth.users, 10 indexes. `list_tables` confirms all 18 present with 0 rows; `get_advisors` flags expected RLS-disabled critical (resolved in Slice 4).
 - 13:00 CET. Slice 2: Drizzle schema for 18 tables (3 rituals + 5 products-related + 5 ateliers/journal + 5 inquiry/admin/audit + 8 enums + relations). Migration 0000_initial.sql generated (drizzle-kit starts at 0000). Hand-edited to add 5 ALTER TABLE blocks (8 individual FK constraints) to auth.users for admin_users.id, products.created_by/updated_by, journal_cards.created_by/updated_by, inquiries.assigned_to, audit_log.actor_id. Build green.
 - 12:05 CET. Slice 1: installed @supabase/supabase-js + @supabase/ssr + drizzle-orm + postgres + zod + drizzle-kit + tsx. Scaffolded .env.example, .env.local (gitignored), drizzle.config.ts.
