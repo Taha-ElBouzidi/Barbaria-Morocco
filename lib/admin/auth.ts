@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation";
 import { createServerClient } from "@/lib/supabase/server";
+import { createServiceRoleClient } from "@/lib/supabase/service";
 
 export interface AdminUser {
   id: string;
@@ -14,6 +15,10 @@ export interface AdminUser {
  *
  * Returns `null` if not signed in OR signed in but not in admin_users.
  * Use this in code paths that need to know admin state without redirecting.
+ *
+ * Uses service-role to read admin_users (bypasses RLS) since we already
+ * verified the user via getUser() above. This avoids intermittent JWT/RLS
+ * issues that previously caused random logouts on admin nav.
  */
 export async function getCurrentAdmin(): Promise<AdminUser | null> {
   const supabase = await createServerClient();
@@ -22,7 +27,8 @@ export async function getCurrentAdmin(): Promise<AdminUser | null> {
   } = await supabase.auth.getUser();
   if (!user) return null;
 
-  const { data, error } = await supabase
+  const service = createServiceRoleClient();
+  const { data, error } = await service
     .from("admin_users")
     .select("id, email, role, display_name")
     .eq("id", user.id)
