@@ -5,7 +5,7 @@ import { routing } from "./i18n/routing";
 
 const intlMiddleware = createIntlMiddleware(routing);
 
-const ADMIN_PUBLIC_PATHS = ["/admin/login"];
+const ADMIN_PUBLIC_PATHS = ["/admin/login", "/admin/auth/callback"];
 
 function isAdminProtectedPath(pathname: string): boolean {
   if (!pathname.startsWith("/admin")) return false;
@@ -78,8 +78,8 @@ export async function proxy(request: NextRequest) {
     return supabaseResponse;
   }
 
-  // All other /admin/* paths (e.g. /admin/login) skip next-intl; no locale
-  // prefixes inside the admin shell.
+  // All other /admin/* paths (e.g. /admin/login, /admin/auth/callback) skip
+  // next-intl; no locale prefixes inside the admin shell.
   if (pathname.startsWith("/admin")) {
     return supabaseResponse;
   }
