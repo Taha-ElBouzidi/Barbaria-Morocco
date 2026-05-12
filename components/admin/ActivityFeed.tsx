@@ -1,4 +1,5 @@
 import { createServerClient } from "@/lib/supabase/server";
+import { createServiceRoleClient } from "@/lib/supabase/service";
 
 const ENTITY_LABEL: Record<string, string> = {
   product: "product",
@@ -39,6 +40,23 @@ export default async function ActivityFeed() {
 
   const entries = data ?? [];
 
+  // Resolve actor names from admin_users (service role bypasses RLS).
+  // actor_id is null for seed-time / system-initiated rows.
+  const actorIds = Array.from(
+    new Set(entries.map((e) => e.actor_id).filter((id): id is string => !!id))
+  );
+  const actorMap = new Map<string, string>();
+  if (actorIds.length > 0) {
+    const service = createServiceRoleClient();
+    const { data: admins } = await service
+      .from("admin_users")
+      .select("id, email, display_name")
+      .in("id", actorIds);
+    for (const a of admins ?? []) {
+      actorMap.set(a.id, a.display_name || a.email);
+    }
+  }
+
   return (
     <section>
       <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-4">
@@ -51,15 +69,17 @@ export default async function ActivityFeed() {
           {entries.map((e) => {
             const entityLabel = ENTITY_LABEL[e.entity_type] ?? e.entity_type;
             const verb = ACTION_VERB[e.action] ?? e.action;
-            // Try to extract a human name from after_state or before_state.
-            // actor names resolve to "Someone" until Sprint 2.5 adds actor_id lookup.
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const state = (e.after_state as any) || (e.before_state as any) || {};
             const name = state.slug || state.name || state.id || e.entity_id;
+            const actor = e.actor_id
+              ? actorMap.get(e.actor_id) ?? "Unknown admin"
+              : "System";
             return (
               <li key={e.id} className="py-3 flex items-baseline justify-between gap-4">
                 <p className="font-sans text-[13px] text-bb-on-surface">
-                  Someone {verb} {entityLabel}{" "}
+                  <span className="font-medium">{actor}</span> {verb}{" "}
+                  {entityLabel}{" "}
                   <span className="font-medium">{name}</span>
                 </p>
                 <span className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant whitespace-nowrap">
