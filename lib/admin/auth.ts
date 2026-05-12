@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import { createServerClient } from "@/lib/supabase/server";
+import { headers } from "next/headers";
 import { createServiceRoleClient } from "@/lib/supabase/service";
 
 export interface AdminUser {
@@ -9,29 +9,32 @@ export interface AdminUser {
   displayName: string | null;
 }
 
+// Must match the constant in proxy.ts.
+const USER_ID_HEADER = "x-bb-user-id";
+
 /**
- * Reads the current authenticated user and verifies they are in
- * public.admin_users. Returns the admin row.
+ * Reads the current authenticated admin from the user-id header that
+ * middleware (proxy.ts) set after validating the session. Looks up
+ * admin_users via service-role (bypasses RLS).
  *
- * Returns `null` if not signed in OR signed in but not in admin_users.
- * Use this in code paths that need to know admin state without redirecting.
+ * Returns `null` if no signed-in user OR the user is not in admin_users.
  *
- * Uses service-role to read admin_users (bypasses RLS) since we already
- * verified the user via getUser() above. This avoids intermittent JWT/RLS
- * issues that previously caused random logouts on admin nav.
+ * NOTE: this never calls supabase.auth.getUser() — that would race with
+ * middleware's call and consume the rolling refresh token, causing random
+ * logouts on navigation. The user.id is trusted because it was set by our
+ * own middleware AFTER getUser validated server-side. Clients cannot inject
+ * the header — middleware strips it from inbound requests before setting.
  */
 export async function getCurrentAdmin(): Promise<AdminUser | null> {
-  const supabase = await createServerClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-  if (!user) return null;
+  const headerStore = await headers();
+  const userId = headerStore.get(USER_ID_HEADER);
+  if (!userId) return null;
 
   const service = createServiceRoleClient();
   const { data, error } = await service
     .from("admin_users")
     .select("id, email, role, display_name")
-    .eq("id", user.id)
+    .eq("id", userId)
     .single();
 
   if (error || !data) return null;

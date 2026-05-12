@@ -14,11 +14,23 @@ function isAdminProtectedPath(pathname: string): boolean {
   );
 }
 
+// Custom header used to pass the validated user.id from middleware to
+// downstream Server Components (e.g., the admin layout). This avoids a
+// second supabase.auth.getUser() call in the layout, which would race with
+// the middleware's call and consume the rolling refresh token in flight.
+// See: https://github.com/supabase/ssr/issues/68 and Supabase Next.js docs.
+const USER_ID_HEADER = "x-bb-user-id";
+
 export async function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
+  // Strip any client-injected value of our internal header so it can't be
+  // spoofed before middleware sets the trusted value.
+  const upstreamHeaders = new Headers(request.headers);
+  upstreamHeaders.delete(USER_ID_HEADER);
+
   // Set up the Supabase response that we'll mutate cookies into.
-  let supabaseResponse = NextResponse.next({ request });
+  let supabaseResponse = NextResponse.next({ request: { headers: upstreamHeaders } });
 
   // Create the Supabase client tied to this request/response.
   const supabase = createServerClient(
@@ -33,7 +45,9 @@ export async function proxy(request: NextRequest) {
           for (const { name, value } of cookiesToSet) {
             request.cookies.set(name, value);
           }
-          supabaseResponse = NextResponse.next({ request });
+          supabaseResponse = NextResponse.next({
+            request: { headers: upstreamHeaders },
+          });
           for (const { name, value, options } of cookiesToSet) {
             supabaseResponse.cookies.set(name, value, options);
           }
@@ -42,22 +56,29 @@ export async function proxy(request: NextRequest) {
     }
   );
 
-  // CRITICAL: refresh the session. Per Supabase docs, do NOT put any logic
-  // between createServerClient and getUser; otherwise users may be randomly
-  // logged out. getUser() validates against Supabase's auth server (unlike
-  // getSession() which only reads cookies without server-side validation).
+  // CRITICAL: refresh the session here, in middleware only. Server Components
+  // must NOT call getUser() — they read the trusted user.id from headers
+  // instead. This avoids the rolling-refresh-token race condition where
+  // two Supabase clients try to refresh the same access token.
   const {
     data: { user },
   } = await supabase.auth.getUser();
 
-  // Gate protected /admin/* paths.
-  //
-  // Middleware only checks: is there a logged-in user? It does NOT re-verify
-  // admin_users membership here — that's the layout's job (getCurrentAdmin
-  // in app/admin/layout.tsx). Re-querying admin_users in middleware caused
-  // intermittent logouts when the query hiccupped (transient errors triggered
-  // supabase.auth.signOut(), forcibly invalidating an otherwise-valid session).
-  // The login server action already verifies admin_users at sign-in time.
+  // Set the trusted user-id header (or leave unset). Downstream layouts and
+  // RSCs read this via headers().get(USER_ID_HEADER) to avoid getUser races.
+  if (user) {
+    upstreamHeaders.set(USER_ID_HEADER, user.id);
+    supabaseResponse = NextResponse.next({
+      request: { headers: upstreamHeaders },
+    });
+    // Re-attach any cookies that were set during getUser()'s refresh.
+    for (const cookie of request.cookies.getAll()) {
+      supabaseResponse.cookies.set(cookie);
+    }
+  }
+
+  // Gate protected /admin/* paths — just check session presence.
+  // admin_users membership is verified by the layout (using the header above).
   if (isAdminProtectedPath(pathname)) {
     if (!user) {
       const url = request.nextUrl.clone();
