@@ -8,6 +8,7 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ## 2026-05-12
 
+- 14:30 CET. Slice 5 apply: 0002_triggers migration applied to Supabase. moddatetime extension enabled, 5 updated_at triggers, log_audit() SECURITY DEFINER function, 7 audit triggers active. Smoke test (insert + update + delete a temp ritual) confirms audit_log captures all 3 operations.
 - 14:10 CET. Slice 5: db/migrations/0002_triggers.sql written. moddatetime extension enabled. 5 BEFORE UPDATE triggers maintain updated_at on rituals/ateliers/products/journal_cards/inquiries. log_audit() SECURITY DEFINER plpgsql function + 7 AFTER triggers track every INSERT/UPDATE/DELETE on tracked entities into audit_log (entity_type passed as trigger argument). Pending MCP apply by controller.
 - 13:30 CET. Slice 4 apply: 0001_rls migration applied to Supabase via MCP. RLS enabled on all 18 public tables, 33 policies created. `get_advisors(security)` returns zero lints (down from 18 critical RLS-disabled warnings post-Slice 3).
 - 11:56 CET. Slice 4: db/migrations/0001_rls.sql written. 18 ENABLE RLS statements + 33 policies (anon read on public catalogue with status='published' filter on products + journal_cards; admin read/write on catalogue; admin read on audit_log + inquiry_items; admin read + update on inquiries; admin all on admin_users). Pending MCP apply by controller.
