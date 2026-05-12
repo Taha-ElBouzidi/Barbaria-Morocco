@@ -8,6 +8,7 @@ Format: `YYYY-MM-DD HH:MM TZ — <one-line summary>`
 
 ## 2026-05-12
 
+- 13:00 CET. Slice 2: Drizzle schema for 18 tables (3 rituals + 5 products-related + 5 ateliers/journal + 5 inquiry/admin/audit + 8 enums + relations). Migration 0000_initial.sql generated (drizzle-kit starts at 0000). Hand-edited to add 5 ALTER TABLE blocks (8 individual FK constraints) to auth.users for admin_users.id, products.created_by/updated_by, journal_cards.created_by/updated_by, inquiries.assigned_to, audit_log.actor_id. Build green.
 - 12:05 CET. Slice 1: installed @supabase/supabase-js + @supabase/ssr + drizzle-orm + postgres + zod + drizzle-kit + tsx. Scaffolded .env.example, .env.local (gitignored), drizzle.config.ts.
 - 11:00 CET. Sprint 2 kickoff: spec at `.project/specs/2026-05-12-sprint-2-admin-db-design.md`. Supabase project `jnparcnvkghiuryarbac` (BARBARIA DASH, eu-west-1) provisioned, MCP authenticated, public schema empty and ready for migrations. Phase A scope: products/journal/ateliers CRUD admin + read-only inquiry inbox + audit log.
 
