@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Barbaria — Sahara Gold Prestige Effect — pick one</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #fcf9f3;
+    --brown: #2C1810;
+    --brown-deep: #1a0d07;
+    --gold: #c5a059;
+    --gold-light: #e9c176;
+    --line: #d1c7b7;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: var(--bg); color: var(--brown); font-family: 'Montserrat', system-ui, sans-serif; }
+  body { padding: 48px 32px 96px; }
+  header { max-width: 1280px; margin: 0 auto 64px; text-align: center; }
+  header .eyebrow {
+    font-family: 'Cormorant Garamond', serif; color: var(--gold);
+    font-size: 12px; letter-spacing: 0.4em; text-transform: uppercase; margin-bottom: 16px;
+  }
+  header h1 {
+    font-family: 'Cormorant Garamond', serif; color: var(--brown);
+    font-size: clamp(32px, 4vw, 52px); font-weight: 700; letter-spacing: 0.02em;
+  }
+  header p {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    color: #5a4a3a; font-size: 18px; margin-top: 12px;
+  }
+
+  .grid {
+    max-width: 1280px; margin: 0 auto;
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
+    gap: 32px;
+  }
+  .card {
+    border: 1px solid var(--line); background: #fff;
+  }
+  .card .surface {
+    position: relative; overflow: hidden;
+    height: 360px;
+    background: linear-gradient(160deg, var(--brown) 0%, var(--brown-deep) 60%, #3d2010 100%);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    color: #fff; padding: 24px;
+  }
+  .surface .glyph {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 56px; color: var(--gold); line-height: 1; margin-bottom: 18px;
+  }
+  .surface h2 {
+    font-family: 'Cormorant Garamond', serif; font-weight: 700;
+    font-size: 38px; letter-spacing: 0.06em; text-transform: uppercase;
+    color: #fff; text-align: center;
+  }
+  .surface .tag {
+    font-family: 'Cormorant Garamond', serif; color: var(--gold);
+    font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase; margin-top: 12px;
+  }
+  .card .label {
+    padding: 24px 28px; border-top: 1px solid var(--line);
+  }
+  .card .label .pill {
+    display: inline-block; padding: 4px 10px; border: 1px solid var(--gold); color: var(--gold);
+    font-size: 11px; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 12px;
+  }
+  .card .label h3 {
+    font-family: 'Cormorant Garamond', serif; font-size: 22px; color: var(--brown);
+    margin-bottom: 8px;
+  }
+  .card .label p {
+    font-family: 'Cormorant Garamond', serif; font-style: italic;
+    color: #5a4a3a; font-size: 14px; line-height: 1.6;
+  }
+
+  /* ──────────────────────────────────────────
+     OPTION A — gold dust grain (static)
+     ────────────────────────────────────────── */
+  .effect-a::after {
+    content: ''; position: absolute; inset: 0; pointer-events: none;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='400' height='400' viewBox='0 0 400 400'><g fill='%23c5a059'><circle cx='12' cy='22' r='0.9' opacity='0.7'/><circle cx='48' cy='8' r='0.6' opacity='0.5'/><circle cx='73' cy='34' r='1.1' opacity='0.8'/><circle cx='102' cy='15' r='0.7' opacity='0.6'/><circle cx='130' cy='44' r='0.9' opacity='0.7'/><circle cx='162' cy='9' r='0.5' opacity='0.4'/><circle cx='191' cy='28' r='1.2' opacity='0.9'/><circle cx='223' cy='17' r='0.8' opacity='0.7'/><circle cx='251' cy='38' r='0.6' opacity='0.5'/><circle cx='283' cy='12' r='1.0' opacity='0.8'/><circle cx='314' cy='31' r='0.7' opacity='0.6'/><circle cx='342' cy='22' r='0.9' opacity='0.7'/><circle cx='372' cy='9' r='0.5' opacity='0.4'/><circle cx='9' cy='65' r='0.8' opacity='0.7'/><circle cx='38' cy='86' r='1.1' opacity='0.8'/><circle cx='66' cy='53' r='0.6' opacity='0.5'/><circle cx='95' cy='72' r='0.9' opacity='0.7'/><circle cx='124' cy='91' r='1.0' opacity='0.8'/><circle cx='152' cy='58' r='0.5' opacity='0.4'/><circle cx='181' cy='77' r='1.2' opacity='0.9'/><circle cx='210' cy='65' r='0.7' opacity='0.6'/><circle cx='238' cy='84' r='0.8' opacity='0.7'/><circle cx='267' cy='55' r='0.6' opacity='0.5'/><circle cx='295' cy='73' r='1.0' opacity='0.8'/><circle cx='324' cy='92' r='0.9' opacity='0.7'/><circle cx='352' cy='61' r='0.5' opacity='0.4'/><circle cx='380' cy='79' r='1.1' opacity='0.8'/><circle cx='15' cy='120' r='0.7' opacity='0.6'/><circle cx='43' cy='108' r='1.0' opacity='0.8'/><circle cx='72' cy='133' r='0.6' opacity='0.5'/><circle cx='100' cy='115' r='0.9' opacity='0.7'/><circle cx='128' cy='141' r='1.2' opacity='0.9'/><circle cx='157' cy='108' r='0.5' opacity='0.4'/><circle cx='186' cy='126' r='0.8' opacity='0.7'/><circle cx='214' cy='115' r='1.1' opacity='0.8'/><circle cx='243' cy='139' r='0.7' opacity='0.6'/><circle cx='272' cy='106' r='0.9' opacity='0.7'/><circle cx='300' cy='128' r='0.6' opacity='0.5'/><circle cx='329' cy='118' r='1.0' opacity='0.8'/><circle cx='358' cy='141' r='0.8' opacity='0.7'/><circle cx='386' cy='110' r='0.5' opacity='0.4'/><circle cx='11' cy='171' r='1.1' opacity='0.8'/><circle cx='40' cy='192' r='0.7' opacity='0.6'/><circle cx='68' cy='160' r='0.9' opacity='0.7'/><circle cx='97' cy='184' r='1.2' opacity='0.9'/><circle cx='126' cy='175' r='0.5' opacity='0.4'/><circle cx='154' cy='196' r='0.8' opacity='0.7'/><circle cx='183' cy='164' r='1.0' opacity='0.8'/><circle cx='211' cy='187' r='0.6' opacity='0.5'/><circle cx='240' cy='173' r='0.9' opacity='0.7'/><circle cx='269' cy='195' r='0.7' opacity='0.6'/><circle cx='297' cy='162' r='1.1' opacity='0.8'/><circle cx='326' cy='184' r='0.8' opacity='0.7'/><circle cx='354' cy='173' r='0.5' opacity='0.4'/><circle cx='383' cy='196' r='1.0' opacity='0.8'/><circle cx='16' cy='226' r='0.6' opacity='0.5'/><circle cx='45' cy='245' r='0.9' opacity='0.7'/><circle cx='73' cy='213' r='1.2' opacity='0.9'/><circle cx='102' cy='236' r='0.7' opacity='0.6'/><circle cx='131' cy='258' r='0.8' opacity='0.7'/><circle cx='159' cy='225' r='1.0' opacity='0.8'/><circle cx='188' cy='245' r='0.5' opacity='0.4'/><circle cx='216' cy='216' r='0.9' opacity='0.7'/><circle cx='245' cy='238' r='1.1' opacity='0.8'/><circle cx='273' cy='258' r='0.6' opacity='0.5'/><circle cx='302' cy='225' r='0.8' opacity='0.7'/><circle cx='331' cy='246' r='0.7' opacity='0.6'/><circle cx='359' cy='216' r='1.0' opacity='0.8'/><circle cx='388' cy='238' r='0.9' opacity='0.7'/><circle cx='13' cy='280' r='0.5' opacity='0.4'/><circle cx='42' cy='298' r='1.1' opacity='0.8'/><circle cx='70' cy='268' r='0.7' opacity='0.6'/><circle cx='99' cy='289' r='0.9' opacity='0.7'/><circle cx='127' cy='310' r='1.2' opacity='0.9'/><circle cx='156' cy='278' r='0.6' opacity='0.5'/><circle cx='185' cy='298' r='0.8' opacity='0.7'/><circle cx='213' cy='269' r='1.0' opacity='0.8'/><circle cx='242' cy='290' r='0.5' opacity='0.4'/><circle cx='270' cy='310' r='0.9' opacity='0.7'/><circle cx='299' cy='278' r='1.1' opacity='0.8'/><circle cx='328' cy='298' r='0.7' opacity='0.6'/><circle cx='356' cy='269' r='0.8' opacity='0.7'/><circle cx='385' cy='290' r='1.0' opacity='0.8'/><circle cx='10' cy='335' r='0.9' opacity='0.7'/><circle cx='39' cy='356' r='0.6' opacity='0.5'/><circle cx='67' cy='325' r='1.1' opacity='0.8'/><circle cx='96' cy='346' r='0.5' opacity='0.4'/><circle cx='125' cy='366' r='0.8' opacity='0.7'/><circle cx='153' cy='332' r='1.0' opacity='0.8'/><circle cx='182' cy='354' r='0.7' opacity='0.6'/><circle cx='210' cy='325' r='0.9' opacity='0.7'/><circle cx='239' cy='346' r='1.2' opacity='0.9'/><circle cx='268' cy='366' r='0.6' opacity='0.5'/><circle cx='296' cy='332' r='0.8' opacity='0.7'/><circle cx='325' cy='354' r='1.1' opacity='0.8'/><circle cx='353' cy='325' r='0.5' opacity='0.4'/><circle cx='382' cy='346' r='1.0' opacity='0.8'/></g></svg>");
+    background-size: 400px 400px;
+    background-repeat: repeat;
+    opacity: 0.55;
+    mix-blend-mode: screen;
+  }
+
+  /* ──────────────────────────────────────────
+     OPTION B — constellation scatter (twinkling)
+     ────────────────────────────────────────── */
+  .effect-b .star {
+    position: absolute;
+    color: var(--gold);
+    font-family: 'Cormorant Garamond', serif;
+    line-height: 1;
+    text-shadow: 0 0 6px rgba(201, 160, 89, 0.45);
+    pointer-events: none;
+    animation: twinkle 4s ease-in-out infinite;
+  }
+  @keyframes twinkle {
+    0%, 100% { opacity: 0.15; transform: scale(0.85); }
+    50%      { opacity: 0.95; transform: scale(1.15); }
+  }
+
+  /* ──────────────────────────────────────────
+     OPTION C — shimmer sweep (animated)
+     ────────────────────────────────────────── */
+  .effect-c::before {
+    content: ''; position: absolute; inset: -40%;
+    background: radial-gradient(ellipse 40% 55% at center,
+                                rgba(201, 160, 89, 0.22),
+                                rgba(201, 160, 89, 0.08) 40%,
+                                transparent 70%);
+    animation: drift 7s ease-in-out infinite;
+    pointer-events: none;
+  }
+  @keyframes drift {
+    0%   { transform: translate(-30%, -30%) rotate(15deg); }
+    50%  { transform: translate(30%, 30%)   rotate(15deg); }
+    100% { transform: translate(-30%, -30%) rotate(15deg); }
+  }
+  .effect-c::after {
+    content: ''; position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='200' height='200'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/><feColorMatrix values='0 0 0 0 0.78 0 0 0 0 0.63 0 0 0 0 0.35 0 0 0 0.15 0'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    mix-blend-mode: overlay;
+    opacity: 0.4;
+    pointer-events: none;
+  }
+
+  /* ──────────────────────────────────────────
+     Footer (decision row)
+     ────────────────────────────────────────── */
+  .decision {
+    max-width: 1280px; margin: 64px auto 0;
+    padding: 32px; background: #fff; border: 1px solid var(--line); text-align: center;
+  }
+  .decision .eyebrow {
+    color: var(--gold); font-size: 11px; letter-spacing: 0.4em; text-transform: uppercase;
+    font-family: 'Cormorant Garamond', serif; margin-bottom: 12px;
+  }
+  .decision p {
+    font-family: 'Cormorant Garamond', serif; font-style: italic; color: var(--brown);
+    font-size: 18px;
+  }
+  .decision code {
+    font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+    background: #f6f3ed; padding: 2px 8px; border: 1px solid var(--line);
+    color: var(--brown); font-style: normal;
+  }
+
+  /* Mobile cleanup */
+  @media (max-width: 600px) {
+    body { padding: 24px 16px 48px; }
+    .card .surface { height: 280px; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="eyebrow">Barbaria · Brand Direction Demo</div>
+  <h1>Sahara Gold Prestige</h1>
+  <p>Three treatments for the brown surfaces. Pick one.</p>
+</header>
+
+<div class="grid">
+
+  <!-- OPTION A -->
+  <article class="card">
+    <div class="surface effect-a">
+      <div class="glyph">ⵣ</div>
+      <h2>Barbaria</h2>
+      <div class="tag">Option A</div>
+    </div>
+    <div class="label">
+      <span class="pill">A · Gold Dust Grain</span>
+      <h3>Static gold pigment</h3>
+      <p>A repeating overlay of ~100 tiny gold dots in a noise pattern, layered with mix-blend-screen. No animation. Reads like fine gold flakes suspended in dark leather. Premium and stable, never competes for attention.</p>
+    </div>
+  </article>
+
+  <!-- OPTION B -->
+  <article class="card">
+    <div class="surface effect-b" id="surfaceB">
+      <div class="glyph">ⵣ</div>
+      <h2>Barbaria</h2>
+      <div class="tag">Option B</div>
+    </div>
+    <div class="label">
+      <span class="pill">B · Constellation Scatter</span>
+      <h3>Twinkling Sahara sky</h3>
+      <p>25 small gold four-point stars sparsely scattered, each twinkling on its own 4-second loop with randomised delays. The surface "breathes." Romantic, Amazigh-aligned. Matches the Histoire voice (campfires, the sun, the night sky pressed onto the brand).</p>
+    </div>
+  </article>
+
+  <!-- OPTION C -->
+  <article class="card">
+    <div class="surface effect-c">
+      <div class="glyph">ⵣ</div>
+      <h2>Barbaria</h2>
+      <div class="tag">Option C</div>
+    </div>
+    <div class="label">
+      <span class="pill">C · Shimmer Sweep</span>
+      <h3>Polished bronze glint</h3>
+      <p>A diagonal radial gold gradient drifts across the surface every 7 seconds, finished with a fine noise grain on overlay. Like a slow glint passing over hand-polished bronze. Quiet luxury, most subtle of the three.</p>
+    </div>
+  </article>
+
+</div>
+
+<div class="decision">
+  <div class="eyebrow">Reply with</div>
+  <p>Send <code>A</code>, <code>B</code>, or <code>C</code> and I will apply it to every brown surface in the site.</p>
+</div>
+
+<script>
+  // Generate 25 twinkling stars for Option B
+  (function () {
+    const root = document.getElementById('surfaceB');
+    if (!root) return;
+    const stars = 25;
+    const sizes = [9, 11, 13, 15, 17];
+    for (let i = 0; i < stars; i++) {
+      const s = document.createElement('span');
+      s.className = 'star';
+      s.textContent = '✦';
+      s.style.left = (Math.random() * 92 + 2) + '%';
+      s.style.top = (Math.random() * 92 + 2) + '%';
+      s.style.fontSize = sizes[Math.floor(Math.random() * sizes.length)] + 'px';
+      s.style.animationDelay = (Math.random() * 4).toFixed(2) + 's';
+      s.style.animationDuration = (3 + Math.random() * 2).toFixed(2) + 's';
+      root.appendChild(s);
+    }
+  })();
+</script>
+
+</body>
+</html>
