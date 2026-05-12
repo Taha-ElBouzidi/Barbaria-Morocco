@@ -4,6 +4,7 @@ import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
+import AmazighProverb from "@/components/primitives/AmazighProverb";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -22,6 +23,19 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
+// Six Tifinagh symbols. Glyphs and transliterations are constants (not
+// localised); only meanings and descriptions vary by locale via i18n keys.
+// Letter names follow the standard Tifinagh convention (Yaz for ⵣ, etc.),
+// not the Arabic letter names used in some informal sources.
+const SYMBOLS = [
+  { key: "yaz", glyph: "ⵣ", name: "Yaz" },
+  { key: "yay", glyph: "ⵢ", name: "Yay" },
+  { key: "yak", glyph: "ⴽ", name: "Yak" },
+  { key: "yam", glyph: "ⵎ", name: "Yam" },
+  { key: "yan", glyph: "ⵏ", name: "Yan" },
+  { key: "yar", glyph: "ⵔ", name: "Yar" },
+] as const;
+
 export default async function StoryPage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
@@ -29,41 +43,52 @@ export default async function StoryPage({ params }: PageProps) {
 
   const chapters = [
     {
-      num: t("ch1_number"),
+      era: t("ch1_era"),
+      years: t("ch1_years"),
       title: t("ch1_title"),
       p1: t("ch1_p1"),
       p2: t("ch1_p2"),
-      image: "/brand_photos/brand-lifestyle-1.jpg",
+      image: "/brand_photos/hero-atlas.jpg",
       reverse: false,
     },
     {
-      num: t("ch2_number"),
+      era: t("ch2_era"),
+      years: t("ch2_years"),
       title: t("ch2_title"),
       p1: t("ch2_p1"),
       p2: t("ch2_p2"),
-      image: null,
+      image: "/brand_photos/sugar-scrub-hammam.jpg",
       reverse: true,
     },
     {
-      num: t("ch3_number"),
+      era: t("ch3_era"),
+      years: t("ch3_years"),
       title: t("ch3_title"),
       p1: t("ch3_p1"),
       p2: t("ch3_p2"),
       image: "/brand_photos/argan-oil-dropper.jpg",
       reverse: false,
     },
+    {
+      era: t("ch4_era"),
+      years: t("ch4_years"),
+      title: t("ch4_title"),
+      p1: t("ch4_p1"),
+      p2: t("ch4_p2"),
+      image: "/brand_photos/products-all-three.jpg",
+      reverse: true,
+    },
   ];
 
   return (
     <>
-      {/* Hero — 60vh, image fills behind gradient, text anchored to bottom */}
+      {/* Hero */}
       <section className="relative h-[60vh] min-h-[480px] overflow-hidden">
         <Photo
-          src={null}
+          src="/brand_photos/hero-atlas.jpg"
           alt={t("hero_headline")}
           fill
           priority
-          needsShot
           containerClassName="absolute inset-0"
           sizes="100vw"
         />
@@ -102,24 +127,28 @@ export default async function StoryPage({ params }: PageProps) {
                 alt={ch.title}
                 width={1100}
                 height={1380}
-                needsShot={!ch.image}
                 sizes="(min-width:1024px) 50vw, 100vw"
                 containerClassName="aspect-[4/5]"
               />
             </Reveal>
             <div className={`space-y-6 ${ch.reverse ? "lg:order-1 lg:pr-8" : "lg:pl-8"}`}>
               <Reveal>
-                <Eyebrow tone="green">{ch.num}</Eyebrow>
+                <Eyebrow tone="green">{ch.era}</Eyebrow>
               </Reveal>
-              <Reveal delayMs={80}>
+              <Reveal delayMs={60}>
+                <p className="font-display italic text-[13px] tracking-[0.18em] text-bb-secondary uppercase">
+                  {ch.years}
+                </p>
+              </Reveal>
+              <Reveal delayMs={120}>
                 <DisplayHeading size="lg" as="h2" className="font-display italic">{ch.title}</DisplayHeading>
               </Reveal>
-              <Reveal delayMs={160} className="space-y-4 text-bb-on-surface-variant leading-relaxed max-w-[520px]">
+              <Reveal delayMs={200} className="space-y-4 text-bb-on-surface-variant leading-relaxed max-w-[520px]">
                 <p>{ch.p1}</p>
                 <p>{ch.p2}</p>
               </Reveal>
             </div>
-            {/* Pull-quote between Chapters 02 and 03 */}
+            {/* Pull quote between chapters 02 and 03 */}
             {idx === 1 && (
               <div className="col-span-1 lg:col-span-2 py-12 lg:py-16 text-center">
                 <Reveal>
@@ -134,6 +163,57 @@ export default async function StoryPage({ params }: PageProps) {
           </section>
         ))}
       </div>
+
+      {/* Amazigh Tifinagh — 6 symbols */}
+      <section className="bg-[var(--bb-bg-low)] border-y border-[var(--bb-line)] py-20 lg:py-32">
+        <div className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)]">
+          <div className="text-center max-w-[720px] mx-auto mb-16 lg:mb-20 space-y-5">
+            <Reveal>
+              <Eyebrow tone="gold">{t("amazigh_eyebrow")}</Eyebrow>
+            </Reveal>
+            <Reveal delayMs={80}>
+              <DisplayHeading size="lg" as="h2" className="font-display italic">
+                {t("amazigh_headline")}
+              </DisplayHeading>
+            </Reveal>
+            <Reveal delayMs={160}>
+              <p className="font-display italic text-[clamp(16px,1.4vw,19px)] text-bb-on-surface-variant leading-relaxed">
+                {t("amazigh_intro")}
+              </p>
+            </Reveal>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-px bg-[var(--bb-line)]">
+            {SYMBOLS.map((sym) => (
+              <Reveal key={sym.key} className="bg-[var(--bb-bg)]">
+                <div className="p-10 lg:p-12 text-center h-full flex flex-col items-center">
+                  <span
+                    className="font-display text-bb-secondary leading-none mb-6"
+                    style={{ fontSize: "84px" }}
+                    aria-hidden
+                  >
+                    {sym.glyph}
+                  </span>
+                  <p className="font-display italic text-[22px] text-bb-on-surface mb-1">
+                    {sym.name}
+                  </p>
+                  <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary mb-4">
+                    {t(`sym_${sym.key}_meaning`)}
+                  </p>
+                  <p className="text-[14px] leading-relaxed text-bb-on-surface-variant max-w-[320px]">
+                    {t(`sym_${sym.key}_desc`)}
+                  </p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Closing proverb */}
+      <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)]">
+        <AmazighProverb locale={locale} />
+      </section>
     </>
   );
 }

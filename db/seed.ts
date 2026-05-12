@@ -101,7 +101,7 @@ async function seedFacets() {
 }
 
 async function seedProducts(subIdMap: Map<string, string>, facetIdMap: Map<string, string>) {
-  console.log("→ Seeding 17 products + translations + images + application steps + facet links...");
+  console.log(`→ Seeding ${PRODUCTS.length} products + translations + images + application steps + facet links...`);
 
   for (const p of PRODUCTS) {
     const subcategory_id = subIdMap.get(`${p.world}:${p.sub}`) ?? null;
@@ -267,10 +267,56 @@ async function seedJournal() {
   }
 }
 
+/**
+ * Drops products and ritual_subcategories whose slugs no longer appear in the
+ * source data. Cascades to translations / images / facets / application steps.
+ * Run first so the rest of the seed can upsert against a clean baseline.
+ */
+async function purgeOrphans() {
+  console.log("→ Purging orphan products and subcategories...");
+  const validProductSlugs = PRODUCTS.map((p) => p.id);
+  const { data: prodRows } = await supabase.from("products").select("slug");
+  const orphanProductSlugs = (prodRows ?? [])
+    .map((r) => r.slug as string)
+    .filter((slug) => !validProductSlugs.includes(slug));
+  if (orphanProductSlugs.length > 0) {
+    console.log(`  ✂ deleting ${orphanProductSlugs.length} orphan products: ${orphanProductSlugs.join(", ")}`);
+    const { error } = await supabase.from("products").delete().in("slug", orphanProductSlugs);
+    if (error) throw new Error(`orphan products delete: ${error.message}`);
+  }
+
+  // Surviving products may still reference subcats we are about to drop
+  // (the catalogue refactor changes which subcat each product belongs to,
+  // and seedProducts has not run yet to update the FK). Null the references
+  // first so the subcat delete does not trip the foreign key constraint.
+  // seedProducts re-attaches each product to its new subcategory_id below.
+  const validSubKeys = new Set<string>();
+  for (const ritualId of ["hammam", "botanical", "heritage"] as RitualId[]) {
+    for (const s of SUBCATS[ritualId]) validSubKeys.add(`${ritualId}:${s.id}`);
+  }
+  const { data: subRows } = await supabase
+    .from("ritual_subcategories")
+    .select("id, ritual_id, slug");
+  const orphanSubIds = (subRows ?? [])
+    .filter((r) => !validSubKeys.has(`${r.ritual_id}:${r.slug}`))
+    .map((r) => r.id as string);
+  if (orphanSubIds.length > 0) {
+    const { error: nullErr } = await supabase
+      .from("products")
+      .update({ subcategory_id: null })
+      .in("subcategory_id", orphanSubIds);
+    if (nullErr) throw new Error(`null product subcategory refs: ${nullErr.message}`);
+    console.log(`  ✂ deleting ${orphanSubIds.length} orphan subcategories`);
+    const { error } = await supabase.from("ritual_subcategories").delete().in("id", orphanSubIds);
+    if (error) throw new Error(`orphan subcategories delete: ${error.message}`);
+  }
+}
+
 async function main() {
   console.log("Seeding Supabase from lib/{rituals,products,editorial}.ts");
   console.log(`Project: ${SUPABASE_URL}\n`);
 
+  await purgeOrphans();
   const { subIdMap } = await seedRituals();
   const facetIdMap = await seedFacets();
   await seedProducts(subIdMap, facetIdMap);
@@ -279,11 +325,11 @@ async function main() {
 
   console.log("\n✓ Seed complete.");
   console.log("\nVerify counts in Supabase Studio or via MCP:");
-  console.log("  SELECT count(*) FROM products;              -- expect 17");
+  console.log(`  SELECT count(*) FROM products;              -- expect ${PRODUCTS.length}`);
   console.log("  SELECT count(*) FROM ateliers;              -- expect 6");
   console.log("  SELECT count(*) FROM journal_cards;         -- expect 6");
-  console.log("  SELECT count(*) FROM facets;                -- expect ~40");
-  console.log("  SELECT count(*) FROM product_translations;  -- expect 34");
+  console.log("  SELECT count(*) FROM facets;                -- expect ~50");
+  console.log(`  SELECT count(*) FROM product_translations;  -- expect ${PRODUCTS.length * 2}`);
 }
 
 main().catch((err) => {

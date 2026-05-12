@@ -43,9 +43,9 @@
   },
   "home": {
     "hero": {
-      "eyebrow": "Maison de Terroir · Est. 1972",
+      "eyebrow": "Authentique · Naturel · Éthique",
       "headline": "Heritage. Refined. Gifted.",
-      "lede": "A Moroccan B2B gifting house composing artisan rituals for corporate occasions.",
+      "lede": "The art of the Moroccan terroir and its ancestral rituals, composed for hôtels, spas and B2B private label.",
       "cta_primary": "Explore the Rituals",
       "cta_secondary": "B2B Concierge",
       "alt": "Barbaria: a Moroccan editorial composition in natural light."
@@ -124,22 +124,45 @@
     "related": "Complementary pieces"
   },
   "story": {
-    "hero_eyebrow": "Maison de Terroir",
-    "hero_headline": "Barbaria, since 1972.",
-    "hero_lede": "Three generations of Moroccan craft, one editorial maison.",
-    "ch1_number": "01",
-    "ch1_title": "Origin",
-    "ch1_p1": "Founded in 1972 by Hassan El Bouzidi, a fragrance buyer who left Casablanca for the Atlas to source argan, rose and saffron directly from the cooperatives.",
-    "ch1_p2": "Half a century later, Barbaria remains a family enterprise, now a B2B gifting house composing rituals for corporate occasions.",
-    "ch2_number": "02",
-    "ch2_title": "Method",
-    "ch2_p1": "Every piece is made-to-order. Black soap is pressed when the order lands; cedar boxes are carved from three-year-aged wood; rose water is distilled once at dawn.",
-    "ch2_p2": "We do not warehouse. We compose, we ship, we close the file.",
-    "ch3_number": "03",
-    "ch3_title": "Object",
-    "ch3_p1": "An object is not a product. It is a gesture: to the recipient, to the artisan who made it, to the terroir it carries.",
-    "ch3_p2": "Our work is to keep that line short, named, and traceable.",
-    "pull_quote": "What you give carries who you are."
+    "hero_eyebrow": "Our Story",
+    "hero_headline": "The Soul of Morocco",
+    "hero_lede": "From antiquity to today: one land, one people, one excellence.",
+    "ch1_era": "Antiquity",
+    "ch1_years": "—3000 BCE",
+    "ch1_title": "At the origins of Barbaria",
+    "ch1_p1": "Barbaria, from the Latin Barbaria, named the lands of the Berbers, a free people of Mediterranean shores and Saharan depths.",
+    "ch1_p2": "Long before the Romans, the Amazigh cultivated the sacred argan tree, harvested saffron and mastered the art of spices. Their women tattooed onto their skin the signs of the Tifinagh alphabet, carrying the memory of the world without committing it to script.",
+    "ch2_era": "Medieval",
+    "ch2_years": "8th — 15th century",
+    "ch2_title": "The Caravan Route",
+    "ch2_p1": "From the Sahara to Moorish Spain, Berber caravans carried argan, saffron and ras el hanout as currency. Marrakech, founded by the Almoravids who were themselves Berbers, became the crossroads of taste.",
+    "ch2_p2": "The hammam rose as the temple of purification, with its black soaps, its precious oils and its ritual scrubs passed from mother to daughter inside the shaded riads.",
+    "ch3_era": "Tradition",
+    "ch3_years": "16th — 19th century",
+    "ch3_title": "The Legacy of the Berber Women",
+    "ch3_p1": "In the villages of the Souss, women formed the first argan oil cooperatives. In the Middle Atlas, they distilled rose and orange blossom to capture the soul of the seasons.",
+    "ch3_p2": "Every gesture was ritualised, every ingredient carried intention. It is this inheritance that Barbaria Morocco carries forward.",
+    "ch4_era": "Today",
+    "ch4_years": "21st century",
+    "ch4_title": "Barbaria, the Excellence of Morocco",
+    "ch4_p1": "Barbaria Morocco is born of one conviction: the treasures of the Moroccan terroir deserve to be shared with the world. Our cosmetics celebrate the work of women's cooperatives and artisans of the land.",
+    "ch4_p2": "Every bottle, every pot, every soap carries the imprint of a generous earth and a free people, the Imazighen, who have always known how to turn nature into gold.",
+    "pull_quote": "What you give carries who you are.",
+    "amazigh_eyebrow": "Tifinagh",
+    "amazigh_headline": "Signs of the Free People",
+    "amazigh_intro": "Tifinagh is one of the oldest writing systems still alive in the world. Each letter is a fragment of history, carved into stone, tattooed onto skin, woven into rugs. Six signs that guide our maison.",
+    "sym_yaz_meaning": "Liberty & Dignity",
+    "sym_yaz_desc": "The identity emblem of the Amazigh people: a free human standing on their land, arms raised to the sky. The heart of Berber identity, carved into stone for millennia.",
+    "sym_yay_meaning": "Life & Renewal",
+    "sym_yay_desc": "An ancestral sign for the cycle of life and the perpetual renewal of nature. Woven into rugs, tattooed onto women's skin, marking the sacred moments of existence.",
+    "sym_yak_meaning": "Strength & Protection",
+    "sym_yak_desc": "Carved onto amulets and the doors of houses, the sign invoked divine protection. It accompanied the caravans across the Sahara, guarding travellers from the dangers of the desert.",
+    "sym_yam_meaning": "Water & Fertility",
+    "sym_yam_desc": "Water is sacred in the arid lands of the Maghreb. The sign holds the springs and the wadis that give life, the abundance and generosity of the mother earth.",
+    "sym_yan_meaning": "Earth & Ancestors",
+    "sym_yan_desc": "The sign that binds the living to their ancestors. The nourishing earth, the deep roots of a people who have inhabited these mountains and these plains since the dawn of time.",
+    "sym_yar_meaning": "Sun & Wisdom",
+    "sym_yar_desc": "The sun guides and illuminates. Associated with the solar star, the sign carries the wisdom of the elders, the light of knowledge passed from generation to generation around the campfires."
   },
   "ateliers": {
     "hero_eyebrow": "Our Cooperatives",
@@ -204,6 +227,10 @@
   "common": {
     "moq_short": "MOQ",
     "lead_weeks": "{n} weeks",
-    "and_more": "and {n} more"
+    "and_more": "and {n} more",
+    "amazigh_proverb": {
+      "quote": "No one is a stranger on the land of their ancestors.",
+      "attribution": "Amazigh Proverb"
+    }
   }
 }

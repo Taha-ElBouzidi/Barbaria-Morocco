@@ -5,6 +5,7 @@ import InquirySidebar from "@/components/contact/InquirySidebar";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
+import AmazighProverb from "@/components/primitives/AmazighProverb";
 
 interface PageProps { params: Promise<{ locale: string }>; }
 
@@ -38,6 +39,9 @@ export default async function ContactPage({ params }: PageProps) {
           <TwoStepForm locale={locale} />
           <InquirySidebar lang={lang} />
         </div>
+      </section>
+      <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] mt-16 lg:mt-24 border-t border-[var(--bb-line)]">
+        <AmazighProverb locale={locale} />
       </section>
     </div>
   );

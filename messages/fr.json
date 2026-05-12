@@ -43,9 +43,9 @@
   },
   "home": {
     "hero": {
-      "eyebrow": "Maison de Terroir · Est. 1972",
+      "eyebrow": "Authentique · Naturel · Éthique",
       "headline": "Héritage. Raffiné. Offert.",
-      "lede": "Une maison marocaine de cadeaux B2B, composant des rituels artisanaux pour les occasions corporate.",
+      "lede": "L'Art du Terroir & les Rituels Ancestraux du Maroc, composés pour hôtels, spas et marque blanche B2B.",
       "cta_primary": "Explorer les Rituels",
       "cta_secondary": "Conciergerie B2B",
       "alt": "Barbaria: une composition éditoriale marocaine en lumière naturelle."
@@ -124,22 +124,45 @@
     "related": "Pièces complémentaires"
   },
   "story": {
-    "hero_eyebrow": "Maison de Terroir",
-    "hero_headline": "Barbaria, depuis 1972.",
-    "hero_lede": "Trois générations d'artisanat marocain, une maison éditoriale.",
-    "ch1_number": "01",
-    "ch1_title": "Origine",
-    "ch1_p1": "Fondée en 1972 par Hassan El Bouzidi, acheteur de parfums ayant quitté Casablanca pour l'Atlas afin de sourcer l'argan, la rose et le safran directement auprès des coopératives.",
-    "ch1_p2": "Un demi-siècle plus tard, Barbaria demeure une entreprise familiale, désormais une maison de cadeaux B2B composant des rituels pour les occasions corporate.",
-    "ch2_number": "02",
-    "ch2_title": "Méthode",
-    "ch2_p1": "Chaque pièce est fabriquée à la commande. Le savon noir est pressé dès réception de la commande; les coffrets en cèdre sont taillés dans du bois séché trois ans; l'eau de rose est distillée une fois, à l'aube.",
-    "ch2_p2": "Nous n'entreposons pas. Nous composons, nous expédions, nous clôturons le dossier.",
-    "ch3_number": "03",
-    "ch3_title": "L'Objet",
-    "ch3_p1": "Un objet n'est pas un produit. C'est un geste: envers le destinataire, envers l'artisan qui l'a façonné, envers le terroir qu'il incarne.",
-    "ch3_p2": "Notre travail est de maintenir ce lien court, nommé et traçable.",
-    "pull_quote": "Ce que vous offrez porte qui vous êtes."
+    "hero_eyebrow": "Notre Histoire",
+    "hero_headline": "L'Âme du Maroc",
+    "hero_lede": "De l'Antiquité à aujourd'hui: une terre, un peuple, une excellence.",
+    "ch1_era": "Antiquité",
+    "ch1_years": "—3000 av. J.-C.",
+    "ch1_title": "Aux origines de Barbaria",
+    "ch1_p1": "Barbaria, du mot latin Barbaria, désignait les terres des Berbères, peuple libre des côtes méditerranéennes et des profondeurs sahariennes.",
+    "ch1_p2": "Long avant les Romains, les Amazighs cultivaient l'arganier sacré, récoltaient le safran et maîtrisaient l'art des épices. Leurs femmes tatouaient sur leur peau les signes de l'alphabet Tifinagh, transmettant sans l'écrire la mémoire du monde.",
+    "ch2_era": "Médiéval",
+    "ch2_years": "VIIIe — XVe siècle",
+    "ch2_title": "La Route des Caravanes",
+    "ch2_p1": "Du Sahara à l'Espagne maure, les caravanes berbères portaient l'argan, le safran et le ras el hanout comme monnaie d'échange. Marrakech, fondée par les Almoravides eux-mêmes Berbères, devint le carrefour des saveurs.",
+    "ch2_p2": "Le hammam s'impose comme temple de purification, avec ses savons noirs, ses huiles précieuses et ses gommages rituels transmis de mère en fille dans les riads ombreux.",
+    "ch3_era": "Tradition",
+    "ch3_years": "XVIe — XIXe siècle",
+    "ch3_title": "L'Héritage des Femmes Berbères",
+    "ch3_p1": "Dans les villages du Souss, les femmes formèrent les premières coopératives d'huile d'argan. Dans le Moyen Atlas, elles distillaient la rose et la fleur d'oranger pour capturer l'âme des saisons.",
+    "ch3_p2": "Chaque geste était ritualisé, chaque ingrédient portait une intention. C'est cet héritage que Barbaria Morocco perpétue.",
+    "ch4_era": "Aujourd'hui",
+    "ch4_years": "XXIe siècle",
+    "ch4_title": "Barbaria, l'Excellence du Maroc",
+    "ch4_p1": "Barbaria Morocco naît d'une conviction: les trésors du terroir marocain méritent d'être partagés avec le monde. Nos cosmétiques célèbrent le travail des coopératives de femmes et des artisans du terroir.",
+    "ch4_p2": "Chaque flacon, chaque pot, chaque savon porte l'empreinte d'une terre généreuse et d'un peuple libre, les Imazighen, qui depuis toujours savent transformer la nature en or.",
+    "pull_quote": "Ce que vous offrez porte qui vous êtes.",
+    "amazigh_eyebrow": "Tifinagh",
+    "amazigh_headline": "Les Signes du Peuple Libre",
+    "amazigh_intro": "Le Tifinagh est l'une des plus anciennes écritures encore vivantes au monde. Chaque lettre est un fragment d'histoire, gravée dans la pierre, tatouée sur la peau, tissée dans les tapis. Voici six signes qui guident notre maison.",
+    "sym_yaz_meaning": "Liberté & Dignité",
+    "sym_yaz_desc": "L'emblème identitaire du peuple amazigh: un humain libre debout sur sa terre, les bras levés vers le ciel. Le cœur de l'identité berbère, gravé dans la pierre depuis des millénaires.",
+    "sym_yay_meaning": "Vie & Renouveau",
+    "sym_yay_desc": "Un signe ancestral du cycle de la vie et du renouveau perpétuel de la nature. Tissé dans les tapis, tatoué sur la peau des femmes, il marque les moments sacrés de l'existence.",
+    "sym_yak_meaning": "Force & Protection",
+    "sym_yak_desc": "Gravé sur les amulettes et les portes des maisons, ce signe invoquait la protection divine. Il accompagnait les caravanes traversant le Sahara, gardant les voyageurs des dangers du désert.",
+    "sym_yam_meaning": "Eau & Fertilité",
+    "sym_yam_desc": "L'eau est sacrée dans les terres arides du Maghreb. Ce signe représente les sources et les oueds qui donnent la vie, l'abondance et la générosité de la terre mère.",
+    "sym_yan_meaning": "Terre & Ancêtres",
+    "sym_yan_desc": "Le signe qui relie les vivants à leurs ancêtres. La terre nourricière, les racines profondes d'un peuple qui habite ces montagnes et ces plaines depuis la nuit des temps.",
+    "sym_yar_meaning": "Soleil & Sagesse",
+    "sym_yar_desc": "Le soleil guide et illumine. Associé à l'astre solaire, ce signe représente la sagesse des anciens, la lumière de la connaissance transmise de génération en génération autour des feux."
   },
   "ateliers": {
     "hero_eyebrow": "Nos Coopératives",
@@ -204,6 +227,10 @@
   "common": {
     "moq_short": "MOQ",
     "lead_weeks": "{n} semaines",
-    "and_more": "et {n} de plus"
+    "and_more": "et {n} de plus",
+    "amazigh_proverb": {
+      "quote": "Nul n'est étranger sur la terre de ses ancêtres.",
+      "attribution": "Proverbe Amazigh"
+    }
   }
 }
