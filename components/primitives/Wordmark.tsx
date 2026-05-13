@@ -2,7 +2,7 @@ import AmazighOrnament from "./AmazighOrnament";
 import { cn } from "@/lib/utils";
 
 type WordmarkVariant = "compact" | "stacked" | "hero";
-type WordmarkTone = "dark" | "light";
+type WordmarkTone = "dark" | "light" | "gold";
 
 interface WordmarkProps {
   variant?: WordmarkVariant;
@@ -35,8 +35,14 @@ export default function Wordmark({
   showSubtitle,
 }: WordmarkProps) {
   const subtitleVisible = showSubtitle ?? variant !== "compact";
-  const wordmarkColor = tone === "light" ? "text-white" : "text-bb-primary";
-  const subtitleColor = tone === "light" ? "text-white/70" : "text-bb-on-surface-variant";
+  const wordmarkColor =
+    tone === "gold" ? "text-bb-secondary"
+    : tone === "light" ? "text-white"
+    : "text-bb-primary";
+  const subtitleColor =
+    tone === "gold" ? "text-bb-secondary/80"
+    : tone === "light" ? "text-white/70"
+    : "text-bb-on-surface-variant";
 
   if (variant === "compact") {
     return (
