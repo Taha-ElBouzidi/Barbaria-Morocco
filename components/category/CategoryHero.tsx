@@ -2,6 +2,7 @@ import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
+import SaharaPrestige from "@/components/primitives/SaharaPrestige";
 import type { RitualWorld } from "@/lib/data/types";
 
 interface Props {
@@ -21,6 +22,7 @@ export default function CategoryHero({ world }: Props) {
         sizes="100vw"
       />
       <div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(44,24,16,0.4),rgba(44,24,16,0.8))]" aria-hidden />
+      <SaharaPrestige count={50} />
       <div className="relative z-10 flex h-full items-end pb-16 lg:pb-24">
         <div className="mx-auto w-full max-w-[1440px] px-[var(--bb-margin-edge)]">
           <div className="max-w-[820px] text-white space-y-4">

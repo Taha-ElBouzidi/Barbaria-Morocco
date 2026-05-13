@@ -361,3 +361,41 @@
     animation: shimmer 1.5s ease-in-out infinite;
   }
 }
+
+/* ─── SaharaPrestige effect ────────────────────────────────
+   Decorative gold-dust + drifting glow layered onto brown surfaces.
+   Used by components/primitives/SaharaPrestige.tsx; CSS centralised
+   here so the keyframes are not duplicated per render. */
+.sp-root .sp-glow {
+  position: absolute;
+  inset: -40%;
+  background: radial-gradient(ellipse 38% 52% at center,
+                              rgba(201, 160, 89, 0.36),
+                              rgba(201, 160, 89, 0.14) 38%,
+                              transparent 70%);
+  transform: translate(var(--gx, -10%), var(--gy, -5%));
+  will-change: transform;
+  pointer-events: none;
+}
+.sp-root .sp-pepita {
+  position: absolute;
+  color: var(--bb-secondary);
+  line-height: 1;
+  text-shadow: 0 0 6px rgba(201, 160, 89, 0.55);
+  animation: sp-fade var(--dur, 5s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+  opacity: 0;
+  pointer-events: none;
+}
+.sp-root .sp-pepita.sp-dot {
+  width: var(--size, 2px);
+  height: var(--size, 2px);
+  background: var(--bb-secondary);
+  border-radius: 50%;
+  text-shadow: none;
+  box-shadow: 0 0 4px rgba(201, 160, 89, 0.6);
+}
+@keyframes sp-fade {
+  0%, 100% { opacity: 0; transform: scale(0.7); }
+  40%, 60% { opacity: var(--peak, 0.85); transform: scale(1); }
+}

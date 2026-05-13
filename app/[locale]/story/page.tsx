@@ -5,6 +5,7 @@ import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
 import AmazighProverb from "@/components/primitives/AmazighProverb";
+import SaharaPrestige from "@/components/primitives/SaharaPrestige";
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -96,6 +97,7 @@ export default async function StoryPage({ params }: PageProps) {
           className="absolute inset-0 bg-[linear-gradient(180deg,rgba(44,24,16,0.4),rgba(44,24,16,0.8))]"
           aria-hidden
         />
+        <SaharaPrestige count={50} />
         <div className="relative z-10 flex h-full items-end pb-16 lg:pb-24">
           <div className="mx-auto w-full max-w-[1440px] px-[var(--bb-margin-edge)]">
             <div className="text-white space-y-4 max-w-[820px]">

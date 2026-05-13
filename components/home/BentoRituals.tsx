@@ -7,6 +7,7 @@ import Reveal from "@/components/primitives/Reveal";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Icon from "@/components/primitives/Icon";
+import SaharaPrestige from "@/components/primitives/SaharaPrestige";
 
 export default function BentoRituals() {
   const t = useTranslations("home");
@@ -42,6 +43,7 @@ export default function BentoRituals() {
             className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(44,24,16,0.85))]"
             aria-hidden
           />
+          <SaharaPrestige count={30} />
           <div className="absolute inset-x-0 bottom-0 p-8 lg:p-10 text-white space-y-2">
             <Eyebrow tone="gold">{t("bento.hammam_eyebrow")}</Eyebrow>
             <div className="flex items-end justify-between gap-4">
@@ -68,6 +70,7 @@ export default function BentoRituals() {
             className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(44,24,16,0.85))]"
             aria-hidden
           />
+          <SaharaPrestige count={20} />
           <div className="absolute inset-x-0 bottom-0 p-6 lg:p-8 text-white space-y-2">
             <Eyebrow tone="gold">{t("bento.botanical_eyebrow")}</Eyebrow>
             <div className="flex items-end justify-between gap-4">
@@ -94,6 +97,7 @@ export default function BentoRituals() {
             className="absolute inset-0 bg-[linear-gradient(180deg,transparent_40%,rgba(44,24,16,0.85))]"
             aria-hidden
           />
+          <SaharaPrestige count={20} />
           <div className="absolute inset-x-0 bottom-0 p-6 lg:p-8 text-white space-y-2">
             <Eyebrow tone="gold">{t("bento.heritage_eyebrow")}</Eyebrow>
             <div className="flex items-end justify-between gap-4">
@@ -111,9 +115,10 @@ export default function BentoRituals() {
       {/* Compose text card, full-width row below the grid */}
       <Link
         href="/contact"
-        className="mt-6 lg:mt-8 block bg-bb-primary text-white p-10 lg:p-12 group"
+        className="mt-6 lg:mt-8 block bg-bb-primary text-white p-10 lg:p-12 group relative overflow-hidden"
       >
-        <div className="flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
+        <SaharaPrestige count={28} />
+        <div className="relative z-10 flex flex-col lg:flex-row lg:items-end lg:justify-between gap-4">
           <div className="space-y-3 max-w-[640px]">
             <Eyebrow tone="gold">{t("bento.compose_eyebrow")}</Eyebrow>
             <DisplayHeading size="md" className="text-white">

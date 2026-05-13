@@ -6,6 +6,7 @@ import Photo from "@/components/primitives/Photo";
 import Reveal from "@/components/primitives/Reveal";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import Wordmark from "@/components/primitives/Wordmark";
+import SaharaPrestige from "@/components/primitives/SaharaPrestige";
 
 export default function Hero() {
   const t = useTranslations("home");
@@ -25,6 +26,9 @@ export default function Hero() {
         className="absolute inset-0 bg-[linear-gradient(180deg,rgba(44,24,16,0.45),rgba(44,24,16,0.85))]"
         aria-hidden
       />
+
+      {/* Sahara prestige, drifting gold glow + twinkling pepitas on the dark wash */}
+      <SaharaPrestige count={60} />
 
       {/* Centered content stack, Amazigh ornament + MAROC line + BARBARIA wordmark + MOROCCO + tagline + CTAs */}
       <div className="flex h-full items-center justify-center relative z-10">
