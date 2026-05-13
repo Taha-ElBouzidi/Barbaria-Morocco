@@ -143,28 +143,14 @@
                                 rgba(201, 160, 89, 0.36),
                                 rgba(201, 160, 89, 0.14) 38%,
                                 transparent 70%);
-    /* Linear timing so velocity is constant through the arc waypoints,
-       no perceived deceleration / stop at the bottom of the curve.
-       The only places the glow rests are the top-left and top-right
-       dwells (held via duplicate-value keyframes at 0-8% and 50-58%). */
-    animation: arc-drift 14s linear infinite;
+    /* Position is driven by JS via custom properties (--gx / --gy) on
+       the parent so the motion is non-repeating. CSS keyframe animation
+       would always feel "recorded" because it loops; the requestAnimationFrame
+       loop below picks random target positions and eases toward each one. */
+    transform: translate(var(--gx, -30%), var(--gy, -10%));
     pointer-events: none;
     z-index: 1;
-  }
-  @keyframes arc-drift {
-    /* Dwell at top-left */
-    0%, 8%   { transform: translate(-40%, -22%); }
-    /* Fluid arc through the bottom to top-right */
-    21%      { transform: translate(-22%,   8%); }
-    33%      { transform: translate( -5%,  22%); }
-    44%      { transform: translate( 18%,  18%); }
-    /* Dwell at top-right */
-    50%, 58% { transform: translate( 40%, -22%); }
-    /* Fluid arc back through the bottom to top-left */
-    71%      { transform: translate( 18%,  18%); }
-    83%      { transform: translate( -5%,  22%); }
-    94%      { transform: translate(-22%,   8%); }
-    100%     { transform: translate(-40%, -22%); }
+    will-change: transform;
   }
   .effect-d .pepita {
     position: absolute;
@@ -317,6 +303,45 @@
       s.style.animationDuration = (3 + Math.random() * 2).toFixed(2) + 's';
       root.appendChild(s);
     }
+  })();
+
+  // OPTION D glow — non-repeating random drift driven by rAF.
+  // Picks a fresh target position every 2.5 to 6 seconds and eases the
+  // glow toward it with a lerp. Never loops. Pauses when the tab is
+  // hidden so it does not chew battery on background tabs.
+  (function () {
+    const surface = document.querySelector('.effect-d');
+    if (!surface) return;
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduce) return; // honour OS preference: keep glow at default position
+    let x = -30, y = -10;
+    let tx = 0, ty = 0;
+    let nextAt = 0;
+    const lerp = 0.014;
+    let running = true;
+
+    function pickTarget(now) {
+      tx = -36 + Math.random() * 72;   // x in [-36, 36]
+      ty = -20 + Math.random() * 42;   // y in [-20, 22]
+      nextAt = now + 2500 + Math.random() * 3500;
+    }
+    pickTarget(performance.now());
+
+    document.addEventListener('visibilitychange', () => {
+      running = !document.hidden;
+      if (running) requestAnimationFrame(tick);
+    });
+
+    function tick(now) {
+      if (!running) return;
+      if (now >= nextAt) pickTarget(now);
+      x += (tx - x) * lerp;
+      y += (ty - y) * lerp;
+      surface.style.setProperty('--gx', x.toFixed(2) + '%');
+      surface.style.setProperty('--gy', y.toFixed(2) + '%');
+      requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
   })();
 
   // OPTION D — non-uniform pepitas: mix of small stars and tiny dust dots,
