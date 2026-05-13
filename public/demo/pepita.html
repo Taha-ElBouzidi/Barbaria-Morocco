@@ -317,13 +317,13 @@
     let x = -30, y = -10;
     let tx = 0, ty = 0;
     let nextAt = 0;
-    const lerp = 0.014;
+    const lerp = 0.005; // slower easing, glow drifts at a meditative pace
     let running = true;
 
     function pickTarget(now) {
       tx = -36 + Math.random() * 72;   // x in [-36, 36]
       ty = -20 + Math.random() * 42;   // y in [-20, 22]
-      nextAt = now + 2500 + Math.random() * 3500;
+      nextAt = now + 5000 + Math.random() * 6000; // re-target every 5 to 11s
     }
     pickTarget(performance.now());
 
