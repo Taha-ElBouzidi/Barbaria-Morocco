@@ -1,5 +1,5 @@
 /**
- * Sprint 2.6 — Inquiry is box-level. The mailto body lists each box line
+ * Sprint 2.6 , Inquiry is box-level. The mailto body lists each box line
  * (curated or custom), its quantity, MOQ, and (for custom) the resolved
  * piece names so the concierge can price without opening the site.
  */

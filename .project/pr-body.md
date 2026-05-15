@@ -1,17 +1,17 @@
-# Sprint 1 — Stitch Redesign Port
+# Sprint 1 , Stitch Redesign Port
 
 Full frontend port of the Google Stitch "Modern Maghreb Rituals" design to the existing Next.js 16 codebase. Three rituals, new IA, B2B inquiry flow.
 
 ## What's in this PR
 
 ### New IA (information architecture)
-- `/` — Editorial Home (Hero + credentials strip + 2-col editorial + bento + Heritage 3-up)
-- `/rituals/hammam`, `/rituals/botanical`, `/rituals/heritage` — Category pages with filter rail + sortable grid
-- `/product/[id]` — Product detail (sticky image stack + spec column + proof strip + Application Ritual + Cooperative band + Related)
-- `/story` — Three-chapter editorial narrative (Origin, Method, Object) + pull-quote
-- `/ateliers` — Six-up cooperative partners grid
-- `/journal` — One feature card + five standard editorial cards (aria-disabled until articles ship in a follow-up)
-- `/contact` — Two-step B2B concierge form + sticky inquiry sidebar
+- `/` , Editorial Home (Hero + credentials strip + 2-col editorial + bento + Heritage 3-up)
+- `/rituals/hammam`, `/rituals/botanical`, `/rituals/heritage` , Category pages with filter rail + sortable grid
+- `/product/[id]` , Product detail (sticky image stack + spec column + proof strip + Application Ritual + Cooperative band + Related)
+- `/story` , Three-chapter editorial narrative (Origin, Method, Object) + pull-quote
+- `/ateliers` , Six-up cooperative partners grid
+- `/journal` , One feature card + five standard editorial cards (aria-disabled until articles ship in a follow-up)
+- `/contact` , Two-step B2B concierge form + sticky inquiry sidebar
 
 ### Retired routes (308 permanent redirect)
 - `/cosmetics` -> `/rituals/botanical`
@@ -50,8 +50,8 @@ Full frontend port of the Google Stitch "Modern Maghreb Rituals" design to the e
 
 ## Out of scope (deferred to Sprints 2 + 3)
 
-- **Sprint 2** — admin dashboard + Supabase Postgres for product/inquiry persistence
-- **Sprint 3** — replace mailto with Resend backend + business analytics (inquiries-per-week, top products, etc.)
+- **Sprint 2** , admin dashboard + Supabase Postgres for product/inquiry persistence
+- **Sprint 3** , replace mailto with Resend backend + business analytics (inquiries-per-week, top products, etc.)
 
 Both sprints scoped in `.project/specs/_backlog.md`.
 
@@ -73,11 +73,11 @@ Axe-core WCAG 2 AA scan revealed that aged-gold `#c5a059` on cream `#fcf9f3` is 
 
 ## Project governance updates
 
-- `.project/CHANGELOG.md` — real-time log of every task's landing
-- `.project/DECISIONS.md` — 8 architectural decisions captured (sprint decomposition, taxonomy mapping, food drop, mailto vs Resend, photo fallback strategy, Stitch MCP deferral, 308 redirect choice, Eyebrow tone audit)
-- `.project/specs/2026-05-11-stitch-redesign-port-design.md` — the spec this PR implements
-- `.project/plans/2026-05-11-stitch-redesign-port.md` — 14-task implementation plan
-- `.project/specs/_backlog.md` — Sprint 2 + 3 scoping
+- `.project/CHANGELOG.md` , real-time log of every task's landing
+- `.project/DECISIONS.md` , 8 architectural decisions captured (sprint decomposition, taxonomy mapping, food drop, mailto vs Resend, photo fallback strategy, Stitch MCP deferral, 308 redirect choice, Eyebrow tone audit)
+- `.project/specs/2026-05-11-stitch-redesign-port-design.md` , the spec this PR implements
+- `.project/plans/2026-05-11-stitch-redesign-port.md` , 14-task implementation plan
+- `.project/specs/_backlog.md` , Sprint 2 + 3 scoping
 
 ## Build output
 

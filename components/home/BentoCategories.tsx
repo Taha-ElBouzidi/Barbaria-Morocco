@@ -10,7 +10,7 @@ import Icon from "@/components/primitives/Icon";
 import SaharaPrestige from "@/components/primitives/SaharaPrestige";
 
 /**
- * BentoCategories — home page hero-grid surfacing the two product
+ * BentoCategories , home page hero-grid surfacing the two product
  * categories (Cosmétiques + Épicerie Fine) as twin tall tiles, with
  * the "Send us a request" CTA tile beneath them.
  *
@@ -99,7 +99,7 @@ export default function BentoCategories() {
         </Link>
       </div>
 
-      {/* Send us a request — full-width brown CTA below the grid */}
+      {/* Send us a request , full-width brown CTA below the grid */}
       <Link
         href="/contact"
         className="mt-6 lg:mt-8 block bg-bb-primary text-white p-10 lg:p-12 group relative overflow-hidden"

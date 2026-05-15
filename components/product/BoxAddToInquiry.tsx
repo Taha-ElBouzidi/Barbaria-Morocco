@@ -13,7 +13,7 @@ interface Props {
 }
 
 /**
- * Sprint 2.6 — Curated-box "Add to inquiry" CTA with admin-MOQ-respecting
+ * Sprint 2.6 , Curated-box "Add to inquiry" CTA with admin-MOQ-respecting
  * qty stepper. Replaces the bare "Send us a request" Link to /contact; the
  * inquiry is now box-level, so the buyer adds the box itself (not its
  * pieces) to their inquiry list.

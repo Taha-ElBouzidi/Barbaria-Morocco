@@ -1,4 +1,4 @@
-# Spec — Sprint 2: Admin Dashboard + Supabase Postgres
+# Spec , Sprint 2: Admin Dashboard + Supabase Postgres
 
 **Date:** 2026-05-12
 **Branch:** `feat/sprint-2-admin-db`
@@ -10,7 +10,7 @@
 
 ## 1. Goal
 
-Replace the in-repo TS data files (`lib/products.ts`, `lib/editorial.ts`) with a Postgres-backed catalogue managed through an admin UI mounted at `/admin/*` on the same Next.js app. Taha (and future invited team) can create, edit, translate, and publish products, journal cards, and atelier profiles. Inquiries received via the form (still mailto in Sprint 2 — Sprint 3 wires them to DB) appear in a read-only admin inbox once Sprint 3 lands; the schema is built for it now so no migration is needed later.
+Replace the in-repo TS data files (`lib/products.ts`, `lib/editorial.ts`) with a Postgres-backed catalogue managed through an admin UI mounted at `/admin/*` on the same Next.js app. Taha (and future invited team) can create, edit, translate, and publish products, journal cards, and atelier profiles. Inquiries received via the form (still mailto in Sprint 2 , Sprint 3 wires them to DB) appear in a read-only admin inbox once Sprint 3 lands; the schema is built for it now so no migration is needed later.
 
 ---
 
@@ -26,16 +26,16 @@ Replace the in-repo TS data files (`lib/products.ts`, `lib/editorial.ts`) with a
 - Server-side data access layer at `lib/data/*` replacing direct `PRODUCTS`/`WORLDS`/`ATELIERS`/`JOURNAL` imports.
 - One-shot seed script `db/seed.ts` that pulls every product/world/sub-cat/facet/atelier/journal-card out of the current TS data files into the DB.
 - Admin routes:
-  - `/admin/login` — magic-link form
-  - `/admin` — dashboard (counts: published products, draft products, total inquiries, recent activity)
-  - `/admin/products` — list (search, filter by ritual + status, sort)
-  - `/admin/products/new` + `/admin/products/[id]` — editor (all fields EN + FR, image manager, facets, application steps, draft↔published toggle)
-  - `/admin/journal` — list + editor
-  - `/admin/ateliers` — list + editor
-  - `/admin/rituals` — read-only display of the 3 rituals + per-world sub-cat editor (rename, reorder, add new subs)
-  - `/admin/inquiries` — read-only list (Sprint 3 wires the form)
-  - `/admin/activity` — audit log table view (filterable by actor, entity, action)
-  - `/admin/logout` — sign-out POST handler
+  - `/admin/login` , magic-link form
+  - `/admin` , dashboard (counts: published products, draft products, total inquiries, recent activity)
+  - `/admin/products` , list (search, filter by ritual + status, sort)
+  - `/admin/products/new` + `/admin/products/[id]` , editor (all fields EN + FR, image manager, facets, application steps, draft↔published toggle)
+  - `/admin/journal` , list + editor
+  - `/admin/ateliers` , list + editor
+  - `/admin/rituals` , read-only display of the 3 rituals + per-world sub-cat editor (rename, reorder, add new subs)
+  - `/admin/inquiries` , read-only list (Sprint 3 wires the form)
+  - `/admin/activity` , audit log table view (filterable by actor, entity, action)
+  - `/admin/logout` , sign-out POST handler
 - Auth middleware in `proxy.ts` that protects every `/admin/*` route. Anonymous users hitting `/admin/anything` redirect to `/admin/login`.
 - Image upload UI uses Supabase Storage signed URLs. Validates MIME (jpg/png/webp/avif), max size 8 MB, optional resize via `sharp` server-side (TBD: defer to a follow-up if `sharp` install is too heavy on Windows).
 - Public site reads from DB. Route handlers use cached server-side Supabase client. ISR with on-demand revalidation: admin save → `revalidatePath()` for affected route(s). Page caches valid for 60 s as fallback.
@@ -102,7 +102,7 @@ Admin pages are server components. Forms POST to `app/api/admin/*` route handler
 1. Reads the user's Supabase session from cookies.
 2. Verifies user is in `public.admin_users` (server-side check, never trust JWT alone for role).
 3. Validates the submission with a Zod schema.
-4. Runs the mutation via Drizzle (using a server-side client with service role for elevated writes — see security section).
+4. Runs the mutation via Drizzle (using a server-side client with service role for elevated writes , see security section).
 5. Triggers audit log insert (DB trigger handles it automatically; handler doesn't need to write).
 6. Calls `revalidatePath()` for affected routes.
 7. Returns JSON `{ ok: true }` or redirects.
@@ -374,7 +374,7 @@ Special cases:
 - `inquiry_items`: same as inquiries.
 - `storage.objects` in the `product-images` bucket: public read for `published` product images (sprint 2 simplification: bucket policy public-read for all paths; refine later). Admin write via authenticated session.
 
-The service role bypasses RLS by design — used inside route handlers that have already verified the user against `admin_users`.
+The service role bypasses RLS by design , used inside route handlers that have already verified the user against `admin_users`.
 
 ---
 
@@ -391,7 +391,7 @@ The service role bypasses RLS by design — used inside route handlers that have
 
 ### Bootstrap (first admin)
 
-First admin = Taha. Seed script inserts Taha's auth.users row (if not present — via Supabase Auth Admin API) and creates the `admin_users` row. Manual: in the Supabase dashboard he sends himself the first magic link OR I trigger it from the seed.
+First admin = Taha. Seed script inserts Taha's auth.users row (if not present , via Supabase Auth Admin API) and creates the `admin_users` row. Manual: in the Supabase dashboard he sends himself the first magic link OR I trigger it from the seed.
 
 ### Session check (every admin request)
 
@@ -411,7 +411,7 @@ One bucket: `product-images`.
 - MIME allowlist: `image/jpeg`, `image/png`, `image/webp`, `image/avif`.
 - Max size: 8 MB per file.
 - Public read: yes (the public site renders these via `next/image`).
-- Bucket policy: public read, authenticated write (any signed-in user can upload — RLS at the table level + admin_users check inside route handlers gates writes practically).
+- Bucket policy: public read, authenticated write (any signed-in user can upload , RLS at the table level + admin_users check inside route handlers gates writes practically).
 - Server-side validation: route handler reads the multipart upload, checks size + MIME against the buffer (not just the Content-Type header), then uploads via `supabase.storage.from('product-images').upload(path, buffer)`.
 
 Image resizing/optimization: skip in Sprint 2 (Next/image handles resize-on-fetch). If file sizes get out of hand, add `sharp` resize in a follow-up.
@@ -430,7 +430,7 @@ Logic:
 5. For each row in `PRODUCTS` (lib/products.ts):
    - Upsert into `products` (status = 'published', published_at = now()).
    - Upsert two rows into `product_translations` (en + fr).
-   - For each image path: insert into `product_images` (no upload — the file is already in `public/brand_photos/`, and `path` stores the relative `/brand_photos/...` URL; Storage migration happens later, products keep public paths for v1 since they live in `public/`). **Hybrid approach:** existing photos stay in `public/brand_photos/`. New admin-uploaded photos go to Supabase Storage. The `path` column accepts either:
+   - For each image path: insert into `product_images` (no upload , the file is already in `public/brand_photos/`, and `path` stores the relative `/brand_photos/...` URL; Storage migration happens later, products keep public paths for v1 since they live in `public/`). **Hybrid approach:** existing photos stay in `public/brand_photos/`. New admin-uploaded photos go to Supabase Storage. The `path` column accepts either:
      - A path starting with `/brand_photos/` → resolved as-is by the public site (Next.js serves from `public/`).
      - A Supabase Storage path → resolved via Storage public URL.
    - For each application step: insert into `product_application_steps`.
@@ -442,7 +442,7 @@ Idempotent: every insert is `on conflict do update`. Running the seed twice is s
 
 After seed succeeds:
 - `lib/products.ts` and `lib/editorial.ts` keep their PRODUCTS / WORLDS / etc. exports in the codebase for now (the seed re-reads them on a re-run if needed). 
-- BUT the public site stops importing from them — instead it imports from `lib/data/*` which queries Supabase.
+- BUT the public site stops importing from them , instead it imports from `lib/data/*` which queries Supabase.
 - Files marked with a header comment: `// SEED-ONLY: this file is the source of truth for db/seed.ts. Public site reads from DB.`
 
 In a follow-up PR (Sprint 2.5), we delete these TS data files entirely once we're confident the DB is the only source.
@@ -494,7 +494,7 @@ Files that currently import from `@/lib/products` or `@/lib/editorial`:
 - `components/contact/InquirySidebar.tsx` (looks up product by id from useInquiry cart)
 - `components/shell/InquiryDrawer.tsx` (same)
 
-Strategy: convert each from sync-data imports to async `getProductBySlug` etc. The RSC pages become `async function Page(...)`. Inquiry drawer/sidebar are client components — they can't query the DB directly. Pass the catalogue as a prop from a server parent OR cache the product list in a global store fetched once on first inquiry add.
+Strategy: convert each from sync-data imports to async `getProductBySlug` etc. The RSC pages become `async function Page(...)`. Inquiry drawer/sidebar are client components , they can't query the DB directly. Pass the catalogue as a prop from a server parent OR cache the product list in a global store fetched once on first inquiry add.
 
 **Hybrid for inquiry drawer:** since the drawer's product names are needed instantly when the drawer opens, fetch a minimal `products_min` (id, slug, name[locale], hero image path) once at the layout level and pass through Context to the drawer. Stale data is acceptable for the drawer; a refresh corrects it.
 
@@ -521,9 +521,9 @@ Single-column centered card. Logo + "Sign in to Barbaria Dashboard". Email input
 - Each row: thumb (hero image or gradient), name (EN), slug, ritual, MOQ, status badge, edit button
 
 ### `/admin/products/[id]` (editor)
-Multi-section form, all on one page (no wizard — admin is faster):
+Multi-section form, all on one page (no wizard , admin is faster):
 1. **Identity**: slug (auto-generated from EN name, editable), ritual + sub-cat dropdowns, hero toggle
-2. **Translations**: EN + FR side by side (name, short, lede) — tabbed within the section
+2. **Translations**: EN + FR side by side (name, short, lede) , tabbed within the section
 3. **Specs**: MOQ, formats (chip input), lead time, origin
 4. **Tags / Facets**: multi-select per axis (ingredient, use, format, packaging, certification)
 5. **Images**: drag-to-reorder + drag-to-upload (Supabase Storage). Each image: alt text per locale.
@@ -638,9 +638,9 @@ package.json                           Add @supabase/supabase-js, @supabase/ssr,
 next.config.ts                         Add Supabase project domain to image remotePatterns
 ```
 
-### Deleted (deferred to Sprint 2.5 — keep TS files for safety until DB is proven)
-- `lib/products.ts` — deleted in Sprint 2.5
-- `lib/editorial.ts` — same
+### Deleted (deferred to Sprint 2.5 , keep TS files for safety until DB is proven)
+- `lib/products.ts` , deleted in Sprint 2.5
+- `lib/editorial.ts` , same
 
 ---
 
@@ -681,7 +681,7 @@ New file `tests/admin-smoke.spec.ts`:
 These tests need an authenticated test fixture. Use Playwright's `storageState` to persist a logged-in session across tests. The fixture authenticates once via a test-only API route or by injecting a session cookie directly.
 
 ### Admin a11y
-`tests/admin-a11y.spec.ts` — axe scan on the admin dashboard and on the product editor.
+`tests/admin-a11y.spec.ts` , axe scan on the admin dashboard and on the product editor.
 
 ---
 
@@ -708,7 +708,7 @@ These tests need an authenticated test fixture. Use Playwright's `storageState` 
 17. **Admin tests + a11y**.
 18. **Final QA, PR, merge**.
 
-(That's 18 slices — I miscounted as 15. Likely some compression / batching as I execute. Plan target ~15-17 days of work; could be 2 weeks at this pace.)
+(That's 18 slices , I miscounted as 15. Likely some compression / batching as I execute. Plan target ~15-17 days of work; could be 2 weeks at this pace.)
 
 ---
 
@@ -743,4 +743,4 @@ These tests need an authenticated test fixture. Use Playwright's `storageState` 
 - Insights / analytics dashboard (Sprint 3)
 - Search admin pages by full-text (basic LIKE-search only)
 - Inline draft preview ("see this draft on the public site without publishing")
-- Workflow / approval ("Sales requests publish, Admin approves") — Sprint 2.5
+- Workflow / approval ("Sales requests publish, Admin approves") , Sprint 2.5

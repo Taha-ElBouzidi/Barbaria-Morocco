@@ -41,7 +41,7 @@ const INITIAL: FormData = {
 };
 
 /**
- * Sprint 2.6 — Two-step inquiry form. Quantity moved to each box-line in
+ * Sprint 2.6 , Two-step inquiry form. Quantity moved to each box-line in
  * the inquiry sidebar (per-box stepper, MOQ-aware), so the form no longer
  * has a quantity field. The mailto body lists each box and its qty + MOQ;
  * custom boxes also list their composition by resolved piece names.

@@ -1,4 +1,4 @@
-# Sprint 1.5 — Brand Voice Refresh + Real Catalogue Alignment
+# Sprint 1.5 , Brand Voice Refresh + Real Catalogue Alignment
 
 **Author:** Taha El Bouzidi
 **Date:** 2026-05-12
@@ -22,7 +22,7 @@ The Sprint 1 site we already shipped uses the right palette (`--bb-bg #fcf9f3`, 
 2. **Reconcile subcategories** (`lib/rituals.ts`) to match the 6 gammes vocabulary.
 3. **Story page rewrite** (`app/[locale]/story/page.tsx` + `messages/{en,fr}.json` story namespace): 4 Histoire chapters from the mockup (Antiquité, Médiéval, Tradition, Aujourd'hui) plus a 5th Tifinagh chapter with the 6 Amazigh symbols. Letter names fact-checked (ⵣ Yaz, ⵎ Yam, ⴽ Yak, ⵏ Yan, ⵔ Yar, ⵢ Ya).
 4. **Hero tagline** update on home: eyebrow becomes "L'Art du Terroir & les Rituels Ancestraux du Maroc" (FR-first, EN equivalent on /en).
-5. **Amazigh proverb component** placed at bottom of Story and Contact: *« Nul n'est étranger sur la terre de ses ancêtres. » — Proverbe Amazigh*.
+5. **Amazigh proverb component** placed at bottom of Story and Contact: *« Nul n'est étranger sur la terre de ses ancêtres. » , Proverbe Amazigh*.
 6. **Tifinagh ⵣ ambient mark** as a small SVG primitive used on hero dividers, footer, section breaks. Does NOT replace the existing wordmark logo.
 7. **Re-seed database** with the new catalogue via `npm run seed`.
 8. **Palette audit**: confirm no near-black surfaces in CSS. Drift gets corrected if present.

@@ -50,7 +50,7 @@ export async function getProductBySlug(
 }
 
 /**
- * Sprint 2 — published products in a category, for the wizard product
+ * Sprint 2 , published products in a category, for the wizard product
  * pickers. Reads category by slug from the `categories` table.
  */
 export async function getProductsByCategory(
@@ -95,7 +95,7 @@ export async function getProductsByCategory(
 }
 
 /**
- * Sprint 2.6 — "Boxes containing this piece" for the PDP. Replaces the
+ * Sprint 2.6 , "Boxes containing this piece" for the PDP. Replaces the
  * legacy related-products row. Capped at 3 results, sorted by sort_order.
  */
 export interface BoxContainingProduct {

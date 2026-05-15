@@ -6,14 +6,14 @@ import type { ComponentProps } from "react";
 type Props = ComponentProps<typeof Link>;
 
 /**
- * ZoomLink — drop-in replacement for `<Link>` that wraps the navigation
+ * ZoomLink , drop-in replacement for `<Link>` that wraps the navigation
  * inside `document.startViewTransition`. Combined with a shared
  * `view-transition-name` on both the source thumbnail and the destination
  * hero image, the browser shared-element animation makes the source card
  * appear to zoom into the destination hero.
  *
  * Falls back to a plain Link in browsers without View Transitions support
- * (Firefox stable, older Safari) — they get the standard instant navigation,
+ * (Firefox stable, older Safari) , they get the standard instant navigation,
  * no animation, no breakage.
  *
  * Used by the gift-box detail page items list and (later) the wizard

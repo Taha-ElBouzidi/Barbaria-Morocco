@@ -1,4 +1,4 @@
-# Sprint 2 — Admin Dashboard + Supabase Backend
+# Sprint 2 , Admin Dashboard + Supabase Backend
 
 22 commits across 18 slices. Moves Barbaria's catalogue from in-repo TS files to a Postgres-backed admin dashboard, with the public site reading from DB via ISR. The redesign port (Sprint 1) stays visually unchanged; this PR is pure backend + admin shell.
 
@@ -7,7 +7,7 @@
 ### Database (Supabase Postgres 17, eu-west-1)
 - **18 tables** in `public` schema: products + translations + images + application steps + facets, rituals + subcategories, ateliers, journal cards, inquiries (Sprint 3 wires the form), admin users, audit log
 - **8 enum types** for status / role / locale / facet axes
-- **33 RLS policies** — anon reads published rows on the catalogue; admins (membership in `admin_users`) read everything and write the catalogue
+- **33 RLS policies** , anon reads published rows on the catalogue; admins (membership in `admin_users`) read everything and write the catalogue
 - **5 updated_at triggers** + **7 audit triggers** + a `log_audit()` SECURITY DEFINER function (REVOKE EXECUTE from anon/authenticated so it can't be called as an RPC)
 - **`product-images` Storage bucket** with 8 MB limit, MIME allowlist (jpeg/png/webp/avif), public read + admin-scoped write
 - `get_advisors(security)` → **zero lints**
@@ -15,7 +15,7 @@
 ### Migrations + seed
 - Drizzle schema in `db/schema.ts` with all 18 tables + relations
 - 5 migration SQL files in `db/migrations/` (initial schema, RLS, triggers, storage, log_audit lockdown)
-- `db/seed.ts` (npm run seed) — idempotent script that pulls the existing `lib/{products,rituals,editorial}.ts` data into the DB
+- `db/seed.ts` (npm run seed) , idempotent script that pulls the existing `lib/{products,rituals,editorial}.ts` data into the DB
 - **Seeded counts: 17 products, 34 translations, 20 images, 55 product-facet links, 36 facets, 6 ateliers + 12 translations, 6 journal cards + 12 translations, 83 audit_log entries**
 
 ### Auth (magic-link only, no passwords)
@@ -32,15 +32,15 @@
 - All 40 existing Playwright tests still green
 
 ### Admin UI (`/admin/*`)
-- **Shell** — sidebar nav (Dashboard / Products / Journal / Ateliers / Rituals / Facets / Inquiries / Activity), top bar with admin name + role + sign-out, route-group `(auth)` for unauthenticated subroutes
-- **Dashboard** — 4 stat tiles (published products / drafts / ateliers / journal), quick actions, recent activity feed
-- **Products CRUD** — list with search/ritual/status filters, create + edit form with identity / EN+FR translations / facet multi-select / image upload (up/down reorder, no drag-drop in v1) / 0-3 application steps, status toggle (draft/published) + delete with confirm
-- **Journal CRUD** — same pattern, simpler form
-- **Ateliers CRUD** — same pattern, no status toggle
-- **Rituals editor** — read-only list of 3 worlds; per-ritual edit page covers translations + hero + sort_order + sub-categories (add/rename/reorder/delete-with-protection)
-- **Facets editor** — single page, 5 axis sections, inline edit, delete blocked if products reference the facet
-- **Inquiries inbox** — read-only list + detail. Empty in Sprint 2 (Sprint 3 wires the form to DB writes)
-- **Activity log** — paginated audit_log table with entity-type / action / date-range filters; expand-to-diff per row
+- **Shell** , sidebar nav (Dashboard / Products / Journal / Ateliers / Rituals / Facets / Inquiries / Activity), top bar with admin name + role + sign-out, route-group `(auth)` for unauthenticated subroutes
+- **Dashboard** , 4 stat tiles (published products / drafts / ateliers / journal), quick actions, recent activity feed
+- **Products CRUD** , list with search/ritual/status filters, create + edit form with identity / EN+FR translations / facet multi-select / image upload (up/down reorder, no drag-drop in v1) / 0-3 application steps, status toggle (draft/published) + delete with confirm
+- **Journal CRUD** , same pattern, simpler form
+- **Ateliers CRUD** , same pattern, no status toggle
+- **Rituals editor** , read-only list of 3 worlds; per-ritual edit page covers translations + hero + sort_order + sub-categories (add/rename/reorder/delete-with-protection)
+- **Facets editor** , single page, 5 axis sections, inline edit, delete blocked if products reference the facet
+- **Inquiries inbox** , read-only list + detail. Empty in Sprint 2 (Sprint 3 wires the form to DB writes)
+- **Activity log** , paginated audit_log table with entity-type / action / date-range filters; expand-to-diff per row
 
 ### Tests
 - **50 Playwright tests passing**

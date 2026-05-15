@@ -4,7 +4,7 @@ import { createContext, useContext, useReducer, useEffect, useCallback } from "r
 import type { ReactNode } from "react";
 
 /**
- * Sprint 2.6 — Inquiry is BOX-level, not product-level.
+ * Sprint 2.6 , Inquiry is BOX-level, not product-level.
  *
  * Each line represents either:
  *   - a curated gift box (just a giftBoxSlug + qty), OR
@@ -71,7 +71,7 @@ function reducer(state: InquiryState, action: Action): InquiryState {
 
 const STORAGE_KEY = "bb.inquiry.v2";
 const LEGACY_KEY = "bb.inquiry";
-// Sprint 2.8 — explicit per-tab persistence. sessionStorage clears on tab
+// Sprint 2.8 , explicit per-tab persistence. sessionStorage clears on tab
 // close (matches "fresh state when I come back tomorrow") but survives a
 // page refresh or a tab switch (so mid-flow buyers don't lose work).
 

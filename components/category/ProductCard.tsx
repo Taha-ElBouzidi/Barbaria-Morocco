@@ -12,7 +12,7 @@ interface Props {
 }
 
 /**
- * Sprint 2.6 — Products are no longer purchasable individually, only as
+ * Sprint 2.6 , Products are no longer purchasable individually, only as
  * components of boxes. The card no longer carries an "Add to inquiry"
  * action; it is purely a navigation tile into the product detail page.
  */

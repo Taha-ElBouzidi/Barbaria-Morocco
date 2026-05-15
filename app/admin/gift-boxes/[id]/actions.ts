@@ -7,7 +7,7 @@ import { GiftBoxSaveSchema, type GiftBoxSaveInput } from "@/lib/admin/gift-boxes
 import { requireAdmin } from "@/lib/admin/auth";
 
 /**
- * Sprint 2.3b — Gift box CRUD server actions.
+ * Sprint 2.3b , Gift box CRUD server actions.
  * Patterns mirror lib/admin/products.ts: zod-validate FormData, upsert via
  * service-role client (RLS bypass), revalidate public + admin paths.
  */

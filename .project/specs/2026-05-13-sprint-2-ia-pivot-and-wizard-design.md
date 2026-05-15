@@ -1,4 +1,4 @@
-# Sprint 2 — IA Pivot, Compose-Your-Box, Polish & Mobile
+# Sprint 2 , IA Pivot, Compose-Your-Box, Polish & Mobile
 
 **Author:** Taha El Bouzidi (lead) + Claude as engineer
 **Date:** 2026-05-13
@@ -20,8 +20,8 @@ The 36 cosmetic products from the catalogue stay as detail pages (educational, n
 - **Categories**: `cosmetiques`, `epicerie_fine`. Slugs final.
 - **CTA copy**: `Send us a request` / `Envoyez-nous une demande`. Replaces `B2B Concierge`.
 - **Storytelling themes**:
-  - Cosmétiques → *Sous les étoiles du Sahara* — constellation metaphor, each wizard step is a "star"
-  - Épicerie Fine → *Sur la route des caravanes* — trans-Saharan trade route, each step is a halt (Sijilmassa, Taliouine, Marrakech, Fès, etc.)
+  - Cosmétiques → *Sous les étoiles du Sahara* , constellation metaphor, each wizard step is a "star"
+  - Épicerie Fine → *Sur la route des caravanes* , trans-Saharan trade route, each step is a halt (Sijilmassa, Taliouine, Marrakech, Fès, etc.)
 - **Default minimum quantity**: 5 units per box. Per-box override editable by admin.
 - **Branches & deploy**: per-slice feature branches → squash merge to master → Vercel auto-deploy. Master must always stay deployable.
 - **Animation stack**: Tailwind + CSS transitions + Next.js View Transitions API. No new dependencies.

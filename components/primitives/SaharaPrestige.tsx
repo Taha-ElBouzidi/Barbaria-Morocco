@@ -12,7 +12,7 @@ interface SaharaPrestigeProps {
 }
 
 /**
- * SaharaPrestige — the brand's "gold dust caught in moving light" effect
+ * SaharaPrestige , the brand's "gold dust caught in moving light" effect
  * for dark/brown surfaces.
  *
  * Layers two things on top of whatever brown background the parent

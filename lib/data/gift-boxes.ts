@@ -1,5 +1,5 @@
 /**
- * Sprint 2 — Gift box data fetchers. Public reads return only published
+ * Sprint 2 , Gift box data fetchers. Public reads return only published
  * boxes. Items are joined to product_translations + first product image.
  */
 

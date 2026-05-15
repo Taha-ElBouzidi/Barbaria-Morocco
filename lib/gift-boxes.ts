@@ -1,4 +1,4 @@
-// Sprint 2 — Gift Boxes (curated and customizable)
+// Sprint 2 , Gift Boxes (curated and customizable)
 //
 // Curated boxes carry a fixed item list (the 3 cosmetics packs we already
 // had as products are now gift_boxes here). Customizable boxes are the
@@ -24,7 +24,7 @@ export interface GiftBox {
 
 export const GIFT_BOXES: GiftBox[] = [
   // ============================================================
-  // COSMÉTIQUES — customizable wizard entry
+  // COSMÉTIQUES , customizable wizard entry
   // ============================================================
   {
     slug: "compose-cosmetiques",
@@ -52,7 +52,7 @@ export const GIFT_BOXES: GiftBox[] = [
   },
 
   // ============================================================
-  // COSMÉTIQUES — 3 curated (migrated from former heritage packs)
+  // COSMÉTIQUES , 3 curated (migrated from former heritage packs)
   // ============================================================
   {
     slug: "pack-nila-oranger",
@@ -133,7 +133,7 @@ export const GIFT_BOXES: GiftBox[] = [
   },
 
   // ============================================================
-  // ÉPICERIE FINE — customizable wizard entry (no products yet)
+  // ÉPICERIE FINE , customizable wizard entry (no products yet)
   // ============================================================
   {
     slug: "compose-epicerie",
@@ -164,7 +164,7 @@ export const GIFT_BOXES: GiftBox[] = [
   },
 
   // ============================================================
-  // ÉPICERIE FINE — 2 curated placeholder boxes (drafts; admin populates)
+  // ÉPICERIE FINE , 2 curated placeholder boxes (drafts; admin populates)
   // ============================================================
   {
     slug: "caravane-or-liquide",

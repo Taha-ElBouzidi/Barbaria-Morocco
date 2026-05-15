@@ -11,7 +11,7 @@ interface Props {
 }
 
 /**
- * Sprint 2.6 — Products are no longer purchasable individually.
+ * Sprint 2.6 , Products are no longer purchasable individually.
  * The spec column shows information and an email link to the concierge
  * for a spec sheet. The "Add to inquiry" button is gone; the box detail
  * page or wizard is where boxes get added to the inquiry.

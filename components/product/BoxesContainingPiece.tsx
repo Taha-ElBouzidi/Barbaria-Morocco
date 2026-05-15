@@ -10,7 +10,7 @@ interface Props {
 }
 
 /**
- * Sprint 2.6 — Replaces the legacy "Complementary pieces" row. Products
+ * Sprint 2.6 , Replaces the legacy "Complementary pieces" row. Products
  * are no longer purchasable individually; instead the PDP shows up to
  * three gift boxes that contain this piece so the visitor can shop the
  * commercial unit (the box) directly.

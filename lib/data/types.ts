@@ -61,7 +61,7 @@ export interface FacetEntry {
   value: string;
 }
 
-// Sprint 2 — Categories and gift boxes
+// Sprint 2 , Categories and gift boxes
 
 export type CategorySlug = "cosmetiques" | "epicerie_fine";
 export type StoryThemeKey = "sahara_stars" | "caravan_route";
