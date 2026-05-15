@@ -6,11 +6,12 @@ import { useTranslations, useLocale } from "next-intl";
 import Icon from "@/components/primitives/Icon";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import { cn } from "@/lib/utils";
-import { WHATSAPP_NUMBER } from "@/lib/constants";
+import type { SiteSettings } from "@/lib/data/site-settings";
 
 interface MenuDrawerProps {
   open: boolean;
   onClose: () => void;
+  socials: SiteSettings;
 }
 
 const CATEGORIES = [
@@ -18,7 +19,7 @@ const CATEGORIES = [
   { slug: "epicerie_fine", icon: "diamond", key: "menu_epicerie" },
 ] as const;
 
-export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
+export default function MenuDrawer({ open, onClose, socials }: MenuDrawerProps) {
   const t = useTranslations("nav");
   const locale = useLocale();
   const pathname = usePathname();
@@ -220,22 +221,26 @@ export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
               })}
             </div>
             <div className="flex flex-wrap items-center justify-between gap-3">
-              <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-1.5 font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
-              >
-                <Icon name="whatsapp" size={14} />
-                {t("menu_whatsapp")}
-              </a>
-              <a
-                href="mailto:concierge@barbariamorocco.com"
-                className="flex items-center gap-1.5 font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
-              >
-                <Icon name="mail" size={14} />
-                {t("menu_email")}
-              </a>
+              {socials.whatsappUrl && (
+                <a
+                  href={socials.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center gap-1.5 font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+                >
+                  <Icon name="whatsapp" size={14} />
+                  {t("menu_whatsapp")}
+                </a>
+              )}
+              {socials.contactEmail && (
+                <a
+                  href={`mailto:${socials.contactEmail}`}
+                  className="flex items-center gap-1.5 font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+                >
+                  <Icon name="mail" size={14} />
+                  {t("menu_email")}
+                </a>
+              )}
             </div>
           </div>
         </div>
