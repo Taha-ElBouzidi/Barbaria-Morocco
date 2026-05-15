@@ -49,6 +49,8 @@ export interface WizardCopy {
   step_no_products: string;
   step_search_placeholder: string;
   step_search_count: string;
+  step_filter_label: string;
+  step_filter_clear: string;
   step_back: string;
   step_next: string;
   step_picked: string;
@@ -277,8 +279,16 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
       aria-modal="true"
       aria-label={copy.exit_aria}
       data-theme={themeKey}
-      className={`fixed inset-0 z-[100] text-white overflow-y-auto overflow-x-hidden wizard-theme wizard-theme--${themeKey === "caravan_route" ? "caravan" : "sahara"}`}
+      className={`fixed inset-0 z-[100] text-white overflow-hidden wizard-theme wizard-theme--${themeKey === "caravan_route" ? "caravan" : "sahara"}`}
     >
+      {/* SaharaPrestige sits at the section level (fixed-not-scrolling)
+          so the pepitas stay anchored to the viewport as the buyer scrolls
+          through long steps. Earlier we had overflow-y-auto on the
+          section and absolute SaharaPrestige inside it; the absolute
+          layer scrolled with the content and the pepitas disappeared
+          off the top of the screen mid-scroll. The fix is to separate
+          the chrome (SaharaPrestige + close X) from the scrolling
+          content area below. */}
       <SaharaPrestige count={60} />
       <button
         type="button"
@@ -288,6 +298,7 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
       >
         <Icon name="close" size={18} />
       </button>
+      <div className="absolute inset-0 overflow-y-auto overflow-x-hidden">
       <div className="relative z-10 mx-auto max-w-[1280px] px-[var(--bb-margin-edge)] py-16 lg:py-24">
         <ProgressDots
           total={totalSteps}
@@ -354,6 +365,7 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
             />
           )}
         </WizardView>
+      </div>
       </div>
 
       {expanded && (
@@ -535,16 +547,41 @@ function StepView({
   const title = step.title[lang];
   const story = step.story[lang];
   const [search, setSearch] = useState("");
-  const filteredProducts = search.trim()
-    ? products.filter((p) => {
-        const q = search.trim().toLowerCase();
-        return (
-          p.name.toLowerCase().includes(q) ||
-          (p.short ?? "").toLowerCase().includes(q) ||
-          p.tags.some((t) => t.toLowerCase().includes(q))
-        );
-      })
-    : products;
+  const [selectedTags, setSelectedTags] = useState<string[]>([]);
+
+  // Build the filter-chip list from the union of tags across the visible
+  // pool. Each tag is a facet value (ingredient / use / format / etc.).
+  // The maison can toggle multiple chips; a product matches if it carries
+  // at least one of the selected tags (OR-within-axis). Search and tag
+  // filters compose with AND.
+  const allTags = Array.from(
+    new Set(products.flatMap((p) => p.tags))
+  ).sort((a, b) => a.localeCompare(b));
+
+  const toggleTag = (tag: string) =>
+    setSelectedTags((prev) =>
+      prev.includes(tag) ? prev.filter((t) => t !== tag) : [...prev, tag]
+    );
+  const clearFilters = () => {
+    setSearch("");
+    setSelectedTags([]);
+  };
+  const hasFilters = !!search.trim() || selectedTags.length > 0;
+
+  const filteredProducts = products.filter((p) => {
+    if (selectedTags.length > 0 && !selectedTags.some((t) => p.tags.includes(t))) {
+      return false;
+    }
+    if (search.trim()) {
+      const q = search.trim().toLowerCase();
+      return (
+        p.name.toLowerCase().includes(q) ||
+        (p.short ?? "").toLowerCase().includes(q) ||
+        p.tags.some((t) => t.toLowerCase().includes(q))
+      );
+    }
+    return true;
+  });
 
   return (
     <div className="space-y-12">
@@ -569,7 +606,7 @@ function StepView({
         </div>
       ) : (
         <>
-          <div className="max-w-[560px] mx-auto">
+          <div className="max-w-[640px] mx-auto space-y-4">
             <input
               type="search"
               value={search}
@@ -578,8 +615,42 @@ function StepView({
               aria-label={copy.step_search_placeholder}
               className="w-full bg-bb-primary-container/40 border border-bb-secondary/30 px-4 py-3 min-h-[44px] text-bb-secondary placeholder:text-bb-secondary/40 font-sans text-[14px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
             />
-            {search && (
-              <p className="mt-2 text-[11px] uppercase tracking-[0.18em] text-bb-secondary/60 text-center">
+            {allTags.length > 0 && (
+              <div className="flex flex-wrap items-center justify-center gap-2">
+                <span className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-secondary/60 mr-1">
+                  {copy.step_filter_label}
+                </span>
+                {allTags.map((tag) => {
+                  const active = selectedTags.includes(tag);
+                  return (
+                    <button
+                      type="button"
+                      key={tag}
+                      onClick={() => toggleTag(tag)}
+                      aria-pressed={active}
+                      className={`px-2.5 py-1 min-h-[32px] border text-[11px] uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary ${
+                        active
+                          ? "border-bb-secondary bg-bb-secondary text-bb-primary"
+                          : "border-bb-secondary/30 text-bb-secondary/80 hover:border-bb-secondary"
+                      }`}
+                    >
+                      {tag}
+                    </button>
+                  );
+                })}
+                {hasFilters && (
+                  <button
+                    type="button"
+                    onClick={clearFilters}
+                    className="ml-1 px-2.5 py-1 min-h-[32px] text-[11px] uppercase tracking-[0.12em] text-bb-secondary/60 hover:text-bb-secondary"
+                  >
+                    {copy.step_filter_clear}
+                  </button>
+                )}
+              </div>
+            )}
+            {(search || selectedTags.length > 0) && (
+              <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary/60 text-center">
                 {copy.step_search_count.replace("{n}", String(filteredProducts.length))}
               </p>
             )}
