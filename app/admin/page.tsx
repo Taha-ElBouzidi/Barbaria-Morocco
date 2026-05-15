@@ -17,6 +17,7 @@ async function getDashboardCounts() {
     ateliers,
     journal,
     inquiries,
+    occasions,
   ] = await Promise.all([
     supabase.from("products").select("id", { count: "exact", head: true }).eq("status", "published"),
     supabase.from("products").select("id", { count: "exact", head: true }).eq("status", "draft"),
@@ -28,6 +29,7 @@ async function getDashboardCounts() {
       .from("inquiries")
       .select("id", { count: "exact", head: true })
       .in("status", ["new", "contacted", "quoted"]),
+    supabase.from("occasions").select("id", { count: "exact", head: true }).eq("status", "published"),
   ]);
   return {
     publishedProducts: publishedProducts.count ?? 0,
@@ -37,6 +39,7 @@ async function getDashboardCounts() {
     ateliers: ateliers.count ?? 0,
     journal: journal.count ?? 0,
     inquiries: inquiries.count ?? 0,
+    occasions: occasions.count ?? 0,
   };
 }
 
@@ -69,7 +72,7 @@ export default async function AdminDashboard() {
         />
       </section>
 
-      <section className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-6 gap-3">
+      <section className="grid grid-cols-2 sm:grid-cols-3 xl:grid-cols-7 gap-3">
         <StatTile
           label="Gift boxes"
           value={counts.publishedGiftBoxes}
@@ -90,6 +93,7 @@ export default async function AdminDashboard() {
           value={counts.draftProducts}
           href="/admin/products?status=draft"
         />
+        <StatTile label="Occasions" value={counts.occasions} href="/admin/occasions" />
         <StatTile label="Ateliers" value={counts.ateliers} href="/admin/ateliers" />
         <StatTile label="Journal" value={counts.journal} href="/admin/journal" />
       </section>

@@ -88,7 +88,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
         )}
       >
         {/* Header */}
-        <div className="flex items-center justify-between border-b border-bb-line px-8 py-6">
+        <div className="flex items-center justify-between border-b border-bb-line px-5 sm:px-8 py-6">
           <div className="flex items-baseline gap-3">
             <Eyebrow tone="green">{t("inquiry_title")}</Eyebrow>
             <span className="font-sans text-[11px] text-bb-on-surface-variant">
@@ -106,7 +106,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
         </div>
 
         {/* Body, scrollable */}
-        <div className="flex-1 overflow-y-auto px-8 py-6">
+        <div className="flex-1 overflow-y-auto px-5 sm:px-8 py-6">
           {!hasItems ? (
             /* Empty state */
             <div className="flex flex-col items-start gap-4 pt-8">
@@ -195,7 +195,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
         </div>
 
         {/* Footer, sticky */}
-        <div className="border-t border-bb-line px-8 py-6">
+        <div className="border-t border-bb-line px-5 sm:px-8 py-6">
           <Link
             href="/contact"
             onClick={onClose}
