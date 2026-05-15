@@ -27,7 +27,7 @@ export default async function AmazighProverb({ locale }: { locale: string }) {
         </blockquote>
       </Reveal>
       <Reveal delayMs={160}>
-        <p className="mt-4 text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+        <p className="mt-4 text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
           {t("attribution")}
         </p>
       </Reveal>

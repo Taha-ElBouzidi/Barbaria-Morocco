@@ -131,7 +131,7 @@ export default function RitualEditor({ id, initialData }: RitualEditorProps) {
       <form ref={formRef} onSubmit={(e) => e.preventDefault()} className="space-y-10">
         {/* Section 1: Identity */}
         <section className="space-y-6">
-          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
             Identity
           </h2>
 
@@ -151,7 +151,7 @@ export default function RitualEditor({ id, initialData }: RitualEditorProps) {
                 type="number"
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value)}
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               />
             </label>
           </div>
@@ -159,7 +159,7 @@ export default function RitualEditor({ id, initialData }: RitualEditorProps) {
 
         {/* Section 2: Hero image */}
         <section className="space-y-6">
-          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
             Hero image
           </h2>
 
@@ -209,7 +209,7 @@ export default function RitualEditor({ id, initialData }: RitualEditorProps) {
 
         {/* Section 3: Translations */}
         <section className="space-y-6">
-          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
             Translations
           </h2>
 
@@ -252,7 +252,7 @@ export default function RitualEditor({ id, initialData }: RitualEditorProps) {
                       value={vals[field]}
                       onChange={(e) => setter(field, e.target.value)}
                       required={locale === "en"}
-                      className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                      className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
                     />
                   </label>
                 ))}
@@ -266,7 +266,7 @@ export default function RitualEditor({ id, initialData }: RitualEditorProps) {
                     onChange={(e) => setter("lede", e.target.value)}
                     required={locale === "en"}
                     rows={4}
-                    className="w-full bg-transparent border border-bb-line p-3 text-bb-on-surface focus:outline-none focus:border-bb-primary resize-y"
+                    className="w-full bg-transparent border border-bb-line p-3 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary resize-y"
                   />
                 </label>
               </div>

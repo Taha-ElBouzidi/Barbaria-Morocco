@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     template: "%s | Barbaria Morocco",
   },
   description:
-    "Decouvrez Barbaria Morocco : cosmetiques naturels, textile artisanal et produits alimentaires du terroir marocain.",
+    "Decouvrez Barbaria Morocco : coffrets cadeaux de cosmetiques naturels et d'epicerie fine du terroir marocain. B2B fait sur commande.",
   alternates: {
     languages: {
       fr: `${BASE_URL}/fr`,
@@ -60,7 +60,7 @@ export const metadata: Metadata = {
         url: "/brand_photos/products-all-three.jpg",
         width: 1200,
         height: 630,
-        alt: "Barbaria Morocco - Cosmetiques, Textile, Alimentaire",
+        alt: "Barbaria Morocco - Coffrets Cosmetiques & Epicerie Fine",
       },
     ],
   },
@@ -68,7 +68,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Barbaria Morocco | L'authenticite marocaine",
     description:
-      "Cosmetiques naturels, textile artisanal et produits alimentaires du terroir marocain.",
+      "Coffrets cadeaux de cosmetiques naturels et d'epicerie fine du terroir marocain. B2B fait sur commande.",
     images: ["/brand_photos/products-all-three.jpg"],
   },
   icons: {
@@ -134,7 +134,7 @@ export default async function LocaleLayout({
               url: BASE_URL,
               logo: `${BASE_URL}/brand_photos/barbaria-logo-new.jpg`,
               description:
-                "Cosmetiques naturels, textile artisanal et produits alimentaires du terroir marocain.",
+                "Coffrets cadeaux de cosmetiques naturels et d'epicerie fine du terroir marocain. B2B fait sur commande.",
               contactPoint: {
                 "@type": "ContactPoint",
                 email: CONTACT_EMAIL,

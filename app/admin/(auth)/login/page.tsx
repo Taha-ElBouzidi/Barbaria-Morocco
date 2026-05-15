@@ -37,7 +37,7 @@ export default async function LoginPage({ searchParams }: PageProps) {
               name="email"
               required
               autoComplete="email"
-              className="w-full bg-transparent border-0 border-b border-bb-line py-3 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+              className="w-full bg-transparent border-0 border-b border-bb-line py-3 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               placeholder="you@maison.com"
             />
           </label>
@@ -52,7 +52,7 @@ export default async function LoginPage({ searchParams }: PageProps) {
               required
               autoComplete="current-password"
               minLength={8}
-              className="w-full bg-transparent border-0 border-b border-bb-line py-3 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+              className="w-full bg-transparent border-0 border-b border-bb-line py-3 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
             />
           </label>
 

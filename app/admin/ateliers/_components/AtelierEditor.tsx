@@ -131,7 +131,7 @@ export default function AtelierEditor({ id, initialData }: AtelierEditorProps) {
       <form ref={formRef} onSubmit={(e) => e.preventDefault()} className="space-y-10">
         {/* Section 1: Identity */}
         <section className="space-y-6">
-          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
             Identity
           </h2>
 
@@ -145,7 +145,7 @@ export default function AtelierEditor({ id, initialData }: AtelierEditorProps) {
                 value={name}
                 onChange={(e) => handleNameChange(e.target.value)}
                 required
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
                 placeholder="e.g. Savonnerie Beldi"
               />
             </label>
@@ -160,7 +160,7 @@ export default function AtelierEditor({ id, initialData }: AtelierEditorProps) {
                 onChange={(e) => setSlug(e.target.value)}
                 pattern="[a-z0-9-]+"
                 required
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface font-mono text-[13px] focus:outline-none focus:border-bb-primary"
+                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface font-mono text-[13px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
                 placeholder="e.g. savonnerie-beldi"
               />
             </label>
@@ -174,7 +174,7 @@ export default function AtelierEditor({ id, initialData }: AtelierEditorProps) {
                 value={region}
                 onChange={(e) => setRegion(e.target.value)}
                 required
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
                 placeholder="e.g. Marrakech, Morocco"
               />
             </label>
@@ -190,7 +190,7 @@ export default function AtelierEditor({ id, initialData }: AtelierEditorProps) {
                 min={1900}
                 max={2100}
                 required
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
                 placeholder="e.g. 1985"
               />
             </label>
@@ -203,7 +203,7 @@ export default function AtelierEditor({ id, initialData }: AtelierEditorProps) {
                 type="number"
                 value={sortOrder}
                 onChange={(e) => setSortOrder(e.target.value)}
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               />
             </label>
           </div>
@@ -211,7 +211,7 @@ export default function AtelierEditor({ id, initialData }: AtelierEditorProps) {
 
         {/* Section 2: Translations */}
         <section className="space-y-6">
-          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
             Translations
           </h2>
 
@@ -248,7 +248,7 @@ export default function AtelierEditor({ id, initialData }: AtelierEditorProps) {
                     onChange={(e) => setter({ description: e.target.value })}
                     required={locale === "en"}
                     rows={4}
-                    className="w-full bg-transparent border border-bb-line p-3 text-bb-on-surface focus:outline-none focus:border-bb-primary resize-y"
+                    className="w-full bg-transparent border border-bb-line p-3 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary resize-y"
                     placeholder="Describe the atelier in a few sentences…"
                   />
                 </label>
@@ -259,7 +259,7 @@ export default function AtelierEditor({ id, initialData }: AtelierEditorProps) {
 
         {/* Section 3: Image */}
         <section className="space-y-6">
-          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
             Image
           </h2>
 

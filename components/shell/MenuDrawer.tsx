@@ -15,7 +15,7 @@ interface MenuDrawerProps {
 
 const CATEGORIES = [
   { slug: "cosmetiques", icon: "leaf", key: "menu_cosmetiques" },
-  { slug: "epicerie_fine", icon: "hammam", key: "menu_epicerie" },
+  { slug: "epicerie_fine", icon: "diamond", key: "menu_epicerie" },
 ] as const;
 
 export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
@@ -193,7 +193,7 @@ export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
 
           {/* Footer row */}
           <div className="h-px bg-bb-line mx-8 shrink-0" />
-          <div className="px-8 py-5 grid grid-cols-3 gap-2 shrink-0">
+          <div className="px-6 sm:px-8 py-5 flex flex-col sm:grid sm:grid-cols-3 gap-3 sm:gap-2 shrink-0">
             {/* Lang toggle */}
             <div className="flex items-center gap-1.5 font-sans text-[11px] uppercase tracking-[0.18em]">
               <Icon name="globe" size={14} className="text-bb-on-surface-variant shrink-0" />

@@ -89,6 +89,7 @@ export default async function GiftBoxPage({ params }: PageProps) {
       quantity_title: wizardT("quantity_title"),
       quantity_lede: wizardT("quantity_lede"),
       quantity_min_label: wizardT("quantity_min_label"),
+      quantity_below_min_note: wizardT("quantity_below_min_note"),
       quantity_submit: wizardT("quantity_submit"),
       done_eyebrow: wizardT("done_eyebrow"),
       done_title: wizardT("done_title"),
@@ -167,7 +168,7 @@ export default async function GiftBoxPage({ params }: PageProps) {
                 gift boxes. The previous isWizard ternary here was dead code. */}
             <Reveal delayMs={80}>
               <div className="space-y-4">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
                   {t("items_eyebrow")}
                 </p>
                 <h3 className="font-display text-[24px] text-bb-primary">
@@ -198,7 +199,7 @@ export default async function GiftBoxPage({ params }: PageProps) {
                       <div className="min-w-0">
                         <ZoomLink
                           href={`/product/${item.slug}`}
-                          className="font-display text-[18px] text-bb-primary hover:text-bb-secondary transition-colors"
+                          className="font-display text-[18px] text-bb-primary hover:text-bb-secondary-deep transition-colors"
                         >
                           {item.name}
                         </ZoomLink>
@@ -210,7 +211,7 @@ export default async function GiftBoxPage({ params }: PageProps) {
                       </div>
                       <ZoomLink
                         href={`/product/${item.slug}`}
-                        className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary hover:opacity-80 shrink-0"
+                        className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep hover:opacity-80 shrink-0"
                       >
                         {t("view_product")}
                       </ZoomLink>
@@ -224,7 +225,7 @@ export default async function GiftBoxPage({ params }: PageProps) {
           <Reveal delayMs={120}>
             <aside className="lg:sticky lg:top-28 border border-bb-line bg-bb-bg p-8 lg:p-10 space-y-6">
               <div className="space-y-1">
-                <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
                   {t("aside_eyebrow")}
                 </p>
                 <h3 className="font-display text-[24px] text-bb-primary leading-tight">

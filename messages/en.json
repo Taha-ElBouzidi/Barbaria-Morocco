@@ -256,6 +256,7 @@
     "quantity_title": "How many of this box?",
     "quantity_lede": "Set the order quantity. The concierge returns with pricing within 24 hours.",
     "quantity_min_label": "Minimum {n} per order",
+    "quantity_below_min_note": "Below the {n}-unit minimum, the concierge may adjust pricing on small batches.",
     "quantity_submit": "Send request",
     "done_eyebrow": "Composed",
     "done_title": "Your composition is on its way.",

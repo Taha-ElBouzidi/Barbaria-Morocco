@@ -17,7 +17,7 @@ export default function CredentialStrip() {
       className="bg-bb-bg-low border-y border-bb-line overflow-hidden py-4"
       aria-label={t("strip.aria")}
     >
-      <div className="bb-marquee flex whitespace-nowrap font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+      <div className="bb-marquee flex whitespace-nowrap font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
         {[...items, ...items].map((item, i) => (
           <span key={i} aria-hidden className="inline-flex items-center gap-8 px-8">
             <span>{item}</span>

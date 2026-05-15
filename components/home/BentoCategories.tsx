@@ -50,7 +50,7 @@ export default function BentoCategories() {
             aria-hidden
           />
           <SaharaPrestige count={35} />
-          <div className="absolute inset-x-0 bottom-0 p-8 lg:p-12 text-white space-y-3">
+          <div className="absolute inset-x-0 bottom-0 p-5 lg:p-12 text-white space-y-3">
             <Eyebrow tone="gold">{t("bento.cosmetiques_eyebrow")}</Eyebrow>
             <div className="flex items-end justify-between gap-4">
               <DisplayHeading size="lg" className="text-bb-secondary">
@@ -82,7 +82,7 @@ export default function BentoCategories() {
             aria-hidden
           />
           <SaharaPrestige count={35} />
-          <div className="absolute inset-x-0 bottom-0 p-8 lg:p-12 text-white space-y-3">
+          <div className="absolute inset-x-0 bottom-0 p-5 lg:p-12 text-white space-y-3">
             <Eyebrow tone="gold">{t("bento.epicerie_eyebrow")}</Eyebrow>
             <div className="flex items-end justify-between gap-4">
               <DisplayHeading size="lg" className="text-bb-secondary">

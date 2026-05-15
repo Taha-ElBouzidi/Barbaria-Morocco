@@ -169,7 +169,7 @@ export default async function CategoryPage({ params }: PageProps) {
                   </div>
                   <div className="space-y-2">
                     {box.tagline && (
-                      <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+                      <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
                         {box.tagline}
                       </p>
                     )}

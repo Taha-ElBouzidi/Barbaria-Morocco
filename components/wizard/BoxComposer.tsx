@@ -63,6 +63,7 @@ export interface WizardCopy {
   quantity_title: string;
   quantity_lede: string;
   quantity_min_label: string;
+  quantity_below_min_note: string;
   quantity_submit: string;
   done_eyebrow: string;
   done_title: string;
@@ -387,7 +388,7 @@ function IntroView({
         </p>
       )}
       <div className="pt-4">
-        <button
+        <button type="button"
           onClick={onBegin}
           className="inline-flex items-center gap-3 px-10 py-5 border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[13px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors"
         >
@@ -427,7 +428,7 @@ function SizeView({
       </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
         {options.map((opt) => (
-          <button
+          <button type="button"
             key={opt.size}
             onClick={() => onPick(opt.size)}
             className="group relative border border-bb-secondary/30 bg-bb-primary p-8 text-left hover:border-bb-secondary hover:bg-bb-primary-container transition-colors"
@@ -446,7 +447,7 @@ function SizeView({
         ))}
       </div>
       <div className="text-center">
-        <button
+        <button type="button"
           onClick={onBack}
           className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary"
         >
@@ -514,7 +515,7 @@ function StepView({
           {products.map((p) => {
             const selected = p.slug === activeSlug;
             return (
-              <button
+              <button type="button"
                 key={p.slug}
                 onClick={() => onPick(p.slug)}
                 className={`group relative text-left border bg-bb-primary transition-all ${
@@ -553,20 +554,20 @@ function StepView({
 
       {/* Footer actions */}
       <div className="flex flex-wrap items-center justify-between gap-4 pt-4">
-        <button
+        <button type="button"
           onClick={onBack}
           className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary"
         >
           ← {copy.step_back}
         </button>
         <div className="flex items-center gap-3">
-          <button
+          <button type="button"
             onClick={onSkip}
             className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary px-4 py-3"
           >
             {copy.step_skip}
           </button>
-          <button
+          <button type="button"
             onClick={onNext}
             disabled={!isPicked}
             className="inline-flex items-center gap-2 px-6 py-3 border border-bb-secondary bg-transparent text-bb-secondary text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary hover:text-bb-primary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
@@ -643,7 +644,7 @@ function ReviewView({
                   {product ? product.name : copy.review_slot_empty}
                 </p>
               </div>
-              <button
+              <button type="button"
                 onClick={() => onEdit(i)}
                 className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary px-3 py-2"
               >
@@ -654,13 +655,13 @@ function ReviewView({
         })}
       </ol>
       <div className="flex flex-wrap items-center justify-between gap-4">
-        <button
+        <button type="button"
           onClick={onBack}
           className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary"
         >
           ← {copy.step_back}
         </button>
-        <button
+        <button type="button"
           onClick={onContinue}
           className="inline-flex items-center gap-3 px-8 py-4 border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[13px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors"
         >
@@ -712,18 +713,15 @@ function QuantityView({
             min={1}
             value={value}
             onChange={(e) => onChange(parseInt(e.target.value, 10) || 1)}
-            className="w-full bg-transparent border border-bb-secondary/40 px-6 py-4 text-bb-secondary text-[24px] font-display focus:outline-none focus:border-bb-secondary"
+            className="w-full bg-transparent border border-bb-secondary/40 px-6 py-4 text-bb-secondary text-[24px] font-display focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-secondary"
           />
           {belowMin && (
             <p className="text-[12px] text-bb-tertiary mt-2 italic">
-              {copy.quantity_min_label
-                .replace("{n}", String(defaultMin))
-                .replace(/^.*?(\d)/, "$1")}
-              {" "}— concierge may adjust pricing on small batches.
+              {copy.quantity_below_min_note.replace("{n}", String(defaultMin))}
             </p>
           )}
         </div>
-        <button
+        <button type="button"
           onClick={onSubmit}
           className="w-full inline-flex items-center justify-center gap-3 px-6 py-4 border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[13px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors"
         >
@@ -732,7 +730,7 @@ function QuantityView({
         </button>
       </div>
       <div className="text-center">
-        <button
+        <button type="button"
           onClick={onBack}
           className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary"
         >
@@ -753,7 +751,7 @@ function DoneView({ copy, onContinue }: { copy: WizardCopy; onContinue: () => vo
       <p className="font-display italic text-white/85 text-[clamp(16px,1.5vw,20px)]">
         {copy.done_lede}
       </p>
-      <button
+      <button type="button"
         onClick={onContinue}
         className="inline-flex items-center gap-3 px-10 py-5 border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[13px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors"
       >

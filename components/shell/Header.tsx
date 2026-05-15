@@ -24,7 +24,6 @@ export default function Header({ locale, onOpenMenu, onOpenInquiry }: HeaderProp
   const isHero =
     pathname === "/" ||
     pathname.startsWith("/products") ||
-    pathname.startsWith("/rituals") ||
     pathname.startsWith("/story");
 
   useEffect(() => {

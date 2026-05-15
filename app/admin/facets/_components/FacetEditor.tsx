@@ -198,7 +198,7 @@ export default function FacetEditor({ facetsByType }: FacetEditorProps) {
                                     [f.id]: { ...prev[f.id], valueEn: e.target.value },
                                   }))
                                 }
-                                className="w-full bg-transparent border-0 border-b border-bb-line py-1 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                                className="w-full bg-transparent border-0 border-b border-bb-line py-1 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
                               />
                             ) : (
                               <span className="font-sans text-[13px] text-bb-on-surface">
@@ -217,7 +217,7 @@ export default function FacetEditor({ facetsByType }: FacetEditorProps) {
                                     [f.id]: { ...prev[f.id], valueFr: e.target.value },
                                   }))
                                 }
-                                className="w-full bg-transparent border-0 border-b border-bb-line py-1 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                                className="w-full bg-transparent border-0 border-b border-bb-line py-1 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
                               />
                             ) : (
                               <span className="font-sans text-[12px] text-bb-on-surface-variant">
@@ -333,7 +333,7 @@ export default function FacetEditor({ facetsByType }: FacetEditorProps) {
                         [type]: { ...prev[type], valueEn: e.target.value },
                       }))
                     }
-                    className="bg-transparent border-0 border-b border-bb-line py-1.5 text-bb-on-surface focus:outline-none focus:border-bb-primary w-36"
+                    className="bg-transparent border-0 border-b border-bb-line py-1.5 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary w-36"
                     placeholder="English"
                   />
                 </label>
@@ -350,7 +350,7 @@ export default function FacetEditor({ facetsByType }: FacetEditorProps) {
                         [type]: { ...prev[type], valueFr: e.target.value },
                       }))
                     }
-                    className="bg-transparent border-0 border-b border-bb-line py-1.5 text-bb-on-surface focus:outline-none focus:border-bb-primary w-36"
+                    className="bg-transparent border-0 border-b border-bb-line py-1.5 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary w-36"
                     placeholder="Français"
                   />
                 </label>
@@ -367,7 +367,7 @@ export default function FacetEditor({ facetsByType }: FacetEditorProps) {
                         [type]: { ...prev[type], sortOrder: e.target.value },
                       }))
                     }
-                    className="bg-transparent border-0 border-b border-bb-line py-1.5 text-bb-on-surface focus:outline-none focus:border-bb-primary w-20"
+                    className="bg-transparent border-0 border-b border-bb-line py-1.5 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary w-20"
                   />
                 </label>
                 <button

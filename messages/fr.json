@@ -256,6 +256,7 @@
     "quantity_title": "Combien de ce coffret ?",
     "quantity_lede": "Définissez la quantité de commande. Le concierge revient avec un devis sous 24 heures.",
     "quantity_min_label": "Minimum {n} par commande",
+    "quantity_below_min_note": "Sous le minimum de {n} unités, le concierge peut ajuster le tarif sur les petites séries.",
     "quantity_submit": "Envoyer la demande",
     "done_eyebrow": "Composé",
     "done_title": "Votre composition est en route.",

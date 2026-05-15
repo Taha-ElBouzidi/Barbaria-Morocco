@@ -24,6 +24,10 @@
   --bb-on-primary:         #fcf9f3;
   --bb-on-primary-soft:    #8f7a6b;
   --bb-secondary:          #c5a059;
+  /* Deeper antique-gold for use on cream surfaces. The default gold
+     (#c5a059) fails WCAG AA against cream (#fcf9f3) at 2.82:1; this
+     darker variant lands at ~4.6:1 which is AA-compliant for body text. */
+  --bb-secondary-deep:     #8B6A2E;
   --bb-secondary-fixed:    #ffdea5;
   --bb-secondary-fixed-dim:#e9c176;
   --bb-tertiary:           #b45f42;
@@ -98,6 +102,7 @@
   --color-bb-primary-container:    var(--bb-primary-container);
   --color-bb-on-primary:           var(--bb-on-primary);
   --color-bb-secondary:            var(--bb-secondary);
+  --color-bb-secondary-deep:       var(--bb-secondary-deep);
   --color-bb-secondary-fixed-dim:  var(--bb-secondary-fixed-dim);
   --color-bb-tertiary:             var(--bb-tertiary);
   --color-bb-line:                 var(--bb-line);

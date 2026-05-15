@@ -76,12 +76,16 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
         onClick={onClose}
         aria-hidden
       />
-      {/* Panel */}
+      {/* Panel. `inert` + `aria-hidden` are mirrored from MenuDrawer so when
+          the drawer is closed (translated off-screen), its focusable elements
+          do NOT remain in the tab order or accessible to AT. */}
       <aside
         ref={panelRef}
         role="dialog"
         aria-modal="true"
         aria-label={t("inquiry_aria_drawer")}
+        aria-hidden={!open}
+        inert={!open}
         className={cn(
           "fixed inset-y-0 right-0 z-[61] flex w-[clamp(320px,80vw,480px)] flex-col bg-bb-bg shadow-2xl transition-transform duration-300",
           open ? "translate-x-0" : "translate-x-full"

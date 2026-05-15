@@ -138,7 +138,7 @@ export default async function StoryPage({ params }: PageProps) {
                 <Eyebrow tone="green">{ch.era}</Eyebrow>
               </Reveal>
               <Reveal delayMs={60}>
-                <p className="font-display italic text-[13px] tracking-[0.18em] text-bb-secondary uppercase">
+                <p className="font-display italic text-[13px] tracking-[0.18em] text-bb-secondary-deep uppercase">
                   {ch.years}
                 </p>
               </Reveal>
@@ -155,7 +155,7 @@ export default async function StoryPage({ params }: PageProps) {
               <div className="col-span-1 lg:col-span-2 py-12 lg:py-16 text-center">
                 <Reveal>
                   <blockquote className="max-w-[820px] mx-auto">
-                    <p className="font-display italic text-[clamp(28px,3.5vw,40px)] leading-[1.3] text-bb-secondary">
+                    <p className="font-display italic text-[clamp(22px,3.5vw,40px)] leading-[1.3] text-bb-secondary-deep">
                       &ldquo;{t("pull_quote")}&rdquo;
                     </p>
                   </blockquote>
@@ -178,12 +178,12 @@ export default async function StoryPage({ params }: PageProps) {
               <Eyebrow tone="gold">{t("amazigh_eyebrow")}</Eyebrow>
             </Reveal>
             <Reveal delayMs={80}>
-              <DisplayHeading size="lg" as="h2" className="font-display italic text-bb-secondary">
+              <DisplayHeading size="lg" as="h2" className="font-display italic text-bb-secondary-deep">
                 {t("amazigh_headline")}
               </DisplayHeading>
             </Reveal>
             <Reveal delayMs={160}>
-              <p className="font-display italic text-[clamp(16px,1.4vw,19px)] text-bb-secondary leading-relaxed">
+              <p className="font-display italic text-[clamp(16px,1.4vw,19px)] text-bb-on-surface-variant leading-relaxed">
                 {t("amazigh_intro")}
               </p>
             </Reveal>
@@ -209,19 +209,19 @@ export default async function StoryPage({ params }: PageProps) {
                 >
                   <div className="p-10 lg:p-12 text-center h-full flex flex-col items-center">
                     <span
-                      className="font-display text-bb-secondary leading-none mb-6"
+                      className="font-display text-bb-secondary-deep leading-none mb-6"
                       style={{ fontSize: "84px" }}
                       aria-hidden
                     >
                       {sym.glyph}
                     </span>
-                    <p className="font-display italic text-[22px] text-bb-secondary mb-1">
+                    <p className="font-display italic text-[22px] text-bb-secondary-deep mb-1">
                       {sym.name}
                     </p>
-                    <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary mb-4">
+                    <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep mb-4">
                       {t(`sym_${sym.key}_meaning`)}
                     </p>
-                    <p className="text-[14px] leading-relaxed text-bb-secondary/80 max-w-[320px]">
+                    <p className="text-[14px] leading-relaxed text-bb-on-surface-variant max-w-[320px]">
                       {t(`sym_${sym.key}_desc`)}
                     </p>
                   </div>
