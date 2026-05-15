@@ -4,9 +4,6 @@
     "contact": "Contact",
     "cosmetiques": "Cosmetics",
     "epicerie_fine": "Fine Épicerie",
-    "hammam": "Hammam",
-    "botanical": "Botanical",
-    "heritage": "Heritage",
     "story": "Story",
     "ateliers": "Ateliers",
     "journal": "Journal",
@@ -20,8 +17,8 @@
     "inquiry_close": "Close inquiry list",
     "inquiry_aria_drawer": "Inquiry list panel",
     "inquiry_empty": "Your inquiry list is empty.",
-    "inquiry_empty_lede": "Browse the rituals to begin composing your selection.",
-    "inquiry_explore": "Explore Rituals",
+    "inquiry_empty_lede": "Browse our collections to begin composing your selection.",
+    "inquiry_explore": "Explore Collections",
     "inquiry_clear": "Clear all",
     "inquiry_request": "Request Quote",
     "inquiry_decrease": "Decrease quantity of {name}",
@@ -40,10 +37,7 @@
     "corporate_b2b": "Send us a request",
     "menu_cta": "Request the Catalogue",
     "menu_whatsapp": "WhatsApp",
-    "menu_email": "Email",
-    "menu_hammam": "The Hammam Ritual",
-    "menu_botanical": "Botanical Care",
-    "menu_heritage": "Heritage Gifts"
+    "menu_email": "Email"
   },
   "home": {
     "hero": {
@@ -78,12 +72,6 @@
       "epicerie_eyebrow": "Along the caravan route",
       "epicerie_title": "Fine Épicerie",
       "epicerie_lede": "Gift boxes of argan oil, saffron, honeys and the spice trade of Morocco.",
-      "hammam_eyebrow": "Purification",
-      "hammam_title": "The Hammam Ritual",
-      "botanical_eyebrow": "Vitality",
-      "botanical_title": "Botanical Care",
-      "heritage_eyebrow": "Grounding",
-      "heritage_title": "Heritage Gifts",
       "compose_eyebrow": "Concierge",
       "compose_title": "Send us a request",
       "compose_lede": "Tell us about the moment. A concierge composes the box with you within 24 hours."
@@ -129,8 +117,8 @@
     "add_to_inquiry": "Add to Inquiry",
     "added": "Added ✓",
     "download_spec": "Download Spec Sheet (PDF)",
-    "ritual_eyebrow": "How to Use",
-    "ritual_headline": "The Ritual",
+    "usage_eyebrow": "How to Use",
+    "usage_headline": "The Method",
     "related": "Complementary pieces"
   },
   "story": {
@@ -186,7 +174,7 @@
     "meta_description": "Field notes, dispatches, portraits. Six editorial pieces from the Barbaria atelier and its cooperative partners across Morocco."
   },
   "contact": {
-    "hero_eyebrow": "B2B Concierge",
+    "hero_eyebrow": "Corporate Gifting",
     "hero_headline": "Tell us about the moment.",
     "step1_number": "01",
     "step1_title": "Your Maison",
@@ -226,9 +214,6 @@
     "story": "Story",
     "ateliers": "Ateliers",
     "journal": "Journal",
-    "hammam": "Hammam Ritual",
-    "botanical": "Botanical Care",
-    "heritage": "Heritage Gifts",
     "contact": "Contact",
     "whatsapp": "WhatsApp",
     "instagram": "Instagram",
@@ -288,9 +273,6 @@
     "back_to_category": "Back to the category",
     "items_eyebrow": "What is in the box",
     "view_product": "View piece",
-    "wizard_pending_eyebrow": "Compose mode",
-    "wizard_pending_title": "Step-by-step composition arrives shortly.",
-    "wizard_pending_body": "The full guided wizard with the Amazigh narrative is shipping in the next release. Meanwhile, send a request and the concierge will compose your box with you.",
     "aside_eyebrow": "Place your request",
     "aside_headline": "Move this box to inquiry.",
     "aside_min": "Minimum quantity",

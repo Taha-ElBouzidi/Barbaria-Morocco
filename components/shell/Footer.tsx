@@ -55,22 +55,16 @@ export default function Footer() {
             <Eyebrow tone="green">{t("catalogue")}</Eyebrow>
             <nav className="flex flex-col gap-4">
               <Link
-                href="/rituals/hammam"
-                className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"
+                href="/products/cosmetiques"
+                className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70 inline-flex min-h-[44px] items-center"
               >
-                {t("hammam")}
+                {t("cosmetiques")}
               </Link>
               <Link
-                href="/rituals/botanical"
-                className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"
+                href="/products/epicerie_fine"
+                className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70 inline-flex min-h-[44px] items-center"
               >
-                {t("botanical")}
-              </Link>
-              <Link
-                href="/rituals/heritage"
-                className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"
-              >
-                {t("heritage")}
+                {t("epicerie_fine")}
               </Link>
             </nav>
           </div>

@@ -162,35 +162,23 @@ export default async function GiftBoxPage({ params }: PageProps) {
               </Reveal>
             )}
 
-            {isWizard ? (
-              <Reveal delayMs={80}>
-                <div className="border border-bb-line bg-bb-bg-low p-8 lg:p-10 space-y-4">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
-                    {t("wizard_pending_eyebrow")}
-                  </p>
-                  <h3 className="font-display text-[24px] text-bb-primary">
-                    {t("wizard_pending_title")}
-                  </h3>
-                  <p className="text-bb-on-surface-variant leading-relaxed">
-                    {t("wizard_pending_body")}
-                  </p>
-                </div>
-              </Reveal>
-            ) : (
-              <Reveal delayMs={80}>
-                <div className="space-y-4">
-                  <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
-                    {t("items_eyebrow")}
-                  </p>
-                  <h3 className="font-display text-[24px] text-bb-primary">
-                    {t("items_count", { count: detail.items.length })}
-                  </h3>
-                </div>
-                <ul className="mt-6 space-y-px border-t border-bb-line">
+            {/* When isWizard is true the page above returns early with
+                <BoxComposer/>, so this block only ever renders for curated
+                gift boxes. The previous isWizard ternary here was dead code. */}
+            <Reveal delayMs={80}>
+              <div className="space-y-4">
+                <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+                  {t("items_eyebrow")}
+                </p>
+                <h3 className="font-display text-[24px] text-bb-primary">
+                  {t("items_count", { count: detail.items.length })}
+                </h3>
+              </div>
+              <ul className="mt-6 space-y-px border-t border-bb-line">
                   {detail.items.map((item) => (
                     <li
                       key={item.slug}
-                      className="grid grid-cols-[80px_1fr_auto] gap-4 items-center py-4 border-b border-bb-line"
+                      className="grid grid-cols-[64px_1fr_auto] sm:grid-cols-[80px_1fr_auto] gap-3 sm:gap-4 items-start sm:items-center py-4 border-b border-bb-line"
                     >
                       {/* viewTransitionName must match the destination's name
                           on /product/[slug] so the browser animates the
@@ -228,9 +216,8 @@ export default async function GiftBoxPage({ params }: PageProps) {
                       </ZoomLink>
                     </li>
                   ))}
-                </ul>
-              </Reveal>
-            )}
+              </ul>
+            </Reveal>
           </div>
 
           {/* Right rail: order details + CTA */}
@@ -251,14 +238,12 @@ export default async function GiftBoxPage({ params }: PageProps) {
                     {t("moq_pill", { n: detail.defaultQuantityMin })}
                   </dd>
                 </div>
-                {!isWizard && (
-                  <div className="flex justify-between border-b border-bb-line pb-3">
-                    <dt className="text-bb-on-surface-variant">{t("aside_items")}</dt>
-                    <dd className="text-bb-primary font-medium">
-                      {t("items_count", { count: detail.items.length })}
-                    </dd>
-                  </div>
-                )}
+                <div className="flex justify-between border-b border-bb-line pb-3">
+                  <dt className="text-bb-on-surface-variant">{t("aside_items")}</dt>
+                  <dd className="text-bb-primary font-medium">
+                    {t("items_count", { count: detail.items.length })}
+                  </dd>
+                </div>
               </dl>
               <Link
                 href="/contact"

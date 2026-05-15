@@ -5,9 +5,8 @@ import { BASE_URL } from "@/lib/constants";
 const LOCALES = ["fr", "en"] as const;
 const STATIC_ROUTES = [
   "",
-  "/rituals/hammam",
-  "/rituals/botanical",
-  "/rituals/heritage",
+  "/products/cosmetiques",
+  "/products/epicerie_fine",
   "/story",
   "/ateliers",
   "/journal",
