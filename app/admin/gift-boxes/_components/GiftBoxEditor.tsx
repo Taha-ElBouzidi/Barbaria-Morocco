@@ -4,6 +4,9 @@ import { useState, useTransition, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { saveGiftBox, setGiftBoxStatus, deleteGiftBox } from "../[id]/actions";
 import type { GiftBoxAdminDetail } from "@/lib/admin/gift-boxes";
+import HeroImageUploader from "@/components/admin/HeroImageUploader";
+
+const HELP_CLS = "font-sans text-[11px] text-bb-on-surface-variant mt-1 leading-snug";
 
 interface ProductOption {
   id: string;
@@ -111,7 +114,7 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
         </h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
           <div>
-            <label className={labelCls} htmlFor="slug">Slug *</label>
+            <label className={labelCls} htmlFor="slug">URL slug *</label>
             <input
               id="slug"
               name="slug"
@@ -121,6 +124,9 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
               pattern="[a-z0-9-]+"
               className={inputCls}
             />
+            <p className={HELP_CLS}>
+              The address segment for the box (lowercase letters, numbers, hyphens). Auto-suggested from the English name when you start typing it.
+            </p>
           </div>
           <div>
             <label className={labelCls} htmlFor="categoryId">Category *</label>
@@ -136,17 +142,7 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
                 <option key={c.id} value={c.id}>{c.nameEn}</option>
               ))}
             </select>
-          </div>
-          <div>
-            <label className={labelCls} htmlFor="heroImagePath">Hero image path</label>
-            <input
-              id="heroImagePath"
-              name="heroImagePath"
-              value={heroImagePath}
-              onChange={(e) => setHeroImagePath(e.target.value)}
-              placeholder="/brand_photos/gift-box-open.jpg"
-              className={inputCls}
-            />
+            <p className={HELP_CLS}>Cosmetics or Fine Épicerie. Determines which catalogue page the box appears on.</p>
           </div>
           <div>
             <label className={labelCls} htmlFor="defaultQuantityMin">Minimum quantity per order *</label>
@@ -160,9 +156,10 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
               onChange={(e) => setDefaultQuantityMin(parseInt(e.target.value, 10) || 1)}
               className={inputCls}
             />
+            <p className={HELP_CLS}>MOQ. Buyers cannot drop the box quantity below this value.</p>
           </div>
           <div>
-            <label className={labelCls} htmlFor="sortOrder">Sort order</label>
+            <label className={labelCls} htmlFor="sortOrder">Display order</label>
             <input
               id="sortOrder"
               name="sortOrder"
@@ -172,20 +169,37 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
               onChange={(e) => setSortOrder(parseInt(e.target.value, 10) || 0)}
               className={inputCls}
             />
+            <p className={HELP_CLS}>Lower numbers appear first in the catalogue grid.</p>
           </div>
-          <div className="flex items-center gap-3 pt-7">
+          <div className="sm:col-span-2 flex items-start gap-3">
             <input
               id="isCustomizable"
               name="isCustomizable"
               type="checkbox"
               checked={isCustomizable}
               onChange={(e) => setIsCustomizable(e.target.checked)}
-              className="h-5 w-5 accent-bb-primary"
+              className="h-5 w-5 accent-bb-primary mt-0.5"
             />
-            <label htmlFor="isCustomizable" className="text-[14px] text-bb-primary">
-              Customizable (wizard box)
-            </label>
+            <div>
+              <label htmlFor="isCustomizable" className="text-[14px] text-bb-primary font-medium">
+                Compose-your-own box (wizard)
+              </label>
+              <p className={HELP_CLS}>
+                Check this for the single "Compose your own" entry per category. The Items section is hidden and the wizard generates each buyer's composition on demand. Curated (pre-set) boxes leave this unchecked.
+              </p>
+            </div>
           </div>
+        </div>
+
+        <div>
+          <label className={labelCls}>Hero image</label>
+          <HeroImageUploader
+            value={heroImagePath}
+            onChange={setHeroImagePath}
+            name="heroImagePath"
+            aspect="4/5"
+            alt={nameEn || slug}
+          />
         </div>
       </section>
 
@@ -204,10 +218,12 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
             <div>
               <label className={labelCls} htmlFor="tagline_en">Tagline</label>
               <input id="tagline_en" name="tagline_en" value={taglineEn} onChange={(e) => setTaglineEn(e.target.value)} className={inputCls} />
+              <p className={HELP_CLS}>A one-line evocative phrase shown under the box name. Example: "Glow, softness, relaxation."</p>
             </div>
             <div>
               <label className={labelCls} htmlFor="storyIntro_en">Story intro</label>
               <textarea id="storyIntro_en" name="storyIntro_en" rows={4} value={storyIntroEn} onChange={(e) => setStoryIntroEn(e.target.value)} className={inputCls} />
+              <p className={HELP_CLS}>2 to 3 sentences that set the scene for the buyer when they open the box detail page.</p>
             </div>
           </div>
           <div className="space-y-5" lang="fr">
@@ -217,12 +233,14 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
               <input id="name_fr" name="name_fr" required value={nameFr} onChange={(e) => setNameFr(e.target.value)} className={inputCls} />
             </div>
             <div>
-              <label className={labelCls} htmlFor="tagline_fr">Tagline</label>
+              <label className={labelCls} htmlFor="tagline_fr">Slogan</label>
               <input id="tagline_fr" name="tagline_fr" value={taglineFr} onChange={(e) => setTaglineFr(e.target.value)} className={inputCls} />
+              <p className={HELP_CLS}>Une phrase courte sous le nom du coffret. Exemple : "Éclat, douceur, relaxation."</p>
             </div>
             <div>
               <label className={labelCls} htmlFor="storyIntro_fr">Introduction</label>
               <textarea id="storyIntro_fr" name="storyIntro_fr" rows={4} value={storyIntroFr} onChange={(e) => setStoryIntroFr(e.target.value)} className={inputCls} />
+              <p className={HELP_CLS}>2 à 3 phrases narratives, affichées en haut de la page coffret.</p>
             </div>
           </div>
         </div>
@@ -280,27 +298,49 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
             </ol>
           )}
 
-          {/* Available products to add */}
-          <details className="border border-bb-line bg-bb-bg-low">
+          {/* Available products to add. Compact tile grid: thumbnail + name,
+              checkmark overlay when picked. 2 columns on phone, denser on
+              desktop. */}
+          <details className="border border-bb-line bg-bb-bg-low" open>
             <summary className="cursor-pointer px-4 py-3 font-sans text-[12px] uppercase tracking-[0.18em] text-bb-primary">
-              + Add product from {productOptions.length} available
+              Pieces ({productOptions.length} available in this category)
             </summary>
-            <div className="p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+            <div className="p-3 sm:p-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
               {productOptions.map((p) => {
                 const picked = itemIds.includes(p.id);
+                const imgUrl = p.image
+                  ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/product-images/${p.image}`
+                  : null;
                 return (
                   <button
                     key={p.id}
                     type="button"
                     onClick={() => toggleItem(p.id)}
                     aria-pressed={picked}
-                    className={`text-left px-3 py-2 border text-[13px] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary ${
+                    className={`relative text-left border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary ${
                       picked
-                        ? "bg-bb-secondary/20 border-bb-secondary-deep text-bb-primary"
-                        : "bg-bb-bg border-bb-line text-bb-on-surface hover:border-bb-secondary-deep"
+                        ? "border-bb-secondary-deep ring-2 ring-bb-secondary-deep/30"
+                        : "border-bb-line hover:border-bb-secondary-deep"
                     }`}
                   >
-                    {picked ? "✓ " : "+ "}{p.nameEn}
+                    <div className="relative aspect-square overflow-hidden bg-bb-bg">
+                      {imgUrl ? (
+                        // eslint-disable-next-line @next/next/no-img-element
+                        <img src={imgUrl} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                      ) : (
+                        <div className="absolute inset-0 bg-gradient-to-br from-bb-primary/20 to-bb-secondary/20" />
+                      )}
+                      {picked && (
+                        <div className="absolute top-2 right-2 h-7 w-7 rounded-full bg-bb-secondary-deep text-white flex items-center justify-center text-[14px]">
+                          ✓
+                        </div>
+                      )}
+                    </div>
+                    <div className="p-2">
+                      <p className="text-[12px] text-bb-on-surface font-medium leading-tight line-clamp-2">
+                        {p.nameEn}
+                      </p>
+                    </div>
                   </button>
                 );
               })}

@@ -214,7 +214,7 @@ export default function ProductEditor({
         return;
       }
 
-      if (publish && !isNew) {
+      if (publish) {
         const { setStatus } = await import("@/app/admin/products/[id]/actions");
         await setStatus(result.id, "published");
       }
@@ -337,33 +337,12 @@ export default function ProductEditor({
               </select>
             </label>
 
-            <label className="block">
-              <span className="block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2">
-                MOQ *
-              </span>
-              <input
-                type="number"
-                value={moq}
-                onChange={(e) => setMoq(e.target.value)}
-                min={1}
-                required
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
-              />
-            </label>
-
-            <label className="block">
-              <span className="block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2">
-                Lead time *
-              </span>
-              <input
-                type="text"
-                value={lead}
-                onChange={(e) => setLead(e.target.value)}
-                required
-                placeholder="e.g. 4–6 weeks"
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
-              />
-            </label>
+            {/* MOQ and Lead time are kept as hidden form fields so the DB
+                schema stays satisfied. They are no longer surfaced on the
+                product editor: MOQ applies at the box level now, and lead
+                time is unused on the public site. */}
+            <input type="hidden" name="moq" value={moq} />
+            <input type="hidden" name="lead" value={lead} />
 
             <label className="block">
               <span className="block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2">
@@ -405,15 +384,10 @@ export default function ProductEditor({
             </label>
           </div>
 
-          <label className="flex items-center gap-3 cursor-pointer">
-            <input
-              type="checkbox"
-              checked={hero}
-              onChange={(e) => setHero(e.target.checked)}
-              className="w-4 h-4 accent-bb-primary"
-            />
-            <span className="font-sans text-[13px] text-bb-on-surface">Hero product (featured in ritual landing)</span>
-          </label>
+          {/* Hero flag dropped from UI (products no longer surface in the
+              public catalogue individually). State kept so the column
+              stays satisfied; defaults to false on new products. */}
+          <input type="hidden" name="hero" value={hero ? "true" : "false"} />
         </section>
 
         {/* Section 2: Translations */}
@@ -507,31 +481,30 @@ export default function ProductEditor({
           )}
         </section>
 
-        {/* Actions */}
-        <div className="flex flex-wrap items-center gap-4 pt-4 border-t border-bb-line">
+        {/* Actions. Sticky at the bottom so the buyer always sees the
+            primary action no matter how deep into the form. */}
+        <div className="sticky bottom-0 -mx-4 md:-mx-8 px-4 md:px-8 py-4 bg-bb-bg border-t border-bb-line flex flex-wrap items-center gap-3">
           <button
             type="button"
             onClick={() => handleSubmit(false)}
             disabled={isPending}
-            className="bg-bb-primary text-bb-bg px-8 py-4 font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-primary-container transition-colors disabled:opacity-50"
+            className="inline-flex items-center justify-center bg-bb-primary text-bb-bg px-6 py-3 min-h-[44px] font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-primary-container transition-colors disabled:opacity-50"
           >
-            {isPending ? "Saving…" : "Save as draft"}
+            {isPending ? "Saving…" : isNew ? "Save as draft" : "Save changes"}
           </button>
 
-          {!isNew && (
-            <button
-              type="button"
-              onClick={() => handleSubmit(true)}
-              disabled={isPending}
-              className="bg-bb-secondary text-bb-bg px-8 py-4 font-sans text-[12px] uppercase tracking-[0.18em] hover:opacity-90 transition-opacity disabled:opacity-50"
-            >
-              {isPending ? "Saving…" : "Save and publish"}
-            </button>
-          )}
+          <button
+            type="button"
+            onClick={() => handleSubmit(true)}
+            disabled={isPending}
+            className="inline-flex items-center justify-center bg-bb-secondary-deep text-white px-6 py-3 min-h-[44px] font-sans text-[12px] uppercase tracking-[0.18em] hover:opacity-90 transition-opacity disabled:opacity-50"
+          >
+            {isPending ? "Saving…" : "Save and publish"}
+          </button>
 
           {isNew && (
-            <p className="font-sans text-[12px] text-bb-on-surface-variant">
-              After saving, you can publish from the edit page.
+            <p className="font-sans text-[11px] text-bb-on-surface-variant max-w-[400px]">
+              Tip: save as draft first, then add images on the edit page before publishing.
             </p>
           )}
         </div>

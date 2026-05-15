@@ -18,11 +18,13 @@ interface Props {
   occasions: OccasionOption[];
 }
 
+// Inputs get a soft cream background + clear bottom border so they read as
+// distinct fields when scrolling fast on mobile. Stays minimal on desktop.
 const INPUT_CLASS =
-  "w-full bg-transparent border-0 border-b border-bb-line py-3 font-sans text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary placeholder:text-bb-on-surface-variant/60";
+  "w-full bg-bb-bg-low/60 border-0 border-b-2 border-bb-line py-3.5 px-4 font-sans text-[15px] text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary focus:bg-bb-bg-low placeholder:text-bb-on-surface-variant/50 transition-colors min-h-[48px]";
 
 const LABEL_CLASS =
-  "block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2";
+  "block font-sans text-[12px] uppercase tracking-[0.18em] text-bb-primary mb-2 font-medium";
 
 const ERROR_CLASS = "text-[12px] text-bb-tertiary mt-1";
 
