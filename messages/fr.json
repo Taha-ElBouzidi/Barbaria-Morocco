@@ -247,6 +247,10 @@
     "step_back": "Retour",
     "step_next": "Suivant",
     "step_picked": "Sélectionné",
+    "step_more_details": "Voir le détail",
+    "step_view_details": "Voir le détail",
+    "step_choose_this": "Choisir cette pièce",
+    "step_currently_chosen": "Pièce sélectionnée",
     "review_eyebrow": "Votre composition",
     "review_title": "Votre ciel nocturne.",
     "review_lede": "Revoyez les étoiles que vous avez placées avant d'envoyer la demande.",
@@ -262,7 +266,9 @@
     "done_eyebrow": "Composé",
     "done_title": "Votre composition est en route.",
     "done_lede": "Indiquez-nous où l'envoyer. Le concierge répond sous 24 heures.",
-    "done_cta": "Continuer vers la demande"
+    "done_cta": "Continuer vers la demande",
+    "exit_aria": "Fermer le tunnel de composition",
+    "exit_confirm": "Vous allez perdre votre composition. Voulez-vous vraiment sortir ?"
   },
   "products": {
     "compose_eyebrow": "Composez votre coffret",
