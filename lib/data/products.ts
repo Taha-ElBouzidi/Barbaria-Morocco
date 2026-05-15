@@ -50,42 +50,6 @@ export async function getProductBySlug(
 }
 
 /**
- * Fetch all published products in a ritual world, locale-resolved, sorted
- * by hero-first then by slug.
- */
-export async function getProductsByRitual(
-  ritualId: "hammam" | "botanical" | "heritage",
-  locale: LocaleCode
-): Promise<ProductSummary[]> {
-  const supabase = await createServerClient();
-
-  const { data, error } = await supabase
-    .from("products")
-    .select(`
-      slug,
-      ritual_id,
-      subcategory:ritual_subcategories ( slug ),
-      moq,
-      formats,
-      lead,
-      origin,
-      ritual_label,
-      hero,
-      translations:product_translations!inner ( locale, name, short, lede ),
-      images:product_images ( path, sort_order ),
-      facet_links:product_facets ( facet:facets ( type, value_en, value_fr ) )
-    `)
-    .eq("ritual_id", ritualId)
-    .eq("status", "published")
-    .eq("translations.locale", locale)
-    .order("hero", { ascending: false })
-    .order("slug");
-
-  if (error || !data) return [];
-  return data.map((row) => shapeProductSummary(row, locale));
-}
-
-/**
  * Sprint 2 — published products in a category, for the wizard product
  * pickers. Reads category by slug from the `categories` table.
  */
@@ -128,6 +92,80 @@ export async function getProductsByCategory(
 
   if (error || !data) return [];
   return data.map((row) => shapeProductSummary(row, locale));
+}
+
+/**
+ * Sprint 2.6 — "Boxes containing this piece" for the PDP. Replaces the
+ * legacy related-products row. Capped at 3 results, sorted by sort_order.
+ */
+export interface BoxContainingProduct {
+  slug: string;
+  categorySlug: "cosmetiques" | "epicerie_fine";
+  heroImage: string | null;
+  name: string;
+  tagline: string | null;
+}
+
+export async function getBoxesContainingProduct(
+  productSlug: string,
+  locale: LocaleCode
+): Promise<BoxContainingProduct[]> {
+  const supabase = await createServerClient();
+  const { data: prodRow } = await supabase
+    .from("products")
+    .select("id")
+    .eq("slug", productSlug)
+    .maybeSingle();
+  if (!prodRow) return [];
+
+  const { data, error } = await supabase
+    .from("gift_box_items")
+    .select(`
+      gift_box:gift_boxes!inner (
+        id, slug, hero_image_path, status, sort_order, is_customizable,
+        category:categories!inner ( slug ),
+        translations:gift_box_translations!inner ( locale, name, tagline )
+      )
+    `)
+    .eq("product_id", prodRow.id);
+
+  if (error || !data) return [];
+
+  interface BoxInner {
+    id: string;
+    slug: string;
+    hero_image_path: string | null;
+    status: string;
+    sort_order: number;
+    is_customizable: boolean;
+    category: { slug: string } | Array<{ slug: string }> | null;
+    translations: Array<{ locale: string; name: string; tagline: string | null }>;
+  }
+  interface ItemRow {
+    gift_box: BoxInner | BoxInner[] | null;
+  }
+
+  function firstOf<T>(value: T | T[] | null | undefined): T | null {
+    if (value == null) return null;
+    if (Array.isArray(value)) return value[0] ?? null;
+    return value;
+  }
+
+  const result: BoxContainingProduct[] = [];
+  for (const row of data as unknown as ItemRow[]) {
+    const b = firstOf<BoxInner>(row.gift_box);
+    if (!b || b.status !== "published" || b.is_customizable) continue;
+    const t = b.translations.find((tr) => tr.locale === locale) ?? b.translations[0];
+    const cat = firstOf<{ slug: string }>(b.category);
+    result.push({
+      slug: b.slug,
+      categorySlug: (cat?.slug ?? "cosmetiques") as "cosmetiques" | "epicerie_fine",
+      heroImage: b.hero_image_path,
+      name: t?.name ?? b.slug,
+      tagline: t?.tagline ?? null,
+    });
+  }
+  return result.slice(0, 3);
 }
 
 /**

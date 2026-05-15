@@ -17,7 +17,7 @@ interface HeaderProps {
 export default function Header({ locale, onOpenMenu, onOpenInquiry }: HeaderProps) {
   const t = useTranslations("nav");
   const pathname = usePathname();
-  const { totalItems } = useInquiry();
+  const { totalBoxes } = useInquiry();
   const [scrolled, setScrolled] = useState(false);
 
   // Hero pages have full-bleed top imagery that the header overlays transparently.
@@ -100,9 +100,9 @@ export default function Header({ locale, onOpenMenu, onOpenInquiry }: HeaderProp
           <button
             onClick={onOpenInquiry}
             className={cn("p-2 flex items-center gap-2 font-sans text-[12px] uppercase tracking-[0.18em]", textColor)}
-            aria-label={t("inquiry_aria", { count: totalItems })}
+            aria-label={t("inquiry_aria", { count: totalBoxes })}
           >
-            {t("inquiry")} ({totalItems})
+            {t("inquiry")} ({totalBoxes})
           </button>
           <button
             onClick={onOpenMenu}

@@ -24,6 +24,10 @@
     "inquiry_decrease": "Decrease quantity of {name}",
     "inquiry_increase": "Increase quantity of {name}",
     "inquiry_remove": "Remove {name} from inquiry",
+    "inquiry_box_curated": "Curated box",
+    "inquiry_box_custom": "Custom box",
+    "inquiry_pieces": "pieces",
+    "inquiry_min_pill": "Min. {n} per order",
     "menu_eyebrow": "OUR COLLECTIONS",
     "menu_heading": "Two Collections.",
     "menu_subtitle": "One Maison, two halts on the route.",
@@ -119,7 +123,8 @@
     "download_spec": "Download Spec Sheet (PDF)",
     "usage_eyebrow": "How to Use",
     "usage_headline": "The Method",
-    "related": "Complementary pieces"
+    "related": "Complementary pieces",
+    "boxes_containing_piece": "Boxes that contain this piece"
   },
   "story": {
     "hero_eyebrow": "Our Story",
@@ -177,7 +182,7 @@
     "hero_eyebrow": "Corporate Gifting",
     "hero_headline": "Tell us about the moment.",
     "step1_number": "01",
-    "step1_title": "Your Maison",
+    "step1_title": "Your Company",
     "f_company": "Company",
     "f_contact_name": "Contact name",
     "f_email": "Email",
@@ -281,6 +286,9 @@
     "aside_min": "Minimum quantity",
     "aside_items": "Pieces in the box",
     "send_request": "Send us a request",
-    "aside_note": "Pricing returned within 24 hours, signed by the concierge."
+    "aside_note": "Pricing returned within 24 hours, signed by the concierge.",
+    "add_to_inquiry": "Add to inquiry",
+    "added": "Added ✓",
+    "view_inquiry": "Review your inquiry"
   }
 }

@@ -24,6 +24,10 @@
     "inquiry_decrease": "Diminuer la quantité de {name}",
     "inquiry_increase": "Augmenter la quantité de {name}",
     "inquiry_remove": "Retirer {name} de la demande",
+    "inquiry_box_curated": "Coffret curaté",
+    "inquiry_box_custom": "Coffret sur mesure",
+    "inquiry_pieces": "pièces",
+    "inquiry_min_pill": "Min. {n} par commande",
     "menu_eyebrow": "NOS COLLECTIONS",
     "menu_heading": "Deux Collections.",
     "menu_subtitle": "Une Maison, deux haltes sur la route.",
@@ -119,7 +123,8 @@
     "download_spec": "Télécharger la Fiche Technique (PDF)",
     "usage_eyebrow": "Mode d'Emploi",
     "usage_headline": "La Méthode",
-    "related": "Pièces complémentaires"
+    "related": "Pièces complémentaires",
+    "boxes_containing_piece": "Coffrets contenant cette pièce"
   },
   "story": {
     "hero_eyebrow": "Notre Histoire",
@@ -281,6 +286,9 @@
     "aside_min": "Quantité minimum",
     "aside_items": "Pièces dans le coffret",
     "send_request": "Envoyez-nous une demande",
-    "aside_note": "Devis renvoyé sous 24 h, signé par le concierge."
+    "aside_note": "Devis renvoyé sous 24 h, signé par le concierge.",
+    "add_to_inquiry": "Ajouter à la demande",
+    "added": "Ajouté ✓",
+    "view_inquiry": "Voir ma demande"
   }
 }

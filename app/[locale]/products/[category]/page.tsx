@@ -95,46 +95,10 @@ export default async function CategoryPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Customizable CTA — featured bold panel for the wizard */}
-      {customizable && (
-        <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] py-16 lg:py-20">
-          <Reveal>
-            <Link
-              href={`/products/${category}/${customizable.slug}`}
-              className="group relative block overflow-hidden bg-bb-primary text-white"
-            >
-              <SaharaPrestige count={50} />
-              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 p-10 lg:p-16">
-                <div className="space-y-5">
-                  <Eyebrow tone="gold">{t("compose_eyebrow")}</Eyebrow>
-                  <DisplayHeading size="lg" as="h2" className="text-bb-secondary">
-                    {customizable.name}
-                  </DisplayHeading>
-                  {customizable.tagline && (
-                    <p className="font-display italic text-bb-secondary/80 text-[clamp(16px,1.4vw,20px)]">
-                      {customizable.tagline}
-                    </p>
-                  )}
-                  {customizable.storyIntro && (
-                    <p className="text-white/75 leading-relaxed max-w-[540px]">
-                      {customizable.storyIntro}
-                    </p>
-                  )}
-                </div>
-                <div className="flex items-center lg:items-end justify-start lg:justify-end">
-                  <span className="inline-flex items-center gap-3 px-8 py-4 border border-bb-secondary bg-transparent text-bb-secondary font-sans text-[13px] uppercase tracking-[0.18em] transition-colors group-hover:bg-bb-secondary group-hover:text-bb-primary">
-                    {t("start_composing")}
-                    <Icon name="arrow-up-right" size={16} />
-                  </span>
-                </div>
-              </div>
-            </Link>
-          </Reveal>
-        </section>
-      )}
-
-      {/* Curated boxes grid */}
-      <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] pb-20 lg:pb-32">
+      {/* Sprint 2.6: curated FIRST. The maison's composed boxes are the
+          primary commercial offer; the wizard CTA sits below as the
+          "compose your own" alternative. */}
+      <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] pt-16 lg:pt-20 pb-12 lg:pb-16">
         <div className="mb-10 lg:mb-14 space-y-3">
           <Reveal>
             <Eyebrow tone="green">{t("curated_eyebrow")}</Eyebrow>
@@ -188,6 +152,43 @@ export default async function CategoryPage({ params }: PageProps) {
           </div>
         )}
       </section>
+
+      {customizable && (
+        <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] pb-20 lg:pb-32">
+          <Reveal>
+            <Link
+              href={`/products/${category}/${customizable.slug}`}
+              className="group relative block overflow-hidden bg-bb-primary text-white"
+            >
+              <SaharaPrestige count={50} />
+              <div className="relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 p-10 lg:p-16">
+                <div className="space-y-5">
+                  <Eyebrow tone="gold">{t("compose_eyebrow")}</Eyebrow>
+                  <DisplayHeading size="lg" as="h2" className="text-bb-secondary">
+                    {customizable.name}
+                  </DisplayHeading>
+                  {customizable.tagline && (
+                    <p className="font-display italic text-bb-secondary/80 text-[clamp(16px,1.4vw,20px)]">
+                      {customizable.tagline}
+                    </p>
+                  )}
+                  {customizable.storyIntro && (
+                    <p className="text-white/75 leading-relaxed max-w-[540px]">
+                      {customizable.storyIntro}
+                    </p>
+                  )}
+                </div>
+                <div className="flex items-center lg:items-end justify-start lg:justify-end">
+                  <span className="inline-flex items-center gap-3 px-8 py-4 border border-bb-secondary bg-transparent text-bb-secondary font-sans text-[13px] uppercase tracking-[0.18em] transition-colors group-hover:bg-bb-secondary group-hover:text-bb-primary">
+                    {t("start_composing")}
+                    <Icon name="arrow-up-right" size={16} />
+                  </span>
+                </div>
+              </div>
+            </Link>
+          </Reveal>
+        </section>
+      )}
     </>
   );
 }

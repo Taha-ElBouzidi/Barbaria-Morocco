@@ -5,8 +5,8 @@ import { useTranslations, useLocale } from "next-intl";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { useInquiry } from "@/lib/inquiry-context";
-import { getProduct } from "@/lib/products";
-import { buildMailto, type MailtoItem, type InquiryFormData } from "@/lib/inquiry-mailto";
+import { useProductCatalogue } from "@/lib/data/ProductCatalogueContext";
+import { buildMailto, type MailtoLine, type InquiryFormData } from "@/lib/inquiry-mailto";
 import Icon from "@/components/primitives/Icon";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 
@@ -29,16 +29,22 @@ const INITIAL: FormData = {
   contactName: "",
   email: "",
   phone: "",
-  quantity: "",
   eventDate: "",
   occasion: "",
   message: "",
 };
 
+/**
+ * Sprint 2.6 — Two-step inquiry form. Quantity moved to each box-line in
+ * the inquiry sidebar (per-box stepper, MOQ-aware), so the form no longer
+ * has a quantity field. The mailto body lists each box and its qty + MOQ;
+ * custom boxes also list their composition by resolved piece names.
+ */
 export default function TwoStepForm({ locale }: Props) {
   const t = useTranslations("contact");
   const currentLocale = useLocale();
-  const { cart } = useInquiry();
+  const { lines } = useInquiry();
+  const catalogue = useProductCatalogue();
 
   const [step, setStep] = useState<1 | 2>(1);
   const [submitted, setSubmitted] = useState(false);
@@ -72,7 +78,6 @@ export default function TwoStepForm({ locale }: Props) {
 
   const validateStep2 = (): boolean => {
     const next: Partial<Record<keyof FormData, string>> = {};
-    if (!form.quantity.trim()) next.quantity = "Required";
     if (!form.occasion) next.occasion = "Required";
     setErrors(next);
     return Object.keys(next).length === 0;
@@ -82,17 +87,27 @@ export default function TwoStepForm({ locale }: Props) {
     if (validateStep1()) setStep(2);
   };
 
-  const inquiryItems: MailtoItem[] = useMemo(
+  const mailtoLines: MailtoLine[] = useMemo(
     () =>
-      [...cart.entries()]
-        .map(([id, qty]) => ({ product: getProduct(id), qty }))
-        .filter((x): x is MailtoItem => Boolean(x.product)),
-    [cart]
+      lines.map((line) => {
+        const isCustom = !!line.custom;
+        const compositionNames = isCustom
+          ? line.custom!.productSlugs.map((slug) => catalogue.get(slug)?.name ?? slug)
+          : undefined;
+        return {
+          name: line.nameSnapshot ?? line.giftBoxSlug,
+          qty: line.qty,
+          minQty: line.minQty,
+          isCustom,
+          compositionNames,
+        };
+      }),
+    [lines, catalogue]
   );
 
   const mailtoUrl = useMemo(
-    () => buildMailto({ ...form, locale: currentLocale || locale }, inquiryItems),
-    [form, currentLocale, locale, inquiryItems]
+    () => buildMailto({ ...form, locale: currentLocale || locale }, mailtoLines),
+    [form, currentLocale, locale, mailtoLines]
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -132,7 +147,6 @@ export default function TwoStepForm({ locale }: Props) {
 
   return (
     <form onSubmit={handleSubmit} noValidate className="space-y-12">
-      {/* Honeypot, invisible to humans, catches bots */}
       <input
         name="company_website"
         tabIndex={-1}
@@ -143,7 +157,6 @@ export default function TwoStepForm({ locale }: Props) {
         style={{ position: "absolute", left: "-9999px", height: 0, width: 0 }}
       />
 
-      {/* ── Step 01 ─────────────────────────────────────── */}
       {step === 1 && (
         <div className="space-y-10">
           <div className="flex items-baseline gap-6">
@@ -229,7 +242,6 @@ export default function TwoStepForm({ locale }: Props) {
         </div>
       )}
 
-      {/* ── Step 02 ─────────────────────────────────────── */}
       {step === 2 && (
         <div className="space-y-10">
           <div className="flex items-baseline gap-6">
@@ -238,23 +250,6 @@ export default function TwoStepForm({ locale }: Props) {
           </div>
 
           <div className="space-y-8">
-            <div>
-              <label htmlFor="field-quantity" className={LABEL_CLASS}>{t("f_quantity")}</label>
-              <input
-                id="field-quantity"
-                type="number"
-                min={1}
-                value={form.quantity}
-                onChange={(e) => update("quantity", e.target.value)}
-                placeholder={t("f_quantity")}
-                className={cn(INPUT_CLASS, errors.quantity && "border-bb-tertiary")}
-                aria-required="true"
-                aria-invalid={!!errors.quantity}
-                aria-describedby={errors.quantity ? "err-quantity" : undefined}
-              />
-              {errors.quantity && <p id="err-quantity" className={ERROR_CLASS}>{errors.quantity}</p>}
-            </div>
-
             <div>
               <label htmlFor="field-event-date" className={LABEL_CLASS}>{t("f_event_date")}</label>
               <input

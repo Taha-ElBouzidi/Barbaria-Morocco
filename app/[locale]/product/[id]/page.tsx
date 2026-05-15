@@ -2,14 +2,14 @@ import { notFound } from "next/navigation";
 import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { createClient } from "@supabase/supabase-js";
-import { getProductBySlug, getProductsByRitual } from "@/lib/data/products";
+import { getProductBySlug, getBoxesContainingProduct } from "@/lib/data/products";
 import { getWorld } from "@/lib/data/rituals";
 import ImageStack from "@/components/product/ImageStack";
 import SpecColumn from "@/components/product/SpecColumn";
 import ProofStrip from "@/components/product/ProofStrip";
 import ApplicationRitual from "@/components/product/ApplicationRitual";
 import CooperativeBand from "@/components/product/CooperativeBand";
-import RelatedRow from "@/components/product/RelatedRow";
+import BoxesContainingPiece from "@/components/product/BoxesContainingPiece";
 
 export const revalidate = 60;
 
@@ -50,15 +50,8 @@ export default async function ProductPage({ params }: PageProps) {
   const p = await getProductBySlug(id, lang);
   if (!p) notFound();
 
-  // Fetch the ritual world for the eyebrow label in SpecColumn
   const world = await getWorld(p.ritualId, lang);
-
-  // Related: products from other ritual worlds, limited to 3
-  const otherWorldId = (["hammam", "botanical", "heritage"] as const).find(
-    (w) => w !== p.ritualId
-  ) ?? "botanical";
-  const allRelated = await getProductsByRitual(otherWorldId, lang);
-  const related = allRelated.filter((x) => x.slug !== p.slug).slice(0, 3);
+  const boxes = await getBoxesContainingProduct(p.slug, lang);
 
   return (
     <article className="pt-32 lg:pt-40">
@@ -69,7 +62,7 @@ export default async function ProductPage({ params }: PageProps) {
       <ProofStrip product={p} lang={lang} />
       <ApplicationRitual product={p} lang={lang} />
       <CooperativeBand product={p} lang={lang} />
-      <RelatedRow products={related} lang={lang} />
+      <BoxesContainingPiece boxes={boxes} lang={lang} />
     </article>
   );
 }

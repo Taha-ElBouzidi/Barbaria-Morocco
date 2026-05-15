@@ -4,10 +4,8 @@ import { useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
 import { useTranslations, useLocale } from "next-intl";
 import Icon from "@/components/primitives/Icon";
-import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import { useInquiry } from "@/lib/inquiry-context";
-import { useProductCatalogue } from "@/lib/data/ProductCatalogueContext";
 import { cn } from "@/lib/utils";
 
 interface InquiryDrawerProps {
@@ -19,9 +17,8 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
   const t = useTranslations("nav");
   const locale = useLocale();
   const lang: "en" | "fr" = locale === "fr" ? "fr" : "en";
-  void lang; // locale resolved at query time; kept for potential future use
-  const { cart, setQty, remove, clear } = useInquiry();
-  const catalogue = useProductCatalogue();
+  void lang;
+  const { lines, setQty, remove, clear, totalBoxes } = useInquiry();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);
 
@@ -62,8 +59,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
     };
   }, [open, onClose]);
 
-  const items = [...cart.entries()];
-  const hasItems = items.length > 0;
+  const hasItems = lines.length > 0;
 
   return (
     <>
@@ -96,7 +92,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
           <div className="flex items-baseline gap-3">
             <Eyebrow tone="green">{t("inquiry_title")}</Eyebrow>
             <span className="font-sans text-[11px] text-bb-on-surface-variant">
-              ({cart.size})
+              ({totalBoxes})
             </span>
           </div>
           <button
@@ -129,58 +125,63 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
               </Link>
             </div>
           ) : (
-            /* Item list */
+            /* Box-level inquiry lines. Curated boxes show their snapshot
+                name + a 'curated' badge; custom boxes show 'Custom box · N
+                pieces' with the category name. MOQ pulled from the line
+                so the qty stepper respects per-box admin minimum. */
             <ul className="flex flex-col divide-y divide-bb-line">
-              {items.map(([productId, qty]) => {
-                const entry = catalogue.get(productId);
-                const name = entry?.name ?? productId;
-                const image = entry?.image ?? null;
+              {lines.map((line) => {
+                const isCustom = !!line.custom;
+                const displayName = line.nameSnapshot ?? line.giftBoxSlug;
+                const subline = isCustom
+                  ? `${t("inquiry_box_custom")} · ${line.custom!.productSlugs.length} ${t("inquiry_pieces")}`
+                  : t("inquiry_box_curated");
                 return (
-                  <li key={productId} className="flex items-start gap-4 py-5">
-                    {/* Thumbnail, Photo primitive applies deep-green gradient + noise fallback */}
-                    <Photo
-                      src={image}
-                      alt={name}
-                      containerClassName="h-20 w-20 shrink-0"
-                    />
-
+                  <li key={line.id} className="flex items-start gap-4 py-5">
+                    <div
+                      className="flex h-20 w-20 shrink-0 items-center justify-center bg-bb-bg-low text-bb-secondary-deep"
+                      aria-hidden
+                    >
+                      <Icon name={isCustom ? "diamond" : "leaf"} size={28} />
+                    </div>
                     <div className="flex flex-1 flex-col gap-2">
-                      {/* Name */}
                       <p className="font-sans text-[14px] font-medium tracking-[0.02em] text-bb-on-surface">
-                        {name}
+                        {displayName}
                       </p>
-                      {/* MOQ pill removed pending real catalog map (was "ID: {slug}"
-                          debug debris). Will re-add once the inquiry context
-                          carries MOQ data from the catalogue. */}
-
+                      <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
+                        {subline}
+                      </p>
+                      <p className="font-sans text-[12px] text-bb-on-surface-variant">
+                        {t("inquiry_min_pill", { n: line.minQty })}
+                      </p>
                       <div className="flex items-center justify-between">
-                        {/* Qty stepper */}
                         <div className="flex items-center gap-2">
                           <button
-                            onClick={() => setQty(productId, qty - 1)}
-                            disabled={qty <= 1}
+                            type="button"
+                            onClick={() => setQty(line.id, line.qty - 1)}
+                            disabled={line.qty <= line.minQty}
                             className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm border border-bb-line text-bb-on-surface transition-opacity hover:opacity-70 disabled:opacity-30"
-                            aria-label={t("inquiry_decrease", { name })}
+                            aria-label={t("inquiry_decrease", { name: displayName })}
                           >
                             <Icon name="minus" size={12} />
                           </button>
-                          <span className="w-6 text-center font-sans text-[14px] text-bb-on-surface">
-                            {qty}
+                          <span className="w-8 text-center font-sans text-[14px] text-bb-on-surface">
+                            {line.qty}
                           </span>
                           <button
-                            onClick={() => setQty(productId, qty + 1)}
+                            type="button"
+                            onClick={() => setQty(line.id, line.qty + 1)}
                             className="flex min-h-[44px] min-w-[44px] items-center justify-center rounded-sm border border-bb-line text-bb-on-surface transition-opacity hover:opacity-70"
-                            aria-label={t("inquiry_increase", { name })}
+                            aria-label={t("inquiry_increase", { name: displayName })}
                           >
                             <Icon name="plus" size={12} />
                           </button>
                         </div>
-
-                        {/* Remove */}
                         <button
-                          onClick={() => remove(productId)}
-                          className="p-1 text-bb-on-surface-variant transition-opacity hover:opacity-70"
-                          aria-label={t("inquiry_remove", { name })}
+                          type="button"
+                          onClick={() => remove(line.id)}
+                          className="p-3 min-h-[44px] min-w-[44px] flex items-center justify-center text-bb-on-surface-variant transition-opacity hover:opacity-70"
+                          aria-label={t("inquiry_remove", { name: displayName })}
                         >
                           <Icon name="close" size={16} />
                         </button>

@@ -5,8 +5,8 @@ import { WHATSAPP_NUMBER } from "@/lib/constants";
 import { useInquiry } from "@/lib/inquiry-context";
 
 export default function WhatsAppFloat() {
-  const { totalItems } = useInquiry();
-  const lifted = totalItems > 0;
+  const { totalBoxes } = useInquiry();
+  const lifted = totalBoxes > 0;
 
   return (
     <a
