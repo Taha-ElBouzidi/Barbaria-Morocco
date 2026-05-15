@@ -12,7 +12,8 @@ import ZoomLink from "@/components/primitives/ZoomLink";
 import { getGiftBoxBySlug } from "@/lib/data/gift-boxes";
 import { getCategoryBySlug } from "@/lib/data/categories";
 import { getProductsByCategory } from "@/lib/data/products";
-import BoxComposer, { type WizardCopy } from "@/components/wizard/BoxComposer";
+import { getAllFacets } from "@/lib/data/facets";
+import BoxComposer, { type WizardCopy, type FacetTypeByValue } from "@/components/wizard/BoxComposer";
 import BoxAddToInquiry from "@/components/product/BoxAddToInquiry";
 import type { CategorySlug, ProductSummary } from "@/lib/data/types";
 
@@ -58,11 +59,22 @@ export default async function GiftBoxPage({ params }: PageProps) {
   // them; otherwise we fall back to every published product in the
   // category. Same i18n bundle pattern as before.
   if (isWizard) {
-    const wizardT = await getTranslations({ locale, namespace: "wizard" });
+    const [wizardT, facets] = await Promise.all([
+      getTranslations({ locale, namespace: "wizard" }),
+      getAllFacets(lang),
+    ]);
     const products: ProductSummary[] =
       detail.items.length > 0
         ? detail.items
         : await getProductsByCategory(category, lang);
+    // Flat value->type lookup so the wizard can group product tags by
+    // facet axis without re-doing the join in client land.
+    const facetTypeByValue: FacetTypeByValue = {};
+    for (const type of ["ingredient", "use", "format", "packaging", "certification"] as const) {
+      for (const f of facets[type]) {
+        facetTypeByValue[f.value] = type;
+      }
+    }
     const copy: WizardCopy = {
       intro_eyebrow: wizardT("intro_eyebrow"),
       intro_begin: wizardT("intro_begin"),
@@ -83,8 +95,14 @@ export default async function GiftBoxPage({ params }: PageProps) {
       step_no_products: wizardT("step_no_products"),
       step_search_placeholder: wizardT("step_search_placeholder"),
       step_search_count: wizardT.raw("step_search_count") as string,
-      step_filter_label: wizardT("step_filter_label"),
+      step_filter_button: wizardT("step_filter_button"),
       step_filter_clear: wizardT("step_filter_clear"),
+      filter_axis_ingredient: wizardT("filter_axis_ingredient"),
+      filter_axis_use: wizardT("filter_axis_use"),
+      filter_axis_format: wizardT("filter_axis_format"),
+      filter_axis_packaging: wizardT("filter_axis_packaging"),
+      filter_axis_certification: wizardT("filter_axis_certification"),
+      filter_axis_other: wizardT("filter_axis_other"),
       step_back: wizardT("step_back"),
       step_next: wizardT("step_next"),
       step_picked: wizardT("step_picked"),
@@ -123,6 +141,7 @@ export default async function GiftBoxPage({ params }: PageProps) {
         themeKey={cat.storyThemeKey}
         locale={lang}
         copy={copy}
+        facetTypeByValue={facetTypeByValue}
       />
     );
   }

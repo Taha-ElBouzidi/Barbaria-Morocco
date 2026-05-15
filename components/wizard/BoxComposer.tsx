@@ -22,12 +22,19 @@ import type {
 
 type LocaleCode = "en" | "fr";
 
+export type FacetType = "ingredient" | "use" | "format" | "packaging" | "certification";
+export type FacetTypeByValue = Record<string, FacetType>;
+
 interface Props {
   box: GiftBoxDetail;
   products: ProductSummary[];
   themeKey: StoryThemeKey;
   locale: LocaleCode;
   copy: WizardCopy;
+  /** Lookup table built server-side: facet value -> axis. Used by the
+   *  step filter panel to group tags by axis. Empty fallback means
+   *  filters collapse to one flat chip list. */
+  facetTypeByValue: FacetTypeByValue;
 }
 
 /** All localised UI strings, passed from the server component which uses
@@ -49,8 +56,14 @@ export interface WizardCopy {
   step_no_products: string;
   step_search_placeholder: string;
   step_search_count: string;
-  step_filter_label: string;
+  step_filter_button: string;
   step_filter_clear: string;
+  filter_axis_ingredient: string;
+  filter_axis_use: string;
+  filter_axis_format: string;
+  filter_axis_packaging: string;
+  filter_axis_certification: string;
+  filter_axis_other: string;
   step_back: string;
   step_next: string;
   step_picked: string;
@@ -160,7 +173,7 @@ function reducer(state: State, action: Action): State {
   }
 }
 
-export default function BoxComposer({ box, products, themeKey, locale, copy }: Props) {
+export default function BoxComposer({ box, products, themeKey, locale, copy, facetTypeByValue }: Props) {
   const router = useRouter();
   const { addBox } = useInquiry();
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
@@ -328,6 +341,7 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
               products={products}
               activeSlug={state.picks[state.currentStep]}
               copy={copy}
+              facetTypeByValue={facetTypeByValue}
               onOpen={(slug) => setExpandedSlug(slug)}
               onBack={handleBack}
             />
@@ -521,6 +535,14 @@ function SizeView({
   );
 }
 
+const FACET_AXES: Array<{ type: FacetType; labelKey: keyof WizardCopy }> = [
+  { type: "ingredient", labelKey: "filter_axis_ingredient" },
+  { type: "use", labelKey: "filter_axis_use" },
+  { type: "format", labelKey: "filter_axis_format" },
+  { type: "packaging", labelKey: "filter_axis_packaging" },
+  { type: "certification", labelKey: "filter_axis_certification" },
+];
+
 function StepView({
   step,
   stepIndex,
@@ -529,6 +551,7 @@ function StepView({
   products,
   activeSlug,
   copy,
+  facetTypeByValue,
   onOpen,
   onBack,
 }: {
@@ -539,6 +562,7 @@ function StepView({
   products: ProductSummary[];
   activeSlug: string | undefined;
   copy: WizardCopy;
+  facetTypeByValue: FacetTypeByValue;
   onOpen: (slug: string) => void;
   onBack: () => void;
 }) {
@@ -548,15 +572,28 @@ function StepView({
   const story = step.story[lang];
   const [search, setSearch] = useState("");
   const [selectedTags, setSelectedTags] = useState<string[]>([]);
+  const [panelOpen, setPanelOpen] = useState(false);
 
-  // Build the filter-chip list from the union of tags across the visible
-  // pool. Each tag is a facet value (ingredient / use / format / etc.).
-  // The maison can toggle multiple chips; a product matches if it carries
-  // at least one of the selected tags (OR-within-axis). Search and tag
-  // filters compose with AND.
-  const allTags = Array.from(
-    new Set(products.flatMap((p) => p.tags))
-  ).sort((a, b) => a.localeCompare(b));
+  // Group the available tags by facet axis. Tags that aren't found in
+  // the lookup table (legacy products or unmapped values) land in a
+  // sixth "other" bucket so they remain filterable.
+  const allTags = Array.from(new Set(products.flatMap((p) => p.tags)));
+  const tagsByAxis: Record<FacetType | "other", string[]> = {
+    ingredient: [],
+    use: [],
+    format: [],
+    packaging: [],
+    certification: [],
+    other: [],
+  };
+  for (const tag of allTags) {
+    const axis = facetTypeByValue[tag];
+    if (axis) tagsByAxis[axis].push(tag);
+    else tagsByAxis.other.push(tag);
+  }
+  for (const key of Object.keys(tagsByAxis) as Array<keyof typeof tagsByAxis>) {
+    tagsByAxis[key].sort((a, b) => a.localeCompare(b));
+  }
 
   const toggleTag = (tag: string) =>
     setSelectedTags((prev) =>
@@ -567,6 +604,7 @@ function StepView({
     setSelectedTags([]);
   };
   const hasFilters = !!search.trim() || selectedTags.length > 0;
+  const activeCount = (search.trim() ? 1 : 0) + selectedTags.length;
 
   const filteredProducts = products.filter((p) => {
     if (selectedTags.length > 0 && !selectedTags.some((t) => p.tags.includes(t))) {
@@ -606,53 +644,136 @@ function StepView({
         </div>
       ) : (
         <>
-          <div className="max-w-[640px] mx-auto space-y-4">
-            <input
-              type="search"
-              value={search}
-              onChange={(e) => setSearch(e.target.value)}
-              placeholder={copy.step_search_placeholder}
-              aria-label={copy.step_search_placeholder}
-              className="w-full bg-bb-primary-container/40 border border-bb-secondary/30 px-4 py-3 min-h-[44px] text-bb-secondary placeholder:text-bb-secondary/40 font-sans text-[14px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
-            />
-            {allTags.length > 0 && (
-              <div className="flex flex-wrap items-center justify-center gap-2">
-                <span className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-secondary/60 mr-1">
-                  {copy.step_filter_label}
-                </span>
-                {allTags.map((tag) => {
-                  const active = selectedTags.includes(tag);
+          <div className="max-w-[760px] mx-auto space-y-3">
+            <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+              <input
+                type="search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder={copy.step_search_placeholder}
+                aria-label={copy.step_search_placeholder}
+                className="flex-1 bg-bb-primary-container/40 border border-bb-secondary/30 px-4 py-3 min-h-[44px] text-bb-secondary placeholder:text-bb-secondary/40 font-sans text-[14px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+              />
+              {allTags.length > 0 && (
+                <button
+                  type="button"
+                  onClick={() => setPanelOpen((v) => !v)}
+                  aria-expanded={panelOpen}
+                  aria-controls="wizard-filter-panel"
+                  className={`inline-flex items-center justify-center gap-2 px-4 py-3 min-h-[44px] border font-sans text-[12px] uppercase tracking-[0.18em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary ${
+                    panelOpen || activeCount > 0
+                      ? "border-bb-secondary bg-bb-secondary text-bb-primary"
+                      : "border-bb-secondary/40 text-bb-secondary hover:border-bb-secondary"
+                  }`}
+                >
+                  {copy.step_filter_button}
+                  {activeCount > 0 && (
+                    <span className="ml-1 inline-flex items-center justify-center min-w-[20px] h-[20px] px-1 rounded-full bg-bb-primary text-bb-secondary text-[10px] font-medium">
+                      {activeCount}
+                    </span>
+                  )}
+                  <span aria-hidden className="ml-1 text-[10px]">{panelOpen ? "▲" : "▼"}</span>
+                </button>
+              )}
+            </div>
+
+            {/* Collapsible panel. 5 facet axes + a fallback bucket. */}
+            {panelOpen && allTags.length > 0 && (
+              <div
+                id="wizard-filter-panel"
+                className="border border-bb-secondary/30 bg-bb-primary/60 backdrop-blur-sm p-4 sm:p-5 space-y-4"
+              >
+                {FACET_AXES.map(({ type, labelKey }) => {
+                  const tags = tagsByAxis[type];
+                  if (tags.length === 0) return null;
                   return (
-                    <button
-                      type="button"
-                      key={tag}
-                      onClick={() => toggleTag(tag)}
-                      aria-pressed={active}
-                      className={`px-2.5 py-1 min-h-[32px] border text-[11px] uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary ${
-                        active
-                          ? "border-bb-secondary bg-bb-secondary text-bb-primary"
-                          : "border-bb-secondary/30 text-bb-secondary/80 hover:border-bb-secondary"
-                      }`}
-                    >
-                      {tag}
-                    </button>
+                    <div key={type} className="space-y-2">
+                      <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-secondary/60">
+                        {copy[labelKey]}
+                      </p>
+                      <div className="flex flex-wrap gap-1.5">
+                        {tags.map((tag) => {
+                          const active = selectedTags.includes(tag);
+                          return (
+                            <button
+                              type="button"
+                              key={tag}
+                              onClick={() => toggleTag(tag)}
+                              aria-pressed={active}
+                              className={`px-2.5 py-1 min-h-[32px] border text-[11px] uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary ${
+                                active
+                                  ? "border-bb-secondary bg-bb-secondary text-bb-primary"
+                                  : "border-bb-secondary/30 text-bb-secondary/80 hover:border-bb-secondary"
+                              }`}
+                            >
+                              {tag}
+                            </button>
+                          );
+                        })}
+                      </div>
+                    </div>
                   );
                 })}
+                {tagsByAxis.other.length > 0 && (
+                  <div className="space-y-2">
+                    <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-secondary/60">
+                      {copy.filter_axis_other}
+                    </p>
+                    <div className="flex flex-wrap gap-1.5">
+                      {tagsByAxis.other.map((tag) => {
+                        const active = selectedTags.includes(tag);
+                        return (
+                          <button
+                            type="button"
+                            key={tag}
+                            onClick={() => toggleTag(tag)}
+                            aria-pressed={active}
+                            className={`px-2.5 py-1 min-h-[32px] border text-[11px] uppercase tracking-[0.12em] transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary ${
+                              active
+                                ? "border-bb-secondary bg-bb-secondary text-bb-primary"
+                                : "border-bb-secondary/30 text-bb-secondary/80 hover:border-bb-secondary"
+                            }`}
+                          >
+                            {tag}
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </div>
+                )}
                 {hasFilters && (
-                  <button
-                    type="button"
-                    onClick={clearFilters}
-                    className="ml-1 px-2.5 py-1 min-h-[32px] text-[11px] uppercase tracking-[0.12em] text-bb-secondary/60 hover:text-bb-secondary"
-                  >
-                    {copy.step_filter_clear}
-                  </button>
+                  <div className="pt-2 border-t border-bb-secondary/20">
+                    <button
+                      type="button"
+                      onClick={clearFilters}
+                      className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary"
+                    >
+                      ← {copy.step_filter_clear}
+                    </button>
+                  </div>
                 )}
               </div>
             )}
-            {(search || selectedTags.length > 0) && (
-              <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary/60 text-center">
-                {copy.step_search_count.replace("{n}", String(filteredProducts.length))}
-              </p>
+
+            {/* Active filter pills + count, always visible when any filter is on. */}
+            {hasFilters && (
+              <div className="flex flex-wrap items-center gap-2">
+                {selectedTags.map((tag) => (
+                  <button
+                    key={tag}
+                    type="button"
+                    onClick={() => toggleTag(tag)}
+                    aria-label={`Remove ${tag} filter`}
+                    className="inline-flex items-center gap-1.5 px-2 py-1 min-h-[28px] border border-bb-secondary/40 text-[11px] uppercase tracking-[0.12em] text-bb-secondary hover:border-bb-secondary"
+                  >
+                    {tag}
+                    <span aria-hidden>×</span>
+                  </button>
+                ))}
+                <span className="ml-auto text-[11px] uppercase tracking-[0.18em] text-bb-secondary/60">
+                  {copy.step_search_count.replace("{n}", String(filteredProducts.length))}
+                </span>
+              </div>
             )}
           </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
