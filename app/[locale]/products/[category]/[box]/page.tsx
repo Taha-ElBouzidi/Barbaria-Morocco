@@ -9,6 +9,9 @@ import Reveal from "@/components/primitives/Reveal";
 import SaharaPrestige from "@/components/primitives/SaharaPrestige";
 import Icon from "@/components/primitives/Icon";
 import { getGiftBoxBySlug } from "@/lib/data/gift-boxes";
+import { getCategoryBySlug } from "@/lib/data/categories";
+import { getProductsByCategory } from "@/lib/data/products";
+import BoxComposer, { type WizardCopy } from "@/components/wizard/BoxComposer";
 import type { CategorySlug } from "@/lib/data/types";
 
 export const revalidate = 60;
@@ -39,15 +42,68 @@ export default async function GiftBoxPage({ params }: PageProps) {
   if (!VALID_CATEGORIES.includes(category as CategorySlug)) notFound();
 
   const lang = locale === "fr" ? "fr" : "en";
-  const [detail, t] = await Promise.all([
+  const [detail, cat, t] = await Promise.all([
     getGiftBoxBySlug(box, lang),
+    getCategoryBySlug(category, lang),
     getTranslations({ locale, namespace: "products" }),
   ]);
-  if (!detail || detail.categorySlug !== category) notFound();
+  if (!detail || !cat || detail.categorySlug !== category) notFound();
 
-  // Customizable boxes route to the wizard (Sprint 2.1 will mount it here).
-  // Until the wizard ships, render a holding view that explains what's coming.
   const isWizard = detail.isCustomizable;
+
+  // For customizable boxes we mount the BoxComposer client component.
+  // Fetch the eligible product pool for this category and pass the
+  // localised UI strings as a single bundle so the wizard doesn't have
+  // to do any per-render i18n lookups.
+  if (isWizard) {
+    const [products, wizardT] = await Promise.all([
+      getProductsByCategory(category, lang),
+      getTranslations({ locale, namespace: "wizard" }),
+    ]);
+    const copy: WizardCopy = {
+      intro_eyebrow: wizardT("intro_eyebrow"),
+      intro_begin: wizardT("intro_begin"),
+      size_eyebrow: wizardT("size_eyebrow"),
+      size_title: wizardT("size_title"),
+      size_lede: wizardT("size_lede"),
+      size_3_label: wizardT("size_3_label"),
+      size_3_desc: wizardT("size_3_desc"),
+      size_5_label: wizardT("size_5_label"),
+      size_5_desc: wizardT("size_5_desc"),
+      size_6_label: wizardT("size_6_label"),
+      size_6_desc: wizardT("size_6_desc"),
+      step_eyebrow_progress: wizardT("step_eyebrow_progress"),
+      step_no_products: wizardT("step_no_products"),
+      step_skip: wizardT("step_skip"),
+      step_back: wizardT("step_back"),
+      step_next: wizardT("step_next"),
+      step_picked: wizardT("step_picked"),
+      review_eyebrow: wizardT("review_eyebrow"),
+      review_title: wizardT("review_title"),
+      review_lede: wizardT("review_lede"),
+      review_slot_empty: wizardT("review_slot_empty"),
+      review_continue: wizardT("review_continue"),
+      review_edit: wizardT("review_edit"),
+      quantity_eyebrow: wizardT("quantity_eyebrow"),
+      quantity_title: wizardT("quantity_title"),
+      quantity_lede: wizardT("quantity_lede"),
+      quantity_min_label: wizardT("quantity_min_label"),
+      quantity_submit: wizardT("quantity_submit"),
+      done_eyebrow: wizardT("done_eyebrow"),
+      done_title: wizardT("done_title"),
+      done_lede: wizardT("done_lede"),
+      done_cta: wizardT("done_cta"),
+    };
+    return (
+      <BoxComposer
+        box={detail}
+        products={products}
+        themeKey={cat.storyThemeKey}
+        locale={lang}
+        copy={copy}
+      />
+    );
+  }
 
   return (
     <>
