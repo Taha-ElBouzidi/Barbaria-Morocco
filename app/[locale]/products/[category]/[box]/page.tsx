@@ -83,6 +83,8 @@ export default async function GiftBoxPage({ params }: PageProps) {
       step_no_products: wizardT("step_no_products"),
       step_search_placeholder: wizardT("step_search_placeholder"),
       step_search_count: wizardT.raw("step_search_count") as string,
+      step_filter_label: wizardT("step_filter_label"),
+      step_filter_clear: wizardT("step_filter_clear"),
       step_back: wizardT("step_back"),
       step_next: wizardT("step_next"),
       step_picked: wizardT("step_picked"),

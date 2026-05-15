@@ -256,6 +256,8 @@
     "step_no_products": "Aucune pièce encore dans cette catégorie. Le concierge composera ce slot avec vous.",
     "step_search_placeholder": "Rechercher par nom ou étiquette",
     "step_search_count": "{n} résultats",
+    "step_filter_label": "Filtrer :",
+    "step_filter_clear": "Effacer",
     "step_back": "Retour",
     "step_next": "Suivant",
     "step_picked": "Sélectionné",

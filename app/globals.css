@@ -428,26 +428,33 @@
 /* Wizard theme variants. Two categories, two atmospheres. The Cosmetics
    wizard keeps the night-sky brown of the maison; the Épicerie wizard
    shifts a few degrees warmer toward sunset copper to evoke the caravan
-   route. Both inherit text-white from the parent + retain the gold
-   accents; only the body tint and pepita glow shift. */
+   route. Only the body tint and pepita glow colour shift; the pepita
+   shape rules are inherited from the base .sp-pepita selectors above so
+   the text glyphs stay as glyphs (color/text-shadow) and the dots stay
+   as round dots (background + border-radius). The earlier version
+   applied background to the text variant, which painted a square swatch
+   behind the glyph. */
 .wizard-theme--sahara {
   background: linear-gradient(180deg, #2c1810 0%, #1d100a 100%);
 }
-.wizard-theme--sahara .sp-root .sp-pepita,
-.wizard-theme--sahara .sp-root .sp-pepita.sp-dot {
+.wizard-theme--sahara .sp-root .sp-pepita {
   color: var(--bb-secondary);
+  text-shadow: 0 0 6px rgba(201, 160, 89, 0.55);
+}
+.wizard-theme--sahara .sp-root .sp-pepita.sp-dot {
   background: var(--bb-secondary);
   box-shadow: 0 0 5px rgba(201, 160, 89, 0.6);
 }
 .wizard-theme--caravan {
   background: linear-gradient(180deg, #3a1f10 0%, #261207 100%);
 }
-.wizard-theme--caravan .sp-root .sp-pepita,
-.wizard-theme--caravan .sp-root .sp-pepita.sp-dot {
+.wizard-theme--caravan .sp-root .sp-pepita {
   color: #d8a361;
+  text-shadow: 0 0 7px rgba(216, 163, 97, 0.6);
+}
+.wizard-theme--caravan .sp-root .sp-pepita.sp-dot {
   background: #d8a361;
   box-shadow: 0 0 6px rgba(216, 163, 97, 0.7);
-  text-shadow: 0 0 7px rgba(216, 163, 97, 0.6);
 }
 
 /* Honour prefers-reduced-motion: cut the SaharaPrestige twinkle and skip
