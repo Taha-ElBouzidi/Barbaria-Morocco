@@ -6,16 +6,19 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Icon from "@/components/primitives/Icon";
 
+// Order is intentional: Inquiries before Activity so the maison sees
+// incoming requests first when they sign in. Gift Boxes + Products are
+// the daily-touched catalogue tables; everything below is configuration.
 const NAV = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/inquiries", label: "Inquiries" },
   { href: "/admin/gift-boxes", label: "Gift Boxes" },
   { href: "/admin/products", label: "Products" },
-  { href: "/admin/facets", label: "Facets" },
-  { href: "/admin/journal", label: "Journal" },
-  { href: "/admin/ateliers", label: "Ateliers" },
-  { href: "/admin/rituals", label: "Rituals (internal)" },
   { href: "/admin/occasions", label: "Occasions" },
-  { href: "/admin/inquiries", label: "Inquiries" },
+  { href: "/admin/ateliers", label: "Ateliers" },
+  { href: "/admin/journal", label: "Journal" },
+  { href: "/admin/facets", label: "Tags" },
+  { href: "/admin/rituals", label: "Rituals (internal)" },
   { href: "/admin/activity", label: "Activity" },
 ];
 

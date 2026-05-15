@@ -39,9 +39,16 @@ export default async function ContactPage({ params }: PageProps) {
           <Reveal><Eyebrow tone="green">{t("hero_eyebrow")}</Eyebrow></Reveal>
           <Reveal delayMs={80}><DisplayHeading size="xl" as="h1">{t("hero_headline")}</DisplayHeading></Reveal>
         </div>
-        <div className="grid grid-cols-1 lg:grid-cols-[1.7fr_1fr] gap-12 lg:gap-20">
-          <TwoStepForm locale={locale} occasions={occasions} />
-          <InquirySidebar lang={lang} />
+        {/* On mobile the inquiry summary renders FIRST so buyers see their
+            selection before filling the form. On desktop it sits on the
+            right as a persistent sidebar. */}
+        <div className="grid grid-cols-1 lg:grid-cols-[1.7fr_1fr] gap-10 lg:gap-20">
+          <div className="order-2 lg:order-1">
+            <TwoStepForm locale={locale} occasions={occasions} />
+          </div>
+          <div className="order-1 lg:order-2">
+            <InquirySidebar lang={lang} />
+          </div>
         </div>
       </section>
       <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] mt-16 lg:mt-24 border-t border-[var(--bb-line)]">
