@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { listJournalCardsForAdmin } from "@/lib/admin/journal";
 import JournalList from "./_components/JournalList";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminJournalPage() {
+  await requireAdmin();
   const cards = await listJournalCardsForAdmin();
 
   return (

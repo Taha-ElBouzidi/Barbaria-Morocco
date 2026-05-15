@@ -1,10 +1,12 @@
 import Link from "next/link";
 import { listAteliersForAdmin } from "@/lib/admin/ateliers";
 import AteliersList from "./_components/AteliersList";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminAteliersPage() {
+  await requireAdmin();
   const ateliers = await listAteliersForAdmin();
 
   return (

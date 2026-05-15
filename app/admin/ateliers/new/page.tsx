@@ -1,9 +1,11 @@
 import Link from "next/link";
 import AtelierEditor from "../_components/AtelierEditor";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function NewAtelierPage() {
+  await requireAdmin();
   return (
     <div className="space-y-8">
       <header className="flex items-center gap-4">

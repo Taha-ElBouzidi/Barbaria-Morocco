@@ -115,31 +115,39 @@ export async function saveProduct(
     }
   }
 
-  // Replace application steps (delete all then insert)
-  await supabase.from("product_application_steps").delete().eq("product_id", productId);
-  if (data.applicationSteps.length > 0) {
-    const stepRows = data.applicationSteps.flatMap((step) => [
-      {
-        product_id: productId,
-        step_number: step.stepNumber,
-        locale: "en",
-        title: step.en.title,
-        body: step.en.body,
-      },
-      {
-        product_id: productId,
-        step_number: step.stepNumber,
-        locale: "fr",
-        title: step.fr.title,
-        body: step.fr.body,
-      },
-    ]);
-
-    const { error: stepsError } = await supabase
-      .from("product_application_steps")
-      .insert(stepRows);
-    if (stepsError) {
-      return { ok: false, error: `Failed to save application steps: ${stepsError.message}` };
+  // Application steps: ONLY touch if the form posted at least one
+  // step_* field. The editor UI for steps was removed in PR #35 and the
+  // form no longer serialises them; absence means "preserve whatever is
+  // in the DB". If we delete unconditionally we wipe legitimate data
+  // every time the admin saves an unrelated change.
+  const hasStepInputs = ["step_1_en_title", "step_2_en_title", "step_3_en_title"].some(
+    (key) => formData.has(key)
+  );
+  if (hasStepInputs) {
+    await supabase.from("product_application_steps").delete().eq("product_id", productId);
+    if (data.applicationSteps.length > 0) {
+      const stepRows = data.applicationSteps.flatMap((step) => [
+        {
+          product_id: productId,
+          step_number: step.stepNumber,
+          locale: "en" as const,
+          title: step.en.title,
+          body: step.en.body,
+        },
+        {
+          product_id: productId,
+          step_number: step.stepNumber,
+          locale: "fr" as const,
+          title: step.fr.title,
+          body: step.fr.body,
+        },
+      ]);
+      const { error: stepsError } = await supabase
+        .from("product_application_steps")
+        .insert(stepRows);
+      if (stepsError) {
+        return { ok: false, error: `Failed to save application steps: ${stepsError.message}` };
+      }
     }
   }
 

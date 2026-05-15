@@ -1,9 +1,11 @@
 import Link from "next/link";
 import { listRitualsForAdmin } from "@/lib/admin/rituals";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminRitualsPage() {
+  await requireAdmin();
   const rituals = await listRitualsForAdmin();
 
   return (

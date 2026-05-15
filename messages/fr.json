@@ -1,4 +1,13 @@
 {
+  "meta": {
+    "site_title_default": "Barbaria Morocco | L'authenticité marocaine",
+    "site_title_template": "%s | Barbaria Morocco",
+    "site_description": "Découvrez Barbaria Morocco : coffrets cadeaux de cosmétiques naturels et d'épicerie fine du terroir marocain. B2B, fait sur commande.",
+    "site_twitter_description": "Coffrets cadeaux de cosmétiques naturels et d'épicerie fine du terroir marocain. B2B, fait sur commande.",
+    "site_og_image_alt": "Barbaria Morocco, coffrets cadeaux de cosmétiques et épicerie fine",
+    "org_description": "Coffrets cadeaux de cosmétiques naturels et d'épicerie fine du terroir marocain. B2B, fait sur commande.",
+    "breadcrumb_home": "Accueil"
+  },
   "nav": {
     "home": "Accueil",
     "contact": "Contact",
@@ -50,6 +59,7 @@
       "lede": "L'Art du Terroir & les Rituels Ancestraux du Maroc.",
       "cta_primary": "Explorer les Coffrets",
       "cta_secondary": "Envoyez-nous une demande",
+      "tagline_country": "Maroc",
       "alt": "Barbaria: une composition éditoriale marocaine en lumière naturelle."
     },
     "strip": {

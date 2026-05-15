@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { listAuditLog } from "@/lib/admin/activity";
 import ActivityLogTable from "../_components/ActivityLogTable";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -41,6 +42,7 @@ interface PageProps {
 }
 
 export default async function AdminActivityPage({ searchParams }: PageProps) {
+  await requireAdmin();
   const params = await searchParams;
   const entityType = params.entityType ?? "all";
   const action = params.action ?? "all";

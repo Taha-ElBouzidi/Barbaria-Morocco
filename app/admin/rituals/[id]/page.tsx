@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getRitualForEdit } from "@/lib/admin/rituals";
 import RitualEditor from "../_components/RitualEditor";
 import SubcatList from "../_components/SubcatList";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -11,6 +12,7 @@ interface PageProps {
 }
 
 export default async function EditRitualPage({ params }: PageProps) {
+  await requireAdmin();
   const { id } = await params;
   const ritual = await getRitualForEdit(id);
   if (!ritual) notFound();

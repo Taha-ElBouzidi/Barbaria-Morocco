@@ -3,6 +3,7 @@ import { createServerClient } from "@/lib/supabase/server";
 import StatTile from "@/components/admin/StatTile";
 import ActivityFeed from "@/components/admin/ActivityFeed";
 import Icon from "@/components/primitives/Icon";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -44,6 +45,7 @@ const QUICK_ACTIONS = [
 ];
 
 export default async function AdminDashboard() {
+  await requireAdmin();
   const counts = await getDashboardCounts();
   return (
     <div className="space-y-8 lg:space-y-10">

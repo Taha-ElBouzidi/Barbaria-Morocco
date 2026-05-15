@@ -2,10 +2,12 @@ import Link from "next/link";
 import { listProductsForAdmin } from "@/lib/admin/products";
 import ProductsList from "./_components/ProductsList";
 import Icon from "@/components/primitives/Icon";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminProductsPage() {
+  await requireAdmin();
   const products = await listProductsForAdmin();
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 

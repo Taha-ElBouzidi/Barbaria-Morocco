@@ -2,10 +2,12 @@ import Link from "next/link";
 import { getAllFacetsForAdmin, getRitualOptions, getSubcatOptions } from "@/lib/admin/products";
 import { getCategoryOptions } from "@/lib/admin/gift-boxes";
 import ProductEditor from "../_components/ProductEditor";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function NewProductPage() {
+  await requireAdmin();
   const [facets, rituals, categories] = await Promise.all([
     getAllFacetsForAdmin(),
     getRitualOptions(),

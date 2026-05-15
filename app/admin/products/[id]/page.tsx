@@ -5,6 +5,7 @@ import { getCategoryOptions } from "@/lib/admin/gift-boxes";
 import ProductEditor from "../_components/ProductEditor";
 import ProductStatusToggle from "../_components/ProductStatusToggle";
 import ProductDeleteButton from "../_components/ProductDeleteButton";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -14,6 +15,7 @@ interface PageProps {
 }
 
 export default async function EditProductPage({ params, searchParams }: PageProps) {
+  await requireAdmin();
   const { id } = await params;
   const { saved } = await searchParams;
 

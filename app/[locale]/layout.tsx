@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Playfair_Display, Cormorant_Garamond, Montserrat } from "next/font/google";
 import { NextIntlClientProvider, hasLocale } from "next-intl";
+import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { Analytics } from "@vercel/analytics/next";
@@ -36,47 +37,51 @@ const montserrat = Montserrat({
   display: "swap",
 });
 
-export const metadata: Metadata = {
-  metadataBase: new URL(BASE_URL),
-  title: {
-    default: "Barbaria Morocco | L'authenticite marocaine",
-    template: "%s | Barbaria Morocco",
-  },
-  description:
-    "Decouvrez Barbaria Morocco : coffrets cadeaux de cosmetiques naturels et d'epicerie fine du terroir marocain. B2B fait sur commande.",
-  alternates: {
-    languages: {
-      fr: `${BASE_URL}/fr`,
-      en: `${BASE_URL}/en`,
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params;
+  const t = await getTranslations({ locale, namespace: "meta" });
+  const ogLocale = locale === "en" ? "en_US" : "fr_MA";
+  const altLocale = locale === "en" ? "fr_MA" : "en_US";
+  return {
+    metadataBase: new URL(BASE_URL),
+    title: {
+      default: t("site_title_default"),
+      template: t("site_title_template"),
     },
-  },
-  openGraph: {
-    type: "website",
-    siteName: "Barbaria Morocco",
-    locale: "fr_MA",
-    alternateLocale: "en_US",
-    images: [
-      {
-        url: "/brand_photos/products-all-three.jpg",
-        width: 1200,
-        height: 630,
-        alt: "Barbaria Morocco - Coffrets Cosmetiques & Epicerie Fine",
+    description: t("site_description"),
+    alternates: {
+      languages: {
+        fr: `${BASE_URL}/fr`,
+        en: `${BASE_URL}/en`,
       },
-    ],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Barbaria Morocco | L'authenticite marocaine",
-    description:
-      "Coffrets cadeaux de cosmetiques naturels et d'epicerie fine du terroir marocain. B2B fait sur commande.",
-    images: ["/brand_photos/products-all-three.jpg"],
-  },
-  icons: {
-    icon: "/favicon.ico",
-    apple: "/apple-touch-icon.png",
-  },
-  manifest: "/manifest.json",
-};
+    },
+    openGraph: {
+      type: "website",
+      siteName: "Barbaria Morocco",
+      locale: ogLocale,
+      alternateLocale: altLocale,
+      images: [
+        {
+          url: "/brand_photos/products-all-three.jpg",
+          width: 1200,
+          height: 630,
+          alt: t("site_og_image_alt"),
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: t("site_title_default"),
+      description: t("site_twitter_description"),
+      images: ["/brand_photos/products-all-three.jpg"],
+    },
+    icons: {
+      icon: "/favicon.ico",
+      apple: "/apple-touch-icon.png",
+    },
+    manifest: "/manifest.json",
+  };
+}
 
 export default async function LocaleLayout({
   children,
@@ -93,6 +98,9 @@ export default async function LocaleLayout({
   const lang = locale === "fr" ? "fr" : "en";
   const productMap = await getMinimalProductMap(lang);
   const catalogueEntries = Array.from(productMap.entries());
+  const metaT = await getTranslations({ locale, namespace: "meta" });
+  const orgDescription = metaT("org_description");
+  const breadcrumbHome = metaT("breadcrumb_home");
 
   return (
     <html
@@ -133,8 +141,7 @@ export default async function LocaleLayout({
               name: "Barbaria Morocco",
               url: BASE_URL,
               logo: `${BASE_URL}/brand_photos/barbaria-logo-new.jpg`,
-              description:
-                "Coffrets cadeaux de cosmetiques naturels et d'epicerie fine du terroir marocain. B2B fait sur commande.",
+              description: orgDescription,
               contactPoint: {
                 "@type": "ContactPoint",
                 email: CONTACT_EMAIL,
@@ -158,7 +165,7 @@ export default async function LocaleLayout({
                 {
                   "@type": "ListItem",
                   position: 1,
-                  name: "Accueil",
+                  name: breadcrumbHome,
                   item: `${BASE_URL}/${locale}`,
                 },
               ],

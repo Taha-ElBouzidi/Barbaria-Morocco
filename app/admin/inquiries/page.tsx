@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { listInquiries } from "@/lib/admin/inquiries";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -47,6 +48,7 @@ interface PageProps {
 }
 
 export default async function AdminInquiriesPage({ searchParams }: PageProps) {
+  await requireAdmin();
   const params = await searchParams;
   const status = params.status ?? "all";
   const sort = params.sort ?? "newest";
@@ -133,16 +135,10 @@ export default async function AdminInquiriesPage({ searchParams }: PageProps) {
             No inquiries yet.
           </p>
           <p className="font-sans text-[13px] text-bb-on-surface-variant max-w-lg mx-auto leading-relaxed">
-            Inquiries arrive via the public contact form. Sprint 3 will wire the
-            form to write here. For now buyers submit via mailto and you receive
-            an email at{" "}
-            <a
-              href="mailto:concierge@barbariamorocco.com"
-              className="text-bb-primary hover:underline"
-            >
-              concierge@barbariamorocco.com
-            </a>
-            .
+            Inquiries from the public contact form appear here. Each row
+            carries the buyer&apos;s company, the requested boxes (curated +
+            custom), and the occasion. Click a row to view, reply, or update
+            its status.
           </p>
         </div>
       ) : (
