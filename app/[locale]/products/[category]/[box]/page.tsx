@@ -8,6 +8,7 @@ import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
 import SaharaPrestige from "@/components/primitives/SaharaPrestige";
 import Icon from "@/components/primitives/Icon";
+import ZoomLink from "@/components/primitives/ZoomLink";
 import { getGiftBoxBySlug } from "@/lib/data/gift-boxes";
 import { getCategoryBySlug } from "@/lib/data/categories";
 import { getProductsByCategory } from "@/lib/data/products";
@@ -191,7 +192,13 @@ export default async function GiftBoxPage({ params }: PageProps) {
                       key={item.slug}
                       className="grid grid-cols-[80px_1fr_auto] gap-4 items-center py-4 border-b border-bb-line"
                     >
-                      <div className="relative aspect-square bg-bb-bg-low overflow-hidden">
+                      {/* viewTransitionName must match the destination's name
+                          on /product/[slug] so the browser animates the
+                          thumbnail into the hero. ZoomLink wraps the click. */}
+                      <div
+                        className="relative aspect-square bg-bb-bg-low overflow-hidden"
+                        style={{ viewTransitionName: `product-${item.slug}` }}
+                      >
                         <Photo
                           src={item.heroImage}
                           alt={item.name}
@@ -201,24 +208,24 @@ export default async function GiftBoxPage({ params }: PageProps) {
                         />
                       </div>
                       <div className="min-w-0">
-                        <Link
+                        <ZoomLink
                           href={`/product/${item.slug}`}
                           className="font-display text-[18px] text-bb-primary hover:text-bb-secondary transition-colors"
                         >
                           {item.name}
-                        </Link>
+                        </ZoomLink>
                         {item.short && (
                           <p className="text-[12px] text-bb-on-surface-variant truncate">
                             {item.short}
                           </p>
                         )}
                       </div>
-                      <Link
+                      <ZoomLink
                         href={`/product/${item.slug}`}
                         className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary hover:opacity-80 shrink-0"
                       >
                         {t("view_product")}
-                      </Link>
+                      </ZoomLink>
                     </li>
                   ))}
                 </ul>

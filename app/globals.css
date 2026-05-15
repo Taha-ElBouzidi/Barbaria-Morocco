@@ -399,3 +399,14 @@
   0%, 100% { opacity: 0; transform: scale(0.7); }
   40%, 60% { opacity: var(--peak, 0.85); transform: scale(1); }
 }
+
+/* View Transitions API — applies to manual startViewTransition() calls
+   triggered by ZoomLink. We don't enable @view-transition { navigation:
+   auto } so unrelated link clicks remain instant; only the zoom paths fire.
+   Browsers without support (Firefox stable as of May 2026) navigate
+   instantly with no animation, no breakage. */
+::view-transition-old(*),
+::view-transition-new(*) {
+  animation-duration: 0.45s;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
