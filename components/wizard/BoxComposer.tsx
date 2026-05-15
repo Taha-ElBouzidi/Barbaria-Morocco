@@ -55,6 +55,10 @@ export interface WizardCopy {
   step_view_details: string;
   step_choose_this: string;
   step_currently_chosen: string;
+  detail_origin: string;
+  detail_format: string;
+  detail_lead: string;
+  detail_close: string;
   review_eyebrow: string;
   review_title: string;
   review_lede: string;
@@ -71,6 +75,7 @@ export interface WizardCopy {
   done_title: string;
   done_lede: string;
   done_cta: string;
+  done_compose_another: string;
   exit_aria: string;
   exit_confirm: string;
 }
@@ -318,17 +323,6 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
               onOpen={(slug) => setExpandedSlug(slug)}
               onSkip={handleSkip}
               onBack={handleBack}
-              onNext={() => {
-                const next = state.currentStep + 1;
-                if (next >= totalSteps) {
-                  dispatch({ type: "goReview" });
-                } else {
-                  dispatch({
-                    type: "hydrate",
-                    state: { ...state, currentStep: next, view: "step" },
-                  });
-                }
-              }}
             />
           )}
 
@@ -357,7 +351,11 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
           )}
 
           {state.view === "done" && (
-            <DoneView copy={copy} onContinue={handleGoContact} />
+            <DoneView
+              copy={copy}
+              onContinue={handleGoContact}
+              onComposeAnother={() => dispatch({ type: "reset" })}
+            />
           )}
         </WizardView>
       </div>
@@ -526,7 +524,6 @@ function StepView({
   onOpen,
   onSkip,
   onBack,
-  onNext,
 }: {
   step: WizardStep;
   stepIndex: number;
@@ -538,13 +535,11 @@ function StepView({
   onOpen: (slug: string) => void;
   onSkip: () => void;
   onBack: () => void;
-  onNext: () => void;
 }) {
   const lang = locale;
   const eyebrow = step.eyebrow[lang];
   const title = step.title[lang];
   const story = step.story[lang];
-  const isPicked = activeSlug !== undefined && activeSlug !== "";
 
   return (
     <div className="space-y-12">
@@ -618,7 +613,10 @@ function StepView({
         </div>
       )}
 
-      {/* Footer actions */}
+      {/* Footer actions. The Next button was removed in the polish pass:
+          choosing a piece from the zoom modal auto-advances, so Next was
+          unreachable in practice. Skip stays for buyers who want to leave
+          a slot for the concierge. */}
       <div className="flex flex-wrap items-center justify-between gap-4 pt-4">
         <button type="button"
           onClick={onBack}
@@ -626,22 +624,12 @@ function StepView({
         >
           ← {copy.step_back}
         </button>
-        <div className="flex items-center gap-3">
-          <button type="button"
-            onClick={onSkip}
-            className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary px-4 py-3"
-          >
-            {copy.step_skip}
-          </button>
-          <button type="button"
-            onClick={onNext}
-            disabled={!isPicked}
-            className="inline-flex items-center gap-2 px-6 py-3 border border-bb-secondary bg-transparent text-bb-secondary text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary hover:text-bb-primary transition-colors disabled:opacity-40 disabled:cursor-not-allowed"
-          >
-            {copy.step_next}
-            <Icon name="arrow-up-right" size={14} />
-          </button>
-        </div>
+        <button type="button"
+          onClick={onSkip}
+          className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary px-4 py-3"
+        >
+          {copy.step_skip}
+        </button>
       </div>
     </div>
   );
@@ -807,7 +795,15 @@ function QuantityView({
   );
 }
 
-function DoneView({ copy, onContinue }: { copy: WizardCopy; onContinue: () => void }) {
+function DoneView({
+  copy,
+  onContinue,
+  onComposeAnother,
+}: {
+  copy: WizardCopy;
+  onContinue: () => void;
+  onComposeAnother: () => void;
+}) {
   return (
     <div className="max-w-[640px] mx-auto text-center space-y-8">
       <Eyebrow tone="gold">{copy.done_eyebrow}</Eyebrow>
@@ -817,13 +813,23 @@ function DoneView({ copy, onContinue }: { copy: WizardCopy; onContinue: () => vo
       <p className="font-display italic text-white/85 text-[clamp(16px,1.5vw,20px)]">
         {copy.done_lede}
       </p>
-      <button type="button"
-        onClick={onContinue}
-        className="inline-flex items-center gap-3 px-10 py-5 border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[13px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors"
-      >
-        {copy.done_cta}
-        <Icon name="arrow-up-right" size={16} />
-      </button>
+      <div className="flex flex-col sm:flex-row items-center justify-center gap-3 pt-2">
+        <button
+          type="button"
+          onClick={onContinue}
+          className="inline-flex items-center gap-3 px-10 py-5 border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[13px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors"
+        >
+          {copy.done_cta}
+          <Icon name="arrow-up-right" size={16} />
+        </button>
+        <button
+          type="button"
+          onClick={onComposeAnother}
+          className="inline-flex items-center gap-3 px-10 py-5 border border-bb-secondary bg-transparent text-bb-secondary font-sans text-[13px] uppercase tracking-[0.18em] hover:bg-bb-secondary hover:text-bb-primary transition-colors"
+        >
+          {copy.done_compose_another}
+        </button>
+      </div>
     </div>
   );
 }
@@ -899,17 +905,17 @@ function ProductZoomModal({
           <dl className="grid grid-cols-2 gap-x-6 gap-y-3 border-y border-bb-secondary/20 py-4 text-[12px]">
             {product.origin && (
               <>
-                <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">Origin</dt>
+                <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">{copy.detail_origin}</dt>
                 <dd className="text-bb-secondary">{product.origin}</dd>
               </>
             )}
             {product.formats[0] && (
               <>
-                <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">Format</dt>
+                <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">{copy.detail_format}</dt>
                 <dd className="text-bb-secondary">{product.formats.join(", ")}</dd>
               </>
             )}
-            <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">Lead time</dt>
+            <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">{copy.detail_lead}</dt>
             <dd className="text-bb-secondary">{product.lead}</dd>
           </dl>
           {product.tags.length > 0 && (
@@ -938,7 +944,7 @@ function ProductZoomModal({
               onClick={onClose}
               className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary px-4 py-2"
             >
-              ← Close
+              ← {copy.detail_close}
             </button>
           </div>
         </div>
