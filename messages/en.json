@@ -1,4 +1,13 @@
 {
+  "meta": {
+    "site_title_default": "Barbaria Morocco | Authentic Moroccan luxury",
+    "site_title_template": "%s | Barbaria Morocco",
+    "site_description": "Discover Barbaria Morocco: gift boxes of natural cosmetics and fine épicerie from the Moroccan terroir. B2B, made to order.",
+    "site_twitter_description": "Gift boxes of natural cosmetics and fine épicerie from the Moroccan terroir. B2B, made to order.",
+    "site_og_image_alt": "Barbaria Morocco, gift boxes of cosmetics and fine épicerie",
+    "org_description": "Gift boxes of natural cosmetics and fine épicerie from the Moroccan terroir. B2B, made to order.",
+    "breadcrumb_home": "Home"
+  },
   "nav": {
     "home": "Home",
     "contact": "Contact",
@@ -50,6 +59,7 @@
       "lede": "The art of the Moroccan terroir and its ancestral rituals.",
       "cta_primary": "Explore the Boxes",
       "cta_secondary": "Send us a request",
+      "tagline_country": "Morocco",
       "alt": "Barbaria: a Moroccan editorial composition in natural light."
     },
     "strip": {

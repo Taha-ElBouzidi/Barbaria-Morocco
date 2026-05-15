@@ -38,7 +38,7 @@ export default function Hero() {
           </Reveal>
 
           <Reveal delayMs={120}>
-            <Wordmark variant="hero" tone="gold" />
+            <Wordmark variant="hero" tone="gold" tagline={t("hero.tagline_country")} />
           </Reveal>
 
           <Reveal delayMs={260}>

@@ -4,6 +4,7 @@ import { getJournalCardForEdit } from "@/lib/admin/journal";
 import JournalEditor from "../_components/JournalEditor";
 import JournalStatusToggle from "../_components/JournalStatusToggle";
 import JournalDeleteButton from "../_components/JournalDeleteButton";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -13,6 +14,7 @@ interface PageProps {
 }
 
 export default async function EditJournalCardPage({ params, searchParams }: PageProps) {
+  await requireAdmin();
   const { id } = await params;
   const { saved } = await searchParams;
 

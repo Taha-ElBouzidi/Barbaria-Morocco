@@ -1,9 +1,11 @@
 import { listFacetsForAdmin, groupFacetsByType } from "@/lib/admin/facets";
 import FacetEditor from "./_components/FacetEditor";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminFacetsPage() {
+  await requireAdmin();
   const facets = await listFacetsForAdmin();
   const facetsByType = groupFacetsByType(facets);
 

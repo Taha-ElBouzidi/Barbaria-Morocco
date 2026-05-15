@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getInquiryById } from "@/lib/admin/inquiries";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -36,6 +37,7 @@ interface PageProps {
 }
 
 export default async function InquiryDetailPage({ params }: PageProps) {
+  await requireAdmin();
   const { id } = await params;
   const inquiry = await getInquiryById(id);
 

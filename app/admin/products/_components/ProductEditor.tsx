@@ -199,13 +199,11 @@ export default function ProductEditor({
     fd.delete("facetIds");
     selectedFacets.forEach((fid) => fd.append("facetIds", fid));
 
-    // Steps
-    steps.forEach((step) => {
-      fd.set(`step_${step.stepNumber}_en_title`, step.en.title);
-      fd.set(`step_${step.stepNumber}_en_body`, step.en.body);
-      fd.set(`step_${step.stepNumber}_fr_title`, step.fr.title);
-      fd.set(`step_${step.stepNumber}_fr_body`, step.fr.body);
-    });
+    // Application steps: the editor UI was removed (PR #35) but DB rows
+    // are preserved. We no longer send step_* keys; the server action
+    // treats their absence as "leave the steps table alone for this
+    // product." Bringing back the editor UI is sufficient to re-enable
+    // writes.
 
     startTransition(async () => {
       const result = await saveProduct(id ?? "new", fd);

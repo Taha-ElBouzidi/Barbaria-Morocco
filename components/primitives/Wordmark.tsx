@@ -13,6 +13,9 @@ interface WordmarkProps {
    * Header uses the compact wordmark so the BARBARIA word reads on a 72px bar.
    */
   showSubtitle?: boolean;
+  /** Country tagline shown between Tifinagh marks on the hero variant.
+   *  Defaults to "Maroc"; pass "Morocco" on EN routes. */
+  tagline?: string;
 }
 
 /**
@@ -33,6 +36,7 @@ export default function Wordmark({
   tone = "dark",
   className,
   showSubtitle,
+  tagline = "Maroc",
 }: WordmarkProps) {
   const subtitleVisible = showSubtitle ?? variant !== "compact";
   const wordmarkColor =
@@ -73,7 +77,7 @@ export default function Wordmark({
           style={{ fontSize: "13px", letterSpacing: "0.4em" }}
         >
           <span aria-hidden>ⵣ</span>
-          <span>·&nbsp;Maroc&nbsp;·</span>
+          <span>·&nbsp;{tagline}&nbsp;·</span>
           <span aria-hidden>ⵣ</span>
         </div>
         <h1

@@ -154,9 +154,6 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                       <span className="font-sans text-[11px] text-bb-on-surface-variant capitalize">
                         {p.ritual_id ?? "no ritual"}
                       </span>
-                      <span className="font-sans text-[11px] text-bb-on-surface-variant">
-                        MOQ {p.moq}
-                      </span>
                     </div>
                   </div>
                 </Link>
@@ -173,7 +170,6 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                   <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">Name (EN)</th>
                   <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">Slug</th>
                   <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">Ritual</th>
-                  <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">MOQ</th>
                   <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">Status</th>
                   <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">Edit</th>
                 </tr>
@@ -198,7 +194,6 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                       <td className="px-4 py-3 font-sans text-[13px] text-bb-on-surface font-medium">{getEnName(p)}</td>
                       <td className="px-4 py-3 font-mono text-[12px] text-bb-on-surface-variant">{p.slug}</td>
                       <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant capitalize">{p.ritual_id ?? ","}</td>
-                      <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant">{p.moq}</td>
                       <td className="px-4 py-3">
                         <span
                           className={cn(

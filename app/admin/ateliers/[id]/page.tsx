@@ -3,6 +3,7 @@ import Link from "next/link";
 import { getAtelierForEdit } from "@/lib/admin/ateliers";
 import AtelierEditor from "../_components/AtelierEditor";
 import AtelierDeleteButton from "../_components/AtelierDeleteButton";
+import { requireAdmin } from "@/lib/admin/auth";
 
 export const dynamic = "force-dynamic";
 
@@ -12,6 +13,7 @@ interface PageProps {
 }
 
 export default async function EditAtelierPage({ params, searchParams }: PageProps) {
+  await requireAdmin();
   const { id } = await params;
   const { saved } = await searchParams;
 
