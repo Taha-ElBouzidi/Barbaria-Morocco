@@ -21,8 +21,11 @@ export default function Header({ locale, onOpenMenu, onOpenInquiry }: HeaderProp
   const [scrolled, setScrolled] = useState(false);
 
   // Hero pages have full-bleed top imagery that the header overlays transparently.
-  // After Task 8/9/10 lands, this list expands to /rituals/[world], /product/[id], /story.
-  const isHero = pathname === "/" || pathname.startsWith("/rituals") || pathname.startsWith("/story");
+  const isHero =
+    pathname === "/" ||
+    pathname.startsWith("/products") ||
+    pathname.startsWith("/rituals") ||
+    pathname.startsWith("/story");
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 8);
@@ -48,12 +51,12 @@ export default function Header({ locale, onOpenMenu, onOpenInquiry }: HeaderProp
         </Link>
 
         <nav className="hidden lg:flex items-center gap-10 font-sans text-[13px] tracking-[0.04em] uppercase">
-          {(["hammam", "botanical", "heritage"] as const).map((world) => {
-            const href = `/rituals/${world}`;
+          {(["cosmetiques", "epicerie_fine"] as const).map((slug) => {
+            const href = `/products/${slug}`;
             const isActive = pathname === href || pathname.startsWith(`${href}/`);
             return (
               <Link
-                key={world}
+                key={slug}
                 href={href}
                 aria-current={isActive ? "page" : undefined}
                 className={cn(
@@ -62,11 +65,11 @@ export default function Header({ locale, onOpenMenu, onOpenInquiry }: HeaderProp
                   textColor
                 )}
               >
-                {t(world)}
+                {t(slug)}
               </Link>
             );
           })}
-          {(["story", "journal"] as const).map((key) => {
+          {(["story", "ateliers", "journal"] as const).map((key) => {
             const href = `/${key}`;
             const isActive = pathname === href || pathname.startsWith(`${href}/`);
             return (

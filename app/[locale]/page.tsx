@@ -6,7 +6,7 @@ export const revalidate = 60;
 import Hero from "@/components/home/Hero";
 import CredentialStrip from "@/components/home/CredentialStrip";
 import EditorialBlock from "@/components/home/EditorialBlock";
-import BentoRituals from "@/components/home/BentoRituals";
+import BentoCategories from "@/components/home/BentoCategories";
 import Heritage3Up from "@/components/home/Heritage3Up";
 import JsonLd from "@/components/JsonLd";
 
@@ -51,7 +51,7 @@ export default async function HomePage({
       <CredentialStrip />
       <div className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] space-y-[var(--bb-section-gap)] py-[var(--bb-section-gap)]">
         <EditorialBlock />
-        <BentoRituals />
+        <BentoCategories />
         <Heritage3Up />
       </div>
     </>

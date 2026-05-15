@@ -172,6 +172,9 @@ export const products = pgTable(
     origin: text("origin"),
     ritualLabel: text("ritual_label"),
     hero: boolean("hero").default(false),
+    // Sprint 2 IA pivot: public IA reads category_id, not ritual_id.
+    // ritual_id stays as internal product tagging. Added in 0006 migration.
+    categoryId: uuid("category_id"),
     status: productStatusEnum("status").notNull().default("draft"),
     publishedAt: timestamp("published_at", { withTimezone: true }),
     createdAt: timestamp("created_at", { withTimezone: true })
@@ -637,6 +640,129 @@ export const inquiryItemsRelations = relations(inquiryItems, ({ one }) => ({
   }),
   product: one(products, {
     fields: [inquiryItems.productId],
+    references: [products.id],
+  }),
+}));
+
+// ---------------------------------------------------------------------------
+// Sprint 2 — Categories (public-facing taxonomy, replaces rituals in IA)
+// ---------------------------------------------------------------------------
+
+export const categories = pgTable("categories", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").notNull().unique(),
+  sortOrder: integer("sort_order").notNull().default(0),
+  heroImagePath: text("hero_image_path"),
+  storyThemeKey: text("story_theme_key").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});
+
+export const categoryTranslations = pgTable(
+  "category_translations",
+  {
+    categoryId: uuid("category_id")
+      .references(() => categories.id, { onDelete: "cascade" })
+      .notNull(),
+    locale: localeEnum("locale").notNull(),
+    name: text("name").notNull(),
+    tagline: text("tagline"),
+    lede: text("lede"),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.categoryId, table.locale] }),
+  })
+);
+
+// ---------------------------------------------------------------------------
+// Sprint 2 — Gift Boxes (curated and customizable)
+// ---------------------------------------------------------------------------
+
+export const giftBoxes = pgTable(
+  "gift_boxes",
+  {
+    id: uuid("id").primaryKey().defaultRandom(),
+    categoryId: uuid("category_id")
+      .references(() => categories.id, { onDelete: "restrict" })
+      .notNull(),
+    slug: text("slug").notNull().unique(),
+    heroImagePath: text("hero_image_path"),
+    status: productStatusEnum("status").notNull().default("draft"),
+    defaultQuantityMin: integer("default_quantity_min").notNull().default(5),
+    sortOrder: integer("sort_order").notNull().default(0),
+    isCustomizable: boolean("is_customizable").notNull().default(false),
+    publishedAt: timestamp("published_at", { withTimezone: true }),
+    createdAt: timestamp("created_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+    updatedAt: timestamp("updated_at", { withTimezone: true })
+      .notNull()
+      .defaultNow(),
+  },
+  (table) => ({
+    categoryIdx: index("gift_boxes_category_id_idx").on(table.categoryId),
+    statusIdx: index("gift_boxes_status_idx").on(table.status),
+  })
+);
+
+export const giftBoxTranslations = pgTable(
+  "gift_box_translations",
+  {
+    giftBoxId: uuid("gift_box_id")
+      .references(() => giftBoxes.id, { onDelete: "cascade" })
+      .notNull(),
+    locale: localeEnum("locale").notNull(),
+    name: text("name").notNull(),
+    tagline: text("tagline"),
+    storyIntro: text("story_intro"),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.giftBoxId, table.locale] }),
+  })
+);
+
+export const giftBoxItems = pgTable(
+  "gift_box_items",
+  {
+    giftBoxId: uuid("gift_box_id")
+      .references(() => giftBoxes.id, { onDelete: "cascade" })
+      .notNull(),
+    productId: uuid("product_id")
+      .references(() => products.id, { onDelete: "cascade" })
+      .notNull(),
+    sortOrder: integer("sort_order").notNull().default(0),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.giftBoxId, table.productId] }),
+    productIdx: index("gift_box_items_product_id_idx").on(table.productId),
+  })
+);
+
+export const categoriesRelations = relations(categories, ({ many }) => ({
+  translations: many(categoryTranslations),
+  giftBoxes: many(giftBoxes),
+}));
+
+export const giftBoxesRelations = relations(giftBoxes, ({ one, many }) => ({
+  category: one(categories, {
+    fields: [giftBoxes.categoryId],
+    references: [categories.id],
+  }),
+  translations: many(giftBoxTranslations),
+  items: many(giftBoxItems),
+}));
+
+export const giftBoxItemsRelations = relations(giftBoxItems, ({ one }) => ({
+  giftBox: one(giftBoxes, {
+    fields: [giftBoxItems.giftBoxId],
+    references: [giftBoxes.id],
+  }),
+  product: one(products, {
+    fields: [giftBoxItems.productId],
     references: [products.id],
   }),
 }));

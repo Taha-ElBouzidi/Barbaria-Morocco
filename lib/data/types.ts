@@ -60,3 +60,34 @@ export interface FacetEntry {
   type: "ingredient" | "use" | "format" | "packaging" | "certification";
   value: string;
 }
+
+// Sprint 2 — Categories and gift boxes
+
+export type CategorySlug = "cosmetiques" | "epicerie_fine";
+
+export interface Category {
+  id: string;            // uuid
+  slug: CategorySlug;
+  heroImage: string | null;
+  storyThemeKey: "sahara_stars" | "caravan_route";
+  name: string;
+  tagline: string;
+  lede: string;
+}
+
+export interface GiftBoxSummary {
+  id: string;            // uuid
+  slug: string;
+  categorySlug: CategorySlug;
+  heroImage: string | null;
+  defaultQuantityMin: number;
+  isCustomizable: boolean;
+  name: string;
+  tagline: string | null;
+  storyIntro: string | null;
+  itemCount: number;
+}
+
+export interface GiftBoxDetail extends GiftBoxSummary {
+  items: ProductSummary[];
+}

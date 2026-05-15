@@ -2,6 +2,8 @@
   "nav": {
     "home": "Accueil",
     "contact": "Contact",
+    "cosmetiques": "Cosmétiques",
+    "epicerie_fine": "Épicerie Fine",
     "hammam": "Hammam",
     "botanical": "Botanique",
     "heritage": "Héritage",
@@ -25,15 +27,17 @@
     "inquiry_decrease": "Diminuer la quantité de {name}",
     "inquiry_increase": "Augmenter la quantité de {name}",
     "inquiry_remove": "Retirer {name} de la demande",
-    "menu_eyebrow": "NOS RITUELS",
-    "menu_heading": "Les Trois Mondes.",
-    "menu_subtitle": "L'héritage en trois mouvements.",
+    "menu_eyebrow": "NOS COLLECTIONS",
+    "menu_heading": "Deux Collections.",
+    "menu_subtitle": "Une Maison, deux haltes sur la route.",
+    "menu_cosmetiques": "Cosmétiques",
+    "menu_epicerie": "Épicerie Fine",
     "menu_discover": "DÉCOUVRIR",
     "menu_corporate": "ENTREPRISES",
     "discover_story": "Notre Histoire et Mission",
     "discover_ateliers": "Dans les Ateliers",
     "discover_journal": "Le Journal",
-    "corporate_b2b": "Concierge B2B",
+    "corporate_b2b": "Envoyez-nous une demande",
     "menu_cta": "Demander le Catalogue",
     "menu_whatsapp": "WhatsApp",
     "menu_email": "Email",
@@ -46,8 +50,8 @@
       "eyebrow": "Authentique · Naturel · Éthique",
       "headline": "Héritage. Raffiné. Offert.",
       "lede": "L'Art du Terroir & les Rituels Ancestraux du Maroc.",
-      "cta_primary": "Explorer les Rituels",
-      "cta_secondary": "Conciergerie B2B",
+      "cta_primary": "Explorer les Coffrets",
+      "cta_secondary": "Envoyez-nous une demande",
       "alt": "Barbaria: une composition éditoriale marocaine en lumière naturelle."
     },
     "strip": {
@@ -66,17 +70,23 @@
       "cta": "Lire notre histoire"
     },
     "bento": {
-      "section_eyebrow": "Trois Univers",
-      "section_headline": "Un Héritage.",
+      "section_eyebrow": "Deux collections",
+      "section_headline": "Une Maison.",
+      "cosmetiques_eyebrow": "Sous les étoiles du Sahara",
+      "cosmetiques_title": "Cosmétiques",
+      "cosmetiques_lede": "Coffrets cadeaux de gommages, savons beldi, huiles et hydrolats. Pour hôtels, spas et marque blanche B2B.",
+      "epicerie_eyebrow": "Sur la route des caravanes",
+      "epicerie_title": "Épicerie Fine",
+      "epicerie_lede": "Coffrets d'huile d'argan, safran, miels et les épices du Maroc.",
       "hammam_eyebrow": "Purification",
       "hammam_title": "Le Rituel du Hammam",
       "botanical_eyebrow": "Vitalité",
       "botanical_title": "Soins Botaniques",
       "heritage_eyebrow": "Ancrage",
       "heritage_title": "Cadeaux Héritage",
-      "compose_eyebrow": "Sur Mesure",
-      "compose_title": "Composez votre propre sélection cadeau",
-      "compose_lede": "Mêlez les rituels en une sélection bespoke que votre maison signe."
+      "compose_eyebrow": "Concierge",
+      "compose_title": "Envoyez-nous une demande",
+      "compose_lede": "Parlez-nous du moment. Un concierge compose le coffret avec vous sous 24 heures."
     },
     "heritage_3up": {
       "quote": "Chaque rituel préserve un héritage. Chaque cadeau soutient un artisan.",
@@ -232,5 +242,26 @@
       "quote": "Nul n'est étranger sur la terre de ses ancêtres.",
       "attribution": "Proverbe Amazigh"
     }
+  },
+  "products": {
+    "compose_eyebrow": "Composez votre coffret",
+    "start_composing": "Commencer la composition",
+    "curated_eyebrow": "Coffrets curatés",
+    "curated_headline": "Composés par la maison.",
+    "curated_empty": "De nouveaux coffrets curatés arrivent bientôt. Composez le vôtre en attendant.",
+    "moq_pill": "MOQ {n}",
+    "items_count": "{count, plural, one {# pièce} other {# pièces}}",
+    "back_to_category": "Retour à la catégorie",
+    "items_eyebrow": "Ce que contient le coffret",
+    "view_product": "Voir la pièce",
+    "wizard_pending_eyebrow": "Mode composition",
+    "wizard_pending_title": "La composition guidée arrive très bientôt.",
+    "wizard_pending_body": "L'assistant pas à pas avec la narration amazigh sera livré dans la prochaine version. En attendant, envoyez une demande et le concierge composera le coffret avec vous.",
+    "aside_eyebrow": "Déposer votre demande",
+    "aside_headline": "Ajouter ce coffret à la demande.",
+    "aside_min": "Quantité minimum",
+    "aside_items": "Pièces dans le coffret",
+    "send_request": "Envoyez-nous une demande",
+    "aside_note": "Devis renvoyé sous 24 h, signé par le concierge."
   }
 }

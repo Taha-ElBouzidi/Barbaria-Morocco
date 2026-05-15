@@ -3,6 +3,8 @@ import { createClient, type SupabaseClient } from "@supabase/supabase-js";
 import { WORLDS, SUBCATS, FACETS, type RitualId } from "../lib/rituals";
 import { PRODUCTS } from "../lib/products";
 import { ATELIERS, JOURNAL } from "../lib/editorial";
+import { CATEGORIES, type CategorySlug } from "../lib/categories";
+import { GIFT_BOXES } from "../lib/gift-boxes";
 
 config({ path: ".env.local" });
 
@@ -20,8 +22,59 @@ const supabase: SupabaseClient = createClient(SUPABASE_URL, SERVICE_KEY, {
   auth: { persistSession: false, autoRefreshToken: false },
 });
 
+// Sprint 2 IA pivot: the 3 former heritage packs are now gift boxes, not
+// products. Heritage-tagged entries in lib/products.ts are skipped during
+// product seeding and will be removed from the products table by purgeOrphans.
+const PRODUCTS_TO_SEED = PRODUCTS.filter((p) => p.world !== "heritage");
+
+// Map ritual → category: hammam + botanical → cosmetiques, heritage no longer
+// reaches here. Épicerie Fine has no products yet (admin populates later).
+function categorySlugForProduct(world: RitualId): CategorySlug {
+  return world === "heritage" ? "cosmetiques" : "cosmetiques";
+}
+
+async function seedCategories() {
+  console.log("→ Seeding categories + translations...");
+  const idBySlug = new Map<CategorySlug, string>();
+
+  for (const c of CATEGORIES) {
+    const { data, error } = await supabase
+      .from("categories")
+      .upsert(
+        {
+          slug: c.slug,
+          sort_order: c.sortOrder,
+          hero_image_path: c.heroImagePath,
+          story_theme_key: c.storyThemeKey,
+        },
+        { onConflict: "slug" }
+      )
+      .select("id")
+      .single();
+    if (error || !data) throw new Error(`categories upsert ${c.slug}: ${error?.message}`);
+    idBySlug.set(c.slug, data.id);
+
+    for (const locale of ["en", "fr"] as const) {
+      const t = c.translations[locale];
+      const { error: tErr } = await supabase.from("category_translations").upsert(
+        {
+          category_id: data.id,
+          locale,
+          name: t.name,
+          tagline: t.tagline,
+          lede: t.lede,
+        },
+        { onConflict: "category_id,locale" }
+      );
+      if (tErr) throw new Error(`category_translations ${c.slug} ${locale}: ${tErr.message}`);
+    }
+    console.log(`  ✓ ${c.slug}`);
+  }
+  return idBySlug;
+}
+
 async function seedRituals() {
-  console.log("→ Seeding rituals + translations + subcategories...");
+  console.log("→ Seeding rituals + translations + subcategories (internal tagging)...");
 
   for (const [i, world] of WORLDS.entries()) {
     const { error } = await supabase.from("rituals").upsert(
@@ -46,8 +99,7 @@ async function seedRituals() {
     }
   }
 
-  // Subcategories. Map (ritual_id, slug) → uuid id by reading them back after upsert.
-  const subIdMap = new Map<string, string>(); // key: `${ritualId}:${slug}` → uuid
+  const subIdMap = new Map<string, string>();
   for (const ritualId of ["hammam", "botanical", "heritage"] as RitualId[]) {
     const subs = SUBCATS[ritualId];
     for (const [i, sub] of subs.entries()) {
@@ -81,10 +133,8 @@ async function seedFacets() {
   const facetIdMap = new Map<string, string>();
 
   for (const [type, values] of Object.entries(FACETS) as Array<[keyof typeof FACETS, readonly string[]]>) {
-    // FACETS has 'certif' but the schema enum is 'certification'.
     const normalizedType = type === "certif" ? "certification" : type;
     for (const [i, value] of values.entries()) {
-      // FACETS only carries English labels; mirror as value_fr until admin translates.
       const { data, error } = await supabase
         .from("facets")
         .upsert(
@@ -100,13 +150,24 @@ async function seedFacets() {
   return facetIdMap;
 }
 
-async function seedProducts(subIdMap: Map<string, string>, facetIdMap: Map<string, string>) {
-  console.log(`→ Seeding ${PRODUCTS.length} products + translations + images + application steps + facet links...`);
+async function seedProducts(
+  subIdMap: Map<string, string>,
+  facetIdMap: Map<string, string>,
+  categoryIdBySlug: Map<CategorySlug, string>
+) {
+  console.log(`→ Seeding ${PRODUCTS_TO_SEED.length} products + translations + images + application steps + facet links...`);
 
-  for (const p of PRODUCTS) {
+  const productIdBySlug = new Map<string, string>();
+
+  for (const p of PRODUCTS_TO_SEED) {
     const subcategory_id = subIdMap.get(`${p.world}:${p.sub}`) ?? null;
     if (!subcategory_id) {
       console.warn(`  ⚠ subcategory not found for ${p.id} (${p.world}/${p.sub}) — leaving null`);
+    }
+
+    const category_id = categoryIdBySlug.get(categorySlugForProduct(p.world)) ?? null;
+    if (!category_id) {
+      console.warn(`  ⚠ category not found for ${p.id} (world ${p.world}) — leaving null`);
     }
 
     const { data: prodRow, error: pErr } = await supabase
@@ -116,6 +177,7 @@ async function seedProducts(subIdMap: Map<string, string>, facetIdMap: Map<strin
           slug: p.id,
           ritual_id: p.world,
           subcategory_id,
+          category_id,
           moq: p.moq,
           formats: p.formats,
           lead: p.lead,
@@ -131,6 +193,7 @@ async function seedProducts(subIdMap: Map<string, string>, facetIdMap: Map<strin
       .single();
     if (pErr || !prodRow) throw new Error(`products upsert ${p.id}: ${pErr?.message}`);
     const productId = prodRow.id;
+    productIdBySlug.set(p.id, productId);
 
     for (const locale of ["en", "fr"] as const) {
       const { error: tErr } = await supabase.from("product_translations").upsert(
@@ -146,7 +209,6 @@ async function seedProducts(subIdMap: Map<string, string>, facetIdMap: Map<strin
       if (tErr) throw new Error(`product_translations ${p.id} ${locale}: ${tErr.message}`);
     }
 
-    // Images: delete-then-insert so re-runs reflect upstream edits.
     if (p.images.length > 0) {
       await supabase.from("product_images").delete().eq("product_id", productId);
       const imageRows = p.images.map((path, i) => ({
@@ -159,8 +221,6 @@ async function seedProducts(subIdMap: Map<string, string>, facetIdMap: Map<strin
       if (iErr) throw new Error(`product_images ${p.id}: ${iErr.message}`);
     }
 
-    // Application steps: delete-then-insert.
-    // application[i].en and .fr are [title, body] tuples.
     if (p.application && p.application.length > 0) {
       await supabase.from("product_application_steps").delete().eq("product_id", productId);
       const stepRows = p.application.flatMap((step, i) =>
@@ -176,7 +236,6 @@ async function seedProducts(subIdMap: Map<string, string>, facetIdMap: Map<strin
       if (sErr) throw new Error(`product_application_steps ${p.id}: ${sErr.message}`);
     }
 
-    // Facet links: replace the full set on each run.
     await supabase.from("product_facets").delete().eq("product_id", productId);
     const facetLinks: { product_id: string; facet_id: string }[] = [];
     for (const tag of p.tags) {
@@ -200,6 +259,78 @@ async function seedProducts(subIdMap: Map<string, string>, facetIdMap: Map<strin
     }
 
     console.log(`  ✓ ${p.id}`);
+  }
+
+  return productIdBySlug;
+}
+
+async function seedGiftBoxes(
+  categoryIdBySlug: Map<CategorySlug, string>,
+  productIdBySlug: Map<string, string>
+) {
+  console.log(`→ Seeding ${GIFT_BOXES.length} gift boxes + translations + items...`);
+
+  for (const g of GIFT_BOXES) {
+    const category_id = categoryIdBySlug.get(g.categorySlug);
+    if (!category_id) {
+      throw new Error(`gift box ${g.slug}: category ${g.categorySlug} not found`);
+    }
+
+    const { data: gbRow, error: gErr } = await supabase
+      .from("gift_boxes")
+      .upsert(
+        {
+          slug: g.slug,
+          category_id,
+          hero_image_path: g.heroImagePath,
+          status: g.status,
+          default_quantity_min: g.defaultQuantityMin,
+          sort_order: g.sortOrder,
+          is_customizable: g.isCustomizable,
+          published_at: g.status === "published" ? new Date().toISOString() : null,
+        },
+        { onConflict: "slug" }
+      )
+      .select("id")
+      .single();
+    if (gErr || !gbRow) throw new Error(`gift_boxes upsert ${g.slug}: ${gErr?.message}`);
+    const giftBoxId = gbRow.id;
+
+    for (const locale of ["en", "fr"] as const) {
+      const t = g.translations[locale];
+      const { error: tErr } = await supabase.from("gift_box_translations").upsert(
+        {
+          gift_box_id: giftBoxId,
+          locale,
+          name: t.name,
+          tagline: t.tagline,
+          story_intro: t.storyIntro,
+        },
+        { onConflict: "gift_box_id,locale" }
+      );
+      if (tErr) throw new Error(`gift_box_translations ${g.slug} ${locale}: ${tErr.message}`);
+    }
+
+    // Replace items wholesale on every seed run so curation stays in sync.
+    await supabase.from("gift_box_items").delete().eq("gift_box_id", giftBoxId);
+    if (g.items.length > 0) {
+      const rows = g.items
+        .map((slug, i) => {
+          const pid = productIdBySlug.get(slug);
+          if (!pid) {
+            console.warn(`  ⚠ gift box ${g.slug}: item product slug "${slug}" not found — skipping`);
+            return null;
+          }
+          return { gift_box_id: giftBoxId, product_id: pid, sort_order: i };
+        })
+        .filter((r): r is { gift_box_id: string; product_id: string; sort_order: number } => r !== null);
+      if (rows.length > 0) {
+        const { error: iErr } = await supabase.from("gift_box_items").insert(rows);
+        if (iErr) throw new Error(`gift_box_items ${g.slug}: ${iErr.message}`);
+      }
+    }
+
+    console.log(`  ✓ ${g.slug} (${g.status}${g.isCustomizable ? ", customizable" : ""})`);
   }
 }
 
@@ -268,13 +399,18 @@ async function seedJournal() {
 }
 
 /**
- * Drops products and ritual_subcategories whose slugs no longer appear in the
- * source data. Cascades to translations / images / facets / application steps.
- * Run first so the rest of the seed can upsert against a clean baseline.
+ * Drops products, subcats, and gift_boxes whose slugs no longer appear in the
+ * source data. Cascades to translations / images / facets / application steps /
+ * gift_box_items via FK. Run first so the rest of the seed can upsert against
+ * a clean baseline.
  */
 async function purgeOrphans() {
-  console.log("→ Purging orphan products and subcategories...");
-  const validProductSlugs = PRODUCTS.map((p) => p.id);
+  console.log("→ Purging orphan products, subcategories, and gift boxes...");
+
+  // 1. Orphan products. The 3 former heritage packs (pack-nila-oranger etc.)
+  //    are no longer in PRODUCTS_TO_SEED; they are gift boxes now and will be
+  //    cleaned up here.
+  const validProductSlugs = PRODUCTS_TO_SEED.map((p) => p.id);
   const { data: prodRows } = await supabase.from("products").select("slug");
   const orphanProductSlugs = (prodRows ?? [])
     .map((r) => r.slug as string)
@@ -285,11 +421,7 @@ async function purgeOrphans() {
     if (error) throw new Error(`orphan products delete: ${error.message}`);
   }
 
-  // Surviving products may still reference subcats we are about to drop
-  // (the catalogue refactor changes which subcat each product belongs to,
-  // and seedProducts has not run yet to update the FK). Null the references
-  // first so the subcat delete does not trip the foreign key constraint.
-  // seedProducts re-attaches each product to its new subcategory_id below.
+  // 2. Orphan subcategories. Null product FKs first to avoid FK violation.
   const validSubKeys = new Set<string>();
   for (const ritualId of ["hammam", "botanical", "heritage"] as RitualId[]) {
     for (const s of SUBCATS[ritualId]) validSubKeys.add(`${ritualId}:${s.id}`);
@@ -310,26 +442,41 @@ async function purgeOrphans() {
     const { error } = await supabase.from("ritual_subcategories").delete().in("id", orphanSubIds);
     if (error) throw new Error(`orphan subcategories delete: ${error.message}`);
   }
+
+  // 3. Orphan gift boxes.
+  const validBoxSlugs = new Set(GIFT_BOXES.map((g) => g.slug));
+  const { data: boxRows } = await supabase.from("gift_boxes").select("slug");
+  const orphanBoxSlugs = (boxRows ?? [])
+    .map((r) => r.slug as string)
+    .filter((slug) => !validBoxSlugs.has(slug));
+  if (orphanBoxSlugs.length > 0) {
+    console.log(`  ✂ deleting ${orphanBoxSlugs.length} orphan gift boxes: ${orphanBoxSlugs.join(", ")}`);
+    const { error } = await supabase.from("gift_boxes").delete().in("slug", orphanBoxSlugs);
+    if (error) throw new Error(`orphan gift_boxes delete: ${error.message}`);
+  }
 }
 
 async function main() {
-  console.log("Seeding Supabase from lib/{rituals,products,editorial}.ts");
+  console.log("Seeding Supabase from lib/{categories,rituals,products,gift-boxes,editorial}.ts");
   console.log(`Project: ${SUPABASE_URL}\n`);
 
   await purgeOrphans();
+  const categoryIdBySlug = await seedCategories();
   const { subIdMap } = await seedRituals();
   const facetIdMap = await seedFacets();
-  await seedProducts(subIdMap, facetIdMap);
+  const productIdBySlug = await seedProducts(subIdMap, facetIdMap, categoryIdBySlug);
+  await seedGiftBoxes(categoryIdBySlug, productIdBySlug);
   await seedAteliers();
   await seedJournal();
 
   console.log("\n✓ Seed complete.");
   console.log("\nVerify counts in Supabase Studio or via MCP:");
-  console.log(`  SELECT count(*) FROM products;              -- expect ${PRODUCTS.length}`);
+  console.log(`  SELECT count(*) FROM categories;            -- expect ${CATEGORIES.length}`);
+  console.log(`  SELECT count(*) FROM products;              -- expect ${PRODUCTS_TO_SEED.length}`);
+  console.log(`  SELECT count(*) FROM gift_boxes;            -- expect ${GIFT_BOXES.length}`);
   console.log("  SELECT count(*) FROM ateliers;              -- expect 6");
   console.log("  SELECT count(*) FROM journal_cards;         -- expect 6");
   console.log("  SELECT count(*) FROM facets;                -- expect ~50");
-  console.log(`  SELECT count(*) FROM product_translations;  -- expect ${PRODUCTS.length * 2}`);
 }
 
 main().catch((err) => {
