@@ -12,6 +12,8 @@ export const ProductSaveSchema = z.object({
     .max(120)
     .regex(/^[a-z0-9-]+$/, "Slug must be lowercase letters, numbers, and hyphens only"),
   ritualId: z.enum(["hammam", "botanical", "heritage"]),
+  // Sprint 2 IA pivot: public storefront filters by category_id.
+  categoryId: z.string().uuid().nullable().default(null),
   subcategoryId: z.string().uuid().nullable().default(null),
   moq: z.coerce.number().int().min(1),
   formats: z.array(z.string()).default([]),

@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { getProductForEdit, getAllFacetsForAdmin, getRitualOptions, getSubcatOptions } from "@/lib/admin/products";
+import { getCategoryOptions } from "@/lib/admin/gift-boxes";
 import ProductEditor from "../_components/ProductEditor";
 import ProductStatusToggle from "../_components/ProductStatusToggle";
 import ProductDeleteButton from "../_components/ProductDeleteButton";
@@ -16,10 +17,11 @@ export default async function EditProductPage({ params, searchParams }: PageProp
   const { id } = await params;
   const { saved } = await searchParams;
 
-  const [product, facets, rituals] = await Promise.all([
+  const [product, facets, rituals, categories] = await Promise.all([
     getProductForEdit(id),
     getAllFacetsForAdmin(),
     getRitualOptions(),
+    getCategoryOptions(),
   ]);
 
   if (!product) notFound();
@@ -75,6 +77,7 @@ export default async function EditProductPage({ params, searchParams }: PageProp
         facets={facets as any}
         rituals={rituals}
         subcatsByRitual={subcatsByRitual as any}
+        categories={categories}
       />
     </div>
   );
