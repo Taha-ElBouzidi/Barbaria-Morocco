@@ -6,6 +6,12 @@ Format: `YYYY-MM-DD HH:MM TZ , <one-line summary>`
 
 ---
 
+## 2026-05-16
+
+- 01:25 CET. Hotfix: /admin/inquiries on Vercel was throwing `Event handlers cannot be passed to Client Component props` (digest 1363783354). Root cause: the inquiry list page is a server component and the email `<a>` in the desktop table carried `onClick={(e) => e.stopPropagation()}`. The handler was also dead code, the parent `<tr>` has no click handler since the row-link rewrite (only the "View →" Link is interactive). Fix: dropped the onClick. Diagnosis path: data layer + DB shape + middleware + FKs all verified clean via a direct repro of `getInquiryById`/`listInquiries`, ruled out env/runtime/edge differences, then captured the live stack by tailing `vercel logs` on the production deployment. Files: `app/admin/inquiries/page.tsx`.
+
+---
+
 ## 2026-05-12
 
 - 23:55 CET. Wordmark refresh per client. New `<Wordmark>` primitive (3 variants: compact for header, stacked for footer/drawer, hero for homepage) + new `<AmazighOrnament>` SVG primitive (two interlocking narrow diamonds forming a 4-pointed tetraskelion). Header now renders `BARBARIA` in serif uppercase with the ornament inline left. Homepage hero renders the full composition from the client's reference frames: ornament + `ⵣ · MAROC · ⵣ` line + huge BARBARIA + MOROCCO subtitle + italic tagline + CTAs (replacing the previous plain `Heritage. Refined. Gifted.` headline). Footer now opens with the stacked wordmark above the three-column nav. Build green, type-clean.

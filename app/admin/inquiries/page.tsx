@@ -210,7 +210,6 @@ export default async function AdminInquiriesPage({ searchParams }: PageProps) {
                       <a
                         href={`mailto:${inq.email}`}
                         className="hover:text-bb-primary hover:underline"
-                        onClick={(e) => e.stopPropagation()}
                       >
                         {inq.email}
                       </a>
