@@ -1,0 +1,12 @@
+-- Sprint 2.3c — Public anon must be able to CALL is_admin() so that the
+-- "OR is_admin()" half of the gift_boxes / categories / category_translations
+-- / gift_box_items / gift_box_translations SELECT policies evaluates
+-- instead of throwing "permission denied for function is_admin".
+--
+-- SECURITY DEFINER on the function means it executes with the function
+-- owner's rights, but anon still needs EXECUTE permission to invoke it.
+-- Without this grant, public reads to those five tables silently return
+-- an empty array, which surfaced as "Cosmétiques and Épicerie tabs are
+-- empty" on the public site. is_admin() returns false for anon (no
+-- auth.uid()) so no information is disclosed.
+GRANT EXECUTE ON FUNCTION public.is_admin() TO anon, authenticated;
