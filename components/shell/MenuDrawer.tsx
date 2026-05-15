@@ -13,10 +13,9 @@ interface MenuDrawerProps {
   onClose: () => void;
 }
 
-const RITUALS = [
-  { world: "hammam", icon: "hammam", key: "menu_hammam" },
-  { world: "botanical", icon: "leaf", key: "menu_botanical" },
-  { world: "heritage", icon: "weave", key: "menu_heritage" },
+const CATEGORIES = [
+  { slug: "cosmetiques", icon: "leaf", key: "menu_cosmetiques" },
+  { slug: "epicerie_fine", icon: "hammam", key: "menu_epicerie" },
 ] as const;
 
 export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
@@ -118,12 +117,12 @@ export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
           {/* Hairline */}
           <div className="h-px bg-bb-line mx-8 shrink-0" />
 
-          {/* Ritual links with icons */}
+          {/* Category links with icons */}
           <nav aria-label={t("menu_eyebrow")}>
-            {RITUALS.map(({ world, icon, key }) => (
-              <div key={world}>
+            {CATEGORIES.map(({ slug, icon, key }) => (
+              <div key={slug}>
                 <Link
-                  href={`/rituals/${world}`}
+                  href={`/products/${slug}`}
                   onClick={onClose}
                   className="flex items-center gap-4 px-8 py-5 text-bb-on-surface hover:text-bb-primary transition-colors group"
                 >

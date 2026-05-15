@@ -2,6 +2,8 @@
   "nav": {
     "home": "Home",
     "contact": "Contact",
+    "cosmetiques": "Cosmetics",
+    "epicerie_fine": "Fine Épicerie",
     "hammam": "Hammam",
     "botanical": "Botanical",
     "heritage": "Heritage",
@@ -25,15 +27,17 @@
     "inquiry_decrease": "Decrease quantity of {name}",
     "inquiry_increase": "Increase quantity of {name}",
     "inquiry_remove": "Remove {name} from inquiry",
-    "menu_eyebrow": "OUR RITUALS",
-    "menu_heading": "The Three Worlds.",
-    "menu_subtitle": "Heritage in three movements.",
+    "menu_eyebrow": "OUR COLLECTIONS",
+    "menu_heading": "Two Collections.",
+    "menu_subtitle": "One Maison, two halts on the route.",
+    "menu_cosmetiques": "Cosmetics",
+    "menu_epicerie": "Fine Épicerie",
     "menu_discover": "DISCOVER",
     "menu_corporate": "CORPORATE",
     "discover_story": "Our Story & Mission",
     "discover_ateliers": "Inside The Ateliers",
     "discover_journal": "The Journal",
-    "corporate_b2b": "B2B Concierge",
+    "corporate_b2b": "Send us a request",
     "menu_cta": "Request the Catalogue",
     "menu_whatsapp": "WhatsApp",
     "menu_email": "Email",
@@ -46,8 +50,8 @@
       "eyebrow": "Authentique · Naturel · Éthique",
       "headline": "Heritage. Refined. Gifted.",
       "lede": "The art of the Moroccan terroir and its ancestral rituals.",
-      "cta_primary": "Explore the Rituals",
-      "cta_secondary": "B2B Concierge",
+      "cta_primary": "Explore the Boxes",
+      "cta_secondary": "Send us a request",
       "alt": "Barbaria: a Moroccan editorial composition in natural light."
     },
     "strip": {
@@ -66,17 +70,23 @@
       "cta": "Read our story"
     },
     "bento": {
-      "section_eyebrow": "Three Worlds",
-      "section_headline": "One Heritage.",
+      "section_eyebrow": "Two collections",
+      "section_headline": "One Maison.",
+      "cosmetiques_eyebrow": "Beneath the Sahara stars",
+      "cosmetiques_title": "Cosmetics",
+      "cosmetiques_lede": "Gift boxes of scrubs, beldi soaps, oils and hydrosols. For hôtels, spas and B2B private label.",
+      "epicerie_eyebrow": "Along the caravan route",
+      "epicerie_title": "Fine Épicerie",
+      "epicerie_lede": "Gift boxes of argan oil, saffron, honeys and the spice trade of Morocco.",
       "hammam_eyebrow": "Purification",
       "hammam_title": "The Hammam Ritual",
       "botanical_eyebrow": "Vitality",
       "botanical_title": "Botanical Care",
       "heritage_eyebrow": "Grounding",
       "heritage_title": "Heritage Gifts",
-      "compose_eyebrow": "Custom",
-      "compose_title": "Compose your own gift edit",
-      "compose_lede": "Mix the rituals into a bespoke selection your maison signs off on."
+      "compose_eyebrow": "Concierge",
+      "compose_title": "Send us a request",
+      "compose_lede": "Tell us about the moment. A concierge composes the box with you within 24 hours."
     },
     "heritage_3up": {
       "quote": "Every ritual preserves a legacy. Every gift empowers an artisan.",
@@ -232,5 +242,26 @@
       "quote": "No one is a stranger on the land of their ancestors.",
       "attribution": "Amazigh Proverb"
     }
+  },
+  "products": {
+    "compose_eyebrow": "Compose your box",
+    "start_composing": "Start composing",
+    "curated_eyebrow": "Curated boxes",
+    "curated_headline": "Composed by the maison.",
+    "curated_empty": "New curated boxes arrive soon. Compose your own in the meantime.",
+    "moq_pill": "MOQ {n}",
+    "items_count": "{count, plural, one {# piece} other {# pieces}}",
+    "back_to_category": "Back to the category",
+    "items_eyebrow": "What is in the box",
+    "view_product": "View piece",
+    "wizard_pending_eyebrow": "Compose mode",
+    "wizard_pending_title": "Step-by-step composition arrives shortly.",
+    "wizard_pending_body": "The full guided wizard with the Amazigh narrative is shipping in the next release. Meanwhile, send a request and the concierge will compose your box with you.",
+    "aside_eyebrow": "Place your request",
+    "aside_headline": "Move this box to inquiry.",
+    "aside_min": "Minimum quantity",
+    "aside_items": "Pieces in the box",
+    "send_request": "Send us a request",
+    "aside_note": "Pricing returned within 24 hours, signed by the concierge."
   }
 }
