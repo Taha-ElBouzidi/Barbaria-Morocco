@@ -19,6 +19,7 @@ export async function saveProduct(
   const raw = {
     slug: formData.get("slug"),
     ritualId: formData.get("ritualId"),
+    categoryId: formData.get("categoryId") || null,
     subcategoryId: formData.get("subcategoryId") || null,
     moq: formData.get("moq"),
     formats: formData.getAll("formats"),
@@ -56,6 +57,7 @@ export async function saveProduct(
   const productPayload = {
     slug: data.slug,
     ritual_id: data.ritualId,
+    category_id: data.categoryId,
     subcategory_id: data.subcategoryId,
     moq: data.moq,
     formats: data.formats,

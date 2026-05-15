@@ -31,6 +31,7 @@ interface ProductEditorProps {
   initialData?: {
     slug: string;
     ritual_id: string;
+    category_id: string | null;
     subcategory_id: string | null;
     moq: number;
     formats: string[];
@@ -48,6 +49,7 @@ interface ProductEditorProps {
   facets: Facet[];
   rituals: string[];
   subcatsByRitual: Record<string, SubcatOption[]>;
+  categories: Array<{ id: string; slug: string; nameEn: string }>;
 }
 
 type LocaleFields = { name: string; short: string; lede: string };
@@ -58,6 +60,7 @@ export default function ProductEditor({
   facets,
   rituals,
   subcatsByRitual,
+  categories,
 }: ProductEditorProps) {
   const isNew = !id;
   const router = useRouter();
@@ -68,6 +71,9 @@ export default function ProductEditor({
   // ---- identity fields ----
   const [slug, setSlug] = useState(initialData?.slug ?? "");
   const [ritualId, setRitualId] = useState<string>(initialData?.ritual_id ?? rituals[0] ?? "hammam");
+  const [categoryId, setCategoryId] = useState<string>(
+    initialData?.category_id ?? categories[0]?.id ?? ""
+  );
   const [subcategoryId, setSubcategoryId] = useState<string>(initialData?.subcategory_id ?? "");
   const [moq, setMoq] = useState(initialData?.moq?.toString() ?? "100");
   const [formats, setFormats] = useState<string>(initialData?.formats?.join(", ") ?? "");
@@ -167,6 +173,7 @@ export default function ProductEditor({
     // Override hidden inputs with current state
     fd.set("slug", slug);
     fd.set("ritualId", ritualId);
+    fd.set("categoryId", categoryId);
     fd.set("subcategoryId", subcategoryId);
     fd.set("moq", moq);
     fd.set("lead", lead);
@@ -276,7 +283,22 @@ export default function ProductEditor({
 
             <label className="block">
               <span className="block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2">
-                Ritual *
+                Category *
+              </span>
+              <select
+                value={categoryId}
+                onChange={(e) => setCategoryId(e.target.value)}
+                className="w-full bg-bb-bg border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
+              >
+                {categories.map((c) => (
+                  <option key={c.id} value={c.id}>{c.nameEn}</option>
+                ))}
+              </select>
+            </label>
+
+            <label className="block">
+              <span className="block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2">
+                Ritual (internal tag)
               </span>
               <select
                 value={ritualId}
