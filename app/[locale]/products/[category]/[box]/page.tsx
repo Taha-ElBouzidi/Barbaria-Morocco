@@ -88,6 +88,10 @@ export default async function GiftBoxPage({ params }: PageProps) {
       step_view_details: wizardT("step_view_details"),
       step_choose_this: wizardT("step_choose_this"),
       step_currently_chosen: wizardT("step_currently_chosen"),
+      detail_origin: wizardT("detail_origin"),
+      detail_format: wizardT("detail_format"),
+      detail_lead: wizardT("detail_lead"),
+      detail_close: wizardT("detail_close"),
       review_eyebrow: wizardT("review_eyebrow"),
       review_title: wizardT("review_title"),
       review_lede: wizardT("review_lede"),
@@ -104,6 +108,7 @@ export default async function GiftBoxPage({ params }: PageProps) {
       done_title: wizardT("done_title"),
       done_lede: wizardT("done_lede"),
       done_cta: wizardT("done_cta"),
+      done_compose_another: wizardT("done_compose_another"),
       exit_aria: wizardT("exit_aria"),
       exit_confirm: wizardT("exit_confirm"),
     };
