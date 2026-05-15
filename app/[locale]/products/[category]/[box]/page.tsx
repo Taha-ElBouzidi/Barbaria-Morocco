@@ -14,7 +14,7 @@ import { getCategoryBySlug } from "@/lib/data/categories";
 import { getProductsByCategory } from "@/lib/data/products";
 import BoxComposer, { type WizardCopy } from "@/components/wizard/BoxComposer";
 import BoxAddToInquiry from "@/components/product/BoxAddToInquiry";
-import type { CategorySlug } from "@/lib/data/types";
+import type { CategorySlug, ProductSummary } from "@/lib/data/types";
 
 export const revalidate = 60;
 
@@ -54,14 +54,15 @@ export default async function GiftBoxPage({ params }: PageProps) {
   const isWizard = detail.isCustomizable;
 
   // For customizable boxes we mount the BoxComposer client component.
-  // Fetch the eligible product pool for this category and pass the
-  // localised UI strings as a single bundle so the wizard doesn't have
-  // to do any per-render i18n lookups.
+  // The pool is the box's admin-assigned items if the maison populated
+  // them; otherwise we fall back to every published product in the
+  // category. Same i18n bundle pattern as before.
   if (isWizard) {
-    const [products, wizardT] = await Promise.all([
-      getProductsByCategory(category, lang),
-      getTranslations({ locale, namespace: "wizard" }),
-    ]);
+    const wizardT = await getTranslations({ locale, namespace: "wizard" });
+    const products: ProductSummary[] =
+      detail.items.length > 0
+        ? detail.items
+        : await getProductsByCategory(category, lang);
     const copy: WizardCopy = {
       intro_eyebrow: wizardT("intro_eyebrow"),
       intro_begin: wizardT("intro_begin"),
