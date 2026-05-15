@@ -62,12 +62,17 @@ export default async function JournalPage({ params }: PageProps) {
       </section>
 
       <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] space-y-16">
+        {cards.length === 0 && (
+          <p className="font-display italic text-center text-bb-on-surface-variant py-12">
+            {lang === "fr" ? "À venir." : "Coming soon."}
+          </p>
+        )}
+
         {/* Feature card, 4:3 landscape, article pages deferred */}
         {feature && (
           <Reveal
             as="article"
-            className="block group cursor-not-allowed opacity-90 hover:opacity-100 transition-opacity"
-            aria-disabled="true"
+            className="block opacity-90"
           >
             <div className="grid grid-cols-1 lg:grid-cols-[3fr_2fr] gap-12 lg:gap-16 items-end">
               <Photo

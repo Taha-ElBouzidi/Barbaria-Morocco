@@ -76,12 +76,12 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
           placeholder="Search by name or slug…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="bg-bb-bg border border-bb-line px-4 py-2.5 font-sans text-[13px] w-[280px] focus:outline-none focus:border-bb-primary"
+          className="bg-bb-bg border border-bb-line px-4 py-2.5 font-sans text-[13px] w-[280px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
         />
         <select
           value={ritual}
           onChange={(e) => setRitual(e.target.value)}
-          className="bg-bb-bg border border-bb-line px-4 py-2.5 font-sans text-[13px] focus:outline-none focus:border-bb-primary"
+          className="bg-bb-bg border border-bb-line px-4 py-2.5 font-sans text-[13px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
         >
           {RITUAL_OPTIONS.map((o) => (
             <option key={o.value} value={o.value}>
@@ -92,7 +92,7 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="bg-bb-bg border border-bb-line px-4 py-2.5 font-sans text-[13px] focus:outline-none focus:border-bb-primary"
+          className="bg-bb-bg border border-bb-line px-4 py-2.5 font-sans text-[13px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
         >
           {STATUS_OPTIONS.map((o) => (
             <option key={o.value} value={o.value}>

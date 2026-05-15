@@ -50,7 +50,7 @@ export default function TranslationTabs({ en, fr, onChange }: TranslationTabsPro
             value={values.name}
             onChange={(e) => onChange(active, "name", e.target.value)}
             required={active === "en"}
-            className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+            className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
           />
         </label>
 
@@ -64,7 +64,7 @@ export default function TranslationTabs({ en, fr, onChange }: TranslationTabsPro
             value={values.short}
             onChange={(e) => onChange(active, "short", e.target.value)}
             required={active === "en"}
-            className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+            className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
           />
         </label>
 
@@ -77,7 +77,7 @@ export default function TranslationTabs({ en, fr, onChange }: TranslationTabsPro
             value={values.lede}
             onChange={(e) => onChange(active, "lede", e.target.value)}
             rows={3}
-            className="w-full bg-transparent border border-bb-line p-3 text-bb-on-surface focus:outline-none focus:border-bb-primary resize-y"
+            className="w-full bg-transparent border border-bb-line p-3 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary resize-y"
           />
         </label>
       </div>

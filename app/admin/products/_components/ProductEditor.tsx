@@ -254,7 +254,7 @@ export default function ProductEditor({
       <form ref={formRef} onSubmit={(e) => e.preventDefault()} className="space-y-10">
         {/* Section 1: Identity */}
         <section className="space-y-6">
-          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
             Identity
           </h2>
 
@@ -269,7 +269,7 @@ export default function ProductEditor({
                 onChange={(e) => setSlug(e.target.value)}
                 pattern="[a-z0-9-]+"
                 required
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface font-mono text-[13px] focus:outline-none focus:border-bb-primary"
+                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface font-mono text-[13px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
                 placeholder="e.g. cedar-box"
               />
             </label>
@@ -284,7 +284,7 @@ export default function ProductEditor({
                   setRitualId(e.target.value);
                   setSubcategoryId("");
                 }}
-                className="w-full bg-bb-bg border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                className="w-full bg-bb-bg border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               >
                 {rituals.map((r) => (
                   <option key={r} value={r}>
@@ -301,7 +301,7 @@ export default function ProductEditor({
               <select
                 value={subcategoryId}
                 onChange={(e) => setSubcategoryId(e.target.value)}
-                className="w-full bg-bb-bg border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                className="w-full bg-bb-bg border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               >
                 <option value="">, none ,</option>
                 {subcatOptions.map((sc) => {
@@ -325,7 +325,7 @@ export default function ProductEditor({
                 onChange={(e) => setMoq(e.target.value)}
                 min={1}
                 required
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               />
             </label>
 
@@ -339,7 +339,7 @@ export default function ProductEditor({
                 onChange={(e) => setLead(e.target.value)}
                 required
                 placeholder="e.g. 4–6 weeks"
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               />
             </label>
 
@@ -352,7 +352,7 @@ export default function ProductEditor({
                 value={origin}
                 onChange={(e) => setOrigin(e.target.value)}
                 placeholder="e.g. Marrakech, Morocco"
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               />
             </label>
 
@@ -365,7 +365,7 @@ export default function ProductEditor({
                 value={ritualLabel}
                 onChange={(e) => setRitualLabel(e.target.value)}
                 placeholder="e.g. The Atlas"
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               />
             </label>
 
@@ -378,7 +378,7 @@ export default function ProductEditor({
                 value={formats}
                 onChange={(e) => setFormats(e.target.value)}
                 placeholder="e.g. 500 ml, 1 L"
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               />
             </label>
           </div>
@@ -396,7 +396,7 @@ export default function ProductEditor({
 
         {/* Section 2: Translations */}
         <section className="space-y-6">
-          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
             Translations
           </h2>
           <TranslationTabs en={en} fr={fr} onChange={handleEnChange} />
@@ -404,7 +404,7 @@ export default function ProductEditor({
 
         {/* Section 3: Facets */}
         <section className="space-y-6">
-          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
             Tags / Facets
           </h2>
           <FacetSelect facets={facets} selected={selectedFacets} onChange={setSelectedFacets} />
@@ -412,7 +412,7 @@ export default function ProductEditor({
 
         {/* Section 4: Images */}
         <section className="space-y-6">
-          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
             Images
           </h2>
           {isNew ? (
@@ -431,7 +431,7 @@ export default function ProductEditor({
 
         {/* Section 5: Application Steps */}
         <section className="space-y-6">
-          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
             Application Steps
           </h2>
 
@@ -460,14 +460,14 @@ export default function ProductEditor({
                     placeholder="Title"
                     value={step[locale].title}
                     onChange={(e) => updateStep(index, locale, "title", e.target.value)}
-                    className="w-full bg-transparent border-0 border-b border-bb-line py-1.5 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                    className="w-full bg-transparent border-0 border-b border-bb-line py-1.5 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
                   />
                   <textarea
                     placeholder="Body"
                     value={step[locale].body}
                     onChange={(e) => updateStep(index, locale, "body", e.target.value)}
                     rows={2}
-                    className="w-full bg-transparent border border-bb-line p-2 text-bb-on-surface focus:outline-none focus:border-bb-primary resize-y"
+                    className="w-full bg-transparent border border-bb-line p-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary resize-y"
                   />
                 </div>
               ))}

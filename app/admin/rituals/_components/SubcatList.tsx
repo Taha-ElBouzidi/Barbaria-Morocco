@@ -169,7 +169,7 @@ export default function SubcatList({ ritualId, subcategories }: SubcatListProps)
                               [sc.id]: { ...prev[sc.id], nameEn: e.target.value },
                             }))
                           }
-                          className="w-full bg-transparent border-0 border-b border-bb-line py-1 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                          className="w-full bg-transparent border-0 border-b border-bb-line py-1 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
                         />
                       ) : (
                         <span className="font-sans text-[13px] text-bb-on-surface">
@@ -188,7 +188,7 @@ export default function SubcatList({ ritualId, subcategories }: SubcatListProps)
                               [sc.id]: { ...prev[sc.id], nameFr: e.target.value },
                             }))
                           }
-                          className="w-full bg-transparent border-0 border-b border-bb-line py-1 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+                          className="w-full bg-transparent border-0 border-b border-bb-line py-1 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
                         />
                       ) : (
                         <span className="font-sans text-[13px] text-bb-on-surface-variant">
@@ -301,7 +301,7 @@ export default function SubcatList({ ritualId, subcategories }: SubcatListProps)
               onChange={(e) => setNewSlug(e.target.value)}
               pattern="[a-z0-9-]+"
               required
-              className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface font-mono text-[13px] focus:outline-none focus:border-bb-primary"
+              className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface font-mono text-[13px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               placeholder="e.g. body-scrubs"
             />
           </label>
@@ -315,7 +315,7 @@ export default function SubcatList({ ritualId, subcategories }: SubcatListProps)
               name="sortOrder"
               value={newSortOrder}
               onChange={(e) => setNewSortOrder(e.target.value)}
-              className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+              className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
             />
           </label>
 
@@ -329,7 +329,7 @@ export default function SubcatList({ ritualId, subcategories }: SubcatListProps)
               value={newNameEn}
               onChange={(e) => setNewNameEn(e.target.value)}
               required
-              className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+              className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               placeholder="e.g. Body Scrubs"
             />
           </label>
@@ -344,7 +344,7 @@ export default function SubcatList({ ritualId, subcategories }: SubcatListProps)
               value={newNameFr}
               onChange={(e) => setNewNameFr(e.target.value)}
               required
-              className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus:outline-none focus:border-bb-primary"
+              className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               placeholder="e.g. Gommages Corps"
             />
           </label>

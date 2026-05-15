@@ -15,7 +15,7 @@ interface Props {
 }
 
 const INPUT_CLASS =
-  "w-full bg-transparent border-0 border-b border-bb-line py-3 font-sans text-bb-on-surface focus:outline-none focus:border-bb-primary placeholder:text-bb-on-surface-variant/60";
+  "w-full bg-transparent border-0 border-b border-bb-line py-3 font-sans text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary placeholder:text-bb-on-surface-variant/60";
 
 const LABEL_CLASS =
   "block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2";

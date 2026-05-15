@@ -71,7 +71,7 @@ export default function CategoryContent({ subs, products, lang }: Props) {
               <select
                 value={sort}
                 onChange={(e) => setSort(e.target.value as Sort)}
-                className="bg-transparent border-b border-bb-line py-1 font-sans text-bb-primary focus:outline-none focus:border-bb-secondary"
+                className="bg-transparent border-b border-bb-line py-1 font-sans text-bb-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-secondary"
               >
                 <option value="rec">{t("sort_recommended")}</option>
                 <option value="az">{t("sort_az")}</option>

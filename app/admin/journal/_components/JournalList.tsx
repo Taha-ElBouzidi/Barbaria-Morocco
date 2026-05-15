@@ -60,12 +60,12 @@ export default function JournalList({ cards }: JournalListProps) {
           placeholder="Search by headline or slug…"
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="bg-bb-bg border border-bb-line px-4 py-2.5 font-sans text-[13px] w-[280px] focus:outline-none focus:border-bb-primary"
+          className="bg-bb-bg border border-bb-line px-4 py-2.5 font-sans text-[13px] w-[280px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
         />
         <select
           value={status}
           onChange={(e) => setStatus(e.target.value)}
-          className="bg-bb-bg border border-bb-line px-4 py-2.5 font-sans text-[13px] focus:outline-none focus:border-bb-primary"
+          className="bg-bb-bg border border-bb-line px-4 py-2.5 font-sans text-[13px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
         >
           {STATUS_OPTIONS.map((o) => (
             <option key={o.value} value={o.value}>
