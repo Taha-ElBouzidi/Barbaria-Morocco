@@ -6,11 +6,12 @@ import { cn } from "@/lib/utils";
 
 const NAV = [
   { href: "/admin", label: "Dashboard" },
+  { href: "/admin/gift-boxes", label: "Gift Boxes" },
   { href: "/admin/products", label: "Products" },
+  { href: "/admin/facets", label: "Facets" },
   { href: "/admin/journal", label: "Journal" },
   { href: "/admin/ateliers", label: "Ateliers" },
-  { href: "/admin/rituals", label: "Rituals" },
-  { href: "/admin/facets", label: "Facets" },
+  { href: "/admin/rituals", label: "Rituals (internal)" },
   { href: "/admin/inquiries", label: "Inquiries" },
   { href: "/admin/activity", label: "Activity" },
 ];
