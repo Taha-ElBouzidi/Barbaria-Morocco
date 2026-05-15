@@ -13,6 +13,7 @@ import { getGiftBoxBySlug } from "@/lib/data/gift-boxes";
 import { getCategoryBySlug } from "@/lib/data/categories";
 import { getProductsByCategory } from "@/lib/data/products";
 import BoxComposer, { type WizardCopy } from "@/components/wizard/BoxComposer";
+import BoxAddToInquiry from "@/components/product/BoxAddToInquiry";
 import type { CategorySlug } from "@/lib/data/types";
 
 export const revalidate = 60;
@@ -238,25 +239,17 @@ export default async function GiftBoxPage({ params }: PageProps) {
               </div>
               <dl className="space-y-3 text-[14px]">
                 <div className="flex justify-between border-b border-bb-line pb-3">
-                  <dt className="text-bb-on-surface-variant">{t("aside_min")}</dt>
-                  <dd className="text-bb-primary font-medium">
-                    {t("moq_pill", { n: detail.defaultQuantityMin })}
-                  </dd>
-                </div>
-                <div className="flex justify-between border-b border-bb-line pb-3">
                   <dt className="text-bb-on-surface-variant">{t("aside_items")}</dt>
                   <dd className="text-bb-primary font-medium">
                     {t("items_count", { count: detail.items.length })}
                   </dd>
                 </div>
               </dl>
-              <Link
-                href="/contact"
-                className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors"
-              >
-                {t("send_request")}
-                <Icon name="arrow-up-right" size={14} />
-              </Link>
+              <BoxAddToInquiry
+                giftBoxSlug={detail.slug}
+                name={detail.name}
+                minQty={detail.defaultQuantityMin}
+              />
               <p className="text-[12px] text-bb-on-surface-variant text-center italic">
                 {t("aside_note")}
               </p>

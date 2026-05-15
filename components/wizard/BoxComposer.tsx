@@ -150,7 +150,7 @@ function reducer(state: State, action: Action): State {
 
 export default function BoxComposer({ box, products, themeKey, locale, copy }: Props) {
   const router = useRouter();
-  const { setQty } = useInquiry();
+  const { addBox } = useInquiry();
   const storageKey = `bb.wizard.${box.slug}`;
 
   const [state, dispatch] = useReducer(reducer, {
@@ -211,14 +211,23 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
   const handleProceedToQuantity = () => dispatch({ type: "goQuantity" });
 
   const handleSubmit = () => {
-    // Push each picked product into the inquiry context with the chosen
-    // quantity, then route to /contact where the existing TwoStepForm
-    // takes over.
-    Object.values(state.picks)
-      .filter((slug) => !!slug)
-      .forEach((slug) => setQty(slug, state.quantity));
+    // Sprint 2.6: the wizard produces ONE custom-box line, not N product
+    // lines. The composition is the ordered list of picked product slugs;
+    // empty/skipped slots are filtered out and the concierge fills them.
+    const composedSlugs = Object.entries(state.picks)
+      .sort(([a], [b]) => Number(a) - Number(b))
+      .map(([, slug]) => slug)
+      .filter((s) => !!s);
+    const categorySlug: "cosmetiques" | "epicerie_fine" =
+      box.categorySlug === "epicerie_fine" ? "epicerie_fine" : "cosmetiques";
+    addBox({
+      giftBoxSlug: box.slug,
+      minQty: box.defaultQuantityMin,
+      initialQty: state.quantity,
+      nameSnapshot: box.name,
+      custom: { categorySlug, productSlugs: composedSlugs },
+    });
     dispatch({ type: "done" });
-    // Clear the wizard's local state so re-opening starts fresh.
     try {
       localStorage.removeItem(storageKey);
     } catch {

@@ -1,22 +1,23 @@
 "use client";
 import { Link } from "@/i18n/navigation";
 import { useTranslations } from "next-intl";
-import { cn } from "@/lib/utils";
 import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import Icon from "@/components/primitives/Icon";
 import type { ProductSummary } from "@/lib/data/types";
-import { useInquiry } from "@/lib/inquiry-context";
 
 interface Props {
   product: ProductSummary;
   lang: "en" | "fr";
 }
 
+/**
+ * Sprint 2.6 — Products are no longer purchasable individually, only as
+ * components of boxes. The card no longer carries an "Add to inquiry"
+ * action; it is purely a navigation tile into the product detail page.
+ */
 export default function ProductCard({ product, lang: _lang }: Props) {
   const t = useTranslations("rituals");
-  const { cart, toggle } = useInquiry();
-  const isAdded = cart.has(product.slug);
   const primaryTag = product.tags[0] ?? "";
   const specLine = [product.formats[0], product.origin ?? product.lead].filter(Boolean).join(" · ");
 
@@ -45,24 +46,13 @@ export default function ProductCard({ product, lang: _lang }: Props) {
           </span>
           {specLine && <span className="font-sans">{specLine}</span>}
         </div>
-        <div className="flex items-center justify-between pt-2 border-t border-bb-line/50">
+        <div className="pt-2 border-t border-bb-line/50">
           <Link
             href={`/product/${product.slug}`}
-            className="inline-flex items-center gap-2 font-sans text-[12px] uppercase tracking-[0.18em] text-bb-primary hover:text-bb-primary-container group/link"
+            className="inline-flex items-center gap-2 py-3 min-h-[44px] font-sans text-[12px] uppercase tracking-[0.18em] text-bb-primary hover:text-bb-primary-container group/link"
           >
             {t("view")} <Icon name="arrow-right" size={14} className="transition-transform group-hover/link:translate-x-0.5" />
           </Link>
-          <button
-            onClick={() => toggle(product.slug)}
-            className={cn(
-              "font-sans text-[12px] uppercase tracking-[0.18em] px-3 py-2 border transition-colors",
-              isAdded
-                ? "border-bb-secondary text-bb-secondary"
-                : "border-bb-line text-bb-on-surface hover:border-bb-primary"
-            )}
-          >
-            {isAdded ? t("added") : t("add_to_inquiry")}
-          </button>
         </div>
       </div>
     </article>

@@ -1,10 +1,7 @@
-"use client";
 import { useTranslations } from "next-intl";
-import { cn } from "@/lib/utils";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Icon from "@/components/primitives/Icon";
-import { useInquiry } from "@/lib/inquiry-context";
 import type { ProductDetail } from "@/lib/data/types";
 
 interface Props {
@@ -13,10 +10,14 @@ interface Props {
   lang: "en" | "fr";
 }
 
+/**
+ * Sprint 2.6 — Products are no longer purchasable individually.
+ * The spec column shows information and an email link to the concierge
+ * for a spec sheet. The "Add to inquiry" button is gone; the box detail
+ * page or wizard is where boxes get added to the inquiry.
+ */
 export default function SpecColumn({ product, worldEyebrow, lang: _lang }: Props) {
   const t = useTranslations("product");
-  const { cart, toggle } = useInquiry();
-  const isAdded = cart.has(product.slug);
 
   const specs: Array<{ key: string; value: string }> = [
     { key: t("moq"), value: String(product.moq) },
@@ -25,11 +26,11 @@ export default function SpecColumn({ product, worldEyebrow, lang: _lang }: Props
   ];
   if (product.origin) specs.push({ key: t("origin"), value: product.origin });
   const packagingTag = product.tags.find((x) =>
-    ["Amber glass", "Porcelain", "Cedar", "Berber weave", "Recycled card"].includes(x)
+    ["Amber glass", "Porcelain", "Cedar", "Berber weave", "Recycled card", "Glass jar", "Ceramic jar", "Cedar box"].includes(x)
   );
   if (packagingTag) specs.push({ key: t("packaging"), value: packagingTag });
   const certifs = product.tags.filter((x) =>
-    ["BIO certified", "Fair trade", "Cruelty free", "Vegan"].includes(x)
+    ["BIO certified", "Fair trade", "Cruelty free", "Vegan", "100% Natural", "Cold-pressed", "Cooperative-made", "Made in Morocco"].includes(x)
   );
   if (certifs.length) specs.push({ key: t("certification"), value: certifs.join(", ") });
 
@@ -52,21 +53,9 @@ export default function SpecColumn({ product, worldEyebrow, lang: _lang }: Props
         ))}
       </dl>
       <div className="flex flex-wrap gap-3 pt-2">
-        <button
-          onClick={() => toggle(product.slug)}
-          className={cn(
-            "inline-flex items-center gap-2 px-8 py-4 font-sans text-[12px] uppercase tracking-[0.18em] transition-colors",
-            isAdded
-              ? "bg-bb-secondary text-bb-primary"
-              : "bg-bb-primary text-bb-bg hover:bg-bb-primary-container"
-          )}
-          aria-pressed={isAdded}
-        >
-          {isAdded ? t("added") : t("add_to_inquiry")} {isAdded && <Icon name="check" size={14} />}
-        </button>
         <a
-          href={`mailto:concierge@barbariamorocco.com?subject=Spec sheet request: ${encodeURIComponent(product.name)}`}
-          className="inline-flex items-center gap-2 px-8 py-4 border border-bb-line font-sans text-[12px] uppercase tracking-[0.18em] text-bb-on-surface hover:border-bb-primary transition-colors"
+          href={`mailto:concierge@barbariamorocco.com?subject=${encodeURIComponent(`Spec sheet request: ${product.name}`)}`}
+          className="inline-flex items-center gap-2 px-8 py-4 min-h-[44px] border border-bb-line font-sans text-[12px] uppercase tracking-[0.18em] text-bb-on-surface hover:border-bb-primary transition-colors"
         >
           {t("download_spec")} <Icon name="arrow-up-right" size={14} />
         </a>
