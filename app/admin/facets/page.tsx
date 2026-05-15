@@ -12,7 +12,7 @@ export default async function AdminFacetsPage() {
   return (
     <div className="space-y-8">
       <header className="space-y-1">
-        <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+        <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
           Admin / Facets
         </p>
         <h1 className="font-serif text-[36px] leading-tight">Filter Facets</h1>

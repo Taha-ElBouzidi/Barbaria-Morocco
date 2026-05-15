@@ -16,7 +16,7 @@ export default async function NewJournalCardPage() {
           ← Journal
         </Link>
         <div className="space-y-1">
-          <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+          <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
             Admin / Journal / New
           </p>
           <h1 className="font-serif text-[32px] leading-tight">New card</h1>

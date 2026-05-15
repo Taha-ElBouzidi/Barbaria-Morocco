@@ -1,6 +1,52 @@
 import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import crypto from "node:crypto";
 import { createServiceRoleClient } from "@/lib/supabase/service";
+
+// In-memory sliding-window rate limiter, sufficient for a single-instance
+// Vercel deployment. Two windows per IP: 5 inquiries / minute and
+// 50 / day. Both reset by absolute window roll. Survives a function warm
+// process but resets on cold start, which is acceptable for spam control
+// at our traffic volumes. Move to Redis/Upstash when traffic warrants.
+const RATE_LIMITS = new Map<string, { minuteCount: number; minuteReset: number; dayCount: number; dayReset: number }>();
+const MAX_PER_MINUTE = 5;
+const MAX_PER_DAY = 50;
+
+function checkRateLimit(ipHash: string): { ok: boolean; reason?: string } {
+  const now = Date.now();
+  const rec = RATE_LIMITS.get(ipHash) ?? {
+    minuteCount: 0,
+    minuteReset: now + 60_000,
+    dayCount: 0,
+    dayReset: now + 86_400_000,
+  };
+  if (now > rec.minuteReset) {
+    rec.minuteCount = 0;
+    rec.minuteReset = now + 60_000;
+  }
+  if (now > rec.dayReset) {
+    rec.dayCount = 0;
+    rec.dayReset = now + 86_400_000;
+  }
+  if (rec.minuteCount >= MAX_PER_MINUTE) {
+    return { ok: false, reason: "Too many inquiries in the last minute. Please wait a moment and try again." };
+  }
+  if (rec.dayCount >= MAX_PER_DAY) {
+    return { ok: false, reason: "Daily inquiry limit reached. Please contact the concierge directly by email." };
+  }
+  rec.minuteCount += 1;
+  rec.dayCount += 1;
+  RATE_LIMITS.set(ipHash, rec);
+  return { ok: true };
+}
+
+function hashIp(req: NextRequest): string {
+  const ip =
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    req.headers.get("x-real-ip") ??
+    "unknown";
+  return crypto.createHash("sha256").update(ip + "|barbaria").digest("hex").slice(0, 32);
+}
 
 /**
  * POST /api/inquiry, phase 1 persistence endpoint.
@@ -69,6 +115,12 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: true, id: null });
   }
 
+  const ipHash = hashIp(req);
+  const limit = checkRateLimit(ipHash);
+  if (!limit.ok) {
+    return NextResponse.json({ ok: false, error: limit.reason }, { status: 429 });
+  }
+
   const supabase = createServiceRoleClient();
 
   // Resolve gift_box slugs to ids in one round-trip. Slugs that don't
@@ -97,6 +149,7 @@ export async function POST(req: NextRequest) {
       locale: data.locale,
       source_url: sourceUrl,
       user_agent: userAgent,
+      ip_hash: ipHash,
       status: "new",
     })
     .select("id")

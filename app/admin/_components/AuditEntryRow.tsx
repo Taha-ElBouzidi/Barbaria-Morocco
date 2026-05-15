@@ -69,7 +69,7 @@ export default function AuditEntryRow({
           </span>
         </td>
         <td className="px-4 py-3 text-right">
-          <span className="font-sans text-[11px] text-bb-secondary select-none">
+          <span className="font-sans text-[11px] text-bb-secondary-deep select-none">
             {isExpanded ? "▲" : "▼"}
           </span>
         </td>

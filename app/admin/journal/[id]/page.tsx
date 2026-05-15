@@ -34,7 +34,7 @@ export default async function EditJournalCardPage({ params, searchParams }: Page
             ← Journal
           </Link>
           <div className="space-y-1">
-            <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+            <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
               Admin / Journal / Edit
             </p>
             <h1 className="font-serif text-[32px] leading-tight">

@@ -152,7 +152,7 @@ export default function FacetEditor({ facetsByType }: FacetEditorProps) {
         const addVals = addForms[type];
         return (
           <section key={type} className="space-y-6">
-            <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+            <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
               {TYPE_LABELS[type]}
             </h2>
 

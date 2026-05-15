@@ -181,7 +181,16 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                     <tr
                       key={p.id}
                       onClick={() => startTransition(() => router.push(`/admin/products/${p.id}`))}
-                      className="border-b border-bb-line last:border-0 hover:bg-bb-bg-low cursor-pointer transition-colors"
+                      onKeyDown={(e) => {
+                        if (e.key === "Enter" || e.key === " ") {
+                          e.preventDefault();
+                          startTransition(() => router.push(`/admin/products/${p.id}`));
+                        }
+                      }}
+                      tabIndex={0}
+                      role="link"
+                      aria-label={`Edit ${getEnName(p)}`}
+                      className="border-b border-bb-line last:border-0 hover:bg-bb-bg-low cursor-pointer transition-colors focus-visible:outline-none focus-visible:bg-bb-bg-low focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-bb-secondary"
                     >
                       <td className="px-4 py-3">
                         {heroPath ? (

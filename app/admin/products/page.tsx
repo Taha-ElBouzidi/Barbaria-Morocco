@@ -15,7 +15,7 @@ export default async function AdminProductsPage() {
     <div className="space-y-6 lg:space-y-8">
       <header className="flex items-start justify-between gap-3">
         <div className="min-w-0 flex-1 space-y-1">
-          <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+          <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
             Admin / Products
           </p>
           <h1 className="font-serif text-[24px] sm:text-[36px] leading-tight">Products</h1>

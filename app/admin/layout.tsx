@@ -19,6 +19,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   return (
     <html lang="en">
       <body>
+        <a
+          href="#admin-main"
+          className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[200] focus:px-4 focus:py-2 focus:bg-bb-primary focus:text-white focus:rounded-sm focus:text-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+        >
+          Skip to content
+        </a>
         {admin ? <AdminShell admin={admin}>{children}</AdminShell> : children}
       </body>
     </html>

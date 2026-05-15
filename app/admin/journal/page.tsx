@@ -13,7 +13,7 @@ export default async function AdminJournalPage() {
     <div className="space-y-8">
       <header className="flex items-start justify-between">
         <div className="space-y-1">
-          <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+          <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
             Admin / Journal
           </p>
           <h1 className="font-serif text-[36px] leading-tight">Journal</h1>

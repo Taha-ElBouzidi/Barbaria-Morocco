@@ -76,7 +76,7 @@ export default async function AdminActivityPage({ searchParams }: PageProps) {
   return (
     <div className="space-y-8">
       <header className="space-y-1">
-        <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+        <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
           Admin / Activity
         </p>
         <h1 className="font-serif text-[36px] leading-tight">Activity log</h1>

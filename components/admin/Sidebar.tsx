@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
@@ -30,11 +30,36 @@ interface Props {
 
 export default function Sidebar({ open, onClose }: Props) {
   const pathname = usePathname();
+  const panelRef = useRef<HTMLElement>(null);
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
 
+  // Mobile-only: focus trap + initial focus + body scroll lock.
   useEffect(() => {
     if (!open) return;
+    if (typeof window !== "undefined" && window.matchMedia("(min-width: 768px)").matches) return;
+    const previouslyFocused = document.activeElement as HTMLElement | null;
+    closeBtnRef.current?.focus();
     const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") onClose();
+      if (e.key === "Escape") {
+        e.preventDefault();
+        onClose();
+        return;
+      }
+      if (e.key === "Tab" && panelRef.current) {
+        const focusable = panelRef.current.querySelectorAll<HTMLElement>(
+          "a, button, [tabindex]:not([tabindex='-1'])"
+        );
+        if (focusable.length === 0) return;
+        const first = focusable[0];
+        const last = focusable[focusable.length - 1];
+        if (e.shiftKey && document.activeElement === first) {
+          e.preventDefault();
+          last.focus();
+        } else if (!e.shiftKey && document.activeElement === last) {
+          e.preventDefault();
+          first.focus();
+        }
+      }
     };
     document.addEventListener("keydown", onKey);
     const prevOverflow = document.body.style.overflow;
@@ -42,6 +67,7 @@ export default function Sidebar({ open, onClose }: Props) {
     return () => {
       document.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      previouslyFocused?.focus?.();
     };
   }, [open, onClose]);
 
@@ -55,7 +81,7 @@ export default function Sidebar({ open, onClose }: Props) {
         href={item.href}
         onClick={onClose}
         className={cn(
-          "block px-6 py-3 min-h-[44px] font-sans text-[13px] tracking-[0.02em] border-l-2 transition-colors",
+          "block px-6 py-3 min-h-[44px] font-sans text-[13px] tracking-[0.02em] border-l-2 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-inset",
           isActive
             ? "text-bb-primary border-bb-secondary bg-bb-bg-low"
             : "text-bb-on-surface-variant border-transparent hover:text-bb-primary"
@@ -69,7 +95,6 @@ export default function Sidebar({ open, onClose }: Props) {
 
   return (
     <>
-      {/* Mobile backdrop. Hidden on md+ where the sidebar is static. */}
       <div
         className={cn(
           "md:hidden fixed inset-0 z-[60] bg-bb-primary/40 backdrop-blur-sm transition-opacity",
@@ -79,9 +104,13 @@ export default function Sidebar({ open, onClose }: Props) {
         aria-hidden
       />
 
-      {/* Drawer / static aside. On md+ this lives in the document flow as a
-          240px column. On mobile it becomes a fixed slide-out panel. */}
       <aside
+        ref={panelRef}
+        // Drawer role only when open on mobile; static aside on md+ omits
+        // dialog semantics. aria-labelledby is harmless without a role.
+        role={open ? "dialog" : undefined}
+        aria-modal={open ? true : undefined}
+        aria-labelledby="admin-sidebar-title"
         aria-label="Admin navigation"
         className={cn(
           "fixed inset-y-0 left-0 z-[61] w-[min(80vw,280px)] bg-bb-bg shadow-2xl transition-transform duration-300",
@@ -91,19 +120,20 @@ export default function Sidebar({ open, onClose }: Props) {
       >
         <div className="flex items-center justify-between px-6 py-8 border-b border-bb-line">
           <div>
-            <p className="font-serif text-[22px] leading-none">Barbaria</p>
-            <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-secondary mt-2">Admin</p>
+            <p id="admin-sidebar-title" className="font-serif text-[22px] leading-none">Barbaria</p>
+            <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-secondary-deep mt-2">Admin</p>
           </div>
           <button
+            ref={closeBtnRef}
             type="button"
             onClick={onClose}
-            className="md:hidden p-3 min-h-[44px] min-w-[44px] text-bb-on-surface"
+            className="md:hidden p-3 min-h-[44px] min-w-[44px] text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
             aria-label="Close menu"
           >
             <Icon name="close" size={18} />
           </button>
         </div>
-        <nav className="py-4 overflow-y-auto" style={{ maxHeight: "calc(100vh - 96px)" }}>
+        <nav aria-label="Admin sections" className="py-4 overflow-y-auto" style={{ maxHeight: "calc(100vh - 96px)" }}>
           {navLinks}
         </nav>
       </aside>
