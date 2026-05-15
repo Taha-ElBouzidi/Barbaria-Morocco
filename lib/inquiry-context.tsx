@@ -11,9 +11,12 @@ import type { ReactNode } from "react";
  *   - a custom box composed via the wizard (categorySlug + ordered productSlugs + qty)
  *
  * Lines are identified by an opaque `id` so a buyer can have multiple
- * distinct custom-box compositions in the same inquiry. Persisted to
- * localStorage under `bb.inquiry.v2` (the v1 product-keyed Map is dropped
- * — products are no longer sold individually).
+ * distinct custom-box compositions in the same inquiry.
+ *
+ * Sprint 2.8 follow-up: persisted to sessionStorage (was localStorage).
+ * Tab close + reopen now gives a fresh inquiry instead of resurrecting
+ * stale items from days ago. Refresh + tab change still preserve the
+ * current selection, as expected mid-session.
  */
 
 export interface CustomBoxComposition {
@@ -68,6 +71,9 @@ function reducer(state: InquiryState, action: Action): InquiryState {
 
 const STORAGE_KEY = "bb.inquiry.v2";
 const LEGACY_KEY = "bb.inquiry";
+// Sprint 2.8 — explicit per-tab persistence. sessionStorage clears on tab
+// close (matches "fresh state when I come back tomorrow") but survives a
+// page refresh or a tab switch (so mid-flow buyers don't lose work).
 
 interface InquiryContextValue {
   lines: InquiryState;
@@ -92,24 +98,26 @@ export function InquiryProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     try {
-      // One-shot clear of the legacy product-keyed cart — v1 was product-level,
-      // v2 is box-level. We don't migrate because the semantics differ.
-      if (localStorage.getItem(LEGACY_KEY)) {
-        localStorage.removeItem(LEGACY_KEY);
-      }
-      const raw = localStorage.getItem(STORAGE_KEY);
+      // One-shot cleanup of legacy storage from previous schema versions.
+      // The Sprint 2.6 v1 product-keyed cart lived in localStorage; the
+      // Sprint 2.6 v2 box-level shape also lived in localStorage until 2.8.
+      // Anything still in localStorage is stale and should be dropped.
+      localStorage.removeItem(LEGACY_KEY);
+      localStorage.removeItem(STORAGE_KEY);
+
+      const raw = sessionStorage.getItem(STORAGE_KEY);
       if (raw) {
         const parsed = JSON.parse(raw) as InquiryState;
         if (Array.isArray(parsed)) dispatch({ type: "hydrate", state: parsed });
       }
     } catch {
-      // localStorage unavailable; proceed empty
+      // storage unavailable; proceed empty
     }
   }, []);
 
   useEffect(() => {
     try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(lines));
+      sessionStorage.setItem(STORAGE_KEY, JSON.stringify(lines));
     } catch {
       // ignore
     }
