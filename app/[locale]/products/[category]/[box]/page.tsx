@@ -81,7 +81,8 @@ export default async function GiftBoxPage({ params }: PageProps) {
       // known until the user picks a box size.
       step_eyebrow_progress: wizardT.raw("step_eyebrow_progress") as string,
       step_no_products: wizardT("step_no_products"),
-      step_skip: wizardT("step_skip"),
+      step_search_placeholder: wizardT("step_search_placeholder"),
+      step_search_count: wizardT.raw("step_search_count") as string,
       step_back: wizardT("step_back"),
       step_next: wizardT("step_next"),
       step_picked: wizardT("step_picked"),

@@ -315,6 +315,15 @@
   .animation-delay-400 { animation-delay: 0.4s; }
   .animation-delay-600 { animation-delay: 0.6s; }
 
+  /* Slide-in from the right, used between wizard steps to suggest a
+     caravan/journey progressing along an axis. Each step swaps in from
+     where the next halt would be on a map: slightly off-screen to the
+     right, settling into place. */
+  @keyframes slideInRight {
+    from { opacity: 0; transform: translateX(48px); }
+    to   { opacity: 1; transform: translateX(0); }
+  }
+
   /* Scroll-triggered reveal (CSS-only via IntersectionObserver-free approach) */
   @keyframes scrollReveal {
     from { opacity: 0; transform: translateY(32px) scale(0.97); }
@@ -414,6 +423,31 @@
 ::view-transition-new(*) {
   animation-duration: 0.45s;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Wizard theme variants. Two categories, two atmospheres. The Cosmetics
+   wizard keeps the night-sky brown of the maison; the Épicerie wizard
+   shifts a few degrees warmer toward sunset copper to evoke the caravan
+   route. Both inherit text-white from the parent + retain the gold
+   accents; only the body tint and pepita glow shift. */
+.wizard-theme--sahara {
+  background: linear-gradient(180deg, #2c1810 0%, #1d100a 100%);
+}
+.wizard-theme--sahara .sp-root .sp-pepita,
+.wizard-theme--sahara .sp-root .sp-pepita.sp-dot {
+  color: var(--bb-secondary);
+  background: var(--bb-secondary);
+  box-shadow: 0 0 5px rgba(201, 160, 89, 0.6);
+}
+.wizard-theme--caravan {
+  background: linear-gradient(180deg, #3a1f10 0%, #261207 100%);
+}
+.wizard-theme--caravan .sp-root .sp-pepita,
+.wizard-theme--caravan .sp-root .sp-pepita.sp-dot {
+  color: #d8a361;
+  background: #d8a361;
+  box-shadow: 0 0 6px rgba(216, 163, 97, 0.7);
+  text-shadow: 0 0 7px rgba(216, 163, 97, 0.6);
 }
 
 /* Honour prefers-reduced-motion: cut the SaharaPrestige twinkle and skip
