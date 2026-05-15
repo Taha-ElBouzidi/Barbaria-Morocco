@@ -113,7 +113,7 @@ export default function OccasionEditor({ initial }: Props) {
         </div>
       </section>
 
-      <footer className="sticky bottom-0 bg-bb-bg border-t border-bb-line py-4 -mx-8 px-8 flex flex-wrap items-center gap-3">
+      <footer className="sticky bottom-0 bg-bb-bg border-t border-bb-line py-4 -mx-4 md:-mx-8 px-4 md:px-8 flex flex-wrap items-center gap-3">
         <button
           type="submit"
           disabled={pending}

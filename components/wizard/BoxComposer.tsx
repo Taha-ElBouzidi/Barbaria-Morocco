@@ -224,7 +224,7 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
     router.push("/contact");
   };
 
-  // Sprint 2.8 — full-screen takeover behaviour.
+  // Sprint 2.8 full-screen takeover behaviour.
   // Lock the body scroll so the chrome behind the overlay can't scroll,
   // and route back to /products/[category] on Escape (with a confirm if
   // the composition has started).
@@ -563,7 +563,7 @@ function StepView({
           <p className="text-bb-secondary/80 italic font-display">{copy.step_no_products}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
           {products.map((p) => {
             const selected = p.slug === activeSlug;
             return (
@@ -686,7 +686,7 @@ function ReviewView({
                   />
                 ) : (
                   <div className="absolute inset-0 flex items-center justify-center text-bb-secondary/40 text-[14px] font-display italic">
-                    —
+                    ···
                   </div>
                 )}
               </div>
@@ -835,7 +835,7 @@ function DoneView({
 }
 
 /**
- * Sprint 2.8 — Click-to-zoom product detail. Renders as an in-place modal
+ * Sprint 2.8 click-to-zoom product detail. Renders as an in-place modal
  * over the wizard surface (no real navigation). Closing returns to the
  * exact wizard step without losing the composition state. Choosing picks
  * the product and auto-advances.
@@ -853,29 +853,34 @@ function ProductZoomModal({
   onClose: () => void;
   onChoose: () => void;
 }) {
+  // Mobile (< md): bottom sheet that slides up from the bottom, takes
+  // ~94vh, scrollable inside. Desktop: centered modal at max 1080px.
+  // The bottom-sheet pattern avoids the iOS-Safari nested-scroll bugs
+  // that the centered modal had on phones (user-reported: content too
+  // big to view, no scroll).
   return (
     <div
       role="dialog"
       aria-modal="true"
       aria-label={product.name}
-      className="fixed inset-0 z-[120] flex items-center justify-center bg-bb-primary/85 backdrop-blur-md px-4 py-8 motion-safe:animate-[fadeInUp_240ms_ease-out]"
+      className="fixed inset-0 z-[120] flex items-end justify-center md:items-center md:justify-center bg-bb-primary/85 backdrop-blur-md md:px-4 md:py-8 motion-safe:animate-[fadeInUp_240ms_ease-out]"
       onClick={onClose}
     >
       <div
         onClick={(e) => e.stopPropagation()}
-        className="relative w-full max-w-[1080px] max-h-[92vh] overflow-y-auto bg-bb-primary border border-bb-secondary/30 grid grid-cols-1 md:grid-cols-2 gap-0"
-        style={{ viewTransitionName: `wizard-product-${product.slug}` }}
+        className="relative flex flex-col w-full max-w-full md:max-w-[1080px] h-[94vh] md:h-auto md:max-h-[92vh] bg-bb-primary border-t border-bb-secondary/30 md:border md:border-bb-secondary/30 overflow-y-auto overscroll-contain md:grid md:grid-cols-2 md:gap-0"
+        style={{ viewTransitionName: `wizard-product-${product.slug}`, WebkitOverflowScrolling: "touch" }}
       >
         <button
           type="button"
           onClick={onClose}
-          aria-label="Close"
-          className="absolute top-4 right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-bb-secondary/40 bg-bb-primary/90 text-bb-secondary backdrop-blur-sm transition-colors hover:border-bb-secondary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+          aria-label={copy.detail_close}
+          className="absolute top-3 right-3 md:top-4 md:right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-bb-secondary/40 bg-bb-primary/90 text-bb-secondary backdrop-blur-sm transition-colors hover:border-bb-secondary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
         >
           <Icon name="close" size={16} />
         </button>
 
-        <div className="relative aspect-[4/5] md:aspect-auto md:min-h-[440px] overflow-hidden bg-bb-primary-container">
+        <div className="relative aspect-[5/4] md:aspect-auto md:min-h-[440px] shrink-0 overflow-hidden bg-bb-primary-container">
           <Photo
             src={product.heroImage}
             alt={product.name}
@@ -885,7 +890,7 @@ function ProductZoomModal({
           />
         </div>
 
-        <div className="flex flex-col gap-5 p-8 md:p-10">
+        <div className="flex flex-col gap-4 md:gap-5 p-5 sm:p-6 md:p-10">
           {product.ritualLabel && (
             <Eyebrow tone="gold">{product.ritualLabel}</Eyebrow>
           )}
@@ -893,7 +898,7 @@ function ProductZoomModal({
             {product.name}
           </DisplayHeading>
           {product.short && (
-            <p className="font-display italic text-bb-secondary/85 text-[clamp(16px,1.4vw,20px)] leading-snug">
+            <p className="font-display italic text-bb-secondary/85 text-[clamp(15px,1.4vw,20px)] leading-snug">
               {product.short}
             </p>
           )}
@@ -902,7 +907,7 @@ function ProductZoomModal({
               {product.lede}
             </p>
           )}
-          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 border-y border-bb-secondary/20 py-4 text-[12px]">
+          <dl className="grid grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-3 border-y border-bb-secondary/20 py-4 text-[12px]">
             {product.origin && (
               <>
                 <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">{copy.detail_origin}</dt>
@@ -930,21 +935,21 @@ function ProductZoomModal({
               ))}
             </ul>
           )}
-          <div className="mt-auto pt-4 flex flex-wrap items-center gap-3">
-            <button
-              type="button"
-              onClick={onChoose}
-              className="inline-flex items-center justify-center gap-2 px-7 py-4 min-h-[48px] border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-bb-primary"
-            >
-              {isChosen ? copy.step_currently_chosen : copy.step_choose_this}
-              <Icon name="arrow-up-right" size={14} />
-            </button>
+          <div className="mt-auto pt-4 flex flex-col-reverse sm:flex-row items-stretch sm:items-center gap-3 sticky bottom-0 md:static bg-bb-primary md:bg-transparent -mx-5 sm:-mx-6 md:mx-0 -mb-5 sm:-mb-6 md:mb-0 px-5 sm:px-6 md:px-0 pb-5 sm:pb-6 md:pb-0 border-t border-bb-secondary/20 md:border-0">
             <button
               type="button"
               onClick={onClose}
-              className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary px-4 py-2"
+              className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary px-4 py-3 sm:py-2 min-h-[44px]"
             >
               ← {copy.detail_close}
+            </button>
+            <button
+              type="button"
+              onClick={onChoose}
+              className="flex-1 sm:flex-none inline-flex items-center justify-center gap-2 px-7 py-4 min-h-[48px] border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-bb-primary"
+            >
+              {isChosen ? copy.step_currently_chosen : copy.step_choose_this}
+              <Icon name="arrow-up-right" size={14} />
             </button>
           </div>
         </div>

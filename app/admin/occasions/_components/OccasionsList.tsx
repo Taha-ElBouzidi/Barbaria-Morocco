@@ -58,59 +58,86 @@ export default function OccasionsList({ occasions }: { occasions: OccasionAdminR
           No occasions match the current filters.
         </p>
       ) : (
-        <div className="overflow-x-auto border border-bb-line bg-bb-bg">
-          <table className="w-full text-[14px]">
-            <thead className="bg-bb-bg-low text-[11px] uppercase tracking-[0.12em] text-bb-on-surface-variant">
-              <tr>
-                <th scope="col" className="text-left p-4">Name (EN)</th>
-                <th scope="col" className="text-left p-4 hidden md:table-cell">Name (FR)</th>
-                <th scope="col" className="text-left p-4 hidden sm:table-cell">Order</th>
-                <th scope="col" className="text-left p-4">Status</th>
-                <th scope="col" className="text-right p-4 sr-only">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((o) => (
-                <tr key={o.id} className="border-t border-bb-line hover:bg-bb-bg-low transition-colors">
-                  <td className="p-4">
-                    <Link
-                      href={`/admin/occasions/${o.id}`}
-                      className="font-display text-[16px] text-bb-primary hover:text-bb-secondary-deep transition-colors"
-                    >
-                      {o.nameEn}
-                    </Link>
-                    <p className="text-[11px] text-bb-on-surface-variant font-mono mt-0.5">{o.slug}</p>
-                  </td>
-                  <td className="p-4 hidden md:table-cell text-bb-on-surface-variant">
-                    {o.nameFr}
-                  </td>
-                  <td className="p-4 hidden sm:table-cell text-bb-on-surface-variant">
-                    {o.sortOrder}
-                  </td>
-                  <td className="p-4">
-                    <span
-                      className={`inline-block px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${
-                        o.status === "published"
-                          ? "bg-bb-secondary/15 text-bb-secondary-deep"
-                          : "bg-bb-bg-mid text-bb-on-surface-variant"
-                      }`}
-                    >
-                      {o.status}
-                    </span>
-                  </td>
-                  <td className="p-4 text-right">
-                    <Link
-                      href={`/admin/occasions/${o.id}`}
-                      className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep hover:opacity-70"
-                    >
-                      Edit
-                    </Link>
-                  </td>
+        <>
+          <div className="md:hidden flex flex-col gap-3">
+            {filtered.map((o) => (
+              <Link
+                key={o.id}
+                href={`/admin/occasions/${o.id}`}
+                className="block p-4 border border-bb-line bg-bb-bg hover:border-bb-secondary-deep transition-colors space-y-2"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-display text-[16px] text-bb-primary truncate">{o.nameEn}</p>
+                    <p className="text-[11px] text-bb-on-surface-variant font-mono truncate">{o.slug}</p>
+                  </div>
+                  <span
+                    className={`shrink-0 inline-block px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${
+                      o.status === "published"
+                        ? "bg-bb-secondary/15 text-bb-secondary-deep"
+                        : "bg-bb-bg-mid text-bb-on-surface-variant"
+                    }`}
+                  >
+                    {o.status}
+                  </span>
+                </div>
+                <p className="text-[11px] text-bb-on-surface-variant">
+                  {o.nameFr} · Order {o.sortOrder}
+                </p>
+              </Link>
+            ))}
+          </div>
+
+          <div className="hidden md:block overflow-x-auto border border-bb-line bg-bb-bg">
+            <table className="w-full text-[14px]">
+              <thead className="bg-bb-bg-low text-[11px] uppercase tracking-[0.12em] text-bb-on-surface-variant">
+                <tr>
+                  <th scope="col" className="text-left p-4">Name (EN)</th>
+                  <th scope="col" className="text-left p-4">Name (FR)</th>
+                  <th scope="col" className="text-left p-4">Order</th>
+                  <th scope="col" className="text-left p-4">Status</th>
+                  <th scope="col" className="text-right p-4 sr-only">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filtered.map((o) => (
+                  <tr key={o.id} className="border-t border-bb-line hover:bg-bb-bg-low transition-colors">
+                    <td className="p-4">
+                      <Link
+                        href={`/admin/occasions/${o.id}`}
+                        className="font-display text-[16px] text-bb-primary hover:text-bb-secondary-deep transition-colors"
+                      >
+                        {o.nameEn}
+                      </Link>
+                      <p className="text-[11px] text-bb-on-surface-variant font-mono mt-0.5">{o.slug}</p>
+                    </td>
+                    <td className="p-4 text-bb-on-surface-variant">{o.nameFr}</td>
+                    <td className="p-4 text-bb-on-surface-variant">{o.sortOrder}</td>
+                    <td className="p-4">
+                      <span
+                        className={`inline-block px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${
+                          o.status === "published"
+                            ? "bg-bb-secondary/15 text-bb-secondary-deep"
+                            : "bg-bb-bg-mid text-bb-on-surface-variant"
+                        }`}
+                      >
+                        {o.status}
+                      </span>
+                    </td>
+                    <td className="p-4 text-right">
+                      <Link
+                        href={`/admin/occasions/${o.id}`}
+                        className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep hover:opacity-70"
+                      >
+                        Edit
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </section>
   );
