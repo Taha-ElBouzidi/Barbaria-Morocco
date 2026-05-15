@@ -180,13 +180,9 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
   const totalSteps = activeSteps.length;
   const currentStepDef = state.view === "step" ? activeSteps[state.currentStep] : null;
 
-  const filteredProducts = useCallback(
-    (filter: string | null): ProductSummary[] => {
-      if (filter === null) return products;
-      return products.filter((p) => p.subcategorySlug === filter);
-    },
-    [products]
-  );
+  // Sprint 2.9: every step shows the full product pool. The pool is the
+  // box's admin-assigned items if any, otherwise the category falls back
+  // to all published products. No per-step subcategory filtering.
 
   // ---------- handlers ----------
   const handleSkip = () => dispatch({ type: "skip" });
@@ -317,7 +313,7 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
               stepIndex={state.currentStep}
               totalSteps={totalSteps}
               locale={locale}
-              products={filteredProducts(currentStepDef.filter)}
+              products={products}
               activeSlug={state.picks[state.currentStep]}
               copy={copy}
               onOpen={(slug) => setExpandedSlug(slug)}
@@ -907,22 +903,22 @@ function ProductZoomModal({
               {product.lede}
             </p>
           )}
-          <dl className="grid grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-3 border-y border-bb-secondary/20 py-4 text-[12px]">
-            {product.origin && (
-              <>
-                <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">{copy.detail_origin}</dt>
-                <dd className="text-bb-secondary">{product.origin}</dd>
-              </>
-            )}
-            {product.formats[0] && (
-              <>
-                <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">{copy.detail_format}</dt>
-                <dd className="text-bb-secondary">{product.formats.join(", ")}</dd>
-              </>
-            )}
-            <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">{copy.detail_lead}</dt>
-            <dd className="text-bb-secondary">{product.lead}</dd>
-          </dl>
+          {(product.origin || product.formats[0]) && (
+            <dl className="grid grid-cols-2 gap-x-4 sm:gap-x-6 gap-y-3 border-y border-bb-secondary/20 py-4 text-[12px]">
+              {product.origin && (
+                <>
+                  <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">{copy.detail_origin}</dt>
+                  <dd className="text-bb-secondary">{product.origin}</dd>
+                </>
+              )}
+              {product.formats[0] && (
+                <>
+                  <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">{copy.detail_format}</dt>
+                  <dd className="text-bb-secondary">{product.formats.join(", ")}</dd>
+                </>
+              )}
+            </dl>
+          )}
           {product.tags.length > 0 && (
             <ul className="flex flex-wrap gap-2">
               {product.tags.slice(0, 8).map((tag) => (

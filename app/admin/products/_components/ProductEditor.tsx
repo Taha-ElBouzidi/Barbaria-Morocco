@@ -265,22 +265,9 @@ export default function ProductEditor({
             Identity
           </h2>
 
+          {/* Slug auto-generated from the EN name. Hidden so it can't
+              be accidentally edited (would break public URLs). */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-            <label className="block">
-              <span className="block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2">
-                Slug *
-              </span>
-              <input
-                type="text"
-                value={slug}
-                onChange={(e) => setSlug(e.target.value)}
-                pattern="[a-z0-9-]+"
-                required
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface font-mono text-[13px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
-                placeholder="e.g. cedar-box"
-              />
-            </label>
-
             <label className="block">
               <span className="block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2">
                 Category *
@@ -425,61 +412,12 @@ export default function ProductEditor({
           )}
         </section>
 
-        {/* Section 5: Application Steps */}
-        <section className="space-y-6">
-          <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
-            Application Steps
-          </h2>
-
-          {steps.map((step, index) => (
-            <div key={step.stepNumber} className="border border-bb-line p-4 space-y-4">
-              <div className="flex items-center justify-between">
-                <p className="font-sans text-[12px] uppercase tracking-[0.14em] text-bb-on-surface-variant">
-                  Step {step.stepNumber}
-                </p>
-                <button
-                  type="button"
-                  onClick={() => removeStep(index)}
-                  className="font-sans text-[11px] text-bb-tertiary hover:underline"
-                >
-                  Remove
-                </button>
-              </div>
-
-              {(["en", "fr"] as const).map((locale) => (
-                <div key={locale} className="space-y-2">
-                  <p className="font-sans text-[10px] uppercase tracking-[0.14em] text-bb-on-surface-variant">
-                    {locale === "en" ? "English" : "Français"}
-                  </p>
-                  <input
-                    type="text"
-                    placeholder="Title"
-                    value={step[locale].title}
-                    onChange={(e) => updateStep(index, locale, "title", e.target.value)}
-                    className="w-full bg-transparent border-0 border-b border-bb-line py-1.5 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
-                  />
-                  <textarea
-                    placeholder="Body"
-                    value={step[locale].body}
-                    onChange={(e) => updateStep(index, locale, "body", e.target.value)}
-                    rows={2}
-                    className="w-full bg-transparent border border-bb-line p-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary resize-y"
-                  />
-                </div>
-              ))}
-            </div>
-          ))}
-
-          {steps.length < 3 && (
-            <button
-              type="button"
-              onClick={addStep}
-              className="font-sans text-[12px] uppercase tracking-[0.18em] border border-bb-line px-4 py-2 hover:border-bb-primary transition-colors"
-            >
-              + Add step
-            </button>
-          )}
-        </section>
+        {/* Application Steps removed from the editor UI per user request:
+            the field was complex to fill and not surfaced on the public
+            site after the box-first IA shift. Existing rows in
+            product_application_steps stay in the DB; we just no longer
+            edit them here. Re-introduce later if the maison decides to
+            publish how-to-use content. */}
 
         {/* Actions. Sticky at the bottom so the buyer always sees the
             primary action no matter how deep into the form. */}

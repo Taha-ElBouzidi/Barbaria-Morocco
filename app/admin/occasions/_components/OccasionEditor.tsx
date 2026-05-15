@@ -63,19 +63,10 @@ export default function OccasionEditor({ initial }: Props) {
         <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
           Identity
         </h2>
+        {/* Slug auto-generates from the English name; hidden to avoid
+            accidental edits that would break the public URL. */}
+        <input type="hidden" name="slug" value={slug} />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <label className={labelCls} htmlFor="slug">Slug *</label>
-            <input
-              id="slug"
-              name="slug"
-              required
-              value={slug}
-              onChange={(e) => setSlug(e.target.value)}
-              pattern="[a-z0-9-]+"
-              className={inputCls}
-            />
-          </div>
           <div>
             <label className={labelCls} htmlFor="sortOrder">Sort order</label>
             <input

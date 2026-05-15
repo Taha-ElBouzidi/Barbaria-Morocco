@@ -42,13 +42,14 @@ The Products list filter is still using the legacy ritual taxonomy (Hammam, Bota
 ## Field cleanup on Product editor
 The user flagged that several product fields no longer make sense now that products are not sold individually:
 
-- ~~MOQ on products~~ (removed in this sprint, keep DB column for safety)
-- ~~Lead time on products~~ (removed in this sprint, keep DB column)
-- ~~Hero flag~~ (removed in this sprint)
+- ~~MOQ on products~~ (removed, DB column retained)
+- ~~Lead time on products~~ (removed from product editor + wizard modal, DB column retained)
+- ~~Hero flag~~ (removed, DB column retained)
+- ~~Application steps~~ (removed from product editor UI, DB rows retained; bring back if the maison decides to publish how-to-use content)
+- ~~Slug input~~ (hidden, auto-generated from EN name)
 - Origin: keep
 - Ritual label: keep (powers the eyebrow on PDP and wizard zoom modal)
 - Format: keep
-- Application steps: keep
 
 ## Inline help / glossary
 Several admin field names are jargon for a non-developer. The current sprint adds inline help text on:
@@ -60,6 +61,15 @@ Several admin field names are jargon for a non-developer. The current sprint add
 - Facets (currently labelled "Tags" or similar; eventually fold into the product editor with no top-level admin page)
 
 Long-term: consider an in-context glossary modal accessible from a "?" icon next to each field label.
+
+## Convert free-text fields to multi-select where practical
+Admin feedback: typing custom values is hard and error-prone. Candidates to convert to picker / multi-select inputs:
+
+- **Origin** (e.g. "Marrakech, Atlas, Souss"): could be a managed list with autocomplete (datalist) so the maison can either pick an existing region or add a new one.
+- **Ritual label** (e.g. "Or Liquide du Maroc"): low value to convert; per-product unique copy.
+- **Format**: already exists as a facet type, but products also have a text[] `formats` column. Decision needed: collapse to facet picker, or keep both.
+
+Name + description fields stay as free text per user direction.
 
 ## Future admin improvements
 - Drag-and-drop reordering for ordered lists (currently up/down buttons only — buttons are touch-friendly, drag-and-drop is desktop-only).

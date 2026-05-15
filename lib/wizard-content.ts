@@ -1,22 +1,16 @@
-// Sprint 2.1 — Compose-your-box wizard content.
+// Compose-your-box wizard content.
 //
-// Step narratives per category theme. Each step carries a filter that
-// constrains which products the buyer can pick from (drawn from the
-// subcategory slug). The story fragments build the Amazigh narrative
-// arc across the journey.
-//
-// Cosmetics → "Sous les étoiles du Sahara" (constellation metaphor;
-// each step is a star placed into the box).
-// Épicerie  → "Sur la route des caravanes" (each step is a halt on
-// the trans-Saharan trade route).
+// Sprint 2.9 follow-up: per-step subcategory filters were removed. The
+// buyer now sees every piece the maison has assigned to the box (or
+// every published piece in the category as a fallback) at every step.
+// Step copy stays for the storytelling arc, Amazigh narrative wrapping
+// the act of composing, but no longer constrains the selectable pool.
 
-import type { CategorySlug, StoryThemeKey } from "./categories";
+import type { StoryThemeKey } from "./categories";
 
 export type BoxSize = 3 | 5 | 6;
 
 export interface WizardStep {
-  /** Subcategory slug filter. If null, any product in the category qualifies. */
-  filter: string | null;
   eyebrow: { en: string; fr: string };
   /** Short headline above the step. */
   title: { en: string; fr: string };
@@ -34,8 +28,7 @@ export interface WizardStep {
 const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
   sahara_stars: [
     {
-      filter: "scrubs",
-      eyebrow: { en: "Star 01 — Steam", fr: "Étoile 01 — Vapeur" },
+      eyebrow: { en: "Star 01,Steam", fr: "Étoile 01,Vapeur" },
       title: {
         en: "The hammam begins with steam.",
         fr: "Le hammam commence par la vapeur.",
@@ -46,8 +39,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
       },
     },
     {
-      filter: "oils",
-      eyebrow: { en: "Star 02 — The Oil", fr: "Étoile 02 — L'Huile" },
+      eyebrow: { en: "Star 02,The Oil", fr: "Étoile 02,L'Huile" },
       title: {
         en: "Beneath the Souss moon, the first drop of gold.",
         fr: "Sous la lune du Souss, la première goutte d'or.",
@@ -58,8 +50,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
       },
     },
     {
-      filter: "serums",
-      eyebrow: { en: "Star 03 — The Serum", fr: "Étoile 03 — Le Sérum" },
+      eyebrow: { en: "Star 03,The Serum", fr: "Étoile 03,Le Sérum" },
       title: {
         en: "When the desert concentrates, it becomes serum.",
         fr: "Quand le désert se concentre, il devient sérum.",
@@ -70,8 +61,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
       },
     },
     {
-      filter: "hydrolats",
-      eyebrow: { en: "Star 04 — The Floral", fr: "Étoile 04 — L'Eau Florale" },
+      eyebrow: { en: "Star 04,The Floral", fr: "Étoile 04,L'Eau Florale" },
       title: {
         en: "At dawn, the Dades rose wakes with the first ray.",
         fr: "Au matin, la rose du Dadès s'éveille avec le premier rayon.",
@@ -82,8 +72,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
       },
     },
     {
-      filter: "massage",
-      eyebrow: { en: "Star 05 — The Gesture", fr: "Étoile 05 — Le Geste" },
+      eyebrow: { en: "Star 05,The Gesture", fr: "Étoile 05,Le Geste" },
       title: {
         en: "The gesture that seals.",
         fr: "Le geste qui scelle.",
@@ -94,8 +83,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
       },
     },
     {
-      filter: null,
-      eyebrow: { en: "Star 06 — The Free Star", fr: "Étoile 06 — L'Étoile Libre" },
+      eyebrow: { en: "Star 06,The Free Star", fr: "Étoile 06,L'Étoile Libre" },
       title: {
         en: "A final star. Free to you.",
         fr: "Une étoile finale. Libre à vous.",
@@ -108,8 +96,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
   ],
   caravan_route: [
     {
-      filter: null,
-      eyebrow: { en: "Halt 01 — Sijilmassa", fr: "Halte 01 — Sijilmassa" },
+      eyebrow: { en: "Halt 01,Sijilmassa", fr: "Halte 01,Sijilmassa" },
       title: {
         en: "Sijilmassa, the city of gold on the Ziz.",
         fr: "Sijilmassa, la ville d'or sur le Ziz.",
@@ -120,8 +107,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
       },
     },
     {
-      filter: null,
-      eyebrow: { en: "Halt 02 — Taliouine", fr: "Halte 02 — Taliouine" },
+      eyebrow: { en: "Halt 02,Taliouine", fr: "Halte 02,Taliouine" },
       title: {
         en: "Taliouine, the saffron valley.",
         fr: "Taliouine, la vallée du safran.",
@@ -132,8 +118,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
       },
     },
     {
-      filter: null,
-      eyebrow: { en: "Halt 03 — Marrakech", fr: "Halte 03 — Marrakech" },
+      eyebrow: { en: "Halt 03,Marrakech", fr: "Halte 03,Marrakech" },
       title: {
         en: "Marrakech, the crossroads of taste.",
         fr: "Marrakech, le carrefour des saveurs.",
@@ -144,8 +129,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
       },
     },
     {
-      filter: null,
-      eyebrow: { en: "Halt 04 — Fès", fr: "Halte 04 — Fès" },
+      eyebrow: { en: "Halt 04,Fès", fr: "Halte 04,Fès" },
       title: {
         en: "Fès, where the beehives sleep beneath the cedars.",
         fr: "Fès, où les ruches dorment sous les cèdres.",
@@ -156,8 +140,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
       },
     },
     {
-      filter: null,
-      eyebrow: { en: "Halt 05 — The Atlas", fr: "Halte 05 — L'Atlas" },
+      eyebrow: { en: "Halt 05,The Atlas", fr: "Halte 05,L'Atlas" },
       title: {
         en: "The Atlas, where the salt rests.",
         fr: "L'Atlas, où le sel repose.",
@@ -168,8 +151,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
       },
     },
     {
-      filter: null,
-      eyebrow: { en: "Halt 06 — The Return", fr: "Halte 06 — Le Retour" },
+      eyebrow: { en: "Halt 06,The Return", fr: "Halte 06,Le Retour" },
       title: {
         en: "The return to Marrakech.",
         fr: "Le retour à Marrakech.",
@@ -184,13 +166,14 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
 
 /**
  * Resolve the active step list for a given size + theme.
- * 3-item box uses the foundational arc; 5- and 6-item include more depth.
+ * 3-item box now uses the first three step narratives consecutively (was
+ * skipping serums); 5- and 6-item include more depth. The buyer's product
+ * pool is identical across all sizes; only the step count and story arc
+ * differ.
  */
 export function stepsForSize(themeKey: StoryThemeKey, size: BoxSize): WizardStep[] {
   const all = WIZARD_STEPS[themeKey];
-  if (size === 3) return [all[0], all[1], all[3]];
-  if (size === 5) return all.slice(0, 5);
-  return all.slice(0, 6);
+  return all.slice(0, size);
 }
 
 export const BOX_SIZES: BoxSize[] = [3, 5, 6];

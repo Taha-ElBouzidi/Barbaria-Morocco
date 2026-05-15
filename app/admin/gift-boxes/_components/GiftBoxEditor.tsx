@@ -112,22 +112,11 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
         <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
           Identity
         </h2>
+        {/* Slug is generated from the English name and not surfaced to
+            avoid accidental edits that would break public URLs. Kept as
+            a hidden form input so the server action still sees it. */}
+        <input type="hidden" name="slug" value={slug} />
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-          <div>
-            <label className={labelCls} htmlFor="slug">URL slug *</label>
-            <input
-              id="slug"
-              name="slug"
-              required
-              value={slug}
-              onChange={(e) => setSlug(e.target.value)}
-              pattern="[a-z0-9-]+"
-              className={inputCls}
-            />
-            <p className={HELP_CLS}>
-              The address segment for the box (lowercase letters, numbers, hyphens). Auto-suggested from the English name when you start typing it.
-            </p>
-          </div>
           <div>
             <label className={labelCls} htmlFor="categoryId">Category *</label>
             <select
@@ -246,14 +235,14 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
         </div>
       </section>
 
-      {/* Items */}
-      {!isCustomizable && (
-        <section className="space-y-6">
+      <section className="space-y-6">
           <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
-            Items ({itemIds.length})
+            Pieces ({itemIds.length})
           </h2>
           <p className="text-[13px] text-bb-on-surface-variant">
-            Pick products from the selected category and order them. Customizable boxes leave this empty.
+            {isCustomizable
+              ? "These are the pieces buyers can choose from when they enter the compose-your-own wizard for this box. If you leave this empty, the wizard falls back to every published piece in the category."
+              : "Pick pieces from the selected category and order them. The order here is the order shown on the public box detail page."}
           </p>
 
           {/* Picked items, ordered */}
@@ -352,7 +341,6 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
             </div>
           </details>
         </section>
-      )}
 
       {/* Action bar. Negative margins compensate for the main container
           padding (px-4 mobile, px-8 desktop) so the sticky footer reaches
