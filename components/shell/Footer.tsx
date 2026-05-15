@@ -6,18 +6,21 @@ import Eyebrow from "@/components/primitives/Eyebrow";
 import Wordmark from "@/components/primitives/Wordmark";
 import { cn } from "@/lib/utils";
 import Icon from "@/components/primitives/Icon";
-import { INSTAGRAM_URL, LINKEDIN_URL, X_URL, WHATSAPP_NUMBER } from "@/lib/constants";
+import type { SiteSettings } from "@/lib/data/site-settings";
 
-const SOCIAL_LINKS = [
-  { label: "Instagram", icon: "instagram" as const, href: INSTAGRAM_URL },
-  { label: "LinkedIn", icon: "linkedin" as const, href: LINKEDIN_URL },
-  { label: "X", icon: "x-twitter" as const, href: X_URL },
-];
+interface FooterProps {
+  socials: SiteSettings;
+}
 
-export default function Footer() {
+export default function Footer({ socials }: FooterProps) {
   const t = useTranslations("footer");
   const locale = useLocale();
   const pathname = usePathname();
+  const SOCIAL_LINKS = [
+    { label: "Instagram", icon: "instagram" as const, href: socials.instagramUrl },
+    { label: "LinkedIn", icon: "linkedin" as const, href: socials.linkedinUrl },
+    { label: "X", icon: "x-twitter" as const, href: socials.xUrl },
+  ].filter((s) => s.href);
 
   return (
     <footer className="border-t border-bb-line bg-bb-bg">
@@ -94,22 +97,26 @@ export default function Footer() {
               >
                 {t("email")}
               </a>
-              <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"
-              >
-                {t("whatsapp")}
-              </a>
-              <a
-                href={INSTAGRAM_URL}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"
-              >
-                {t("instagram")}
-              </a>
+              {socials.whatsappUrl && (
+                <a
+                  href={socials.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"
+                >
+                  {t("whatsapp")}
+                </a>
+              )}
+              {socials.instagramUrl && (
+                <a
+                  href={socials.instagramUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"
+                >
+                  {t("instagram")}
+                </a>
+              )}
             </nav>
             <address className="mt-4 font-serif text-[13px] italic text-bb-on-surface-variant">
               {t("address")}
@@ -134,17 +141,19 @@ export default function Footer() {
                 </a>
               </li>
             ))}
-            <li>
-              <a
-                href={`https://wa.me/${WHATSAPP_NUMBER}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp"
-                className="flex h-11 w-11 items-center justify-center rounded-full border border-bb-line text-bb-on-surface hover:border-bb-primary hover:text-bb-primary transition-colors"
-              >
-                <Icon name="whatsapp" size={18} />
-              </a>
-            </li>
+            {socials.whatsappUrl && (
+              <li>
+                <a
+                  href={socials.whatsappUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="WhatsApp"
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-bb-line text-bb-on-surface hover:border-bb-primary hover:text-bb-primary transition-colors"
+                >
+                  <Icon name="whatsapp" size={18} />
+                </a>
+              </li>
+            )}
           </ul>
         </div>
 
