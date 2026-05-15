@@ -39,9 +39,10 @@ How to use the Barbaria admin dashboard at `https://<your-domain>/admin`. Covers
 ## Dashboard
 Route: `/admin`.
 
-- Four stat tiles at the top: published products, drafts, ateliers, published journal entries. Click any tile to jump to that section, filtered if applicable.
-- Three quick-create buttons: new product, new journal entry, new atelier.
-- Recent activity feed at the bottom: last 30 admin actions across the catalogue.
+- Hero **Open inquiries** tile at the top. Counts inquiries whose status is New, Contacted, or Quoted (Won and Lost are excluded). Click to jump to the inquiry list.
+- Seven stat tiles below: Gift boxes published, Gift box drafts, Products published, Product drafts, Occasions, Ateliers, Journal. Two columns on phone, three at sm, seven at xl. Click any to jump to the relevant list filtered if applicable.
+- Quick actions row: New gift box (primary), New product, New occasion, New journal entry. 2×2 grid on phone, 4-wide on lg.
+- Recent activity feed at the bottom: latest admin actions across the catalogue.
 
 ## Gift boxes
 Route: `/admin/gift-boxes`.
@@ -78,11 +79,12 @@ What this controls: every product piece. Products live as components of gift box
 - Mobile cards show thumbnail, name, slug, status, ritual, MOQ.
 
 ### Create / Edit
-- Identity: slug, category, ritual, sub-category, MOQ, formats, lead time (production time), origin, ritual label, hero flag.
+- Identity: category, ritual, sub-category, formats, origin, ritual label. **Slug** is generated automatically from the English name and not editable (keeps URLs stable).
+- **Removed from the editor** (kept in the DB for safety): MOQ, lead time, hero flag, application steps. MOQ now lives on each gift box, lead time is discussed at the inquiry stage with the concierge, application steps are not surfaced on the public site after the box-first IA shift.
 - Translations: EN + FR name, short, lede.
 - Images: upload to Supabase Storage. First image is the hero. Reorder with up/down arrows.
-- Application steps: ordered list of method-of-use rituals (EN + FR title and body each).
-- Facets: pick from ingredient, application, format, packaging, certification axes. New facet values are managed under Facets.
+- Tags (formerly facets): pick from ingredient, application, format, packaging, certification axes. New tag values are managed under Tags.
+- Sticky action bar at the bottom: Save as draft / Save changes, plus Save and publish. "Save and publish" is available on both new and edit pages.
 
 ## Facets
 Route: `/admin/facets`.
@@ -128,9 +130,13 @@ The rituals taxonomy (Hammam, Botanical, Heritage) is internal product tagging o
 ## Inquiries
 Route: `/admin/inquiries`.
 
-What this controls: incoming B2B quote requests. Phase 1 of the site sends emails via mailto so requests do not yet land in this list automatically. Once the `/api/inquiry` endpoint ships, every form submission will appear here with the buyer's company info, occasion, and the list of boxes (curated + custom) plus quantities.
+What this controls: incoming B2B quote requests. The `/api/inquiry` endpoint writes each public contact-form submission directly into Supabase (`inquiries` + `inquiry_items`). The maison sees them here in real time, sorted newest-first by default, filterable by status.
 
-Per-inquiry view (when wired): mark status (New, Contacted, Quoted, Won, Lost) and leave internal notes.
+Each inquiry carries: company, contact name, email, phone, occasion, event date, free-text message, locale of submission, plus one row per requested box (curated or custom). Custom boxes also carry the composition: ordered list of pieces the buyer assembled in the wizard.
+
+Per-inquiry view: editable Status (New, Contacted, Quoted, Won, Lost) and internal Notes. Save writes via a service-role server action, revalidates the list view immediately. Reply via email opens a pre-filled mailto.
+
+Inquiry submissions are rate-limited at the API: 5 per minute and 50 per day per IP. Honeypot field catches scripted spam silently. Each row records an `ip_hash` for forensics.
 
 ## Activity log
 Route: `/admin/activity`.

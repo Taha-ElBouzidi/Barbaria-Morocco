@@ -34,7 +34,7 @@ export default function InquirySidebar({ lang: _lang }: Props) {
           {t("sidebar_empty")}
         </p>
       ) : (
-        <ul className="space-y-4 max-h-[480px] overflow-y-auto pr-2">
+        <ul className="space-y-4 lg:max-h-[480px] lg:overflow-y-auto lg:pr-2">
           {lines.map((line) => {
             const isCustom = !!line.custom;
             const name = line.nameSnapshot ?? line.giftBoxSlug;

@@ -415,3 +415,17 @@
   animation-duration: 0.45s;
   animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
+
+/* Honour prefers-reduced-motion: cut the SaharaPrestige twinkle and skip
+   View Transitions cross-fades entirely. The decorative gold pepitas stay
+   visible at their peak opacity instead of pulsing. */
+@media (prefers-reduced-motion: reduce) {
+  .sp-root .sp-pepita {
+    animation: none;
+    opacity: var(--peak, 0.85);
+  }
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none;
+  }
+}

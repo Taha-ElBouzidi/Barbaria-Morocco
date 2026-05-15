@@ -23,7 +23,7 @@ export default async function BoxesContainingPiece({ boxes, lang: _lang }: Props
       <div className="space-y-3 mb-12">
         <Eyebrow tone="green">{t("boxes_containing_piece")}</Eyebrow>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16">
+      <div className="grid grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-10 sm:gap-x-8 sm:gap-y-16">
         {boxes.map((box) => (
           <Link
             key={box.slug}

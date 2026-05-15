@@ -46,11 +46,8 @@ Packaging size or count. Example: "200 g pot", "30 ml amber glass". Multiple val
 ## Tags (formerly "Facets")
 Keyword chips on products. Used to surface product attributes (Argan, Organic, Cold-pressed, 200g pot). Each tag belongs to one of five axes: ingredient, application, format, packaging, certification. Tags drive future catalogue filters; for now they show as pills on the product detail page.
 
-## Application steps
-The "how to use" ritual on a product page. Up to 3 ordered steps, each with an EN + FR title and body. Example for a scrub:
-- Step 1 *Steam*: Open the pores in the hammam vapour for 10 minutes.
-- Step 2 *Massage*: Apply on damp warm skin, circle in for 5 minutes.
-- Step 3 *Kessa*: Glove down, rinse, finish with a hydrosol mist.
+## Application steps (removed from editor)
+The "how to use" ritual that used to appear on product pages. **Removed from the product editor UI** because products no longer surface individually on the public site after the box-first IA shift. Existing rows in `product_application_steps` are preserved in the DB so they can be brought back if the maison decides to publish how-to-use content later.
 
 ## Occasion
 The Occasion dropdown on the public contact form. Editable from `/admin/occasions` so the maison can surface seasonal events (Mother's Day, Eid, Christmas) without a code deploy.

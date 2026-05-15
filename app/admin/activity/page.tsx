@@ -7,12 +7,15 @@ export const dynamic = "force-dynamic";
 
 const ENTITY_TYPES = [
   { value: "all", label: "All" },
+  { value: "gift_box", label: "Gift box" },
   { value: "product", label: "Product" },
+  { value: "occasion", label: "Occasion" },
   { value: "journal_card", label: "Journal" },
   { value: "atelier", label: "Atelier" },
+  { value: "category", label: "Category" },
   { value: "ritual", label: "Ritual" },
   { value: "ritual_subcategory", label: "Sub-category" },
-  { value: "facet", label: "Facet" },
+  { value: "facet", label: "Tag" },
   { value: "inquiry", label: "Inquiry" },
 ];
 
