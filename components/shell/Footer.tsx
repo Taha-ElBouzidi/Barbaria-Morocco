@@ -5,7 +5,14 @@ import { Link, usePathname } from "@/i18n/navigation";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import Wordmark from "@/components/primitives/Wordmark";
 import { cn } from "@/lib/utils";
-import { INSTAGRAM_HANDLE, WHATSAPP_NUMBER } from "@/lib/constants";
+import Icon from "@/components/primitives/Icon";
+import { INSTAGRAM_URL, LINKEDIN_URL, X_URL, WHATSAPP_NUMBER } from "@/lib/constants";
+
+const SOCIAL_LINKS = [
+  { label: "Instagram", icon: "instagram" as const, href: INSTAGRAM_URL },
+  { label: "LinkedIn", icon: "linkedin" as const, href: LINKEDIN_URL },
+  { label: "X", icon: "x-twitter" as const, href: X_URL },
+];
 
 export default function Footer() {
   const t = useTranslations("footer");
@@ -96,7 +103,7 @@ export default function Footer() {
                 {t("whatsapp")}
               </a>
               <a
-                href={`https://instagram.com/${INSTAGRAM_HANDLE}`}
+                href={INSTAGRAM_URL}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"
@@ -110,8 +117,38 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Legal row */}
-        <div className="mt-16 border-t border-bb-line pt-8">
+        {/* Social row, full width. Placeholders for now. */}
+        <div className="mt-12 lg:mt-16 flex flex-col items-center gap-4 border-t border-bb-line pt-10">
+          <Eyebrow tone="green">{t("follow")}</Eyebrow>
+          <ul className="flex items-center gap-3">
+            {SOCIAL_LINKS.map((s) => (
+              <li key={s.label}>
+                <a
+                  href={s.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label={s.label}
+                  className="flex h-11 w-11 items-center justify-center rounded-full border border-bb-line text-bb-on-surface hover:border-bb-primary hover:text-bb-primary transition-colors"
+                >
+                  <Icon name={s.icon} size={18} />
+                </a>
+              </li>
+            ))}
+            <li>
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+                className="flex h-11 w-11 items-center justify-center rounded-full border border-bb-line text-bb-on-surface hover:border-bb-primary hover:text-bb-primary transition-colors"
+              >
+                <Icon name="whatsapp" size={18} />
+              </a>
+            </li>
+          </ul>
+        </div>
+
+        <div className="mt-10 border-t border-bb-line pt-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <Eyebrow tone="muted">{t("rights")}</Eyebrow>
 

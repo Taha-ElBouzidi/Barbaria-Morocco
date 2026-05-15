@@ -22,6 +22,8 @@ const PATHS: Record<string, string> = {
   phone: "M5 4l3 3-2 2a10 10 0 005 5l2-2 3 3a2 2 0 01-2 2 12 12 0 01-11-11 2 2 0 012-2z",
   calendar: "M5 5h14a1 1 0 011 1v13a1 1 0 01-1 1H5a1 1 0 01-1-1V6a1 1 0 011-1zM4 10h16M8 3v4M16 3v4",
   weave: "M9 3v18M15 3v18M3 9h18M3 15h18",
+  linkedin: "M4 4h4v16H4zm0-4h4v3H4zm8 4h4v3a4 4 0 014-4h0a4 4 0 014 4v9h-4v-7a2 2 0 00-4 0v7h-4z",
+  "x-twitter": "M4 4l16 16M20 4L4 20",
 };
 
 interface IconProps {

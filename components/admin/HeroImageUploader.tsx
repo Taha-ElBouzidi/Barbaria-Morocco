@@ -53,59 +53,63 @@ export default function HeroImageUploader({ value, onChange, name, aspect = "4/5
     });
   };
 
-  const aspectClass = aspect === "1/1" ? "aspect-square" : aspect === "16/9" ? "aspect-video" : "aspect-[4/5]";
+  void aspect;
+  void alt;
 
+  // Compact: 56x56 thumb + upload button beside it. No big preview that
+  // hogs vertical space; the admin just needs confirmation that the
+  // upload succeeded and the option to replace.
   return (
     <div className="space-y-2">
       <input type="hidden" name={name} value={value} />
-      <div
-        className={`relative ${aspectClass} bg-bb-bg-low border border-bb-line overflow-hidden`}
-      >
-        {previewUrl ? (
-          // eslint-disable-next-line @next/next/no-img-element
-          <img src={previewUrl} alt={alt} className="absolute inset-0 h-full w-full object-cover" />
-        ) : (
-          <div className="absolute inset-0 flex flex-col items-center justify-center gap-2 text-bb-on-surface-variant">
-            <Icon name="leaf" size={28} />
-            <p className="font-sans text-[11px] uppercase tracking-[0.18em]">No image yet</p>
-          </div>
-        )}
-        <input
-          ref={fileInputRef}
-          type="file"
-          accept="image/jpeg,image/png,image/webp,image/avif"
-          className="hidden"
-          onChange={(e) => {
-            const f = e.target.files?.[0];
-            if (f) handleFile(f);
-            e.target.value = "";
-          }}
-        />
-      </div>
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center gap-3">
+        <div className="h-14 w-14 shrink-0 bg-bb-bg-low border border-bb-line overflow-hidden relative">
+          {previewUrl ? (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img src={previewUrl} alt="" className="absolute inset-0 h-full w-full object-cover" />
+          ) : (
+            <div className="absolute inset-0 flex items-center justify-center text-bb-on-surface-variant">
+              <Icon name="leaf" size={18} />
+            </div>
+          )}
+          <input
+            ref={fileInputRef}
+            type="file"
+            accept="image/jpeg,image/png,image/webp,image/avif"
+            className="hidden"
+            onChange={(e) => {
+              const f = e.target.files?.[0];
+              if (f) handleFile(f);
+              e.target.value = "";
+            }}
+          />
+        </div>
         <button
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={pending}
           className="inline-flex items-center gap-2 px-3 py-2 min-h-[40px] border border-bb-line text-bb-on-surface text-[12px] uppercase tracking-[0.18em] hover:border-bb-primary disabled:opacity-50 transition-colors"
         >
-          <Icon name="arrow-up-right" size={12} className="rotate-[-45deg]" />
-          {pending ? "Uploading…" : previewUrl ? "Replace image" : "Upload image"}
+          {pending ? "Uploading…" : previewUrl ? "Replace" : "Upload image"}
         </button>
-        {previewUrl && (
+        {previewUrl && !pending && (
           <button
             type="button"
             onClick={() => onChange("")}
-            disabled={pending}
-            className="text-[11px] uppercase tracking-[0.18em] text-bb-tertiary hover:opacity-70 disabled:opacity-50 px-3 py-2 min-h-[40px]"
+            className="text-[11px] uppercase tracking-[0.18em] text-bb-tertiary hover:opacity-70 px-3 py-2 min-h-[40px]"
           >
             Remove
           </button>
         )}
+        {previewUrl && !pending && (
+          <span className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep flex items-center gap-1">
+            <Icon name="check" size={14} /> Saved
+          </span>
+        )}
       </div>
       {error && <p className="text-[12px] text-bb-tertiary">{error}</p>}
       <p className="text-[11px] text-bb-on-surface-variant">
-        JPG, PNG, WebP or AVIF. Maximum 8 MB. Landscape or square works best.
+        JPG, PNG, WebP or AVIF. Maximum 8 MB.
       </p>
     </div>
   );

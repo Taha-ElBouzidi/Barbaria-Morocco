@@ -122,13 +122,52 @@ export default function TwoStepForm({ locale, occasions }: Props) {
     [form, occasionName, currentLocale, locale, mailtoLines]
   );
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const { clear: clearInquiry } = useInquiry();
+  const [submitError, setSubmitError] = useState<string | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (honeypot) return;
     if (!validateStep2() || !validateStep1()) return;
     setSubmitting(true);
-    window.location.href = mailtoUrl;
-    setTimeout(() => setSubmitted(true), 80);
+    setSubmitError(null);
+    try {
+      const payload = {
+        company: form.company,
+        contactName: form.contactName,
+        email: form.email,
+        phone: form.phone || null,
+        occasion: occasionName || null,
+        eventDate: form.eventDate || null,
+        message: form.message || null,
+        locale: currentLocale || locale,
+        honeypot,
+        lines: lines.map((line) => ({
+          giftBoxSlug: line.giftBoxSlug,
+          qty: line.qty,
+          minQty: line.minQty,
+          isCustom: !!line.custom,
+          nameSnapshot: line.nameSnapshot,
+          composition: line.custom ?? null,
+        })),
+      };
+      const res = await fetch("/api/inquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
+      const json = await res.json();
+      if (!res.ok || !json.ok) {
+        setSubmitError(json.error ?? "Could not send your request. Please try again.");
+        setSubmitting(false);
+        return;
+      }
+      clearInquiry();
+      setSubmitted(true);
+    } catch (err) {
+      setSubmitError(err instanceof Error ? err.message : "Network error");
+      setSubmitting(false);
+    }
   };
 
   if (submitted) {
@@ -308,6 +347,17 @@ export default function TwoStepForm({ locale, occasions }: Props) {
             </div>
           </div>
 
+          {submitError && (
+            <p
+              role="alert"
+              className="font-sans text-[13px] text-bb-tertiary border border-bb-tertiary/30 bg-bb-tertiary/5 px-4 py-3"
+            >
+              {submitError}{" "}
+              <a href={mailtoUrl} className="underline">
+                Send by email instead
+              </a>
+            </p>
+          )}
           <div className="flex items-center justify-between pt-4">
             <button
               type="button"
@@ -319,14 +369,13 @@ export default function TwoStepForm({ locale, occasions }: Props) {
 
             <button
               type="submit"
-              disabled={submitting || submitted}
-              data-mailto={mailtoUrl}
+              disabled={submitting || submitted || lines.length === 0}
               className={cn(
                 "font-sans text-[12px] uppercase tracking-[0.18em] bg-bb-primary text-bb-on-primary px-8 py-3.5 hover:bg-bb-secondary transition-colors flex items-center gap-2",
-                (submitting || submitted) && "opacity-50 cursor-not-allowed"
+                (submitting || submitted || lines.length === 0) && "opacity-50 cursor-not-allowed"
               )}
             >
-              {t("submit")} <Icon name="arrow-up-right" size={14} />
+              {submitting ? "Sending…" : t("submit")} <Icon name="arrow-up-right" size={14} />
             </button>
           </div>
         </div>

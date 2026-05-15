@@ -18,6 +18,7 @@ How to use the Barbaria admin dashboard at `https://<your-domain>/admin`. Covers
 - [Activity log](#activity-log)
 - [Publishing rules](#publishing-rules)
 - [Troubleshooting](#troubleshooting)
+- [Glossary](#glossary)
 
 ## Signing in and out
 - Go to `/admin/login`. Email + password.
@@ -152,6 +153,9 @@ Filterable list of every admin action (create, update, delete, publish). Filter 
 | Sidebar covers the page on mobile | Drawer stuck open | Tap outside the panel or press Escape |
 | Image upload fails | File exceeds 8 MB or wrong MIME type | Resize / re-encode as JPG, PNG, or WebP |
 | Sign-out signs me out by surprise | Should never happen with current code | Check for `<Link>` to `/admin/logout`; logout must be POST only |
+
+## Glossary
+Plain-language definition of every admin field, kept separately at `.project/ADMIN_GLOSSARY.md`. Worth pinning open next to the editor pages.
 
 ## Files of note
 - Schema migrations: `db/migrations/*.sql`. Migrations 0006 (categories + gift boxes), 0008 (box-level inquiry), and 0009 (occasions) are the recent additions.
