@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import AuditEntryRow from "./AuditEntryRow";
 
 interface AuditEntry {
@@ -40,8 +39,6 @@ export default function ActivityLogTable({
   entries,
   actorMap,
 }: ActivityLogTableProps) {
-  const [expandedId, setExpandedId] = useState<string | null>(null);
-
   if (entries.length === 0) {
     return (
       <p className="font-display italic text-bb-on-surface-variant py-8 text-center">
@@ -70,7 +67,6 @@ export default function ActivityLogTable({
             <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
               Action
             </th>
-            <th className="px-4 py-3 w-8" />
           </tr>
         </thead>
         <tbody>
@@ -80,7 +76,6 @@ export default function ActivityLogTable({
               : "system";
             const entityRef = extractEntityRef(entry);
             const relativeTime = formatRelative(entry.created_at);
-            const isExpanded = expandedId === entry.id;
 
             return (
               <AuditEntryRow
@@ -89,10 +84,6 @@ export default function ActivityLogTable({
                 actor={actor}
                 entityRef={entityRef}
                 relativeTime={relativeTime}
-                isExpanded={isExpanded}
-                onToggle={() =>
-                  setExpandedId(isExpanded ? null : entry.id)
-                }
               />
             );
           })}

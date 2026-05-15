@@ -47,7 +47,8 @@ export interface WizardCopy {
   size_6_desc: string;
   step_eyebrow_progress: string; // "Step {n} of {total}"
   step_no_products: string;
-  step_skip: string;
+  step_search_placeholder: string;
+  step_search_count: string;
   step_back: string;
   step_next: string;
   step_picked: string;
@@ -185,7 +186,6 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
   // to all published products. No per-step subcategory filtering.
 
   // ---------- handlers ----------
-  const handleSkip = () => dispatch({ type: "skip" });
   const handleBack = () => dispatch({ type: "back" });
   const handleSize = (s: BoxSize) => dispatch({ type: "pickSize", size: s });
   const handleQty = (q: number) => dispatch({ type: "setQty", qty: q });
@@ -276,7 +276,8 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
       role="dialog"
       aria-modal="true"
       aria-label={copy.exit_aria}
-      className="fixed inset-0 z-[100] bg-bb-primary text-white overflow-y-auto overflow-x-hidden"
+      data-theme={themeKey}
+      className={`fixed inset-0 z-[100] text-white overflow-y-auto overflow-x-hidden wizard-theme wizard-theme--${themeKey === "caravan_route" ? "caravan" : "sahara"}`}
     >
       <SaharaPrestige count={60} />
       <button
@@ -317,7 +318,6 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
               activeSlug={state.picks[state.currentStep]}
               copy={copy}
               onOpen={(slug) => setExpandedSlug(slug)}
-              onSkip={handleSkip}
               onBack={handleBack}
             />
           )}
@@ -377,7 +377,7 @@ function WizardView({ keyId, children }: { keyId: string; children: React.ReactN
   return (
     <div
       key={keyId}
-      className="motion-safe:animate-[fadeInUp_400ms_ease-out] motion-safe:opacity-0"
+      className="motion-safe:animate-[slideInRight_500ms_cubic-bezier(0.16,1,0.3,1)] motion-safe:opacity-0"
       style={{ animationFillMode: "forwards" }}
     >
       {children}
@@ -518,7 +518,6 @@ function StepView({
   activeSlug,
   copy,
   onOpen,
-  onSkip,
   onBack,
 }: {
   step: WizardStep;
@@ -529,13 +528,23 @@ function StepView({
   activeSlug: string | undefined;
   copy: WizardCopy;
   onOpen: (slug: string) => void;
-  onSkip: () => void;
   onBack: () => void;
 }) {
   const lang = locale;
   const eyebrow = step.eyebrow[lang];
   const title = step.title[lang];
   const story = step.story[lang];
+  const [search, setSearch] = useState("");
+  const filteredProducts = search.trim()
+    ? products.filter((p) => {
+        const q = search.trim().toLowerCase();
+        return (
+          p.name.toLowerCase().includes(q) ||
+          (p.short ?? "").toLowerCase().includes(q) ||
+          p.tags.some((t) => t.toLowerCase().includes(q))
+        );
+      })
+    : products;
 
   return (
     <div className="space-y-12">
@@ -559,8 +568,24 @@ function StepView({
           <p className="text-bb-secondary/80 italic font-display">{copy.step_no_products}</p>
         </div>
       ) : (
+        <>
+          <div className="max-w-[560px] mx-auto">
+            <input
+              type="search"
+              value={search}
+              onChange={(e) => setSearch(e.target.value)}
+              placeholder={copy.step_search_placeholder}
+              aria-label={copy.step_search_placeholder}
+              className="w-full bg-bb-primary-container/40 border border-bb-secondary/30 px-4 py-3 min-h-[44px] text-bb-secondary placeholder:text-bb-secondary/40 font-sans text-[14px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+            />
+            {search && (
+              <p className="mt-2 text-[11px] uppercase tracking-[0.18em] text-bb-secondary/60 text-center">
+                {copy.step_search_count.replace("{n}", String(filteredProducts.length))}
+              </p>
+            )}
+          </div>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 lg:gap-6">
-          {products.map((p) => {
+          {filteredProducts.map((p) => {
             const selected = p.slug === activeSlug;
             return (
               <button
@@ -607,24 +632,19 @@ function StepView({
             );
           })}
         </div>
+        </>
       )}
 
-      {/* Footer actions. The Next button was removed in the polish pass:
-          choosing a piece from the zoom modal auto-advances, so Next was
-          unreachable in practice. Skip stays for buyers who want to leave
-          a slot for the concierge. */}
-      <div className="flex flex-wrap items-center justify-between gap-4 pt-4">
+      {/* Footer actions. Skip removed per user direction: every wizard
+          slot is paid for, no buyer should land on a half-empty box. The
+          zoom modal auto-advances on Choose, and Back walks back. Exit
+          via the close X requires a confirm. */}
+      <div className="flex items-center justify-start pt-4">
         <button type="button"
           onClick={onBack}
           className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary"
         >
           ← {copy.step_back}
-        </button>
-        <button type="button"
-          onClick={onSkip}
-          className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary px-4 py-3"
-        >
-          {copy.step_skip}
         </button>
       </div>
     </div>
