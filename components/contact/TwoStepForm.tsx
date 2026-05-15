@@ -7,11 +7,15 @@ import { cn } from "@/lib/utils";
 import { useInquiry } from "@/lib/inquiry-context";
 import { useProductCatalogue } from "@/lib/data/ProductCatalogueContext";
 import { buildMailto, type MailtoLine, type InquiryFormData } from "@/lib/inquiry-mailto";
+import type { OccasionOption } from "@/lib/data/occasions";
 import Icon from "@/components/primitives/Icon";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 
 interface Props {
   locale: string;
+  /** Sprint 2.7: occasions are admin-configurable. Server fetches them and
+   *  passes resolved name + slug for the dropdown. */
+  occasions: OccasionOption[];
 }
 
 const INPUT_CLASS =
@@ -40,7 +44,7 @@ const INITIAL: FormData = {
  * has a quantity field. The mailto body lists each box and its qty + MOQ;
  * custom boxes also list their composition by resolved piece names.
  */
-export default function TwoStepForm({ locale }: Props) {
+export default function TwoStepForm({ locale, occasions }: Props) {
   const t = useTranslations("contact");
   const currentLocale = useLocale();
   const { lines } = useInquiry();
@@ -105,9 +109,15 @@ export default function TwoStepForm({ locale }: Props) {
     [lines, catalogue]
   );
 
+  // For the mailto body we want the readable occasion name, not the slug.
+  const occasionName = useMemo(
+    () => occasions.find((o) => o.slug === form.occasion)?.name ?? form.occasion,
+    [occasions, form.occasion]
+  );
+
   const mailtoUrl = useMemo(
-    () => buildMailto({ ...form, locale: currentLocale || locale }, mailtoLines),
-    [form, currentLocale, locale, mailtoLines]
+    () => buildMailto({ ...form, occasion: occasionName, locale: currentLocale || locale }, mailtoLines),
+    [form, occasionName, currentLocale, locale, mailtoLines]
   );
 
   const handleSubmit = (e: React.FormEvent) => {
@@ -273,12 +283,9 @@ export default function TwoStepForm({ locale }: Props) {
                 aria-describedby={errors.occasion ? "err-occasion" : undefined}
               >
                 <option value="">{t("f_occasion")}</option>
-                <option value="yearend">{t("f_occasion_yearend")}</option>
-                <option value="onboarding">{t("f_occasion_onboarding")}</option>
-                <option value="anniversary">{t("f_occasion_anniversary")}</option>
-                <option value="press">{t("f_occasion_press")}</option>
-                <option value="wedding">{t("f_occasion_wedding")}</option>
-                <option value="other">{t("f_occasion_other")}</option>
+                {occasions.map((o) => (
+                  <option key={o.slug} value={o.slug}>{o.name}</option>
+                ))}
               </select>
               {errors.occasion && <p id="err-occasion" className={ERROR_CLASS}>{errors.occasion}</p>}
             </div>

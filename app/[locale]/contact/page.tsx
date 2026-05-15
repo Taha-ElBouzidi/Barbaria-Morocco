@@ -6,8 +6,11 @@ import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
 import AmazighProverb from "@/components/primitives/AmazighProverb";
+import { getOccasions } from "@/lib/data/occasions";
 
 interface PageProps { params: Promise<{ locale: string }>; }
+
+export const revalidate = 60;
 
 export function generateStaticParams() {
   return [{ locale: "en" }, { locale: "fr" }];
@@ -27,6 +30,7 @@ export default async function ContactPage({ params }: PageProps) {
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "contact" });
   const lang = locale === "fr" ? "fr" : "en";
+  const occasions = await getOccasions(lang);
 
   return (
     <div className="pt-32 lg:pt-40 pb-24 lg:pb-32">
@@ -36,7 +40,7 @@ export default async function ContactPage({ params }: PageProps) {
           <Reveal delayMs={80}><DisplayHeading size="xl" as="h1">{t("hero_headline")}</DisplayHeading></Reveal>
         </div>
         <div className="grid grid-cols-1 lg:grid-cols-[1.7fr_1fr] gap-12 lg:gap-20">
-          <TwoStepForm locale={locale} />
+          <TwoStepForm locale={locale} occasions={occasions} />
           <InquirySidebar lang={lang} />
         </div>
       </section>
