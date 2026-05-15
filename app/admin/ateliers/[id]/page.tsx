@@ -31,7 +31,7 @@ export default async function EditAtelierPage({ params, searchParams }: PageProp
             ← Ateliers
           </Link>
           <div className="space-y-1">
-            <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+            <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
               Admin / Ateliers / Edit
             </p>
             <h1 className="font-serif text-[32px] leading-tight">{atelier.name}</h1>

@@ -24,7 +24,10 @@ async function getDashboardCounts() {
     supabase.from("gift_boxes").select("id", { count: "exact", head: true }).eq("status", "draft"),
     supabase.from("ateliers").select("id", { count: "exact", head: true }),
     supabase.from("journal_cards").select("id", { count: "exact", head: true }).eq("status", "published"),
-    supabase.from("inquiries").select("id", { count: "exact", head: true }),
+    supabase
+      .from("inquiries")
+      .select("id", { count: "exact", head: true })
+      .in("status", ["new", "contacted", "quoted"]),
   ]);
   return {
     publishedProducts: publishedProducts.count ?? 0,
@@ -50,7 +53,7 @@ export default async function AdminDashboard() {
   return (
     <div className="space-y-8 lg:space-y-10">
       <header className="space-y-1">
-        <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">Dashboard</p>
+        <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">Dashboard</p>
         <h1 className="font-serif text-[28px] sm:text-[36px] leading-tight">Welcome back.</h1>
       </header>
 
@@ -61,7 +64,7 @@ export default async function AdminDashboard() {
         <StatTile
           label="Open inquiries"
           value={counts.inquiries}
-          hint="All time"
+          hint="New, contacted, quoted (Won/Lost excluded)"
           href="/admin/inquiries"
         />
       </section>
@@ -92,7 +95,7 @@ export default async function AdminDashboard() {
       </section>
 
       <section className="space-y-3">
-        <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+        <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
           Quick actions
         </p>
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-2 sm:gap-3">

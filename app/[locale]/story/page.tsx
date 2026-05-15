@@ -175,7 +175,7 @@ export default async function StoryPage({ params }: PageProps) {
         <div className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)]">
           <div className="text-center max-w-[720px] mx-auto mb-16 lg:mb-20 space-y-5">
             <Reveal>
-              <Eyebrow tone="gold">{t("amazigh_eyebrow")}</Eyebrow>
+              <Eyebrow tone="gold-deep">{t("amazigh_eyebrow")}</Eyebrow>
             </Reveal>
             <Reveal delayMs={80}>
               <DisplayHeading size="lg" as="h2" className="font-display italic text-bb-secondary-deep">

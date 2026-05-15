@@ -29,7 +29,7 @@ export default async function EditRitualPage({ params }: PageProps) {
           ← Rituals
         </Link>
         <div className="space-y-1">
-          <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+          <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
             Admin / Rituals / {id}
           </p>
           <h1 className="font-serif text-[32px] leading-tight capitalize">
@@ -41,7 +41,7 @@ export default async function EditRitualPage({ params }: PageProps) {
       <RitualEditor id={id} initialData={ritual as any} />
 
       <section className="space-y-6">
-        <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary border-b border-bb-line pb-2">
+        <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
           Sub-categories
         </h2>
         <SubcatList

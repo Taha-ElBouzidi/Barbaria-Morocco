@@ -69,7 +69,7 @@ export default async function AdminInquiriesPage({ searchParams }: PageProps) {
   return (
     <div className="space-y-8">
       <header className="space-y-1">
-        <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+        <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
           Admin / Inquiries
         </p>
         <h1 className="font-serif text-[36px] leading-tight">Inquiries</h1>
@@ -146,7 +146,33 @@ export default async function AdminInquiriesPage({ searchParams }: PageProps) {
           <p className="font-sans text-[12px] text-bb-on-surface-variant">
             {count} inquir{count !== 1 ? "ies" : "y"}
           </p>
-          <div className="border border-bb-line overflow-x-auto">
+          {/* Mobile: stacked cards */}
+          <div className="md:hidden flex flex-col gap-3">
+            {data.map((inq) => (
+              <Link
+                key={inq.id}
+                href={`/admin/inquiries/${inq.id}`}
+                className="block p-4 border border-bb-line bg-bb-bg hover:border-bb-secondary-deep transition-colors space-y-2"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <p className="font-sans text-[14px] text-bb-on-surface font-medium leading-tight flex-1 truncate">
+                    {inq.company}
+                  </p>
+                  <span className="shrink-0">
+                    <StatusBadge status={inq.status} />
+                  </span>
+                </div>
+                <p className="font-sans text-[11px] text-bb-on-surface-variant truncate">
+                  {inq.contact_name} · {inq.email}
+                </p>
+                <p className="font-sans text-[11px] text-bb-on-surface-variant">
+                  {(inq.items as Array<unknown>).length} box{(inq.items as Array<unknown>).length !== 1 ? "es" : ""} · {formatDate(inq.created_at)}
+                </p>
+              </Link>
+            ))}
+          </div>
+          {/* Desktop: table */}
+          <div className="hidden md:block border border-bb-line overflow-x-auto">
             <table className="w-full">
               <thead>
                 <tr className="border-b border-bb-line bg-bb-bg-low">

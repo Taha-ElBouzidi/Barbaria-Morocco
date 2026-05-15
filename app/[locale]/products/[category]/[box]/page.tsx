@@ -188,9 +188,9 @@ export default async function GiftBoxPage({ params }: PageProps) {
                 <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
                   {t("items_eyebrow")}
                 </p>
-                <h3 className="font-display text-[24px] text-bb-primary">
+                <h2 className="font-display text-[24px] text-bb-primary">
                   {t("items_count", { count: detail.items.length })}
-                </h3>
+                </h2>
               </div>
               <ul className="mt-6 space-y-px border-t border-bb-line">
                   {detail.items.map((item) => (
@@ -245,9 +245,9 @@ export default async function GiftBoxPage({ params }: PageProps) {
                 <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
                   {t("aside_eyebrow")}
                 </p>
-                <h3 className="font-display text-[24px] text-bb-primary leading-tight">
+                <h2 className="font-display text-[24px] text-bb-primary leading-tight">
                   {t("aside_headline")}
-                </h3>
+                </h2>
               </div>
               <dl className="space-y-3 text-[14px]">
                 <div className="flex justify-between border-b border-bb-line pb-3">

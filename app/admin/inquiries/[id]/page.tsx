@@ -2,6 +2,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getInquiryById } from "@/lib/admin/inquiries";
 import { requireAdmin } from "@/lib/admin/auth";
+import InquiryControls from "./InquiryControls";
 
 export const dynamic = "force-dynamic";
 
@@ -133,19 +134,13 @@ export default async function InquiryDetailPage({ params }: PageProps) {
 
           <div className="border border-bb-line">
             <h2 className="px-4 md:px-6 py-3 md:py-4 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant bg-bb-bg-low">
-              Internal notes
+              Status &amp; notes
             </h2>
-            <div className="px-4 md:px-6 py-4">
-              {inquiry.notes ? (
-                <p className="font-sans text-[13px] text-bb-on-surface leading-relaxed whitespace-pre-wrap">
-                  {inquiry.notes}
-                </p>
-              ) : (
-                <p className="font-sans text-[13px] text-bb-on-surface-variant italic">
-                  No notes yet.
-                </p>
-              )}
-            </div>
+            <InquiryControls
+              id={inquiry.id}
+              initialStatus={inquiry.status}
+              initialNotes={inquiry.notes ?? ""}
+            />
           </div>
         </section>
 

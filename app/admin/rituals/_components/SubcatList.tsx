@@ -279,7 +279,7 @@ export default function SubcatList({ ritualId, subcategories }: SubcatListProps)
 
       {/* Add new sub-category */}
       <div className="border border-bb-line p-6 space-y-4">
-        <h3 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary">
+        <h3 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep">
           Add sub-category
         </h3>
         <form

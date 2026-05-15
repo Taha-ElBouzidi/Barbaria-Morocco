@@ -26,7 +26,7 @@ export default function AdminShell({
       <Sidebar open={sidebarOpen} onClose={closeSidebar} />
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar admin={admin} onOpenSidebar={openSidebar} />
-        <main className="flex-1 px-4 md:px-8 py-6 md:py-10 max-w-[1280px] w-full">{children}</main>
+        <main id="admin-main" className="flex-1 px-4 md:px-8 py-6 md:py-10 max-w-[1280px] w-full">{children}</main>
       </div>
     </div>
   );
