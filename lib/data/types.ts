@@ -64,12 +64,13 @@ export interface FacetEntry {
 // Sprint 2 — Categories and gift boxes
 
 export type CategorySlug = "cosmetiques" | "epicerie_fine";
+export type StoryThemeKey = "sahara_stars" | "caravan_route";
 
 export interface Category {
   id: string;            // uuid
   slug: CategorySlug;
   heroImage: string | null;
-  storyThemeKey: "sahara_stars" | "caravan_route";
+  storyThemeKey: StoryThemeKey;
   name: string;
   tagline: string;
   lede: string;

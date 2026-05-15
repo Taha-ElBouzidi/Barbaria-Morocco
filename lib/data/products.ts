@@ -86,6 +86,51 @@ export async function getProductsByRitual(
 }
 
 /**
+ * Sprint 2 — published products in a category, for the wizard product
+ * pickers. Reads category by slug from the `categories` table.
+ */
+export async function getProductsByCategory(
+  categorySlug: string,
+  locale: LocaleCode
+): Promise<ProductSummary[]> {
+  const supabase = await createServerClient();
+
+  // Resolve category id first to avoid embedding a nested filter on the
+  // products query (which Postgrest cannot push through).
+  const { data: catRow } = await supabase
+    .from("categories")
+    .select("id")
+    .eq("slug", categorySlug)
+    .maybeSingle();
+  if (!catRow) return [];
+
+  const { data, error } = await supabase
+    .from("products")
+    .select(`
+      slug,
+      ritual_id,
+      subcategory:ritual_subcategories ( slug ),
+      moq,
+      formats,
+      lead,
+      origin,
+      ritual_label,
+      hero,
+      translations:product_translations!inner ( locale, name, short, lede ),
+      images:product_images ( path, sort_order ),
+      facet_links:product_facets ( facet:facets ( type, value_en, value_fr ) )
+    `)
+    .eq("category_id", catRow.id)
+    .eq("status", "published")
+    .eq("translations.locale", locale)
+    .order("hero", { ascending: false })
+    .order("slug");
+
+  if (error || !data) return [];
+  return data.map((row) => shapeProductSummary(row, locale));
+}
+
+/**
  * Pre-render helper: list every published product slug for generateStaticParams.
  */
 export async function getAllProductSlugs(): Promise<string[]> {
