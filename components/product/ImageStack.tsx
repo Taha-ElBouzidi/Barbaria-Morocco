@@ -14,15 +14,22 @@ export default function ImageStack({ product, lang: _lang }: Props) {
 
   return (
     <div className="lg:sticky lg:top-[88px] lg:self-start space-y-6">
-      <Photo
-        src={imagePaths[activeIdx] ?? null}
-        alt={product.name}
-        width={1100}
-        height={1100}
-        priority
-        sizes="(min-width:1024px) 55vw, 100vw"
-        containerClassName="aspect-square"
-      />
+      {/* viewTransitionName matches the source thumbnail on gift-box detail
+          pages so the browser zooms the card into the hero on navigation. */}
+      <div
+        className="aspect-square"
+        style={{ viewTransitionName: `product-${product.slug}` }}
+      >
+        <Photo
+          src={imagePaths[activeIdx] ?? null}
+          alt={product.name}
+          width={1100}
+          height={1100}
+          priority
+          sizes="(min-width:1024px) 55vw, 100vw"
+          containerClassName="aspect-square"
+        />
+      </div>
       {imagePaths.length > 1 && (
         <div className="grid grid-cols-4 gap-3">
           {imagePaths.map((src, i) => (
