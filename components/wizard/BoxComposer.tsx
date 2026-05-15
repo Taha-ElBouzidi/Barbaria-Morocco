@@ -155,40 +155,18 @@ function reducer(state: State, action: Action): State {
 export default function BoxComposer({ box, products, themeKey, locale, copy }: Props) {
   const router = useRouter();
   const { addBox } = useInquiry();
-  const storageKey = `bb.wizard.${box.slug}`;
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
   const containerRef = useRef<HTMLElement>(null);
   const productBySlug = new Map(products.map((p) => [p.slug, p]));
 
+  // Sprint 2.8 follow-up: the wizard intentionally does NOT persist its
+  // state. Each mount starts fresh from INITIAL so a buyer composing
+  // multiple boxes in one session sees a new flow each time they enter,
+  // rather than landing on the previous "done" view or mid-composition.
   const [state, dispatch] = useReducer(reducer, {
     ...INITIAL,
     quantity: box.defaultQuantityMin,
   });
-  const [hydrated, setHydrated] = useState(false);
-
-  // Hydrate from localStorage on mount.
-  useEffect(() => {
-    try {
-      const raw = localStorage.getItem(storageKey);
-      if (raw) {
-        const parsed = JSON.parse(raw) as State;
-        dispatch({ type: "hydrate", state: parsed });
-      }
-    } catch {
-      // ignore
-    }
-    setHydrated(true);
-  }, [storageKey]);
-
-  // Persist on change.
-  useEffect(() => {
-    if (!hydrated) return;
-    try {
-      localStorage.setItem(storageKey, JSON.stringify(state));
-    } catch {
-      // ignore
-    }
-  }, [state, storageKey, hydrated]);
 
   // Active step set (or empty list before size is picked).
   const activeSteps: WizardStep[] = state.size
@@ -235,11 +213,6 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
       custom: { categorySlug, productSlugs: composedSlugs },
     });
     dispatch({ type: "done" });
-    try {
-      localStorage.removeItem(storageKey);
-    } catch {
-      // ignore
-    }
   };
 
   const handleGoContact = () => {
