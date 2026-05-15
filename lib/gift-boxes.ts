@@ -139,7 +139,10 @@ export const GIFT_BOXES: GiftBox[] = [
     slug: "compose-epicerie",
     categorySlug: "epicerie_fine",
     heroImagePath: "/brand_photos/products-all-three.jpg",
-    status: "draft", // promoted once admin adds épicerie products
+    // Published so the Épicerie tab has the wizard CTA visible. The picker
+    // grids will be empty until admin populates épicerie products, but the
+    // structure renders.
+    status: "published",
     defaultQuantityMin: 5,
     sortOrder: 0,
     isCustomizable: true,
@@ -167,7 +170,7 @@ export const GIFT_BOXES: GiftBox[] = [
     slug: "caravane-or-liquide",
     categorySlug: "epicerie_fine",
     heroImagePath: "/brand_photos/argan-oil-dropper.jpg",
-    status: "draft",
+    status: "published",
     defaultQuantityMin: 5,
     sortOrder: 1,
     isCustomizable: false,
@@ -191,7 +194,7 @@ export const GIFT_BOXES: GiftBox[] = [
     slug: "caravane-essences-anciennes",
     categorySlug: "epicerie_fine",
     heroImagePath: "/brand_photos/packaging-1.jpg",
-    status: "draft",
+    status: "published",
     defaultQuantityMin: 5,
     sortOrder: 2,
     isCustomizable: false,
