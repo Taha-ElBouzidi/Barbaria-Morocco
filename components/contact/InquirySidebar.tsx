@@ -8,7 +8,7 @@ import { WHATSAPP_NUMBER } from "@/lib/constants";
 interface Props { lang: "en" | "fr"; }
 
 /**
- * Sprint 2.6 — Box-level sidebar. Each inquiry line carries its own qty
+ * Sprint 2.6 box-level sidebar. Each inquiry line carries its own qty
  * stepper that respects the admin-set MOQ, plus a remove button. Custom
  * boxes show a "Custom box · N pieces" subline; curated show the
  * snapshot name and a "Curated box" tag.
@@ -62,7 +62,7 @@ export default function InquirySidebar({ lang: _lang }: Props) {
                       type="button"
                       onClick={() => setQty(line.id, line.qty - 1)}
                       disabled={line.qty <= line.minQty}
-                      className="flex h-9 w-9 items-center justify-center border border-bb-line text-bb-on-surface hover:opacity-70 disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+                      className="flex h-11 w-11 items-center justify-center border border-bb-line text-bb-on-surface hover:opacity-70 disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
                       aria-label={tNav("inquiry_decrease", { name })}
                     >
                       <Icon name="minus" size={12} />
@@ -71,7 +71,7 @@ export default function InquirySidebar({ lang: _lang }: Props) {
                     <button
                       type="button"
                       onClick={() => setQty(line.id, line.qty + 1)}
-                      className="flex h-9 w-9 items-center justify-center border border-bb-line text-bb-on-surface hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+                      className="flex h-11 w-11 items-center justify-center border border-bb-line text-bb-on-surface hover:opacity-70 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
                       aria-label={tNav("inquiry_increase", { name })}
                     >
                       <Icon name="plus" size={12} />

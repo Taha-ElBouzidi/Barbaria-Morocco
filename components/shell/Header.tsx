@@ -88,25 +88,35 @@ export default function Header({ locale, onOpenMenu, onOpenInquiry }: HeaderProp
           })}
         </nav>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-1 sm:gap-2">
+          {/* Language toggle hidden on mobile per user request, kept in the
+              MenuDrawer instead so the mobile header stays clean. */}
           <Link
             href={pathname}
             locale={otherLocale}
-            className={cn("p-2 font-sans text-[12px] uppercase tracking-[0.18em]", textColor)}
+            className={cn(
+              "hidden lg:inline-flex p-2 font-sans text-[12px] uppercase tracking-[0.18em]",
+              textColor
+            )}
             aria-label={`Switch to ${otherLocale === "fr" ? "Français" : "English"}`}
           >
             {otherLocale.toUpperCase()}
           </Link>
           <button
             onClick={onOpenInquiry}
-            className={cn("p-2 flex items-center gap-2 font-sans text-[12px] uppercase tracking-[0.18em]", textColor)}
+            className={cn(
+              "p-2 inline-flex items-center gap-1.5 font-sans text-[12px] uppercase tracking-[0.18em] min-h-[44px] min-w-[44px] justify-center",
+              textColor
+            )}
             aria-label={t("inquiry_aria", { count: totalBoxes })}
           >
-            {t("inquiry")} ({totalBoxes})
+            <Icon name="diamond" size={16} className="sm:hidden" />
+            <span className="hidden sm:inline">{t("inquiry")}</span>
+            <span className="text-[11px] tabular-nums">({totalBoxes})</span>
           </button>
           <button
             onClick={onOpenMenu}
-            className={cn("p-3", textColor)}
+            className={cn("p-3 min-h-[44px] min-w-[44px] flex items-center justify-center", textColor)}
             aria-label={t("menu")}
           >
             <Icon name="menu" size={20} />

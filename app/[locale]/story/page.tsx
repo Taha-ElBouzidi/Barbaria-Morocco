@@ -189,7 +189,7 @@ export default async function StoryPage({ params }: PageProps) {
             </Reveal>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 border border-[var(--bb-line)] bg-[var(--bb-bg)] overflow-hidden">
+          <div className="grid grid-cols-2 lg:grid-cols-3 border border-[var(--bb-line)] bg-[var(--bb-bg)] overflow-hidden">
             {SYMBOLS.map((sym, idx) => {
               const totalRows = Math.ceil(SYMBOLS.length / 3);
               const rowOnLg = Math.floor(idx / 3);
@@ -201,27 +201,26 @@ export default async function StoryPage({ params }: PageProps) {
                   key={sym.key}
                   className={[
                     "bg-[var(--bb-bg)]",
-                    isLastColOnSm ? "sm:border-r-0" : "sm:border-r border-[var(--bb-line)]",
+                    isLastColOnSm ? "border-r-0" : "border-r border-[var(--bb-line)]",
                     isLastColOnLg ? "lg:border-r-0" : "lg:border-r lg:border-[var(--bb-line)]",
                     isLastRowOnLg ? "lg:border-b-0" : "lg:border-b lg:border-[var(--bb-line)]",
-                    idx >= SYMBOLS.length - 2 ? "sm:border-b-0" : "sm:border-b border-[var(--bb-line)]",
+                    idx >= SYMBOLS.length - 2 ? "sm:border-b-0" : "border-b border-[var(--bb-line)]",
                   ].join(" ")}
                 >
-                  <div className="p-10 lg:p-12 text-center h-full flex flex-col items-center">
+                  <div className="p-5 sm:p-8 lg:p-12 text-center h-full flex flex-col items-center">
                     <span
-                      className="font-display text-bb-secondary-deep leading-none mb-6"
-                      style={{ fontSize: "84px" }}
+                      className="font-display text-bb-secondary-deep leading-none mb-3 sm:mb-6 text-[56px] sm:text-[72px] lg:text-[84px]"
                       aria-hidden
                     >
                       {sym.glyph}
                     </span>
-                    <p className="font-display italic text-[22px] text-bb-secondary-deep mb-1">
+                    <p className="font-display italic text-[16px] sm:text-[20px] lg:text-[22px] text-bb-secondary-deep mb-1">
                       {sym.name}
                     </p>
-                    <p className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep mb-4">
+                    <p className="text-[10px] sm:text-[11px] uppercase tracking-[0.14em] sm:tracking-[0.18em] text-bb-secondary-deep mb-2 sm:mb-4">
                       {t(`sym_${sym.key}_meaning`)}
                     </p>
-                    <p className="text-[14px] leading-relaxed text-bb-on-surface-variant max-w-[320px]">
+                    <p className="text-[12px] sm:text-[14px] leading-relaxed text-bb-on-surface-variant max-w-[320px] line-clamp-5 sm:line-clamp-none">
                       {t(`sym_${sym.key}_desc`)}
                     </p>
                   </div>

@@ -53,25 +53,25 @@ export default async function AteliersPage({ params }: PageProps) {
 
       {/* 6-up cooperative grid */}
       <section
-        className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16"
+        className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10 sm:gap-x-8 sm:gap-y-16"
         aria-label={t("hero_headline")}
       >
         {ateliers.map((a, i) => (
-          <Reveal key={a.slug} delayMs={(i % 3) * 80} as="article" className="space-y-4">
+          <Reveal key={a.slug} delayMs={(i % 3) * 80} as="article" className="space-y-3 sm:space-y-4">
             <Photo
               src={a.image}
               alt={a.name}
               width={800}
               height={800}
               needsShot={!a.image}
-              sizes="(min-width:1024px) 30vw, (min-width:768px) 45vw, 100vw"
+              sizes="(min-width:1024px) 30vw, (min-width:768px) 45vw, 50vw"
               containerClassName="aspect-square"
             />
             <Eyebrow tone="green">
               {a.region} · {t("since", { year: a.sinceYear })}
             </Eyebrow>
-            <h2 className="font-serif text-[28px] leading-[1.2] text-bb-on-surface">{a.name}</h2>
-            <p className="text-bb-on-surface-variant leading-relaxed text-[14px]">{a.description}</p>
+            <h2 className="font-serif text-[18px] sm:text-[22px] lg:text-[28px] leading-[1.2] text-bb-on-surface">{a.name}</h2>
+            <p className="text-bb-on-surface-variant leading-relaxed text-[12px] sm:text-[14px] line-clamp-4 sm:line-clamp-none">{a.description}</p>
           </Reveal>
         ))}
       </section>

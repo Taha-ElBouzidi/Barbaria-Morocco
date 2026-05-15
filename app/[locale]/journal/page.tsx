@@ -98,14 +98,14 @@ export default async function JournalPage({ params }: PageProps) {
         )}
 
         {/* Standard cards, 4:5 portrait, article pages deferred */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-8 gap-y-16">
+        <div className="grid grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-x-4 gap-y-10 sm:gap-x-8 sm:gap-y-16">
           {standards.map((c, i) => (
             <Reveal
               key={c.slug}
               as="article"
               delayMs={(i % 3) * 80}
               className={cn(
-                "space-y-4 cursor-not-allowed opacity-90 hover:opacity-100 transition-opacity"
+                "space-y-3 sm:space-y-4 cursor-not-allowed opacity-90 hover:opacity-100 transition-opacity"
               )}
               aria-disabled="true"
             >
@@ -115,13 +115,13 @@ export default async function JournalPage({ params }: PageProps) {
                 width={800}
                 height={1000}
                 needsShot={!c.image}
-                sizes="(min-width:1024px) 30vw, (min-width:768px) 45vw, 100vw"
+                sizes="(min-width:1024px) 30vw, (min-width:768px) 45vw, 50vw"
                 containerClassName="aspect-[4/5]"
               />
-              <div className="space-y-3">
+              <div className="space-y-2 sm:space-y-3">
                 <Eyebrow tone="green">{c.kicker}</Eyebrow>
-                <h3 className="font-serif text-[22px] leading-[1.3]">{c.headline}</h3>
-                <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
+                <h3 className="font-serif text-[16px] sm:text-[20px] lg:text-[22px] leading-[1.3]">{c.headline}</h3>
+                <p className="font-sans text-[10px] sm:text-[11px] uppercase tracking-[0.16em] sm:tracking-[0.18em] text-bb-on-surface-variant">
                   {formatJournalDate(c.date, lang)}
                 </p>
               </div>

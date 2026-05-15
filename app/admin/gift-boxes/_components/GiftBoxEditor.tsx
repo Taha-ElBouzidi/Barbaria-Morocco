@@ -314,8 +314,10 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
         </section>
       )}
 
-      {/* Action bar */}
-      <footer className="sticky bottom-0 bg-bb-bg border-t border-bb-line py-4 -mx-8 px-8 flex flex-wrap items-center gap-3">
+      {/* Action bar. Negative margins compensate for the main container
+          padding (px-4 mobile, px-8 desktop) so the sticky footer reaches
+          the viewport edges. */}
+      <footer className="sticky bottom-0 bg-bb-bg border-t border-bb-line py-4 -mx-4 md:-mx-8 px-4 md:px-8 flex flex-wrap items-center gap-3">
         <button
           type="submit"
           disabled={pending}

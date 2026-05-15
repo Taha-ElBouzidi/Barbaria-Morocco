@@ -72,67 +72,100 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
           No gift boxes match the current filters.
         </p>
       ) : (
-        <div className="overflow-x-auto border border-bb-line bg-bb-bg">
-          <table className="w-full text-[14px]">
-            <thead className="bg-bb-bg-low text-[11px] uppercase tracking-[0.12em] text-bb-on-surface-variant">
-              <tr>
-                <th scope="col" className="text-left p-4">Name</th>
-                <th scope="col" className="text-left p-4 hidden sm:table-cell">Category</th>
-                <th scope="col" className="text-left p-4 hidden md:table-cell">Type</th>
-                <th scope="col" className="text-left p-4 hidden md:table-cell">Items</th>
-                <th scope="col" className="text-left p-4 hidden sm:table-cell">Min</th>
-                <th scope="col" className="text-left p-4">Status</th>
-                <th scope="col" className="text-right p-4 sr-only">Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {filtered.map((b) => (
-                <tr key={b.id} className="border-t border-bb-line hover:bg-bb-bg-low transition-colors">
-                  <td className="p-4">
-                    <Link
-                      href={`/admin/gift-boxes/${b.id}`}
-                      className="font-display text-[16px] text-bb-primary hover:text-bb-secondary-deep transition-colors"
-                    >
-                      {b.nameEn}
-                    </Link>
-                    <p className="text-[11px] text-bb-on-surface-variant font-mono mt-0.5">{b.slug}</p>
-                  </td>
-                  <td className="p-4 hidden sm:table-cell text-bb-on-surface-variant">
-                    {b.categorySlug}
-                  </td>
-                  <td className="p-4 hidden md:table-cell text-bb-on-surface-variant">
-                    {b.isCustomizable ? "Customizable" : "Curated"}
-                  </td>
-                  <td className="p-4 hidden md:table-cell text-bb-on-surface-variant">
-                    {b.itemCount}
-                  </td>
-                  <td className="p-4 hidden sm:table-cell text-bb-on-surface-variant">
-                    {b.defaultQuantityMin}
-                  </td>
-                  <td className="p-4">
-                    <span
-                      className={`inline-block px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${
-                        b.status === "published"
-                          ? "bg-bb-secondary/15 text-bb-secondary-deep"
-                          : "bg-bb-bg-mid text-bb-on-surface-variant"
-                      }`}
-                    >
-                      {b.status}
-                    </span>
-                  </td>
-                  <td className="p-4 text-right">
-                    <Link
-                      href={`/admin/gift-boxes/${b.id}`}
-                      className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep hover:opacity-70"
-                    >
-                      Edit
-                    </Link>
-                  </td>
+        <>
+          {/* Mobile cards */}
+          <div className="md:hidden flex flex-col gap-3">
+            {filtered.map((b) => (
+              <Link
+                key={b.id}
+                href={`/admin/gift-boxes/${b.id}`}
+                className="block p-4 border border-bb-line bg-bb-bg hover:border-bb-secondary-deep transition-colors space-y-2"
+              >
+                <div className="flex items-start justify-between gap-3">
+                  <div className="min-w-0 flex-1">
+                    <p className="font-display text-[16px] text-bb-primary truncate">{b.nameEn}</p>
+                    <p className="text-[11px] text-bb-on-surface-variant font-mono truncate">{b.slug}</p>
+                  </div>
+                  <span
+                    className={`shrink-0 inline-block px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${
+                      b.status === "published"
+                        ? "bg-bb-secondary/15 text-bb-secondary-deep"
+                        : "bg-bb-bg-mid text-bb-on-surface-variant"
+                    }`}
+                  >
+                    {b.status}
+                  </span>
+                </div>
+                <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-bb-on-surface-variant">
+                  <span>{b.categorySlug}</span>
+                  <span>·</span>
+                  <span>{b.isCustomizable ? "Customizable" : "Curated"}</span>
+                  <span>·</span>
+                  <span>{b.itemCount} items</span>
+                  <span>·</span>
+                  <span>Min {b.defaultQuantityMin}</span>
+                </div>
+              </Link>
+            ))}
+          </div>
+
+          {/* Desktop table */}
+          <div className="hidden md:block overflow-x-auto border border-bb-line bg-bb-bg">
+            <table className="w-full text-[14px]">
+              <thead className="bg-bb-bg-low text-[11px] uppercase tracking-[0.12em] text-bb-on-surface-variant">
+                <tr>
+                  <th scope="col" className="text-left p-4">Name</th>
+                  <th scope="col" className="text-left p-4">Category</th>
+                  <th scope="col" className="text-left p-4">Type</th>
+                  <th scope="col" className="text-left p-4">Items</th>
+                  <th scope="col" className="text-left p-4">Min</th>
+                  <th scope="col" className="text-left p-4">Status</th>
+                  <th scope="col" className="text-right p-4 sr-only">Actions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
+              </thead>
+              <tbody>
+                {filtered.map((b) => (
+                  <tr key={b.id} className="border-t border-bb-line hover:bg-bb-bg-low transition-colors">
+                    <td className="p-4">
+                      <Link
+                        href={`/admin/gift-boxes/${b.id}`}
+                        className="font-display text-[16px] text-bb-primary hover:text-bb-secondary-deep transition-colors"
+                      >
+                        {b.nameEn}
+                      </Link>
+                      <p className="text-[11px] text-bb-on-surface-variant font-mono mt-0.5">{b.slug}</p>
+                    </td>
+                    <td className="p-4 text-bb-on-surface-variant">{b.categorySlug}</td>
+                    <td className="p-4 text-bb-on-surface-variant">
+                      {b.isCustomizable ? "Customizable" : "Curated"}
+                    </td>
+                    <td className="p-4 text-bb-on-surface-variant">{b.itemCount}</td>
+                    <td className="p-4 text-bb-on-surface-variant">{b.defaultQuantityMin}</td>
+                    <td className="p-4">
+                      <span
+                        className={`inline-block px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${
+                          b.status === "published"
+                            ? "bg-bb-secondary/15 text-bb-secondary-deep"
+                            : "bg-bb-bg-mid text-bb-on-surface-variant"
+                        }`}
+                      >
+                        {b.status}
+                      </span>
+                    </td>
+                    <td className="p-4 text-right">
+                      <Link
+                        href={`/admin/gift-boxes/${b.id}`}
+                        className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep hover:opacity-70"
+                      >
+                        Edit
+                      </Link>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
       )}
     </section>
   );

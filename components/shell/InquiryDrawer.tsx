@@ -83,7 +83,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
         aria-hidden={!open}
         inert={!open}
         className={cn(
-          "fixed inset-y-0 right-0 z-[61] flex w-[clamp(320px,80vw,480px)] flex-col bg-bb-bg shadow-2xl transition-transform duration-300",
+          "fixed inset-y-0 right-0 z-[61] flex w-[min(86vw,440px)] sm:w-[clamp(360px,70vw,480px)] flex-col bg-bb-bg shadow-2xl transition-transform duration-300",
           open ? "translate-x-0" : "translate-x-full"
         )}
       >

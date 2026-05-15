@@ -84,7 +84,7 @@ export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
         // inert removes the element from the accessibility tree when closed
         inert={!open}
         className={cn(
-          "fixed inset-y-0 right-0 z-[61] flex w-[clamp(320px,80vw,480px)] flex-col bg-bb-bg shadow-2xl transition-transform duration-300 overflow-hidden",
+          "fixed inset-y-0 right-0 z-[61] flex w-[min(86vw,440px)] sm:w-[clamp(360px,70vw,480px)] flex-col bg-bb-bg shadow-2xl transition-transform duration-300 overflow-hidden",
           open ? "translate-x-0" : "translate-x-full"
         )}
       >
@@ -191,11 +191,12 @@ export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
             </Link>
           </div>
 
-          {/* Footer row */}
+          {/* Footer row. Lang toggle gets prominence on mobile since it's
+              hidden from the header there. WhatsApp + email sit below on
+              their own row for cleaner stacking. */}
           <div className="h-px bg-bb-line mx-8 shrink-0" />
-          <div className="px-6 sm:px-8 py-5 flex flex-col sm:grid sm:grid-cols-3 gap-3 sm:gap-2 shrink-0">
-            {/* Lang toggle */}
-            <div className="flex items-center gap-1.5 font-sans text-[11px] uppercase tracking-[0.18em]">
+          <div className="px-6 sm:px-8 py-5 flex flex-col gap-4 shrink-0">
+            <div className="flex items-center gap-2 font-sans text-[11px] uppercase tracking-[0.18em]">
               <Icon name="globe" size={14} className="text-bb-on-surface-variant shrink-0" />
               {(["en", "fr"] as const).map((l) => {
                 const isActive = l === locale;
@@ -204,9 +205,10 @@ export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
                     key={l}
                     href={pathname}
                     locale={l}
+                    onClick={onClose}
                     aria-current={isActive ? "page" : undefined}
                     className={cn(
-                      "transition-colors",
+                      "px-2 py-1 transition-colors",
                       isActive
                         ? "text-bb-primary font-semibold"
                         : "text-bb-on-surface-variant hover:text-bb-primary"
@@ -217,26 +219,24 @@ export default function MenuDrawer({ open, onClose }: MenuDrawerProps) {
                 );
               })}
             </div>
-
-            {/* WhatsApp */}
-            <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors justify-center"
-            >
-              <Icon name="whatsapp" size={14} />
-              {t("menu_whatsapp")}
-            </a>
-
-            {/* Email */}
-            <a
-              href="mailto:concierge@barbariamorocco.com"
-              className="flex items-center gap-1.5 font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors justify-end"
-            >
-              <Icon name="mail" size={14} />
-              {t("menu_email")}
-            </a>
+            <div className="flex flex-wrap items-center justify-between gap-3">
+              <a
+                href={`https://wa.me/${WHATSAPP_NUMBER}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+              >
+                <Icon name="whatsapp" size={14} />
+                {t("menu_whatsapp")}
+              </a>
+              <a
+                href="mailto:concierge@barbariamorocco.com"
+                className="flex items-center gap-1.5 font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+              >
+                <Icon name="mail" size={14} />
+                {t("menu_email")}
+              </a>
+            </div>
           </div>
         </div>
       </aside>
