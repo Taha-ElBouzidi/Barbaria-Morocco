@@ -73,7 +73,11 @@ export default async function GiftBoxPage({ params }: PageProps) {
       size_5_desc: wizardT("size_5_desc"),
       size_6_label: wizardT("size_6_label"),
       size_6_desc: wizardT("size_6_desc"),
-      step_eyebrow_progress: wizardT("step_eyebrow_progress"),
+      // Templates with {n}/{total} placeholders are passed as raw strings
+      // so the client component (BoxComposer) can interpolate at render
+      // time. Calling t() here would throw because the values aren't
+      // known until the user picks a box size.
+      step_eyebrow_progress: wizardT.raw("step_eyebrow_progress") as string,
       step_no_products: wizardT("step_no_products"),
       step_skip: wizardT("step_skip"),
       step_back: wizardT("step_back"),
@@ -88,8 +92,8 @@ export default async function GiftBoxPage({ params }: PageProps) {
       quantity_eyebrow: wizardT("quantity_eyebrow"),
       quantity_title: wizardT("quantity_title"),
       quantity_lede: wizardT("quantity_lede"),
-      quantity_min_label: wizardT("quantity_min_label"),
-      quantity_below_min_note: wizardT("quantity_below_min_note"),
+      quantity_min_label: wizardT.raw("quantity_min_label") as string,
+      quantity_below_min_note: wizardT.raw("quantity_below_min_note") as string,
       quantity_submit: wizardT("quantity_submit"),
       done_eyebrow: wizardT("done_eyebrow"),
       done_title: wizardT("done_title"),

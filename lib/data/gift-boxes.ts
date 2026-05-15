@@ -12,8 +12,11 @@ import type {
   ProductSummary,
 } from "./types";
 
-// Supabase nested-relation responses are always arrays in the JS client,
-// even for many-to-one. Embedded "category" is therefore [{slug}], not {slug}.
+// PostgREST + supabase-js can return embedded category as either a single
+// object (`{slug}`) or an array (`[{slug}]`) or null, depending on the
+// detected cardinality and on whether the join resolved. We normalise both
+// shapes via firstOf().
+type EmbeddedCategory = { slug: string } | Array<{ slug: string }> | null;
 type GiftBoxRow = {
   id: string;
   slug: string;
@@ -21,10 +24,16 @@ type GiftBoxRow = {
   default_quantity_min: number;
   is_customizable: boolean;
   sort_order: number;
-  category: Array<{ slug: string }>;
+  category: EmbeddedCategory;
   translations: Array<{ name: string; tagline: string | null; story_intro: string | null }>;
   items: Array<{ product_id: string }>;
 };
+
+function firstOf<T>(value: T | T[] | null | undefined): T | null {
+  if (value == null) return null;
+  if (Array.isArray(value)) return value[0] ?? null;
+  return value;
+}
 
 const GIFT_BOX_SELECT = `
   id,
@@ -40,7 +49,8 @@ const GIFT_BOX_SELECT = `
 
 function rowToSummary(row: GiftBoxRow): GiftBoxSummary {
   const t = row.translations[0] ?? { name: row.slug, tagline: null, story_intro: null };
-  const catSlug = row.category[0]?.slug ?? "cosmetiques";
+  const cat = firstOf(row.category);
+  const catSlug = cat?.slug ?? "cosmetiques";
   return {
     id: row.id,
     slug: row.slug,
@@ -70,9 +80,11 @@ export async function getGiftBoxesByCategory(
 
   if (error || !data) return [];
 
-  // Drop rows where the category join missed (defensive)
+  // The `category.slug = X` server-side filter is unreliable across PostgREST
+  // versions, so we filter client-side using the normalised shape. Defensive
+  // against the embedded category being null, an object, or an array.
   return (data as unknown as GiftBoxRow[])
-    .filter((r) => r.category[0]?.slug === categorySlug)
+    .filter((r) => firstOf(r.category)?.slug === categorySlug)
     .map(rowToSummary);
 }
 
@@ -130,7 +142,7 @@ export async function getGiftBoxBySlug(
     origin: string | null;
     ritual_label: string | null;
     hero: boolean;
-    subcategory: Array<{ slug: string }>;
+    subcategory: { slug: string } | Array<{ slug: string }> | null;
     translations: Array<{ name: string; short: string; lede: string | null }>;
     images: Array<{ path: string; alt_text: string | null; sort_order: number }>;
   };
@@ -140,7 +152,7 @@ export async function getGiftBoxBySlug(
     return {
       slug: p.slug,
       ritualId: p.ritual_id as ProductSummary["ritualId"],
-      subcategorySlug: p.subcategory[0]?.slug ?? null,
+      subcategorySlug: firstOf(p.subcategory)?.slug ?? null,
       moq: p.moq,
       formats: p.formats,
       lead: p.lead,
