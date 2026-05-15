@@ -117,7 +117,7 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
                 {t("inquiry_empty_lede")}
               </p>
               <Link
-                href="/rituals/hammam"
+                href="/products/cosmetiques"
                 onClick={onClose}
                 className="mt-2 inline-block rounded-full border border-bb-primary px-6 py-3 font-sans text-[13px] uppercase tracking-[0.18em] text-bb-primary transition-colors hover:bg-bb-primary hover:text-bb-bg"
               >
@@ -145,9 +145,9 @@ export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
                       <p className="font-sans text-[14px] font-medium tracking-[0.02em] text-bb-on-surface">
                         {name}
                       </p>
-                      <p className="font-sans text-[12px] text-bb-on-surface-variant">
-                        MOQ · ID: {productId}
-                      </p>
+                      {/* MOQ pill removed pending real catalog map (was "ID: {slug}"
+                          debug debris). Will re-add once the inquiry context
+                          carries MOQ data from the catalogue. */}
 
                       <div className="flex items-center justify-between">
                         {/* Qty stepper */}

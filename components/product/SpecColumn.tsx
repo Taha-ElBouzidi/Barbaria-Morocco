@@ -45,7 +45,7 @@ export default function SpecColumn({ product, worldEyebrow, lang: _lang }: Props
       )}
       <dl className="divide-y divide-bb-line border-y border-bb-line">
         {specs.map(({ key, value }) => (
-          <div key={key} className="grid grid-cols-[160px_1fr] gap-4 py-4 text-[14px]">
+          <div key={key} className="grid grid-cols-[1fr] sm:grid-cols-[160px_1fr] gap-1 sm:gap-4 py-4 text-[14px]">
             <dt className="font-sans uppercase tracking-[0.12em] text-bb-on-surface-variant text-[11px]">{key}</dt>
             <dd className="text-bb-on-surface">{value}</dd>
           </div>

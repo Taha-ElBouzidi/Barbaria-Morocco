@@ -31,9 +31,9 @@ export default async function ApplicationRitual({ product, lang }: Props) {
   return (
     <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] py-20 lg:py-28">
       <div className="space-y-3 mb-12 text-center">
-        <Eyebrow tone="green">{t("ritual_eyebrow")}</Eyebrow>
+        <Eyebrow tone="green">{t("usage_eyebrow")}</Eyebrow>
         <DisplayHeading size="lg" as="h2">
-          <em className="font-display italic">{t("ritual_headline")}</em>
+          <em className="font-display italic">{t("usage_headline")}</em>
         </DisplayHeading>
       </div>
       <ol className="grid grid-cols-1 md:grid-cols-3 gap-12">

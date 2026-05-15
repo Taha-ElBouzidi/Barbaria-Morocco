@@ -12,7 +12,7 @@ export default function Hero() {
   const t = useTranslations("home");
 
   return (
-    <section className="relative h-[90vh] min-h-[640px] overflow-hidden">
+    <section className="relative h-[90svh] min-h-[560px] overflow-hidden">
       <Photo
         src="/brand_photos/hero-atlas.jpg"
         alt={t("hero.alt")}
@@ -50,14 +50,14 @@ export default function Hero() {
           <Reveal delayMs={360}>
             <div className="flex flex-wrap items-center justify-center gap-4 mt-2">
               <Link
-                href="/rituals/hammam"
-                className="inline-flex items-center gap-2 px-8 py-4 border border-bb-secondary bg-transparent text-bb-secondary font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary hover:text-bb-primary transition-colors"
+                href="/products/cosmetiques"
+                className="inline-flex items-center gap-2 px-8 py-[14px] min-h-[44px] border border-bb-secondary bg-transparent text-bb-secondary font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary hover:text-bb-primary transition-colors"
               >
                 {t("hero.cta_primary")}
               </Link>
               <Link
                 href="/contact"
-                className="inline-flex items-center gap-2 px-8 py-4 border border-bb-secondary/40 bg-transparent text-bb-secondary font-sans text-[12px] uppercase tracking-[0.18em] hover:border-bb-secondary hover:bg-bb-secondary/10 transition-colors"
+                className="inline-flex items-center gap-2 px-8 py-[14px] min-h-[44px] border border-bb-secondary/40 bg-transparent text-bb-secondary font-sans text-[12px] uppercase tracking-[0.18em] hover:border-bb-secondary hover:bg-bb-secondary/10 transition-colors"
               >
                 {t("hero.cta_secondary")}
               </Link>

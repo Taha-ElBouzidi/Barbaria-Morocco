@@ -510,7 +510,7 @@ function StepView({
           <p className="text-bb-secondary/80 italic font-display">{copy.step_no_products}</p>
         </div>
       ) : (
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 lg:gap-6">
           {products.map((p) => {
             const selected = p.slug === activeSlug;
             return (
@@ -618,7 +618,7 @@ function ReviewView({
           return (
             <li
               key={i}
-              className="grid grid-cols-[80px_1fr_auto] items-center gap-4 border-b border-bb-secondary/20 py-5"
+              className="grid grid-cols-[64px_1fr_auto] sm:grid-cols-[80px_1fr_auto] items-start sm:items-center gap-3 sm:gap-4 border-b border-bb-secondary/20 py-5"
             >
               <div className="relative aspect-square bg-bb-primary-container overflow-hidden">
                 {product?.heroImage ? (

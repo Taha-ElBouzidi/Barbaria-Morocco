@@ -112,7 +112,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
       eyebrow: { en: "Halt 01 — Sijilmassa", fr: "Halte 01 — Sijilmassa" },
       title: {
         en: "Sijilmassa, the city of gold on the Ziz.",
-        fr: "Sijilmassa, la ville d'or sur l'Ouz.",
+        fr: "Sijilmassa, la ville d'or sur le Ziz.",
       },
       story: {
         en: "First halt of the caravan. Load your first flask of oil, drawn from the Souss arganeraies.",
