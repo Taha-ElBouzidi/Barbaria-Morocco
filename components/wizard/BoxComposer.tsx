@@ -1,12 +1,10 @@
 "use client";
 
-import { useReducer, useEffect, useState, useCallback } from "react";
+import { useReducer, useEffect, useState, useCallback, useRef } from "react";
 import { useRouter } from "@/i18n/navigation";
-import { Link } from "@/i18n/navigation";
 import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
-import Reveal from "@/components/primitives/Reveal";
 import SaharaPrestige from "@/components/primitives/SaharaPrestige";
 import Icon from "@/components/primitives/Icon";
 import { useInquiry } from "@/lib/inquiry-context";
@@ -53,6 +51,10 @@ export interface WizardCopy {
   step_back: string;
   step_next: string;
   step_picked: string;
+  step_more_details: string;
+  step_view_details: string;
+  step_choose_this: string;
+  step_currently_chosen: string;
   review_eyebrow: string;
   review_title: string;
   review_lede: string;
@@ -69,6 +71,8 @@ export interface WizardCopy {
   done_title: string;
   done_lede: string;
   done_cta: string;
+  exit_aria: string;
+  exit_confirm: string;
 }
 
 type View = "intro" | "size" | "step" | "review" | "quantity" | "done";
@@ -152,6 +156,9 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
   const router = useRouter();
   const { addBox } = useInquiry();
   const storageKey = `bb.wizard.${box.slug}`;
+  const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
+  const containerRef = useRef<HTMLElement>(null);
+  const productBySlug = new Map(products.map((p) => [p.slug, p]));
 
   const [state, dispatch] = useReducer(reducer, {
     ...INITIAL,
@@ -239,10 +246,73 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
     router.push("/contact");
   };
 
+  // Sprint 2.8 — full-screen takeover behaviour.
+  // Lock the body scroll so the chrome behind the overlay can't scroll,
+  // and route back to /products/[category] on Escape (with a confirm if
+  // the composition has started).
+  const handleExit = useCallback(() => {
+    const inProgress = state.view !== "intro" && state.view !== "done";
+    if (inProgress && !window.confirm(copy.exit_confirm)) return;
+    router.push(`/products/${box.categorySlug}`);
+  }, [state.view, router, box.categorySlug, copy.exit_confirm]);
+
+  useEffect(() => {
+    const prevOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        if (expandedSlug) {
+          setExpandedSlug(null);
+        } else {
+          handleExit();
+        }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => {
+      document.body.style.overflow = prevOverflow;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [handleExit, expandedSlug]);
+
+  const expanded = expandedSlug ? productBySlug.get(expandedSlug) ?? null : null;
+  const expandedIsChosen = expandedSlug
+    ? state.picks[state.currentStep] === expandedSlug
+    : false;
+
+  const handleChooseFromModal = () => {
+    if (!expandedSlug) return;
+    dispatch({ type: "pick", productSlug: expandedSlug });
+    setExpandedSlug(null);
+    const next = state.currentStep + 1;
+    if (next >= totalSteps) {
+      dispatch({ type: "goReview" });
+    } else {
+      dispatch({
+        type: "hydrate",
+        state: { ...state, picks: { ...state.picks, [state.currentStep]: expandedSlug }, currentStep: next, view: "step" },
+      });
+    }
+  };
+
   // ---------- render ----------
   return (
-    <section className="relative min-h-[80vh] bg-bb-primary text-white overflow-hidden">
+    <section
+      ref={containerRef}
+      role="dialog"
+      aria-modal="true"
+      aria-label={copy.exit_aria}
+      className="fixed inset-0 z-[100] bg-bb-primary text-white overflow-y-auto overflow-x-hidden"
+    >
       <SaharaPrestige count={60} />
+      <button
+        type="button"
+        onClick={handleExit}
+        aria-label={copy.exit_aria}
+        className="fixed top-5 right-5 z-[110] flex h-12 w-12 items-center justify-center rounded-full border border-bb-secondary/40 bg-bb-primary/80 text-bb-secondary backdrop-blur-sm transition-colors hover:border-bb-secondary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-bb-primary"
+      >
+        <Icon name="close" size={18} />
+      </button>
       <div className="relative z-10 mx-auto max-w-[1280px] px-[var(--bb-margin-edge)] py-16 lg:py-24">
         <ProgressDots
           total={totalSteps}
@@ -272,19 +342,14 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
               products={filteredProducts(currentStepDef.filter)}
               activeSlug={state.picks[state.currentStep]}
               copy={copy}
-              onPick={(slug) => {
-                dispatch({ type: "pick", productSlug: slug });
-              }}
+              onOpen={(slug) => setExpandedSlug(slug)}
               onSkip={handleSkip}
               onBack={handleBack}
               onNext={() => {
-                // If user picked something, "Next" advances the step.
                 const next = state.currentStep + 1;
                 if (next >= totalSteps) {
                   dispatch({ type: "goReview" });
                 } else {
-                  // Reuse skip's index-advance but DO NOT overwrite the
-                  // pick: dispatch a manual hydrate.
                   dispatch({
                     type: "hydrate",
                     state: { ...state, currentStep: next, view: "step" },
@@ -323,6 +388,16 @@ export default function BoxComposer({ box, products, themeKey, locale, copy }: P
           )}
         </WizardView>
       </div>
+
+      {expanded && (
+        <ProductZoomModal
+          product={expanded}
+          copy={copy}
+          isChosen={expandedIsChosen}
+          onClose={() => setExpandedSlug(null)}
+          onChoose={handleChooseFromModal}
+        />
+      )}
     </section>
   );
 }
@@ -475,7 +550,7 @@ function StepView({
   products,
   activeSlug,
   copy,
-  onPick,
+  onOpen,
   onSkip,
   onBack,
   onNext,
@@ -487,7 +562,7 @@ function StepView({
   products: ProductSummary[];
   activeSlug: string | undefined;
   copy: WizardCopy;
-  onPick: (slug: string) => void;
+  onOpen: (slug: string) => void;
   onSkip: () => void;
   onBack: () => void;
   onNext: () => void;
@@ -524,14 +599,17 @@ function StepView({
           {products.map((p) => {
             const selected = p.slug === activeSlug;
             return (
-              <button type="button"
+              <button
+                type="button"
                 key={p.slug}
-                onClick={() => onPick(p.slug)}
-                className={`group relative text-left border bg-bb-primary transition-all ${
+                onClick={() => onOpen(p.slug)}
+                aria-label={`${copy.step_view_details}: ${p.name}`}
+                className={`group relative text-left border bg-bb-primary transition-all focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-bb-primary ${
                   selected
                     ? "border-bb-secondary ring-2 ring-bb-secondary/40 bg-bb-primary-container"
                     : "border-bb-secondary/15 hover:border-bb-secondary/60"
                 }`}
+                style={{ viewTransitionName: `wizard-product-${p.slug}` }}
               >
                 <div className="relative aspect-[4/5] overflow-hidden">
                   <Photo
@@ -546,6 +624,12 @@ function StepView({
                       <Icon name="check" size={14} />
                     </div>
                   )}
+                  <div className="pointer-events-none absolute inset-x-0 bottom-0 flex items-center justify-center gap-2 bg-gradient-to-t from-bb-primary via-bb-primary/80 to-transparent px-3 py-3 text-bb-secondary opacity-0 transition-opacity group-hover:opacity-100">
+                    <span className="text-[11px] uppercase tracking-[0.18em]">
+                      {copy.step_more_details}
+                    </span>
+                    <Icon name="arrow-up-right" size={12} />
+                  </div>
                 </div>
                 <div className="p-4 space-y-1">
                   <p className="font-display text-[15px] leading-tight text-bb-secondary">
@@ -767,6 +851,125 @@ function DoneView({ copy, onContinue }: { copy: WizardCopy; onContinue: () => vo
         {copy.done_cta}
         <Icon name="arrow-up-right" size={16} />
       </button>
+    </div>
+  );
+}
+
+/**
+ * Sprint 2.8 — Click-to-zoom product detail. Renders as an in-place modal
+ * over the wizard surface (no real navigation). Closing returns to the
+ * exact wizard step without losing the composition state. Choosing picks
+ * the product and auto-advances.
+ */
+function ProductZoomModal({
+  product,
+  copy,
+  isChosen,
+  onClose,
+  onChoose,
+}: {
+  product: ProductSummary;
+  copy: WizardCopy;
+  isChosen: boolean;
+  onClose: () => void;
+  onChoose: () => void;
+}) {
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-label={product.name}
+      className="fixed inset-0 z-[120] flex items-center justify-center bg-bb-primary/85 backdrop-blur-md px-4 py-8 motion-safe:animate-[fadeInUp_240ms_ease-out]"
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="relative w-full max-w-[1080px] max-h-[92vh] overflow-y-auto bg-bb-primary border border-bb-secondary/30 grid grid-cols-1 md:grid-cols-2 gap-0"
+        style={{ viewTransitionName: `wizard-product-${product.slug}` }}
+      >
+        <button
+          type="button"
+          onClick={onClose}
+          aria-label="Close"
+          className="absolute top-4 right-4 z-10 flex h-11 w-11 items-center justify-center rounded-full border border-bb-secondary/40 bg-bb-primary/90 text-bb-secondary backdrop-blur-sm transition-colors hover:border-bb-secondary hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+        >
+          <Icon name="close" size={16} />
+        </button>
+
+        <div className="relative aspect-[4/5] md:aspect-auto md:min-h-[440px] overflow-hidden bg-bb-primary-container">
+          <Photo
+            src={product.heroImage}
+            alt={product.name}
+            fill
+            sizes="(min-width:768px) 50vw, 100vw"
+            containerClassName="absolute inset-0"
+          />
+        </div>
+
+        <div className="flex flex-col gap-5 p-8 md:p-10">
+          {product.ritualLabel && (
+            <Eyebrow tone="gold">{product.ritualLabel}</Eyebrow>
+          )}
+          <DisplayHeading size="lg" as="h3" className="text-bb-secondary leading-tight">
+            {product.name}
+          </DisplayHeading>
+          {product.short && (
+            <p className="font-display italic text-bb-secondary/85 text-[clamp(16px,1.4vw,20px)] leading-snug">
+              {product.short}
+            </p>
+          )}
+          {product.lede && (
+            <p className="text-white/80 leading-relaxed text-[14px] md:text-[15px]">
+              {product.lede}
+            </p>
+          )}
+          <dl className="grid grid-cols-2 gap-x-6 gap-y-3 border-y border-bb-secondary/20 py-4 text-[12px]">
+            {product.origin && (
+              <>
+                <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">Origin</dt>
+                <dd className="text-bb-secondary">{product.origin}</dd>
+              </>
+            )}
+            {product.formats[0] && (
+              <>
+                <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">Format</dt>
+                <dd className="text-bb-secondary">{product.formats.join(", ")}</dd>
+              </>
+            )}
+            <dt className="uppercase tracking-[0.18em] text-bb-secondary/60">Lead time</dt>
+            <dd className="text-bb-secondary">{product.lead}</dd>
+          </dl>
+          {product.tags.length > 0 && (
+            <ul className="flex flex-wrap gap-2">
+              {product.tags.slice(0, 8).map((tag) => (
+                <li
+                  key={tag}
+                  className="inline-flex items-center px-2.5 py-1 border border-bb-secondary/30 text-[11px] uppercase tracking-[0.12em] text-bb-secondary/85"
+                >
+                  {tag}
+                </li>
+              ))}
+            </ul>
+          )}
+          <div className="mt-auto pt-4 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={onChoose}
+              className="inline-flex items-center justify-center gap-2 px-7 py-4 min-h-[48px] border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-2 focus-visible:ring-offset-bb-primary"
+            >
+              {isChosen ? copy.step_currently_chosen : copy.step_choose_this}
+              <Icon name="arrow-up-right" size={14} />
+            </button>
+            <button
+              type="button"
+              onClick={onClose}
+              className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary/70 hover:text-bb-secondary px-4 py-2"
+            >
+              ← Close
+            </button>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

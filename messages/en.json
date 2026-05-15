@@ -247,6 +247,10 @@
     "step_back": "Back",
     "step_next": "Next",
     "step_picked": "Selected",
+    "step_more_details": "View details",
+    "step_view_details": "View details",
+    "step_choose_this": "Choose this piece",
+    "step_currently_chosen": "Currently chosen",
     "review_eyebrow": "Your composition",
     "review_title": "Your night sky.",
     "review_lede": "Review the stars you've placed before sending the request.",
@@ -262,7 +266,9 @@
     "done_eyebrow": "Composed",
     "done_title": "Your composition is on its way.",
     "done_lede": "Tell us where to send it. The concierge replies within 24 hours.",
-    "done_cta": "Continue to the request"
+    "done_cta": "Continue to the request",
+    "exit_aria": "Close the composition wizard",
+    "exit_confirm": "You will lose your composition. Are you sure you want to leave?"
   },
   "products": {
     "compose_eyebrow": "Compose your box",
