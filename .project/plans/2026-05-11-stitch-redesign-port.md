@@ -4,7 +4,7 @@
 
 **Goal:** Port the Google Stitch "Modern Maghreb Rituals" design to the existing Next.js 16 Barbaria codebase. Three rituals (Hammam / Botanical / Heritage), full IA (Home, ritual categories, PDP, Story, Ateliers, Journal, Contact), B2B inquiry flow via `mailto:`, design tokens + typography ported verbatim from the handoff, existing photography in `public/brand_photos/` mapped through new components.
 
-**Architecture:** Single-PR frontend port. Products live in a typed TS data file (`lib/products.ts`) — no CMS this sprint. Inquiry persists in localStorage (renaming `cart-context` → `inquiry-context`). Old routes (`/cosmetics`, `/food`, `/textile`, `/order`, `/about`) 301-redirect to new ones via Next 16 `next.config.js` `redirects` config. Design tokens land as CSS custom properties referenced by Tailwind 4 `@theme`. EN/FR via existing `next-intl` setup.
+**Architecture:** Single-PR frontend port. Products live in a typed TS data file (`lib/products.ts`) , no CMS this sprint. Inquiry persists in localStorage (renaming `cart-context` → `inquiry-context`). Old routes (`/cosmetics`, `/food`, `/textile`, `/order`, `/about`) 301-redirect to new ones via Next 16 `next.config.js` `redirects` config. Design tokens land as CSS custom properties referenced by Tailwind 4 `@theme`. EN/FR via existing `next-intl` setup.
 
 **Tech Stack:** Next.js 16.2.1 (App Router, Turbopack), React 19.2, TypeScript 5, Tailwind 4, next-intl 4, next/font/google, Playwright (test, added by this plan), motion (already a dep, used sparingly).
 
@@ -109,12 +109,12 @@ components/order/
 
 ## Task 1: Design tokens + typography setup
 
-**Goal:** Get the warm-sand color palette and Cormorant/Playfair/Montserrat stack rendering on every page. After this task, the existing UI looks intentionally "wrong" (current components on new colors) — that's expected.
+**Goal:** Get the warm-sand color palette and Cormorant/Playfair/Montserrat stack rendering on every page. After this task, the existing UI looks intentionally "wrong" (current components on new colors) , that's expected.
 
 **Files:**
 - Modify: `app/[locale]/layout.tsx` (wire next/font/google)
 - Modify: `app/globals.css` (add `--bb-*` CSS vars, Tailwind `@theme`)
-- Create: `lib/tokens.ts` (TS exports for JS consumers — minimal)
+- Create: `lib/tokens.ts` (TS exports for JS consumers , minimal)
 
 **Reference docs to read first:**
 - `node_modules/next/dist/docs/01-app/01-getting-started/13-fonts.md`
@@ -249,11 +249,11 @@ export const TOKENS = {
 } as const;
 ```
 
-- [ ] **1.8** Run `npm run build`. Expected: exit 0, zero TS errors, page renders (Home will look broken visually, that's fine — tokens are in but components don't use them yet).
+- [ ] **1.8** Run `npm run build`. Expected: exit 0, zero TS errors, page renders (Home will look broken visually, that's fine , tokens are in but components don't use them yet).
 
 - [ ] **1.9** Start dev server (`npm run dev`), open `http://localhost:3000`, confirm body background is sand `#fcf9f3` and fonts are loaded (DevTools → Network → look for Cormorant/Playfair/Montserrat woff2). Verify with Computed Styles panel that `--bb-primary` resolves to `#1b3022`.
 
-- [ ] **1.10** Append to `.project/CHANGELOG.md`: `- HH:MM CET — Task 1: design tokens + next/font wiring landed.`
+- [ ] **1.10** Append to `.project/CHANGELOG.md`: `- HH:MM CET , Task 1: design tokens + next/font wiring landed.`
 
 - [ ] **1.11** Commit:
 
@@ -264,7 +264,7 @@ git commit -m "feat(tokens): port --bb-* design tokens and Cormorant/Playfair/Mo
 
 ---
 
-## Task 2: Primitives — Reveal, Eyebrow, DisplayHeading, Photo, Icon
+## Task 2: Primitives , Reveal, Eyebrow, DisplayHeading, Photo, Icon
 
 **Goal:** Five reusable atoms that every page depends on. After this task, downstream components compose against stable primitives.
 
@@ -543,7 +543,7 @@ export default function Icon({ name, size = 24, className, strokeWidth = 1.6 }: 
 }
 ```
 
-- [ ] **2.6** Verify `lib/utils.ts` has a `cn` helper (it should from shadcn — repo already has `components.json`). If missing, create:
+- [ ] **2.6** Verify `lib/utils.ts` has a `cn` helper (it should from shadcn , repo already has `components.json`). If missing, create:
 
 ```ts
 import { clsx, type ClassValue } from "clsx";
@@ -592,7 +592,7 @@ git mv lib/cart-context.tsx lib/inquiry-context.tsx
 - `CartContextValue` → `InquiryContextValue`
 - Storage key: change `const STORAGE_KEY = "barbaria-cart";` → `const STORAGE_KEY = "bb.inquiry";`
 - Add migration: on initial hydrate, if `localStorage.getItem("barbaria-cart")` exists, parse and copy to `bb.inquiry`, then `localStorage.removeItem("barbaria-cart")`.
-- Rename hook `useCart` → `useInquiry`. Keep backward-compat alias: `export const useCart = useInquiry;` with a `console.warn("useCart is deprecated, use useInquiry")` for the duration of this PR — remove in Task 12 when old routes are deleted.
+- Rename hook `useCart` → `useInquiry`. Keep backward-compat alias: `export const useCart = useInquiry;` with a `console.warn("useCart is deprecated, use useInquiry")` for the duration of this PR , remove in Task 12 when old routes are deleted.
 
 Hydration block becomes:
 
@@ -607,19 +607,19 @@ useEffect(() => {
     const raw = localStorage.getItem(STORAGE_KEY);
     if (raw) dispatch({ type: "hydrate", state: deserializeCart(raw) });
   } catch {
-    // localStorage unavailable (private mode etc.) — proceed with empty state
+    // localStorage unavailable (private mode etc.) , proceed with empty state
   }
 }, []);
 ```
 
-- [ ] **3.4** Update every importer found in 3.1: replace `from "@/lib/cart-context"` with `from "@/lib/inquiry-context"`. Replace `useCart()` calls with `useInquiry()` calls. Keep `totalItems` and other property names unchanged for this task — semantic rename only, no API surface change.
+- [ ] **3.4** Update every importer found in 3.1: replace `from "@/lib/cart-context"` with `from "@/lib/inquiry-context"`. Replace `useCart()` calls with `useInquiry()` calls. Keep `totalItems` and other property names unchanged for this task , semantic rename only, no API surface change.
 
 - [ ] **3.5** Run `npm run build`. Expected: exit 0. If any old import path still resolves, fix it.
 
 - [ ] **3.6** Manual verification:
   1. Start dev server, open `http://localhost:3000/cosmetics`.
   2. DevTools → Application → Local Storage. Confirm key `bb.inquiry` is set (may be empty Map).
-  3. In DevTools console: `localStorage.setItem("barbaria-cart", JSON.stringify([["test", 1]])); location.reload();` — after reload, `bb.inquiry` should contain the entry and `barbaria-cart` should be gone.
+  3. In DevTools console: `localStorage.setItem("barbaria-cart", JSON.stringify([["test", 1]])); location.reload();` , after reload, `bb.inquiry` should contain the entry and `barbaria-cart` should be gone.
   4. Click "Add to cart" on a product. Confirm count updates.
 
 - [ ] **3.7** Append CHANGELOG.
@@ -757,7 +757,7 @@ export default function Header({ locale, onOpenMenu, onOpenInquiry }: HeaderProp
 }
 ```
 
-- [ ] **4.5** Modify `app/[locale]/layout.tsx`: replace `Navbar` import with `Header`. The shell needs drawer state — add a client component wrapper `components/shell/ShellChrome.tsx` that owns `menuOpen` + `inquiryOpen` state and renders Header + MenuDrawer (stub for now) + InquiryDrawer (stub) + children. Render in layout: `<ShellChrome locale={locale}>{children}</ShellChrome>`.
+- [ ] **4.5** Modify `app/[locale]/layout.tsx`: replace `Navbar` import with `Header`. The shell needs drawer state , add a client component wrapper `components/shell/ShellChrome.tsx` that owns `menuOpen` + `inquiryOpen` state and renders Header + MenuDrawer (stub for now) + InquiryDrawer (stub) + children. Render in layout: `<ShellChrome locale={locale}>{children}</ShellChrome>`.
 
 ```tsx
 // components/shell/ShellChrome.tsx
@@ -806,7 +806,7 @@ git commit -m "feat(shell): editorial Header with transparent-over-hero behavior
 
 **Steps:**
 
-- [ ] **5.1** Create `components/shell/Footer.tsx` — three columns:
+- [ ] **5.1** Create `components/shell/Footer.tsx` , three columns:
   - Maison: link to `/story`, `/ateliers`, `/journal`
   - Catalogue: link to 3 rituals
   - Concierge: link to `/contact`, mailto, WhatsApp (`https://wa.me/212659658863`), Instagram (`https://instagram.com/barbaria_00`)
@@ -826,7 +826,7 @@ git commit -m "feat(shell): editorial Header with transparent-over-hero behavior
   - Body: scrollable list of items. Each item: thumbnail (Photo, 80×80), name (font-serif), one-line spec, `−/+` qty stepper, remove button (Icon `close`).
   - Empty state: italic Cormorant "Your inquiry list is empty. Browse rituals to begin."
   - Footer (sticky): "Request Quote" button → navigates to `/contact` and closes drawer. Secondary "Clear all" link if items > 0.
-  - Reads from `useInquiry()`. Uses `PRODUCTS` from `lib/products.ts` for name+thumbnail lookup (forward ref — lib/products.ts created in Task 6).
+  - Reads from `useInquiry()`. Uses `PRODUCTS` from `lib/products.ts` for name+thumbnail lookup (forward ref , lib/products.ts created in Task 6).
 
 - [ ] **5.4** Update `ShellChrome.tsx` to mount both drawers and Footer:
 
@@ -854,9 +854,9 @@ export default function ShellChrome({ locale, children }: { locale: string; chil
 }
 ```
 
-- [ ] **5.5** Note: `InquiryDrawer` references `PRODUCTS` from `lib/products.ts` which doesn't exist yet. For this task, define a temporary `getProductMeta(id)` shim that returns `{ name: id, image: null }` — overwritten in Task 6.
+- [ ] **5.5** Note: `InquiryDrawer` references `PRODUCTS` from `lib/products.ts` which doesn't exist yet. For this task, define a temporary `getProductMeta(id)` shim that returns `{ name: id, image: null }` , overwritten in Task 6.
 
-- [ ] **5.6** Run `npm run build`. Manually test in dev: open menu drawer (hamburger), close (Esc + click overlay + close button — three paths). Same for inquiry drawer. Verify focus trap by Tab-walking inside open drawer — focus must not escape.
+- [ ] **5.6** Run `npm run build`. Manually test in dev: open menu drawer (hamburger), close (Esc + click overlay + close button , three paths). Same for inquiry drawer. Verify focus trap by Tab-walking inside open drawer , focus must not escape.
 
 - [ ] **5.7** CHANGELOG + commit:
 
@@ -867,7 +867,7 @@ git commit -m "feat(shell): Footer + MenuDrawer + InquiryDrawer" -m "Three-colum
 
 ---
 
-## Task 6: Data layer — products + rituals + i18n catalogue
+## Task 6: Data layer , products + rituals + i18n catalogue
 
 **Goal:** Typed product catalogue file with all ~17 products (9 migrated from current oils + 8 introduced from prototype). Rituals/subcats/facets data file. EN/FR copy for every product, ritual, page chrome.
 
@@ -994,7 +994,7 @@ export interface Product {
 }
 
 export const PRODUCTS: Product[] = [
-  // ── BOTANICAL — migrated from current site
+  // ── BOTANICAL , migrated from current site
   {
     id: "huile-argan",
     world: "botanical",
@@ -1068,7 +1068,7 @@ git commit -m "feat(data): typed catalogue (17 products) + rituals + i18n copy" 
 
 - [ ] **7.2** Create `components/home/Hero.tsx`:
   - Container `relative h-[90vh] min-h-[640px]`.
-  - `Photo` filling, `priority`, alt from i18n. Source: `null` (gradient fallback) initially — flag as "needs shot" for Atlas photography. When real shot exists, swap to `/brand_photos/atlas-hero.jpg`.
+  - `Photo` filling, `priority`, alt from i18n. Source: `null` (gradient fallback) initially , flag as "needs shot" for Atlas photography. When real shot exists, swap to `/brand_photos/atlas-hero.jpg`.
   - Overlay: `<div className="absolute inset-0 bg-[linear-gradient(180deg,rgba(27,48,34,.45),rgba(27,48,34,.85))]" />`.
   - Centered content with stagger using `<Reveal delayMs={N}>`:
     - Eyebrow gold "MAISON DE TERROIR · EST. 1972" (delay 0)
@@ -1127,7 +1127,7 @@ export default function HomePage() {
 }
 ```
 
-Keep `generateMetadata` — update title + description copy to handoff voice.
+Keep `generateMetadata` , update title + description copy to handoff voice.
 
 - [ ] **7.8** Run `npm run build`. Open `/` in browser. Compare side-by-side with `D:\dev\Havok\BARBARIA\design_handoff_barbaria\Barbaria.html` (open both at same window size). Expect: layout matches, fonts match, colors match, hover/reveal animations work. Capture before/after screenshot for PR.
 
@@ -1135,7 +1135,7 @@ Keep `generateMetadata` — update title + description copy to handoff voice.
 
 ```bash
 git add components/home app/[locale]/page.tsx .project/CHANGELOG.md
-git commit -m "feat(home): new editorial home — Hero + Strip + Editorial + Bento + Heritage3Up" -m "Replaces the legacy 3-category Home with the Stitch composition: 90vh hero with dark green wash + stagger reveal, credentials strip, asymmetric editorial 2-col, bento grid (Hammam large, Botanical small, Heritage medium, text card), Heritage 3-up icon cells with gold pull-quote." -m "Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
+git commit -m "feat(home): new editorial home , Hero + Strip + Editorial + Bento + Heritage3Up" -m "Replaces the legacy 3-category Home with the Stitch composition: 90vh hero with dark green wash + stagger reveal, credentials strip, asymmetric editorial 2-col, bento grid (Hammam large, Botanical small, Heritage medium, text card), Heritage 3-up icon cells with gold pull-quote." -m "Co-Authored-By: Claude Opus 4.7 (1M context) <noreply@anthropic.com>"
 ```
 
 ---
@@ -1216,7 +1216,7 @@ export default async function RitualPage({ params }: PageProps) {
   - Props: `subs: SubCat[]`, `active: string | null`, `onChange: (sub: string | null) => void`. Empty active state shows "All" first.
 
 - [ ] **8.4** Create `components/category/FilterRail.tsx`:
-  - 280px wide on desktop (`lg:w-[280px]`), hidden on mobile (becomes a drawer triggered by "Filter" button — out of scope this PR, render inline below subs on mobile).
+  - 280px wide on desktop (`lg:w-[280px]`), hidden on mobile (becomes a drawer triggered by "Filter" button , out of scope this PR, render inline below subs on mobile).
   - Each facet group is a collapsible: heading row with `+/-` Icon, hairline border-bottom.
   - Groups: Ingredient, Application (use), Format, Packaging, Certification. Pull options from `FACETS` in `lib/rituals.ts`.
   - Each option is a checkbox+label. Multiple selection allowed.
@@ -1253,7 +1253,7 @@ export default function NotFound() {
 }
 ```
 
-- [ ] **8.9** Run `npm run build`. Open `/en/rituals/botanical` — should render with Hero + grid of 9 oil/serum products. `/en/rituals/hammam` — 5–7 items (some with gradient fallback). `/en/rituals/heritage` — pouches/cedar/etc.
+- [ ] **8.9** Run `npm run build`. Open `/en/rituals/botanical` , should render with Hero + grid of 9 oil/serum products. `/en/rituals/hammam` , 5–7 items (some with gradient fallback). `/en/rituals/heritage` , pouches/cedar/etc.
 
 - [ ] **8.10** Test filter: click an ingredient facet, verify grid filters. Click sub-chip, verify sub-filter. Click X on chip, verify reset.
 
@@ -1376,7 +1376,7 @@ git commit -m "feat(pdp): /product/[id] with image stack, spec column, proof, ri
 
 ---
 
-## Task 10: Editorial pages — Story / Ateliers / Journal
+## Task 10: Editorial pages , Story / Ateliers / Journal
 
 **Goal:** Three new content pages with the editorial layout patterns. Real placeholder content (not lorem ipsum) sourced from the prototype + Barbaria brand voice.
 
@@ -1439,9 +1439,9 @@ export const JOURNAL: JournalCard[] = [
 - [ ] **10.2** Create `app/[locale]/story/page.tsx`:
   - Atlas hero (60vh, gradient placeholder + dark wash, eyebrow + display heading + lede).
   - Three alternating chapter spreads:
-    - 01 *Origin* — left photo (gradient), right text "Maison de Terroir, est. 1972..." (2 paragraphs).
-    - 02 *Method* — right photo, left text.
-    - 03 *Object* — left photo, right text.
+    - 01 *Origin* , left photo (gradient), right text "Maison de Terroir, est. 1972..." (2 paragraphs).
+    - 02 *Method* , right photo, left text.
+    - 03 *Object* , left photo, right text.
   - Pull-quote between Chapters 02 and 03 (gold serif italic 32px centered).
   - All copy sourced from the prototype + Barbaria About page existing copy in `messages/en.json`.
 
@@ -1498,7 +1498,7 @@ const MAX_BODY = 1800;
 const RECIPIENT = "concierge@barbariamorocco.com";
 
 export function buildMailto(form: InquiryFormData, items: Array<{ product: Product; qty: number }>): string {
-  const subject = `B2B Inquiry — ${form.company || form.contactName} — ${items.length} item(s)`;
+  const subject = `B2B Inquiry , ${form.company || form.contactName} , ${items.length} item(s)`;
 
   const lines: string[] = [];
   lines.push("BARBARIA · B2B Inquiry");
@@ -1521,7 +1521,7 @@ export function buildMailto(form: InquiryFormData, items: Array<{ product: Produ
   lines.push(`── Inquiry list (${items.length}) ──`);
   const trimmed = items.slice(0, 20);
   for (const { product, qty } of trimmed) {
-    lines.push(`• ${product.name[form.locale === "fr" ? "fr" : "en"]} × ${qty} (MOQ ${product.moq}, lead ${product.lead}) — ${product.id}`);
+    lines.push(`• ${product.name[form.locale === "fr" ? "fr" : "en"]} × ${qty} (MOQ ${product.moq}, lead ${product.lead}) , ${product.id}`);
   }
   if (items.length > trimmed.length) {
     lines.push(`...and ${items.length - trimmed.length} more (full list available on request)`);
@@ -1571,7 +1571,7 @@ export default async function ContactPage({ params }: PageProps) {
 
 Keep `generateMetadata` from existing page, update copy.
 
-- [ ] **11.5** Run `npm run build`. Manually test: fill form, click submit, mail client opens with structured body. Inspect mailto URL — body decoded, items + form fields visible, < 1800 chars.
+- [ ] **11.5** Run `npm run build`. Manually test: fill form, click submit, mail client opens with structured body. Inspect mailto URL , body decoded, items + form fields visible, < 1800 chars.
 
 - [ ] **11.6** CHANGELOG + commit:
 
@@ -1617,7 +1617,7 @@ const nextConfig: NextConfig = {
     const out: Array<{ source: string; destination: string; permanent: true }> = [];
     for (const { from, to } of PAIRS) {
       out.push({ source: from, destination: to, permanent: true });
-      // Locale-prefixed variants (en, fr) — next-intl serves both
+      // Locale-prefixed variants (en, fr) , next-intl serves both
       out.push({ source: `/en${from}`, destination: `/en${to}`, permanent: true });
       out.push({ source: `/fr${from}`, destination: `/fr${to}`, permanent: true });
     }
@@ -1630,7 +1630,7 @@ const nextConfig: NextConfig = {
 - [ ] **12.2** Verify next-intl locale prefix strategy. Check `i18n/routing.ts`:
   - If `localePrefix: "as-needed"` (default locale unprefixed), only `/fr` variants are needed for FR; bare paths work for EN.
   - If `localePrefix: "always"`, both `/en` and `/fr` variants are needed.
-  Adjust PAIRS list accordingly. Test with `curl -I http://localhost:3000/cosmetics` — expect `301 → /rituals/botanical`.
+  Adjust PAIRS list accordingly. Test with `curl -I http://localhost:3000/cosmetics` , expect `301 → /rituals/botanical`.
 
 - [ ] **12.3** Delete old directories:
 
@@ -1686,7 +1686,7 @@ git commit -m "feat(routing): retire /cosmetics, /food, /textile, /order, /about
 
 ---
 
-## Task 13: Tests — Playwright smoke + functional + a11y
+## Task 13: Tests , Playwright smoke + functional + a11y
 
 **Goal:** Add Playwright with three suites: route smoke, functional (inquiry flow + locale switch), and axe-core a11y on 4 key pages.
 
@@ -1824,7 +1824,7 @@ test("inquiry mailto link contains structured body", async ({ page }) => {
 });
 ```
 
-(The form's submit button gets a `data-mailto` attribute set client-side as it builds the URL — this lets us assert without actually triggering the mail client. Update `TwoStepForm.tsx` accordingly if not already.)
+(The form's submit button gets a `data-mailto` attribute set client-side as it builds the URL , this lets us assert without actually triggering the mail client. Update `TwoStepForm.tsx` accordingly if not already.)
 
 - [ ] **13.6** Create `tests/a11y.spec.ts`:
 
@@ -1876,20 +1876,20 @@ npx lighthouse http://localhost:3000/ --only-categories=performance,accessibilit
 Expected: Performance ≥ 90, Accessibility 100, Best Practices ≥ 95, SEO ≥ 95. LCP < 2.5s. CLS < 0.1.
 
 - [ ] **14.4** Capture before/after screenshots for the PR description:
-  - `/` (Home) — before from old `master`, after from current branch
-  - `/rituals/botanical` (was `/cosmetics`) — before/after
-  - `/contact` (was `/order`) — before/after
-  - `/product/huile-argan` (new) — after only
+  - `/` (Home) , before from old `master`, after from current branch
+  - `/rituals/botanical` (was `/cosmetics`) , before/after
+  - `/contact` (was `/order`) , before/after
+  - `/product/huile-argan` (new) , after only
   Save into `.project/screenshots/` (git-add and commit them).
 
 - [ ] **14.5** Write PR body covering:
-  - **Summary** — 2 sentences on what landed.
-  - **Scope** — what's in (frontend redesign port), what's out (CMS, real backend, admin, analytics — link to `_backlog.md`).
-  - **Routing changes** — list of redirects.
-  - **Taxonomy** — link to decision in `DECISIONS.md`.
-  - **Needs shot** — list of placeholder photo slots: Atlas hero, Hammam hero, Botanical hero, Heritage hero, Ghassoul clay product, Kessa glove product, Rose water product, all 6 ateliers, 5 of 6 journal cards. Per slot: desired composition note.
-  - **Tests** — Playwright suite summary, Lighthouse score.
-  - **Followups** — Sprint 2 (admin + DB), Sprint 3 (inquiry backend + analytics).
+  - **Summary** , 2 sentences on what landed.
+  - **Scope** , what's in (frontend redesign port), what's out (CMS, real backend, admin, analytics , link to `_backlog.md`).
+  - **Routing changes** , list of redirects.
+  - **Taxonomy** , link to decision in `DECISIONS.md`.
+  - **Needs shot** , list of placeholder photo slots: Atlas hero, Hammam hero, Botanical hero, Heritage hero, Ghassoul clay product, Kessa glove product, Rose water product, all 6 ateliers, 5 of 6 journal cards. Per slot: desired composition note.
+  - **Tests** , Playwright suite summary, Lighthouse score.
+  - **Followups** , Sprint 2 (admin + DB), Sprint 3 (inquiry backend + analytics).
 
 - [ ] **14.6** Final CHANGELOG entry "Sprint 1 complete; opening PR".
 
@@ -1904,10 +1904,10 @@ git commit -m "docs(qa): add before/after screenshots + Lighthouse Home report" 
 
 ```bash
 git push
-gh pr create --base master --head feat/stitch-redesign --title "feat: Stitch redesign port — Barbaria Modern Maghreb Rituals" --body-file .project/pr-body.md
+gh pr create --base master --head feat/stitch-redesign --title "feat: Stitch redesign port , Barbaria Modern Maghreb Rituals" --body-file .project/pr-body.md
 ```
 
-(Write `.project/pr-body.md` first with the content from 14.5. Don't commit it before the PR command — `gh pr create` reads it, then we can commit it after for record.)
+(Write `.project/pr-body.md` first with the content from 14.5. Don't commit it before the PR command , `gh pr create` reads it, then we can commit it after for record.)
 
 - [ ] **14.9** Verify PR rendered correctly on GitHub. Link → request review (Taha is the only reviewer; he merges when satisfied).
 
@@ -1943,7 +1943,7 @@ Spec coverage check (skim each Sprint 1 spec section):
 - ✅ Build + Lighthouse + PR → Task 14
 - ✅ DoD items list → checked across all tasks
 
-Placeholder scan: zero `TBD`/`TODO`/`add appropriate` — all step content is concrete with code or commands.
+Placeholder scan: zero `TBD`/`TODO`/`add appropriate` , all step content is concrete with code or commands.
 
 Type consistency: `useInquiry`, `useInquiry().add(id)`, `totalItems`, `items`, `Product`, `WORLDS`, `SUBCATS` referenced consistently across tasks.
 
@@ -1955,8 +1955,8 @@ No gaps found vs spec section 10 (Definition of Done).
 
 Two execution options for Taha:
 
-**1. Subagent-Driven (recommended)** — I dispatch one fresh subagent per task (Sonnet for boilerplate tasks 1–11, Opus for Tasks 12 + 13 + 14 which touch routing, tests, and final QA). I review each task's commit before the next dispatch.
+**1. Subagent-Driven (recommended)** , I dispatch one fresh subagent per task (Sonnet for boilerplate tasks 1–11, Opus for Tasks 12 + 13 + 14 which touch routing, tests, and final QA). I review each task's commit before the next dispatch.
 
-**2. Inline Execution** — I execute every task in this session, committing as I go, surfacing checkpoints after Tasks 3 / 6 / 9 / 12 / 14.
+**2. Inline Execution** , I execute every task in this session, committing as I go, surfacing checkpoints after Tasks 3 / 6 / 9 / 12 / 14.
 
 Per the user's PM grant ("you are the project manager, agents are your devs"), Option 1 is the natural fit.

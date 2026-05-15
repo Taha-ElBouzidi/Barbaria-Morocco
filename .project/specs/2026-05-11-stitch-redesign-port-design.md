@@ -1,4 +1,4 @@
-# Spec — Stitch Redesign Port (Barbaria, B2B Gifting)
+# Spec , Stitch Redesign Port (Barbaria, B2B Gifting)
 
 **Date:** 2026-05-11
 **Branch:** `feat/stitch-redesign`
@@ -20,13 +20,13 @@ Replace the current Barbaria public site (cosmetics / textile / food / order) wi
 
 - Full design system port: tokens, typography, base components, reveal animations.
 - Routes (per `[locale]`):
-  - `/` — Home (hero, strip, editorial 2-col, bento rituals, heritage 3-up)
-  - `/rituals/hammam`, `/rituals/botanical`, `/rituals/heritage` — Category pages (hero, sub-chips, filter rail, product grid)
-  - `/product/[id]` — Product detail (image stack, spec column, proof strip, application ritual, cooperative impact band, related)
-  - `/story` — Editorial origin/method/object chapters
-  - `/ateliers` — Cooperative partners 6-up grid
-  - `/journal` — Editorial index (6 cards, mixed sizes)
-  - `/contact` — Two-step concierge inquiry form
+  - `/` , Home (hero, strip, editorial 2-col, bento rituals, heritage 3-up)
+  - `/rituals/hammam`, `/rituals/botanical`, `/rituals/heritage` , Category pages (hero, sub-chips, filter rail, product grid)
+  - `/product/[id]` , Product detail (image stack, spec column, proof strip, application ritual, cooperative impact band, related)
+  - `/story` , Editorial origin/method/object chapters
+  - `/ateliers` , Cooperative partners 6-up grid
+  - `/journal` , Editorial index (6 cards, mixed sizes)
+  - `/contact` , Two-step concierge inquiry form
 - Shared shell: sticky header (transparent over hero → sand after 8px scroll), language toggle, hamburger drawer, inquiry drawer (renames existing `cart-context` → `inquiry-context`), footer.
 - Product catalogue: hardcoded TS data file `lib/products.ts` modeled on prototype's `data.jsx` shape. 17 products from prototype, re-photographed with `public/brand_photos/` where mappable, plus current site's 9 oil/serum products migrated into Botanical.
 - i18n: EN / FR via existing `next-intl` setup, expanding `messages/{en,fr}.json` to cover new copy.
@@ -37,13 +37,13 @@ Replace the current Barbaria public site (cosmetics / textile / food / order) wi
 
 ### Deferred (separate PRs, not this one)
 
-- CMS wiring (Sanity / Contentful / etc.) — products stay in `lib/products.ts` for now.
-- Resend / SendGrid backend for inquiry form — `mailto:` is the v1 transport.
-- Real Story / Ateliers / Journal **content** (we ship the *layouts* with placeholder editorial copy from the prototype's `data.jsx` — labeled as draft in PR description).
-- Google Stitch MCP integration — static handoff is sufficient for this port.
+- CMS wiring (Sanity / Contentful / etc.) , products stay in `lib/products.ts` for now.
+- Resend / SendGrid backend for inquiry form , `mailto:` is the v1 transport.
+- Real Story / Ateliers / Journal **content** (we ship the *layouts* with placeholder editorial copy from the prototype's `data.jsx` , labeled as draft in PR description).
+- Google Stitch MCP integration , static handoff is sufficient for this port.
 - Arabic RTL or any locale beyond EN/FR.
 - Per-product PDF spec sheet generation.
-- `npm audit` remediation (11 vulns: 1 low, 7 mod, 3 high — none runtime-critical for this port).
+- `npm audit` remediation (11 vulns: 1 low, 7 mod, 3 high , none runtime-critical for this port).
 
 ---
 
@@ -76,7 +76,7 @@ Products from prototype to **introduce** (photography already exists in `public/
 | Engraved Cedar Box | Heritage | Engraved Boxes | `gift-box-{open,flat,overhead}.jpg` |
 | Hammam / Heritage gift sets | Heritage | Sets | `packaging-{1..5}.jpg`, `gift-boxes-overhead.jpg` |
 
-**Food / edibles**: dropped from IA. The "Food: Coming soon" placeholder retires. If user pivots back to edibles, add a 4th ritual "Terroir" in a follow-up — design tokens extend cleanly.
+**Food / edibles**: dropped from IA. The "Food: Coming soon" placeholder retires. If user pivots back to edibles, add a 4th ritual "Terroir" in a follow-up , design tokens extend cleanly.
 
 ---
 
@@ -135,7 +135,7 @@ LATEST/
 
 ### Design tokens
 
-Port `design_handoff_barbaria/src/style.css` `--bb-*` CSS custom properties verbatim into `app/globals.css`. Expose as Tailwind theme via Tailwind 4's `@theme` block so utilities like `bg-bb-bg`, `text-bb-primary` work. Keep canonical color values as `:root` CSS vars (single source of truth) — Tailwind theme references them with `var(--bb-primary)` etc., not duplicated literals.
+Port `design_handoff_barbaria/src/style.css` `--bb-*` CSS custom properties verbatim into `app/globals.css`. Expose as Tailwind theme via Tailwind 4's `@theme` block so utilities like `bg-bb-bg`, `text-bb-primary` work. Keep canonical color values as `:root` CSS vars (single source of truth) , Tailwind theme references them with `var(--bb-primary)` etc., not duplicated literals.
 
 Type loaded via `next/font/google`: Cormorant Garamond (400 italic, 600 italic, 700), Playfair Display (500, 600), Montserrat (400, 500, 600). JetBrains Mono optional. `display: swap`, preconnect handled by `next/font`.
 
@@ -157,7 +157,7 @@ const REDIRECTS = {
 };
 ```
 
-Applied **after** locale resolution so EN/FR variants both redirect correctly. 301 status (permanent — SEO carries forward).
+Applied **after** locale resolution so EN/FR variants both redirect correctly. 301 status (permanent , SEO carries forward).
 
 ### Reveal animation
 
@@ -178,41 +178,41 @@ Asset directory unchanged: `public/brand_photos/`. Slots that lack a real photo 
 ## 5. Components inventory
 
 ### Shell (mounted in `app/[locale]/layout.tsx`)
-- `Header` — sticky, transparent-over-hero → sand-with-1px-line after 8px scroll. Logo wordmark left, primary nav center (Rituals dropdown reveals 3 worlds + 2nd-level nav for Story/Ateliers/Journal), lang toggle + Inquiry(N) basket + hamburger right.
-- `Footer` — three columns: Maison (Story, Ateliers, Journal), Catalogue (3 rituals), Concierge (Contact, WhatsApp, Instagram). Hairline top border, deep-green text on sand. Newsletter signup deferred.
-- `MenuDrawer` — right-side drawer, 3 large editorial ritual links + secondary links. Close on overlay click or Esc. Focus trap.
-- `InquiryDrawer` — right-side drawer. Lists items with thumb / name / qty stepper / remove. Primary CTA "Request Quote" navigates to `/contact`. Empty state with editorial copy.
+- `Header` , sticky, transparent-over-hero → sand-with-1px-line after 8px scroll. Logo wordmark left, primary nav center (Rituals dropdown reveals 3 worlds + 2nd-level nav for Story/Ateliers/Journal), lang toggle + Inquiry(N) basket + hamburger right.
+- `Footer` , three columns: Maison (Story, Ateliers, Journal), Catalogue (3 rituals), Concierge (Contact, WhatsApp, Instagram). Hairline top border, deep-green text on sand. Newsletter signup deferred.
+- `MenuDrawer` , right-side drawer, 3 large editorial ritual links + secondary links. Close on overlay click or Esc. Focus trap.
+- `InquiryDrawer` , right-side drawer. Lists items with thumb / name / qty stepper / remove. Primary CTA "Request Quote" navigates to `/contact`. Empty state with editorial copy.
 
 ### Home
-- `Hero` — full-bleed photo (atlas placeholder gradient until real shot lands), 90vh, dark wash, centered serif headline + eyebrow + lede + two CTAs. Stagger fade-up.
-- `CredentialStrip` — thin sand band, marquee-ish credentials ("100% Sourced from Morocco · 30+ Berber Cooperatives · Made-to-Order · 4-Week Lead").
-- `EditorialBlock` — asymmetric 2-col (portrait + headline). Uses `brand-lifestyle-1.jpg` or `argan-oil-dropper.jpg`.
-- `BentoRituals` — 3-photo + 1-text grid. Hammam (2-row large, savon-noir), Botanical (small top-right, argan-oil-dropper), Heritage (medium bottom-left, gift-box-open), text card "Compose your own gift edit".
-- `Heritage3Up` — 3 icon cells with copy + gold quote.
+- `Hero` , full-bleed photo (atlas placeholder gradient until real shot lands), 90vh, dark wash, centered serif headline + eyebrow + lede + two CTAs. Stagger fade-up.
+- `CredentialStrip` , thin sand band, marquee-ish credentials ("100% Sourced from Morocco · 30+ Berber Cooperatives · Made-to-Order · 4-Week Lead").
+- `EditorialBlock` , asymmetric 2-col (portrait + headline). Uses `brand-lifestyle-1.jpg` or `argan-oil-dropper.jpg`.
+- `BentoRituals` , 3-photo + 1-text grid. Hammam (2-row large, savon-noir), Botanical (small top-right, argan-oil-dropper), Heritage (medium bottom-left, gift-box-open), text card "Compose your own gift edit".
+- `Heritage3Up` , 3 icon cells with copy + gold quote.
 
 ### Category page (`rituals/[world]`)
-- `CategoryHero` — full-bleed photo (placeholder gradient until shoot), 70vh, eyebrow + display heading.
-- `SubChips` — horizontal text-link row (gold underline on active).
-- `FilterRail` — 280px left rail, collapsible facet groups (ritual moment / ingredient / application / format / packaging / certification). Selected facets render as removable chips above grid.
-- `SortDropdown` — Recommended / A-Z / Latest / MOQ asc.
-- `ProductGrid` — 3 / 2 / 1 cols. `ProductCard`: square photo (cover, hover-zoom 1.02), eyebrow, serif name, MOQ pill, one-line spec, link arrow + "Add to inquiry" ghost button.
+- `CategoryHero` , full-bleed photo (placeholder gradient until shoot), 70vh, eyebrow + display heading.
+- `SubChips` , horizontal text-link row (gold underline on active).
+- `FilterRail` , 280px left rail, collapsible facet groups (ritual moment / ingredient / application / format / packaging / certification). Selected facets render as removable chips above grid.
+- `SortDropdown` , Recommended / A-Z / Latest / MOQ asc.
+- `ProductGrid` , 3 / 2 / 1 cols. `ProductCard`: square photo (cover, hover-zoom 1.02), eyebrow, serif name, MOQ pill, one-line spec, link arrow + "Add to inquiry" ghost button.
 
 ### Product page (`product/[id]`)
-- `ImageStack` — sticky left col, hero + secondary shots vertical, thumbs strip swaps hero.
-- `SpecColumn` — eyebrow, display name, italic descriptor, key/value attribute list with 1px sandstone separators. Primary "Add to Inquiry", secondary "Download Spec Sheet (PDF)" (CTA wired to mailto placeholder for v1).
-- `ProofStrip` — 3 hairline-bordered cells.
-- `ApplicationRitual` — 3 numbered steps with icons.
-- `CooperativeBand` — full-bleed deep-green section, manifesto + 3 stat blocks with aged-gold numerals.
-- `RelatedRow` — 3-up cards from other rituals.
+- `ImageStack` , sticky left col, hero + secondary shots vertical, thumbs strip swaps hero.
+- `SpecColumn` , eyebrow, display name, italic descriptor, key/value attribute list with 1px sandstone separators. Primary "Add to Inquiry", secondary "Download Spec Sheet (PDF)" (CTA wired to mailto placeholder for v1).
+- `ProofStrip` , 3 hairline-bordered cells.
+- `ApplicationRitual` , 3 numbered steps with icons.
+- `CooperativeBand` , full-bleed deep-green section, manifesto + 3 stat blocks with aged-gold numerals.
+- `RelatedRow` , 3-up cards from other rituals.
 
 ### Story / Ateliers / Journal
-- `StoryChapter` — alternating 1-col photo + 1-col text spreads with chapter number, italic title, pull-quote between.
-- `AtelierCard` — square photo, name, region, partner-since year, one-line description. 6-up grid.
-- `JournalCard` — kicker, display headline, date, 4:5 photo. Mixed-size grid: 1 feature row + 5 standard. **No article pages this PR** — cards link to `#` with `aria-disabled` until Journal content is written.
+- `StoryChapter` , alternating 1-col photo + 1-col text spreads with chapter number, italic title, pull-quote between.
+- `AtelierCard` , square photo, name, region, partner-since year, one-line description. 6-up grid.
+- `JournalCard` , kicker, display headline, date, 4:5 photo. Mixed-size grid: 1 feature row + 5 standard. **No article pages this PR** , cards link to `#` with `aria-disabled` until Journal content is written.
 
 ### Contact
-- `TwoStepForm` — 01 Your Maison (Company, Name, Email, Phone/WhatsApp) · 02 The Occasion (Quantity, Date, Occasion select, Free-text). Hairline bottom-border inputs. Submit → `mailto:` with serialized fields + inquiry list. Success state replaces form with gold check + "We'll be in touch within 24h."
-- `InquirySidebar` — sticky right column, items list + direct lines (Paris, Casablanca, WhatsApp, atelier address).
+- `TwoStepForm` , 01 Your Maison (Company, Name, Email, Phone/WhatsApp) · 02 The Occasion (Quantity, Date, Occasion select, Free-text). Hairline bottom-border inputs. Submit → `mailto:` with serialized fields + inquiry list. Success state replaces form with gold check + "We'll be in touch within 24h."
+- `InquirySidebar` , sticky right column, items list + direct lines (Paris, Casablanca, WhatsApp, atelier address).
 
 ---
 
@@ -262,7 +262,7 @@ Exports `WORLDS`, `SUBCATS`, `FACETS` matching the prototype's `data.jsx`. Used 
 | Photo coverage gaps (Atlas hero, cooperative portraits, ateliers shots) | Placeholder = deep-green gradient + grain noise, NOT Unsplash. Each gap logged in `.project/DECISIONS.md` as "needs shot" with desired composition |
 | Font CLS during Cormorant/Playfair load | `next/font/google` with `display: swap` and preload of subset; size-adjust if needed |
 | `messages/{en,fr}.json` divergence between old + new keys | Single PR replaces files atomically. Old keys (cosmetics products, food, order) removed in same commit as new routes; no half-state |
-| Tailwind 4 + CSS vars interaction | Tailwind 4's `@theme` directive references `--bb-*` vars directly; spike this in the tokens slice (step 2) — if `@theme` mapping fails, fall back to writing utilities by hand in `@layer utilities` |
+| Tailwind 4 + CSS vars interaction | Tailwind 4's `@theme` directive references `--bb-*` vars directly; spike this in the tokens slice (step 2) , if `@theme` mapping fails, fall back to writing utilities by hand in `@layer utilities` |
 | Inquiry mailto link length limits | If body > 2000 chars, truncate item list to first 20 + "and N more"; preserve full list in form's hidden textarea for paste fallback |
 
 ---
@@ -284,7 +284,7 @@ Tests live in `tests/` (new directory) using `@playwright/test`. Added as devDep
 - Inquiry persists across full page reload (localStorage)
 
 ### A11y
-- axe-core scan on `/`, `/rituals/hammam`, `/product/beldi-soap`, `/contact` — zero serious/critical violations
+- axe-core scan on `/`, `/rituals/hammam`, `/product/beldi-soap`, `/contact` , zero serious/critical violations
 - Keyboard nav: header focus order is logo → primary nav → lang toggle → inquiry → hamburger. Drawer traps focus when open, Esc closes.
 
 ### Visual (manual, documented in PR)
@@ -303,22 +303,22 @@ Tests live in `tests/` (new directory) using `@playwright/test`. Added as devDep
 
 Each slice is one commit. Each ends with `npm run build` clean and a one-line `.project/CHANGELOG.md` entry.
 
-1. **Spec + branch + scaffolding** — this file + `.project/CHANGELOG.md` + `.project/DECISIONS.md` + `next.config.ts` turbopack root fix.
-2. **Tokens + fonts** — `globals.css` with `--bb-*` vars + Tailwind `@theme` + `next/font/google` wiring in `app/[locale]/layout.tsx`. Verify by rendering existing home in new colors (intentionally ugly intermediate).
-3. **Primitives** — `Reveal`, `Eyebrow`, `DisplayHeading`, `Photo`, `Icon` (inline SVG set from handoff).
-4. **Shell** — new `Header`, `Footer`, `MenuDrawer`, `InquiryDrawer`. Rename `cart-context` → `inquiry-context` with localStorage migration.
-5. **Home** — `Hero`, `CredentialStrip`, `EditorialBlock`, `BentoRituals`, `Heritage3Up`.
-6. **Data layer** — `lib/products.ts` + `lib/rituals.ts` populated. `messages/{en,fr}.json` updated.
-7. **Category page** — one route `/rituals/[world]` serving all 3 worlds. `CategoryHero`, `SubChips`, `FilterRail`, `ProductGrid`, `ProductCard`. Filtering + sort works (client-side, no backend).
-8. **PDP** — `/product/[id]` with all 6 sub-sections.
-9. **Editorial pages** — Story, Ateliers, Journal layouts with placeholder/prototype content.
-10. **Contact + inquiry submit** — `TwoStepForm`, `InquirySidebar`, mailto wiring.
-11. **Redirects + retire old routes** — middleware update, delete `/cosmetics, /food, /textile, /order, /about` page directories. Update `app/sitemap.ts`.
-12. **Tests** — Playwright config + smoke + functional + a11y.
+1. **Spec + branch + scaffolding** , this file + `.project/CHANGELOG.md` + `.project/DECISIONS.md` + `next.config.ts` turbopack root fix.
+2. **Tokens + fonts** , `globals.css` with `--bb-*` vars + Tailwind `@theme` + `next/font/google` wiring in `app/[locale]/layout.tsx`. Verify by rendering existing home in new colors (intentionally ugly intermediate).
+3. **Primitives** , `Reveal`, `Eyebrow`, `DisplayHeading`, `Photo`, `Icon` (inline SVG set from handoff).
+4. **Shell** , new `Header`, `Footer`, `MenuDrawer`, `InquiryDrawer`. Rename `cart-context` → `inquiry-context` with localStorage migration.
+5. **Home** , `Hero`, `CredentialStrip`, `EditorialBlock`, `BentoRituals`, `Heritage3Up`.
+6. **Data layer** , `lib/products.ts` + `lib/rituals.ts` populated. `messages/{en,fr}.json` updated.
+7. **Category page** , one route `/rituals/[world]` serving all 3 worlds. `CategoryHero`, `SubChips`, `FilterRail`, `ProductGrid`, `ProductCard`. Filtering + sort works (client-side, no backend).
+8. **PDP** , `/product/[id]` with all 6 sub-sections.
+9. **Editorial pages** , Story, Ateliers, Journal layouts with placeholder/prototype content.
+10. **Contact + inquiry submit** , `TwoStepForm`, `InquirySidebar`, mailto wiring.
+11. **Redirects + retire old routes** , middleware update, delete `/cosmetics, /food, /textile, /order, /about` page directories. Update `app/sitemap.ts`.
+12. **Tests** , Playwright config + smoke + functional + a11y.
 13. **Build + Lighthouse + screenshot QA**.
 14. **Open PR to master**.
 
-Commits 1 through 13 are reviewable by Taha at any point. Per global rules: "drive autonomously" mode — no per-commit pauses, stop only at sprint end, destructive ambiguity, or unresolvable test failure. Sprint end = step 14 (PR opened).
+Commits 1 through 13 are reviewable by Taha at any point. Per global rules: "drive autonomously" mode , no per-commit pauses, stop only at sprint end, destructive ambiguity, or unresolvable test failure. Sprint end = step 14 (PR opened).
 
 ---
 
@@ -338,7 +338,7 @@ Commits 1 through 13 are reviewable by Taha at any point. Per global rules: "dri
 
 ---
 
-## 11. Out of scope (explicit list — DO NOT do in this PR)
+## 11. Out of scope (explicit list , DO NOT do in this PR)
 
 - CMS integration (Sanity, Contentful, etc.)
 - Resend / SendGrid email backend (mailto only)
@@ -352,7 +352,7 @@ Commits 1 through 13 are reviewable by Taha at any point. Per global rules: "dri
 - Google Stitch MCP setup
 - Newsletter signup
 - Customer accounts / login
-- Real payment / checkout (deliberate — B2B inquiry only)
+- Real payment / checkout (deliberate , B2B inquiry only)
 - Mobile app considerations beyond responsive web
 
 If any of these become required mid-implementation, stop and re-plan.

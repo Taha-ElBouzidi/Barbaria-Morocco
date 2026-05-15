@@ -1,5 +1,5 @@
 /**
- * Sprint 2 — Category data fetchers. Returns locale-resolved flat shapes
+ * Sprint 2 , Category data fetchers. Returns locale-resolved flat shapes
  * matching the pattern in lib/data/rituals.ts and lib/data/products.ts.
  */
 

@@ -24,7 +24,7 @@ Lower numbers appear first in the catalogue grid. Use to feature seasonal boxes 
 A special box per category. Buyers who land on this box's URL get the immersive wizard instead of a pre-set box. Currently the maison has two of these: `compose-cosmetiques` and `compose-epicerie`. Curated (pre-set) boxes leave this unchecked.
 
 ## Pieces / items
-The component products inside a box. A curated box has a fixed list (you pick them in the editor). A wizard box has no list — the buyer assembles their own at run time.
+The component products inside a box. A curated box has a fixed list (you pick them in the editor). A wizard box has no list , the buyer assembles their own at run time.
 
 ## Status
 Where a row sits in its publish lifecycle.

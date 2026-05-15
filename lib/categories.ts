@@ -1,4 +1,4 @@
-// Sprint 2 — Categories (public-facing taxonomy)
+// Sprint 2 , Categories (public-facing taxonomy)
 //
 // Replaces the 3 rituals as the entry point to the catalogue. Each
 // category has a story theme key used by the box composer wizard to

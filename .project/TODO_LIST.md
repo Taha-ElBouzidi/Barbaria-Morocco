@@ -72,7 +72,7 @@ Admin feedback: typing custom values is hard and error-prone. Candidates to conv
 Name + description fields stay as free text per user direction.
 
 ## Future admin improvements
-- Drag-and-drop reordering for ordered lists (currently up/down buttons only — buttons are touch-friendly, drag-and-drop is desktop-only).
+- Drag-and-drop reordering for ordered lists (currently up/down buttons only , buttons are touch-friendly, drag-and-drop is desktop-only).
 - Bulk publish / unpublish.
 - Soft-delete with 5-second undo toast.
 - Image cropping in the upload flow.

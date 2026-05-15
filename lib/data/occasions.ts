@@ -7,7 +7,7 @@ export interface OccasionOption {
 
 type LocaleCode = "en" | "fr";
 
-/** Sprint 2.7 — Published occasions for the contact form dropdown. */
+/** Sprint 2.7 , Published occasions for the contact form dropdown. */
 export async function getOccasions(locale: LocaleCode): Promise<OccasionOption[]> {
   const supabase = await createServerClient();
   const { data, error } = await supabase

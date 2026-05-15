@@ -1,4 +1,4 @@
-# Sprint 2 Implementation Plan — Admin + Supabase
+# Sprint 2 Implementation Plan , Admin + Supabase
 
 > **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` to implement task-by-task. Steps use checkbox (`- [ ]`) syntax for tracking.
 
@@ -20,13 +20,13 @@
 - Next.js 16 has breaking changes from training data; consult `node_modules/next/dist/docs/` for any specifics.
 - Sprint 1 baseline (master at `5cbfa0c`) ships the redesign. Don't regress public routes.
 - 40 Playwright tests must still pass at the end of every slice.
-- Supabase MCP is available — use `mcp__claude_ai_Supabase__*` tools for read/list/apply-migration/execute-sql.
+- Supabase MCP is available , use `mcp__claude_ai_Supabase__*` tools for read/list/apply-migration/execute-sql.
 - Never commit secrets. Service role key goes in Vercel + a local `.env.local` (gitignored).
 - Every slice ends: build green, single commit, CHANGELOG entry, no `--no-verify`.
 
 ---
 
-## Slice 1 — Dependencies + env scaffolding
+## Slice 1 , Dependencies + env scaffolding
 
 **Files:** `package.json`, `package-lock.json`, `.env.example`, `.env.local` (gitignored), `drizzle.config.ts`, `.gitignore`.
 
@@ -63,7 +63,7 @@
 
 ---
 
-## Slice 2 — Drizzle schema
+## Slice 2 , Drizzle schema
 
 **Files:** `db/schema.ts` (new).
 
@@ -83,7 +83,7 @@
 
 ---
 
-## Slice 3 — Apply migration 0001 to Supabase
+## Slice 3 , Apply migration 0001 to Supabase
 
 **Action:** Apply via Supabase MCP `apply_migration` tool.
 
@@ -96,7 +96,7 @@
 
 ---
 
-## Slice 4 — RLS policies + service role bypass
+## Slice 4 , RLS policies + service role bypass
 
 **Files:** `db/migrations/0002_rls.sql` (hand-written).
 
@@ -112,7 +112,7 @@
 
 ---
 
-## Slice 5 — Triggers (updated_at + audit log)
+## Slice 5 , Triggers (updated_at + audit log)
 
 **Files:** `db/migrations/0003_triggers.sql`.
 
@@ -129,7 +129,7 @@
 
 ---
 
-## Slice 6 — Storage bucket setup
+## Slice 6 , Storage bucket setup
 
 **Action:** create bucket `product-images`, set public-read policy.
 
@@ -148,23 +148,23 @@
 
 ---
 
-## Slice 7 — Supabase clients + auth helpers
+## Slice 7 , Supabase clients + auth helpers
 
 **Files:** `lib/supabase/server.ts`, `lib/supabase/browser.ts`, `lib/supabase/service.ts`, `lib/admin/auth.ts`.
 
-- [ ] `lib/supabase/server.ts` — `createServerClient` using `@supabase/ssr` and Next 16's `cookies()` from `next/headers`.
-- [ ] `lib/supabase/browser.ts` — `createBrowserClient` for client components.
-- [ ] `lib/supabase/service.ts` — `createServiceRoleClient` using `SUPABASE_SERVICE_ROLE_KEY` (server-only, used inside admin route handlers).
+- [ ] `lib/supabase/server.ts` , `createServerClient` using `@supabase/ssr` and Next 16's `cookies()` from `next/headers`.
+- [ ] `lib/supabase/browser.ts` , `createBrowserClient` for client components.
+- [ ] `lib/supabase/service.ts` , `createServiceRoleClient` using `SUPABASE_SERVICE_ROLE_KEY` (server-only, used inside admin route handlers).
 - [ ] `lib/admin/auth.ts`:
-  - `requireAdmin()` — reads session via server client, looks up `admin_users` row by id. Returns admin or throws (which the layout catches and redirects to /admin/login).
-  - `getCurrentAdmin()` — same but returns null instead of throwing.
+  - `requireAdmin()` , reads session via server client, looks up `admin_users` row by id. Returns admin or throws (which the layout catches and redirects to /admin/login).
+  - `getCurrentAdmin()` , same but returns null instead of throwing.
 - [ ] Build green. Tests still 40/40.
 - [ ] CHANGELOG: `Slice 7: Supabase client factories + requireAdmin helper.`
 - [ ] Commit: `feat(auth): supabase ssr clients + admin guard helpers`
 
 ---
 
-## Slice 8 — Admin middleware in proxy.ts
+## Slice 8 , Admin middleware in proxy.ts
 
 **Files:** `proxy.ts` (modify).
 
@@ -178,7 +178,7 @@
 
 ---
 
-## Slice 9 — Login + magic-link callback + logout
+## Slice 9 , Login + magic-link callback + logout
 
 **Files:** `app/admin/login/page.tsx`, `app/admin/login/actions.ts`, `app/admin/auth/callback/route.ts`, `app/admin/logout/route.ts`.
 
@@ -199,7 +199,7 @@
 
 ---
 
-## Slice 10 — Seed script
+## Slice 10 , Seed script
 
 **Files:** `db/seed.ts`, `package.json` (add `seed` script).
 
@@ -223,27 +223,27 @@
 
 ---
 
-## Slice 11 — Public site data layer
+## Slice 11 , Public site data layer
 
 **Files:** `lib/data/products.ts`, `lib/data/rituals.ts`, `lib/data/ateliers.ts`, `lib/data/journal.ts`, `lib/data/inquiries.ts`.
 
 - [ ] `lib/data/products.ts`:
-  - `getProductBySlug(slug, locale)` — joined query returning product + translation + images + steps + facets
-  - `getProductsByRitual(ritualId, locale)` — list of products, with their hero image + first-tag eyebrow
+  - `getProductBySlug(slug, locale)` , joined query returning product + translation + images + steps + facets
+  - `getProductsByRitual(ritualId, locale)` , list of products, with their hero image + first-tag eyebrow
   - `getHeroProductsByRitual(ritualId, locale)`
-  - `getAllProductSlugs()` — for `generateStaticParams`
-  - `getMinimalProductMap(locale)` — returns Map<id, {name, image}> for inquiry drawer lookups
+  - `getAllProductSlugs()` , for `generateStaticParams`
+  - `getMinimalProductMap(locale)` , returns Map<id, {name, image}> for inquiry drawer lookups
 - [ ] `lib/data/rituals.ts`: `getAllWorlds(locale)`, `getWorld(id, locale)`, `getSubcatsForWorld(id, locale)`.
 - [ ] `lib/data/ateliers.ts`: `getAllAteliers(locale)`.
 - [ ] `lib/data/journal.ts`: `getAllJournalCards(locale)` (published only on public site).
 - [ ] All functions use the server Supabase client (`createServerClient`).
-- [ ] Build green. (No public routes converted yet — that's slice 12.)
+- [ ] Build green. (No public routes converted yet , that's slice 12.)
 - [ ] CHANGELOG: `Slice 11: lib/data/* helpers for DB-backed public reads.`
 - [ ] Commit: `feat(data): server-side data helpers reading from supabase`
 
 ---
 
-## Slice 12 — Convert public routes to async + DB reads
+## Slice 12 , Convert public routes to async + DB reads
 
 **Files:** `app/[locale]/page.tsx`, `app/[locale]/rituals/[world]/page.tsx`, `app/[locale]/product/[id]/page.tsx`, `app/[locale]/ateliers/page.tsx`, `app/[locale]/journal/page.tsx`, `app/sitemap.ts`, `components/shell/InquiryDrawer.tsx`, `components/contact/InquirySidebar.tsx`.
 
@@ -259,7 +259,7 @@
 
 ---
 
-## Slice 13 — Admin shell + dashboard
+## Slice 13 , Admin shell + dashboard
 
 **Files:** `app/admin/layout.tsx`, `app/admin/page.tsx`, `components/admin/AdminShell.tsx`, `components/admin/Sidebar.tsx`, `components/admin/StatTile.tsx`, `components/admin/ActivityFeed.tsx`.
 
@@ -273,7 +273,7 @@
 
 ---
 
-## Slice 14 — Admin products CRUD
+## Slice 14 , Admin products CRUD
 
 **Files:** `app/admin/products/page.tsx`, `app/admin/products/new/page.tsx`, `app/admin/products/[id]/page.tsx`, `app/admin/products/[id]/actions.ts`, `components/admin/ProductList.tsx`, `components/admin/ProductEditor.tsx`, `components/admin/TranslationTabs.tsx`, `components/admin/ImageManager.tsx`, `components/admin/FacetMultiSelect.tsx`, `components/admin/ApplicationStepEditor.tsx`, `app/api/admin/products/route.ts`, `app/api/admin/products/[id]/route.ts`, `app/api/admin/images/route.ts`, `app/api/admin/images/[id]/route.ts`.
 
@@ -290,14 +290,14 @@
 
 ---
 
-## Slice 15 — Admin journal + ateliers + rituals + facets
+## Slice 15 , Admin journal + ateliers + rituals + facets
 
 **Files:** Similar to slice 14 but simpler (fewer fields per entity).
 
 - [ ] Journal: list + edit (EN + FR kicker/headline, date, feature toggle, status, image).
 - [ ] Ateliers: list + edit (single-locale name, region, since_year, image, EN + FR description).
 - [ ] Rituals: read-only list (3 rows) + per-ritual sub-cat editor (rename, reorder, add new sub-cats).
-- [ ] Facets: list + add/rename/reorder (no delete if facets are referenced by products — show count).
+- [ ] Facets: list + add/rename/reorder (no delete if facets are referenced by products , show count).
 - [ ] Each save triggers `revalidatePath()` for the appropriate public routes.
 - [ ] Build green.
 - [ ] CHANGELOG: `Slice 15: admin CRUD for journal, ateliers, rituals + sub-cats, facets.`
@@ -305,7 +305,7 @@
 
 ---
 
-## Slice 16 — Admin inquiries (read-only) + activity log
+## Slice 16 , Admin inquiries (read-only) + activity log
 
 **Files:** `app/admin/inquiries/page.tsx`, `app/admin/inquiries/[id]/page.tsx`, `app/admin/activity/page.tsx`, `components/admin/ActivityLogTable.tsx`.
 
@@ -318,7 +318,7 @@
 
 ---
 
-## Slice 17 — Admin tests (Playwright + axe)
+## Slice 17 , Admin tests (Playwright + axe)
 
 **Files:** `tests/admin-smoke.spec.ts`, `tests/admin-a11y.spec.ts`, `tests/fixtures/admin-auth.ts`.
 
@@ -335,7 +335,7 @@
 
 ---
 
-## Slice 18 — Final QA, PR, merge
+## Slice 18 , Final QA, PR, merge
 
 - [ ] `npm run build` clean.
 - [ ] `npm test` all green (40 public + admin).
@@ -356,8 +356,8 @@
 |---|---|
 | Anthropic rate limit interrupts mid-sprint | Bundle related work into larger inline executions; reserve subagents for complex slices; pause + resume across sessions if needed. |
 | Drizzle schema doesn't generate the SQL we expect | Inspect every generated migration before applying; fall back to hand-written SQL if generation drifts. |
-| RLS too strict — breaks public reads | Test public 40 tests after slice 4 RLS apply. If a test fails on "permission denied", relax the policy or fix the query. |
-| RLS too loose — security advisor flags issues | `get_advisors(security)` after every DDL change; address immediately. |
+| RLS too strict , breaks public reads | Test public 40 tests after slice 4 RLS apply. If a test fails on "permission denied", relax the policy or fix the query. |
+| RLS too loose , security advisor flags issues | `get_advisors(security)` after every DDL change; address immediately. |
 | Service role key leak | Convention + ESLint rule: never import `lib/supabase/service` in any file under `app/[locale]/` (public) or `components/` (except `components/admin/`). |
 | Public site read perf regresses (DB instead of in-process data) | ISR with 60s revalidate; on-demand revalidate on admin save; Supabase queries are fast on eu-west-1 colocated with Vercel; pool via Supabase connection pooler (port 6543). |
 | Magic-link emails go to spam | Configure custom SMTP in Supabase (defer to Sprint 2.5 if not blocker). Use Supabase's hosted SMTP for v1; Taha verifies inbox delivery on slice 9. |

@@ -1,8 +1,8 @@
-# Cahier des Charges — Site Web Barbaria Morocco
+# Cahier des Charges , Site Web Barbaria Morocco
 
 **Version :** 1.0
 **Date :** 13 mai 2026
-**Émetteur :** Taha El Bouzidi, CTO — Barbaria Morocco
+**Émetteur :** Taha El Bouzidi, CTO , Barbaria Morocco
 **Objet :** Refonte et finalisation d'un site web B2B vitrine + tunnel de composition + back-office, pour une maison marocaine spécialisée dans les coffrets cadeaux d'épicerie fine et de cosmétiques naturels.
 
 ---
@@ -86,17 +86,17 @@ L'expérience pivot du site. Inspiration : pages produits Apple (scroll-driven),
 **Comportement attendu :**
 
 1. À l'entrée, la fenêtre prend l'écran complet. **Aucun élément de chrome** (en-tête, pied de page, breadcrumbs, menu) n'est visible. Seul un bouton de fermeture discret (X) en haut à droite permet de sortir.
-2. **Étape 1 — Introduction.** Texte narratif de la catégorie (« Sous les étoiles du Sahara » pour cosmétiques, « Sur la route des caravanes » pour épicerie). Bouton « Commencer ».
-3. **Étape 2 — Choix de la taille.** Trois cartes : 3, 5 ou 6 pièces. Sélection → transition vers l'étape 3.
-4. **Étape 3..N — Sélection par slot.** À chaque étape :
+2. **Étape 1 , Introduction.** Texte narratif de la catégorie (« Sous les étoiles du Sahara » pour cosmétiques, « Sur la route des caravanes » pour épicerie). Bouton « Commencer ».
+3. **Étape 2 , Choix de la taille.** Trois cartes : 3, 5 ou 6 pièces. Sélection → transition vers l'étape 3.
+4. **Étape 3..N , Sélection par slot.** À chaque étape :
    - Fragment narratif (1 à 2 phrases) lié au thème de la catégorie
    - Grille de produits éligibles à ce slot, filtrée par sous-catégorie
    - Chaque produit affiche : image, nom, courte accroche
    - Bouton « Plus de détails » ou clic sur l'image qui **zoome** dans le produit pour afficher la description complète, l'origine, les ingrédients, le mode d'application
    - Cette vue détaillée est une **superposition (modale animée)**, pas une navigation. Sortir revient exactement à l'étape sans perdre l'état.
    - Action : « Choisir » ajoute le produit au slot et passe à l'étape suivante ; « Passer cette étoile » avance sans choisir.
-5. **Étape N+1 — Revue.** Récapitulatif : tous les slots, story arc complet, possibilité de modifier chaque slot.
-6. **Étape N+2 — Quantité.** Saisie d'un nombre de coffrets souhaités (minimum configurable par l'admin, par défaut 5).
+5. **Étape N+1 , Revue.** Récapitulatif : tous les slots, story arc complet, possibilité de modifier chaque slot.
+6. **Étape N+2 , Quantité.** Saisie d'un nombre de coffrets souhaités (minimum configurable par l'admin, par défaut 5).
 7. **Sortie : ajout à la demande.** Le tunnel génère un objet **« Coffret sur mesure »** dans le panier de demande, qui contient :
    - Référence : `custom-box-{timestamp}`
    - Quantité saisie
@@ -118,13 +118,13 @@ L'expérience pivot du site. Inspiration : pages produits Apple (scroll-driven),
 
 Formulaire en deux étapes, panier de la demande visible à droite.
 
-**Étape 01 — Votre maison** (FR) / **Your company** (EN)
+**Étape 01 , Votre maison** (FR) / **Your company** (EN)
 - Nom de la société *
 - Personne à contacter *
 - Adresse email *
 - Téléphone / WhatsApp
 
-**Étape 02 — Le moment** / **The occasion**
+**Étape 02 , Le moment** / **The occasion**
 - Sélection d'une occasion parmi une liste **administrée** : Fin d'année, Onboarding, Anniversaire, Presse, Mariage corporate, Saint-Valentin, Fête des Mères, Aïd el-Fitr, Aïd el-Adha, Ramadan, Noël, Hanouka, Nouvel An, Autre. **La liste doit être éditable depuis l'admin** (ajout, suppression, ordre, traductions par langue).
 - Date d'événement
 - Texte libre : « Parlez-nous du moment »
@@ -139,7 +139,7 @@ Formulaire en deux étapes, panier de la demande visible à droite.
 
 **Soumission :**
 - Validation Zod (champs requis, format email)
-- Envoi du devis (phase 1 : email manuel via `mailto:`; phase 2 : POST `/api/inquiry` avec persistance Supabase + Resend transactional + Turnstile anti-spam — voir section 9.3 « Sécurité »)
+- Envoi du devis (phase 1 : email manuel via `mailto:`; phase 2 : POST `/api/inquiry` avec persistance Supabase + Resend transactional + Turnstile anti-spam , voir section 9.3 « Sécurité »)
 - Confirmation : message remplaçant le formulaire (« Nous vous répondons sous 24h, votre concierge est attribué »)
 
 ### 5.4 Espace administrateur
@@ -252,8 +252,8 @@ Le prestataire doit garantir :
 
 ### 7.2 Tonalité narrative
 
-- **Cosmétiques** : « Sous les étoiles du Sahara » — métaphore de la constellation, chaque pièce est une étoile.
-- **Épicerie fine** : « Sur la route des caravanes » — métaphore du voyage transsaharien, chaque pièce est une halte (Sijilmassa, Taliouine, Marrakech, Fès, Atlas).
+- **Cosmétiques** : « Sous les étoiles du Sahara » , métaphore de la constellation, chaque pièce est une étoile.
+- **Épicerie fine** : « Sur la route des caravanes » , métaphore du voyage transsaharien, chaque pièce est une halte (Sijilmassa, Taliouine, Marrakech, Fès, Atlas).
 - **Histoire** : Quatre chapitres (Antiquité, Médiéval, Tradition, Aujourd'hui) + chapitre Tifinagh + proverbe amazigh.
 - Voix éditoriale : sobre, héritage, raffinement. Pas de jargon marketing.
 
@@ -325,7 +325,7 @@ Le prestataire devra livrer un **rapport d'audit Lighthouse + axe-core** sur l'e
 - Email + mot de passe Supabase Auth
 - Rotation des refresh tokens
 - Session HTTP-only cookie, Secure, SameSite=Lax
-- Logout via formulaire POST (pas de Link prefetch — leçon apprise)
+- Logout via formulaire POST (pas de Link prefetch , leçon apprise)
 - Pas de Multi-Factor Authentication en phase 1 (à ajouter en phase 2)
 
 ### 9.2 RLS Supabase
@@ -442,12 +442,12 @@ La recette sera prononcée par la cliente à l'issue d'une vérification sur les
 
 Le calendrier est à proposer par le prestataire. Indicatif :
 
-- **Phase 1 — Cadrage et design** : 2 semaines (audit existant, maquettes, validation client)
-- **Phase 2 — Développement front public** : 4 semaines
-- **Phase 3 — Développement tunnel de composition** : 2 semaines (sous-projet à part)
-- **Phase 4 — Admin** : 3 semaines
-- **Phase 5 — Intégration email + Turnstile + RGPD** : 1 semaine
-- **Phase 6 — Recette, audit, formation** : 2 semaines
+- **Phase 1 , Cadrage et design** : 2 semaines (audit existant, maquettes, validation client)
+- **Phase 2 , Développement front public** : 4 semaines
+- **Phase 3 , Développement tunnel de composition** : 2 semaines (sous-projet à part)
+- **Phase 4 , Admin** : 3 semaines
+- **Phase 5 , Intégration email + Turnstile + RGPD** : 1 semaine
+- **Phase 6 , Recette, audit, formation** : 2 semaines
 
 Total estimé : **~14 semaines** soit ~3,5 mois.
 

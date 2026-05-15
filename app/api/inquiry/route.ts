@@ -54,7 +54,7 @@ function hashIp(req: NextRequest): string {
  * Accepts the box-level inquiry payload from the public contact form,
  * validates with Zod, writes one `inquiries` row plus one `inquiry_items`
  * row per box-line, returns the new inquiry id. Email/Resend integration
- * is deferred (TODO_LIST.md) — for now an inquiry lands in Supabase and
+ * is deferred (TODO_LIST.md) , for now an inquiry lands in Supabase and
  * the maison reads it from /admin/inquiries.
  *
  * Auth: anonymous public submit. RLS is bypassed by the service-role
@@ -183,7 +183,7 @@ export async function POST(req: NextRequest) {
   const { error: itemErr } = await supabase.from("inquiry_items").insert(itemRows);
   if (itemErr) {
     console.error("[/api/inquiry] insert inquiry_items failed:", itemErr.message);
-    // Don't 500 here — the parent inquiry is saved; the concierge can
+    // Don't 500 here , the parent inquiry is saved; the concierge can
     // recover the line list from the email/snapshot.
   }
 

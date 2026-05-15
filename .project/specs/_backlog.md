@@ -1,21 +1,21 @@
-# Sprint Backlog — Sprints 2 & 3
+# Sprint Backlog , Sprints 2 & 3
 
 Placeholder for the work decomposed out of Sprint 1 (the Stitch redesign port). Each gets its own full spec when its sprint starts. Notes here exist so context isn't lost.
 
 ---
 
-## Sprint 2 — Admin + Database
+## Sprint 2 , Admin + Database
 
 **Goal:** Move product catalogue from `lib/products.ts` to a real database with an admin UI for Taha (and invited team) to manage products, translations, images, and view inquiries (once Sprint 3 lands).
 
 ### Open questions to resolve before specing
 
-1. **DB host:** Supabase (recommended — Postgres + Auth + Storage + dashboard, generous free tier, MCP already exists in tooling), Neon (Postgres only, leaner), Vercel Postgres (tight Vercel integration but pricier at scale), self-hosted (rejected — ops overhead).
+1. **DB host:** Supabase (recommended , Postgres + Auth + Storage + dashboard, generous free tier, MCP already exists in tooling), Neon (Postgres only, leaner), Vercel Postgres (tight Vercel integration but pricier at scale), self-hosted (rejected , ops overhead).
 2. **ORM:** Prisma (mature, type-safe, migration tool) vs Drizzle (lighter, SQL-native, faster). Lean Drizzle for a small schema, Prisma if we want the studio UI for free.
-3. **Admin auth:** Supabase Auth with magic links + role table, or BetterAuth, or NextAuth? Decision driven by DB choice — if Supabase, use its Auth.
+3. **Admin auth:** Supabase Auth with magic links + role table, or BetterAuth, or NextAuth? Decision driven by DB choice , if Supabase, use its Auth.
 4. **Admin scope:** product CRUD only, or also journal editor, ateliers editor, copy/translation editor, settings (brand info, concierge address)?
 5. **Image upload:** Supabase Storage vs Cloudinary vs Vercel Blob. Tied to DB host choice.
-6. **Internationalization in DB:** column-per-locale (`name_en`, `name_fr`) vs separate `translations` table joined by product_id. Lean toward separate table — easier to add Arabic later.
+6. **Internationalization in DB:** column-per-locale (`name_en`, `name_fr`) vs separate `translations` table joined by product_id. Lean toward separate table , easier to add Arabic later.
 
 ### Likely schema (subject to spec session)
 
@@ -48,7 +48,7 @@ After Sprint 2, `lib/products.ts` is deleted. Frontend reads via Supabase client
 
 ---
 
-## Sprint 3 — Inquiry backend + business analytics
+## Sprint 3 , Inquiry backend + business analytics
 
 **Goal:** Replace `mailto:` inquiry submission with a real form POST + DB write + transactional email. Build an admin "Insights" view that turns inquiries into business intelligence.
 
@@ -60,10 +60,10 @@ After Sprint 2, `lib/products.ts` is deleted. Frontend reads via Supabase client
 
 ### Endpoints
 
-- `POST /api/inquiry` — Turnstile verify → validate → DB insert → Resend email to concierge + autoresponder to buyer → 200.
-- `GET /admin/inquiries` — list view, filterable by status, locale, date.
-- `GET /admin/inquiries/[id]` — detail view, status mutation (new → contacted → quoted → won/lost).
-- `GET /admin/insights` — server-rendered dashboard: inquiries-per-week chart, top products by add-to-inquiry events, locale split, source page split (which page added the product), avg items per inquiry, conversion funnel.
+- `POST /api/inquiry` , Turnstile verify → validate → DB insert → Resend email to concierge + autoresponder to buyer → 200.
+- `GET /admin/inquiries` , list view, filterable by status, locale, date.
+- `GET /admin/inquiries/[id]` , detail view, status mutation (new → contacted → quoted → won/lost).
+- `GET /admin/insights` , server-rendered dashboard: inquiries-per-week chart, top products by add-to-inquiry events, locale split, source page split (which page added the product), avg items per inquiry, conversion funnel.
 
 ### Security must-haves
 
@@ -72,7 +72,7 @@ After Sprint 2, `lib/products.ts` is deleted. Frontend reads via Supabase client
 - Inquiry body sanitized for HTML before email (defense against email-injection via free-text field).
 - Resend webhook for bounces/complaints, writes to inquiry record.
 - Admin "Insights" charts query DB read-only via parameterized SQL (never string interpolation).
-- All admin GETs are server components — never client-fetched with admin role.
+- All admin GETs are server components , never client-fetched with admin role.
 
 ### Tracking events
 
@@ -81,7 +81,7 @@ Frontend emits to a thin events table (or Plausible custom events if we stay lig
 - `inquiry_submitted` ( inquiry_id, item_count, locale )
 - `product_viewed` ( product_id, source, locale )
 
-Aggregated server-side for Insights view. **No third-party tracking pixels** — keep first-party only.
+Aggregated server-side for Insights view. **No third-party tracking pixels** , keep first-party only.
 
 ---
 
@@ -95,7 +95,7 @@ fixture is brittle (requires service-role user creation, link generation,
 code extraction, cookie injection, storageState save/load). Approach for
 Sprint 2.5:
 
-1. `tests/fixtures/admin-auth.ts` — exposes a Playwright fixture that:
+1. `tests/fixtures/admin-auth.ts` , exposes a Playwright fixture that:
    a. Uses the service-role client to ensure a test admin user exists in
       auth.users + admin_users (idempotent, fixed UUID).
    b. Calls `supabase.auth.admin.generateLink({ type: 'magiclink', email })`.
@@ -116,7 +116,7 @@ Sprint 2.5:
 
 ## Out of scope for both sprints (revisit later)
 
-- Customer accounts / buyer login (B2B contacts may want history — but adds significant auth + GDPR surface)
+- Customer accounts / buyer login (B2B contacts may want history , but adds significant auth + GDPR surface)
 - Multi-currency / multi-region pricing (Barbaria is concierge-quote model, no list prices)
 - Real-time inventory (no checkout, so no inventory)
 - AI-generated product copy / image generation
