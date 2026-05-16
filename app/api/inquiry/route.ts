@@ -41,9 +41,14 @@ function checkRateLimit(ipHash: string): { ok: boolean; reason?: string } {
 }
 
 function hashIp(req: NextRequest): string {
+  // Vercel sets `x-real-ip` to the platform-trusted client IP. The
+  // leftmost x-forwarded-for value is user-controllable and a hostile
+  // caller can rotate it to dodge the per-IP rate limit. Trust the
+  // platform header first; fall back to xff only when running outside
+  // Vercel (local dev) where x-real-ip is unset.
   const ip =
-    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     req.headers.get("x-real-ip") ??
+    req.headers.get("x-forwarded-for")?.split(",").pop()?.trim() ??
     "unknown";
   return crypto.createHash("sha256").update(ip + "|barbaria").digest("hex").slice(0, 32);
 }
@@ -123,15 +128,26 @@ export async function POST(req: NextRequest) {
 
   const supabase = createServiceRoleClient();
 
-  // Resolve gift_box slugs to ids in one round-trip. Slugs that don't
-  // resolve (renamed boxes, typos) fall through as null; the row still
-  // saves with the snapshot name so the concierge can reconcile.
+  // Resolve gift_box slugs to ids in one round-trip. We require every
+  // submitted slug to map to a *published* row, otherwise reject the
+  // whole submission. Without this check an anonymous caller could
+  // flood inquiry_items + the analytics top_custom_pieces view with
+  // arbitrary attacker-chosen slugs (the rate limit caps the rate but
+  // not the content).
   const slugs = Array.from(new Set(data.lines.map((l) => l.giftBoxSlug)));
   const { data: boxes } = await supabase
     .from("gift_boxes")
     .select("id, slug")
-    .in("slug", slugs);
+    .in("slug", slugs)
+    .eq("status", "published");
   const slugToId = new Map((boxes ?? []).map((b: { id: string; slug: string }) => [b.slug, b.id]));
+  const unknownSlug = slugs.find((s) => !slugToId.has(s));
+  if (unknownSlug) {
+    return NextResponse.json(
+      { ok: false, error: `Unknown gift box: ${unknownSlug}` },
+      { status: 400 }
+    );
+  }
 
   const sourceUrl = req.headers.get("referer") ?? null;
   const userAgent = req.headers.get("user-agent") ?? null;

@@ -14,7 +14,10 @@ const securityHeaders = [
     key: "Content-Security-Policy",
     value: [
       "default-src 'self'",
-      "script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com",
+      // 'unsafe-eval' was dropped from script-src — no app code uses
+      // eval/new Function. 'unsafe-inline' stays for now because Next
+      // emits inline boot scripts; future work: nonce + strict-dynamic.
+      "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https:",

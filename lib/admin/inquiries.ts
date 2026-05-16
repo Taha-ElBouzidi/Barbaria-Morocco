@@ -135,8 +135,14 @@ export async function getInquiryById(id: string): Promise<AdminInquiry | null> {
       const boxNameFromGB = giftBox?.translations.find((t) => t.locale === (data.locale ?? "en"))?.name
         ?? giftBox?.translations[0]?.name
         ?? giftBox?.slug;
-      const boxName =
-        boxNameFromGB ?? i.composition?.nameSnapshot ?? i.composition?.giftBoxSlug ?? "(unknown box)";
+      // Custom-box rows always carry the parent compose-* gift_box_id,
+      // so the translation lookup resolves to the wrapper's name
+      // ("Compose your cosmetics box"), masking the user-chosen
+      // nameSnapshot. For is_custom rows we prefer the snapshot; the
+      // wrapper's slug only surfaces as a last resort.
+      const boxName = i.is_custom
+        ? (i.composition?.nameSnapshot ?? boxNameFromGB ?? i.composition?.giftBoxSlug ?? "(unknown box)")
+        : (boxNameFromGB ?? i.composition?.nameSnapshot ?? i.composition?.giftBoxSlug ?? "(unknown box)");
       const compositionNames = (i.composition?.productSlugs ?? []).map((s) => slugToName.get(s) ?? s);
       return {
         id: i.id,

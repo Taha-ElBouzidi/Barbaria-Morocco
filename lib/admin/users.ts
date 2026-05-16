@@ -1,8 +1,6 @@
 import { createServiceRoleClient } from "@/lib/supabase/service";
 import { z } from "zod";
 
-export type AdminRoleOption = "superadmin" | "admin";
-
 export interface AdminListRow {
   id: string;
   email: string;

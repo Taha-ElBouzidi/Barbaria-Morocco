@@ -52,7 +52,11 @@ export default async function AdminInquiriesPage({ searchParams }: PageProps) {
   const params = await searchParams;
   const status = params.status ?? "all";
   const sort = params.sort ?? "newest";
-  const page = parseInt(params.page ?? "1", 10);
+  // Hand-typed ?page=abc parses to NaN, which propagates into
+  // `Math.max(0, NaN-1) = NaN` and bombs the PostgREST range query.
+  // Clamp to a sane minimum.
+  const parsedPage = parseInt(params.page ?? "1", 10);
+  const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
 
   const { data, count, pageSize } = await listInquiries({ status, sort, page });
   const totalPages = Math.max(1, Math.ceil(count / pageSize));

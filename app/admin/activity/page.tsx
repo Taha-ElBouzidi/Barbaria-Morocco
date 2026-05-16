@@ -50,7 +50,8 @@ export default async function AdminActivityPage({ searchParams }: PageProps) {
   const entityType = params.entityType ?? "all";
   const action = params.action ?? "all";
   const range = (params.range ?? "30d") as "7d" | "30d" | "all";
-  const page = parseInt(params.page ?? "1", 10);
+  const parsedPage = parseInt(params.page ?? "1", 10);
+  const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
 
   const { data, count, pageSize, actorMap } = await listAuditLog({
     entityType,
