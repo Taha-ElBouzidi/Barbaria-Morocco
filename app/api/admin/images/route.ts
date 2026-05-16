@@ -1,6 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
+import sharp from "sharp";
 import { requireAdmin } from "@/lib/admin/auth";
 import { createServiceRoleClient } from "@/lib/supabase/service";
+
+// Sharp pulls native bindings; force Node runtime (Edge can't run it).
+export const runtime = "nodejs";
 
 // Accept JPEG, PNG, WebP, AVIF (web-native), plus HEIC/HEIF (iOS/iPadOS
 // default camera format) and GIF (occasional brand assets). Supabase
@@ -83,17 +87,56 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const ext = extFromMime(resolvedMime);
-  const filename = `${crypto.randomUUID()}.${ext}`;
+  // Compress + re-encode every upload to WebP at quality 82, resized
+  // to max 2400px on the longest edge. Why:
+  // - iPhone / iPad originals run 5–10 MB; storing them as-is wastes
+  //   Supabase Storage quota and slows admin loads of the image grid.
+  // - HEIC has spotty <img> support; transcoding to WebP makes every
+  //   stored file directly browser-renderable (admin previews + the
+  //   storage public URL fallback both work without next/image).
+  // - The public site still goes through next/image for AVIF/WebP
+  //   variants at serve time; we just stop holding bloated originals.
+  // - GIFs are passed through without re-encoding so animation stays.
+  const inputBuffer = Buffer.from(await file.arrayBuffer());
+  let outputBuffer: Buffer;
+  let outputMime: string;
+  let outputExt: string;
+  if (resolvedMime === "image/gif") {
+    outputBuffer = inputBuffer;
+    outputMime = "image/gif";
+    outputExt = "gif";
+  } else {
+    try {
+      outputBuffer = await sharp(inputBuffer, { failOn: "none" })
+        .rotate() // honour EXIF orientation (iPhone photos)
+        .resize({
+          width: 2400,
+          height: 2400,
+          fit: "inside",
+          withoutEnlargement: true,
+        })
+        .webp({ quality: 82, effort: 4 })
+        .toBuffer();
+      outputMime = "image/webp";
+      outputExt = "webp";
+    } catch (e) {
+      console.error("[admin/images] sharp re-encode failed:", e);
+      return NextResponse.json(
+        { ok: false, error: "Could not process the image. Try a different file." },
+        { status: 500 }
+      );
+    }
+  }
+
+  const filename = `${crypto.randomUUID()}.${outputExt}`;
   const folder = productId ? `products/${productId}` : `drafts/${crypto.randomUUID()}`;
   const path = `${folder}/${filename}`;
 
   const supabase = createServiceRoleClient();
-  const bytes = await file.arrayBuffer();
 
   const { error: storageError } = await supabase.storage
     .from("product-images")
-    .upload(path, bytes, { contentType: resolvedMime, upsert: false });
+    .upload(path, outputBuffer, { contentType: outputMime, upsert: false });
 
   if (storageError) {
     return NextResponse.json(
@@ -173,27 +216,3 @@ export async function DELETE(req: NextRequest) {
   return NextResponse.json({ ok: true });
 }
 
-// ---------------------------------------------------------------------------
-// Helpers
-// ---------------------------------------------------------------------------
-
-function extFromMime(mime: string): string {
-  switch (mime) {
-    case "image/jpeg":
-      return "jpg";
-    case "image/png":
-      return "png";
-    case "image/webp":
-      return "webp";
-    case "image/avif":
-      return "avif";
-    case "image/heic":
-      return "heic";
-    case "image/heif":
-      return "heif";
-    case "image/gif":
-      return "gif";
-    default:
-      return "bin";
-  }
-}

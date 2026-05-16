@@ -1,0 +1,16 @@
+-- Restore EXECUTE on public.is_admin() to authenticated.
+--
+-- Migration 0019 revoked the grant to silence the advisor's
+-- "Public Can Execute SECURITY DEFINER Function" warning, but that
+-- broke the cookie-auth admin dashboard: every RLS policy on
+-- products / gift_boxes / inquiries / occasions / journal_cards
+-- gates writes (and now reads, after 0021 scoped public_read to anon)
+-- on `is_admin()`. authenticated callers couldn't invoke the
+-- function, so policies silently denied and counts came back zero.
+--
+-- The advisor warning is informational only — anon already lost
+-- EXECUTE (stays revoked) and authenticated calling /rest/v1/rpc/is_admin
+-- just gets back true/false for their own id, which the dashboard
+-- already exposes by virtue of being an admin. Live functionality
+-- wins over advisor cleanliness here.
+GRANT EXECUTE ON FUNCTION public.is_admin() TO authenticated;

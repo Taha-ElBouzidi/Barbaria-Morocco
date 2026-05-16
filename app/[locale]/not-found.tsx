@@ -1,13 +1,21 @@
+"use client";
+
 import { Link } from "@/i18n/navigation";
 import Image from "next/image";
-import { getTranslations } from "next-intl/server";
+import { useTranslations } from "next-intl";
 
-export default async function NotFound() {
-  const t = await getTranslations("notFound");
+/**
+ * Localised 404 for paths under /[locale]/*. Marked as a Client
+ * Component so it can read translations from the
+ * NextIntlClientProvider mounted in app/[locale]/layout.tsx — the
+ * server-only `getTranslations` doesn't reliably resolve the locale
+ * inside a not-found render context, which was causing the page to
+ * fail and Vercel to fall back to its default 404 UI.
+ */
+export default function NotFound() {
+  const t = useTranslations("notFound");
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background photo from the brand assets ships in /public so it
-          renders even when Supabase Storage is unavailable. */}
       <Image
         src="/brand_photos/brand-lifestyle-5.jpg"
         alt=""
@@ -19,7 +27,6 @@ export default async function NotFound() {
       <div className="absolute inset-0 bg-gradient-to-b from-[#2C1A0E]/70 via-[#2C1A0E]/55 to-[#2C1A0E]/80" />
 
       <div className="relative z-10 text-center text-[#F7F2EA] px-6 max-w-lg mx-auto">
-        {/* Decorative divider */}
         <div className="flex items-center justify-center gap-4 mb-10" aria-hidden="true">
           <div className="w-12 h-px bg-[#C9963A]/60" />
           <div className="w-2 h-2 rounded-full bg-[#C9963A]" />

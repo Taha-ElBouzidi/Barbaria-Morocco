@@ -69,10 +69,6 @@ export default async function LoginPage({ searchParams }: PageProps) {
             </p>
           )}
         </form>
-
-        <p className="font-sans text-[11px] text-bb-on-surface-variant text-center leading-relaxed">
-          Passwords are managed via the Supabase Dashboard. Contact the project owner to reset.
-        </p>
       </div>
     </main>
   );
