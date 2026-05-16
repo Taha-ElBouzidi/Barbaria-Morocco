@@ -101,6 +101,14 @@ export async function proxy(request: NextRequest) {
     return supabaseResponse;
   }
 
+  // /api/* — set the trusted user-id header for /api/admin/* handlers
+  // that gate with requireAdmin(), but never run next-intl on API
+  // routes (intl would try to redirect to a localised path and break
+  // POST/PATCH/DELETE). The handler decides whether to require auth.
+  if (pathname.startsWith("/api")) {
+    return supabaseResponse;
+  }
+
   // Public site: hand to next-intl. Carry over Set-Cookie headers so any
   // session refresh that happened in middleware survives the handoff.
   const intlResponse = intlMiddleware(request);
@@ -112,7 +120,10 @@ export async function proxy(request: NextRequest) {
 
 export const config = {
   matcher: [
-    // Match everything except /api routes, Next internals, and static files.
-    "/((?!api|_next/static|_next/image|_vercel|favicon\\.ico|.*\\..*).*)",
+    // Run on every route except Next internals and static files. /api/*
+    // is INCLUDED so /api/admin/* handlers receive the trusted user-id
+    // header that requireAdmin reads; without this the matcher excluded
+    // /api/ and admin uploads always 401'd "Unauthorized".
+    "/((?!_next/static|_next/image|_vercel|favicon\\.ico|.*\\..*).*)",
   ],
 };

@@ -18,6 +18,9 @@ interface AuditEntry {
 interface ActivityLogTableProps {
   entries: AuditEntry[];
   actorMap: Record<string, string>;
+  /** Per-entry resolved actor id (covers the trigger-null case by
+   *  falling back to row-state stamps). Falsy ⇒ "system". */
+  resolvedActorByEntry: Record<string, string | null>;
 }
 
 function formatRelative(iso: string): string {
@@ -38,6 +41,7 @@ function extractEntityRef(entry: AuditEntry): string {
 export default function ActivityLogTable({
   entries,
   actorMap,
+  resolvedActorByEntry,
 }: ActivityLogTableProps) {
   if (entries.length === 0) {
     return (
@@ -71,8 +75,9 @@ export default function ActivityLogTable({
         </thead>
         <tbody>
           {entries.map((entry) => {
-            const actor = entry.actor_id
-              ? (actorMap[entry.actor_id] ?? entry.actor_id)
+            const resolved = resolvedActorByEntry[entry.id];
+            const actor = resolved
+              ? (actorMap[resolved] ?? resolved)
               : "system";
             const entityRef = extractEntityRef(entry);
             const relativeTime = formatRelative(entry.created_at);

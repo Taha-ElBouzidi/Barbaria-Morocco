@@ -169,10 +169,13 @@ export async function setStatus(
   id: string,
   status: "draft" | "published"
 ): Promise<{ ok: boolean; error?: string }> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   const supabase = createServiceRoleClient();
 
-  const updatePayload: Record<string, unknown> = { status };
+  const updatePayload: Record<string, unknown> = {
+    status,
+    updated_by: admin.id,
+  };
   if (status === "published") {
     updatePayload.published_at = new Date().toISOString();
   }

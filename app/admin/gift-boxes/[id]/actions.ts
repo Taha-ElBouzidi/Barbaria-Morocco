@@ -178,13 +178,14 @@ export async function setGiftBoxStatus(
   id: string,
   status: "draft" | "published"
 ): Promise<GiftBoxActionResult> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   const supabase = createServiceRoleClient();
   const { error } = await supabase
     .from("gift_boxes")
     .update({
       status,
       published_at: status === "published" ? new Date().toISOString() : null,
+      updated_by: admin.id,
     })
     .eq("id", id);
   if (error) {

@@ -28,6 +28,26 @@ function formatRelative(iso: string): string {
   return `${Math.round(sec / 86400)}d ago`;
 }
 
+/**
+ * Audit-log actor fallback. The DB trigger uses `auth.uid()` which is
+ * always null for service-role writes (every /admin/* action). We
+ * stamp `updated_by` / `created_by` on row writes so the trigger's
+ * captured `after_state` / `before_state` JSONB carries the actor.
+ * This helper picks the first non-null actor id from that chain.
+ */
+function resolveActorId(e: {
+  actor_id: string | null;
+  after_state: unknown;
+  before_state: unknown;
+}): string | null {
+  if (e.actor_id) return e.actor_id;
+  const after = (e.after_state ?? {}) as Record<string, unknown>;
+  const before = (e.before_state ?? {}) as Record<string, unknown>;
+  const cand =
+    after.updated_by ?? after.created_by ?? before.updated_by ?? before.created_by;
+  return typeof cand === "string" && cand ? cand : null;
+}
+
 export default async function ActivityFeed() {
   const supabase = await createServerClient();
   const { data } = await supabase
@@ -38,18 +58,22 @@ export default async function ActivityFeed() {
 
   const entries = data ?? [];
 
-  // Resolve actor names from admin_users (service role bypasses RLS).
-  // actor_id is null for seed-time / system-initiated rows.
-  const actorIds = Array.from(
-    new Set(entries.map((e) => e.actor_id).filter((id): id is string => !!id))
-  );
+  // Resolve actor ids via the fallback chain (trigger column or
+  // row-state stamps) into a single batched admin_users lookup.
+  const actorIdByEntry = new Map<string, string | null>();
+  const actorIds = new Set<string>();
+  for (const e of entries) {
+    const id = resolveActorId(e);
+    actorIdByEntry.set(e.id, id);
+    if (id) actorIds.add(id);
+  }
   const actorMap = new Map<string, string>();
-  if (actorIds.length > 0) {
+  if (actorIds.size > 0) {
     const service = createServiceRoleClient();
     const { data: admins } = await service
       .from("admin_users")
       .select("id, email, display_name")
-      .in("id", actorIds);
+      .in("id", Array.from(actorIds));
     for (const a of admins ?? []) {
       actorMap.set(a.id, a.display_name || a.email);
     }
@@ -70,8 +94,9 @@ export default async function ActivityFeed() {
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             const state = (e.after_state as any) || (e.before_state as any) || {};
             const name = state.slug || state.name || state.id || e.entity_id;
-            const actor = e.actor_id
-              ? actorMap.get(e.actor_id) ?? "Unknown admin"
+            const actorId = actorIdByEntry.get(e.id);
+            const actor = actorId
+              ? actorMap.get(actorId) ?? "Unknown admin"
               : "System";
             return (
               <li key={e.id} className="py-3 flex items-baseline justify-between gap-4">

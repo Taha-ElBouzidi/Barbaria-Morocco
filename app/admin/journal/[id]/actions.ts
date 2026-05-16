@@ -98,12 +98,12 @@ export async function setJournalStatus(
   id: string,
   status: "draft" | "published"
 ): Promise<{ ok: boolean; error?: string }> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   const supabase = createServiceRoleClient();
 
   const { error } = await supabase
     .from("journal_cards")
-    .update({ status })
+    .update({ status, updated_by: admin.id })
     .eq("id", id);
 
   if (error) return { ok: false, error: error.message };

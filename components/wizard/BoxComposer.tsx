@@ -312,7 +312,11 @@ export default function BoxComposer({ box, products, themeKey, locale, copy, fac
         <Icon name="close" size={18} />
       </button>
       <div className="absolute inset-0 overflow-y-auto overflow-x-hidden">
-      <div className="relative z-10 mx-auto max-w-[1280px] px-[var(--bb-margin-edge)] py-16 lg:py-24">
+      {/* Vertically centre the wizard content when it fits in the
+          viewport; let it scroll naturally when it overflows. The
+          `min-h-full flex` pair plus `justify-center` does the
+          centring; the inner mx-auto keeps the horizontal max-width. */}
+      <div className="relative z-10 min-h-full flex flex-col justify-center mx-auto max-w-[1280px] px-[var(--bb-margin-edge)] py-16 lg:py-24">
         <ProgressDots
           total={totalSteps}
           current={state.view === "step" ? state.currentStep : -1}

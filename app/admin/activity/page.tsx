@@ -51,7 +51,7 @@ export default async function AdminActivityPage({ searchParams }: PageProps) {
   const parsedPage = parseInt(params.page ?? "1", 10);
   const page = Number.isFinite(parsedPage) && parsedPage > 0 ? parsedPage : 1;
 
-  const { data, count, pageSize, actorMap } = await listAuditLog({
+  const { data, count, pageSize, actorMap, resolvedActorByEntry } = await listAuditLog({
     entityType,
     action,
     range,
@@ -72,8 +72,10 @@ export default async function AdminActivityPage({ searchParams }: PageProps) {
     return `/admin/activity${sp.toString() ? `?${sp}` : ""}`;
   }
 
-  // Convert Map to plain object for the client component
+  // Convert Maps to plain objects for the client component (Map can't
+  // serialise across the server/client boundary).
   const actorMapObj = Object.fromEntries(actorMap);
+  const resolvedActorByEntryObj = Object.fromEntries(resolvedActorByEntry);
 
   return (
     <div className="space-y-8">
@@ -168,7 +170,11 @@ export default async function AdminActivityPage({ searchParams }: PageProps) {
       </p>
 
       {/* Table (client component for expand-to-diff) */}
-      <ActivityLogTable entries={data as any} actorMap={actorMapObj} />
+      <ActivityLogTable
+        entries={data as any}
+        actorMap={actorMapObj}
+        resolvedActorByEntry={resolvedActorByEntryObj}
+      />
 
       {/* Pagination */}
       {totalPages > 1 && (

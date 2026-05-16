@@ -93,13 +93,14 @@ export async function setOccasionStatus(
   id: string,
   status: "draft" | "published"
 ): Promise<OccasionActionResult> {
-  await requireAdmin();
+  const admin = await requireAdmin();
   const supabase = createServiceRoleClient();
   const { error } = await supabase
     .from("occasions")
     .update({
       status,
       published_at: status === "published" ? new Date().toISOString() : null,
+      updated_by: admin.id,
     })
     .eq("id", id);
   if (error) {

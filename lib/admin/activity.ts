@@ -40,21 +40,44 @@ export async function listAuditLog(params: {
   const { data, count, error } = await q;
   if (error) throw new Error(`listAuditLog: ${error.message}`);
 
-  // Resolve actor display names in one extra query
-  const actorIds = [
-    ...new Set(data?.map((r) => r.actor_id).filter(Boolean) ?? []),
-  ] as string[];
+  // Resolve actor display names. The DB trigger captures `auth.uid()`
+  // which is null for service-role writes (every /admin/* action), so
+  // we fall back to row-state stamps: after_state.updated_by /
+  // .created_by, then before_state. ActivityLogTable also reads this
+  // map per-row to render the right name.
+  const resolvedActorByEntry = new Map<string, string | null>();
+  const actorIds = new Set<string>();
+  for (const r of data ?? []) {
+    const after = (r.after_state ?? {}) as Record<string, unknown>;
+    const before = (r.before_state ?? {}) as Record<string, unknown>;
+    const cand =
+      r.actor_id ??
+      after.updated_by ??
+      after.created_by ??
+      before.updated_by ??
+      before.created_by;
+    const id = typeof cand === "string" && cand ? cand : null;
+    resolvedActorByEntry.set(r.id, id);
+    if (id) actorIds.add(id);
+  }
 
   const actorMap = new Map<string, string>();
-  if (actorIds.length > 0) {
+  if (actorIds.size > 0) {
     const { data: admins } = await supabase
       .from("admin_users")
       .select("id, email, display_name")
-      .in("id", actorIds);
+      .in("id", Array.from(actorIds));
     for (const a of admins ?? []) {
       actorMap.set(a.id, a.display_name || a.email);
     }
   }
 
-  return { data: data ?? [], count: count ?? 0, page: page + 1, pageSize, actorMap };
+  return {
+    data: data ?? [],
+    count: count ?? 0,
+    page: page + 1,
+    pageSize,
+    actorMap,
+    resolvedActorByEntry,
+  };
 }
