@@ -165,14 +165,17 @@ export async function deleteAdmin(formData: FormData): Promise<DeleteAdminResult
   // Org-level lockout guard: if the target is a superadmin and they
   // are the only one left, refuse. Stops "two superadmins delete each
   // other simultaneously → zero left" up to a small race window.
+  // We also grab the email so the post-delete warning (if any) stays
+  // attributed after the row is gone from the list.
   const { data: target } = await supabase
     .from("admin_users")
-    .select("role")
+    .select("role, email")
     .eq("id", id)
     .single();
   if (target?.role === "superadmin" && (await countSuperadmins()) <= 1) {
     return { ok: false, error: "Cannot remove the last superadmin." };
   }
+  const targetEmail = target?.email ?? "(unknown email)";
 
   // Delete from admin_users first so the row disappears before the
   // FK ON DELETE CASCADE from auth.users fires; this makes the failure
@@ -183,11 +186,14 @@ export async function deleteAdmin(formData: FormData): Promise<DeleteAdminResult
   const { error: uErr } = await supabase.auth.admin.deleteUser(id);
   if (uErr) {
     // admin_users row already gone — the user can no longer sign in
-    // even if the auth row stuck around. Surface as a warning so the
-    // operator sees it (the client treats this as success but renders
-    // the warning text).
+    // even if the auth row stuck around. Surface as a warning that
+    // names the target so it stays meaningful after the row vanishes
+    // from the list.
     revalidatePath("/admin/admins");
-    return { ok: true, warning: `Auth user removal warning: ${uErr.message}` };
+    return {
+      ok: true,
+      warning: `${targetEmail}: admin access revoked but the underlying auth user could not be removed (${uErr.message}). Clean up via the Supabase dashboard.`,
+    };
   }
 
   revalidatePath("/admin/admins");

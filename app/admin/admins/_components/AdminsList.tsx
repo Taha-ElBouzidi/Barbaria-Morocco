@@ -31,6 +31,7 @@ export default function AdminsList({ admins, currentUserId }: Props) {
   const [error, setError] = useState<string | null>(null);
   const [warning, setWarning] = useState<string | null>(null);
 
+
   function onRoleChange(id: string, role: string) {
     setError(null);
     setWarning(null);
