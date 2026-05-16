@@ -206,7 +206,7 @@ export async function deleteProduct(id: string): Promise<{ ok: boolean; error?: 
   await requireAdmin();
   const supabase = createServiceRoleClient();
 
-  // Grab slug + ritual before delete for revalidation
+  // Grab slug before delete for revalidation
   const { data: product } = await supabase
     .from("products")
     .select("slug")

@@ -150,11 +150,11 @@ export default async function InquiryDetailPage({ params }: PageProps) {
         <section className="space-y-4">
           <div className="border border-bb-line">
             <h2 className="px-4 md:px-6 py-3 md:py-4 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant bg-bb-bg-low">
-              Boxes requested ({inquiry.items.length}) · {totalUnits} units
+              Items requested ({inquiry.items.length}) · {totalUnits} units
             </h2>
             {inquiry.items.length === 0 ? (
               <p className="px-4 md:px-6 py-4 font-sans text-[13px] text-bb-on-surface-variant italic">
-                No boxes attached.
+                No items attached.
               </p>
             ) : (
               <ul className="divide-y divide-bb-line">

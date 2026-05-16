@@ -143,7 +143,7 @@ export default function JournalList({ cards }: JournalListProps) {
                     <td className="px-4 py-3 font-sans text-[13px] text-bb-on-surface font-medium">{getEnHeadline(c)}</td>
                     <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant">{getEnKicker(c)}</td>
                     <td className="px-4 py-3 font-mono text-[12px] text-bb-on-surface-variant">{c.date}</td>
-                    <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant">{c.feature ? "Yes" : ","}</td>
+                    <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant">{c.feature ? "Yes" : "No"}</td>
                     <td className="px-4 py-3">
                       <span
                         className={cn(

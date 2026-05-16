@@ -5,8 +5,6 @@ const ENTITY_LABEL: Record<string, string> = {
   product: "product",
   journal_card: "journal entry",
   atelier: "atelier",
-  ritual: "ritual",
-  ritual_subcategory: "sub-category",
   facet: "facet",
   inquiry: "inquiry",
 };

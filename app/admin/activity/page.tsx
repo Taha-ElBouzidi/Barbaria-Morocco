@@ -13,8 +13,6 @@ const ENTITY_TYPES = [
   { value: "journal_card", label: "Journal" },
   { value: "atelier", label: "Atelier" },
   { value: "category", label: "Category" },
-  { value: "ritual", label: "Ritual" },
-  { value: "ritual_subcategory", label: "Sub-category" },
   { value: "facet", label: "Tag" },
   { value: "inquiry", label: "Inquiry" },
 ];

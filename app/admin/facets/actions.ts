@@ -48,10 +48,8 @@ export async function saveFacet(
     if (error) return { ok: false, error: error.message };
   }
 
-  // Revalidate ritual pages since they render filter chips
   // Public product browse pages render facet chips, so any facet
-  // mutation needs to bust their cache. The retired /rituals/[world]
-  // routes used to be revalidated here too; they're gone now.
+  // mutation busts their cache.
   revalidatePath("/en/products", "layout");
   revalidatePath("/fr/products", "layout");
   updateTag("facets");

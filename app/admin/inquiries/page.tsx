@@ -180,7 +180,7 @@ export default async function AdminInquiriesPage({ searchParams }: PageProps) {
                   {inq.contact_name} · {inq.email}
                 </p>
                 <p className="font-sans text-[11px] text-bb-on-surface-variant">
-                  {(inq.items as Array<unknown>).length} box{(inq.items as Array<unknown>).length !== 1 ? "es" : ""} · {formatDate(inq.created_at)}
+                  {(inq.items as Array<unknown>).length} item{(inq.items as Array<unknown>).length !== 1 ? "s" : ""} · {formatDate(inq.created_at)}
                 </p>
               </Link>
             ))}
