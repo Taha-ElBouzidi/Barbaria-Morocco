@@ -11,9 +11,13 @@
   "notFound": {
     "eyebrow": "Barbaria Morocco",
     "code": "404",
-    "title": "Page not found",
-    "lede": "This page does not exist or has been moved.",
-    "cta": "Return home"
+    "title": "This page does not exist.",
+    "lede": "The address you followed is incorrect or the page has been moved. Head back home, or pick a thread below.",
+    "cta": "Return home",
+    "link_cosmetics": "Cosmetics",
+    "link_epicerie": "Fine Épicerie",
+    "link_story": "Our story",
+    "link_contact": "Contact"
   },
   "nav": {
     "home": "Home",

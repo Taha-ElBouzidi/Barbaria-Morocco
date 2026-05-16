@@ -1,68 +1,59 @@
 import Link from "next/link";
-import Image from "next/image";
 
 /**
- * Root not-found. Reached when a URL doesn't match any locale segment
- * (e.g. /xyz). The `/[locale]/not-found.tsx` covers locale-prefixed
- * misses (the common case) and uses next-intl for FR/EN copy. This
- * one is plain-FR (default locale) since we have no locale context
- * here. Visual treatment matches the brand themed page.
+ * Root not-found. Reached when a URL doesn't match any locale segment.
+ * The locale-aware not-found at /[locale]/not-found.tsx covers the
+ * common case (any /fr/... or /en/... miss); this one is for paths
+ * that escape both. Plain-FR copy since there's no locale context
+ * here. Minimal brand layout — no photo, same visual treatment as
+ * the localised page.
  */
 export default function NotFound() {
   return (
     <html lang="fr">
-      <body>
-        <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-          <Image
-            src="/brand_photos/brand-lifestyle-5.jpg"
-            alt=""
-            fill
-            className="object-cover"
-            sizes="100vw"
-            priority
-          />
-          <div className="absolute inset-0 bg-gradient-to-b from-[#2C1A0E]/70 via-[#2C1A0E]/55 to-[#2C1A0E]/80" />
-
-          <div className="relative z-10 text-center text-[#F7F2EA] px-6 max-w-lg mx-auto">
+      <body className="bg-bb-bg text-bb-on-surface antialiased">
+        <main className="min-h-screen flex items-center justify-center px-6 py-24">
+          <div className="w-full max-w-[640px] text-center space-y-10">
             <div
-              className="flex items-center justify-center gap-4 mb-10"
+              className="flex items-center justify-center gap-3"
               aria-hidden="true"
             >
-              <div className="w-12 h-px bg-[#C9963A]/60" />
-              <div className="w-2 h-2 rounded-full bg-[#C9963A]" />
-              <div className="w-12 h-px bg-[#C9963A]/60" />
+              <span className="h-px w-10 bg-bb-secondary-deep/40" />
+              <span className="h-1.5 w-1.5 rounded-full bg-bb-secondary-deep" />
+              <span className="h-px w-10 bg-bb-secondary-deep/40" />
             </div>
 
-            <p className="text-xs tracking-[0.5em] uppercase text-[#C9963A] mb-4">
+            <p className="font-sans text-[11px] uppercase tracking-[0.32em] text-bb-secondary-deep">
               Barbaria Morocco
             </p>
-            <h1 className="font-playfair text-8xl md:text-9xl font-bold mb-4 drop-shadow-lg">
+
+            <h1
+              aria-label="Cette page n'existe pas"
+              className="font-display text-[clamp(96px,18vw,200px)] leading-[0.9] tracking-tight text-bb-primary"
+            >
               404
             </h1>
-            <p className="font-playfair text-xl italic text-[#E8C97A] mb-3">
-              Page introuvable
-            </p>
-            <p className="text-[#F7F2EA]/70 mb-10 leading-relaxed">
-              Cette page n&apos;existe pas ou a été déplacée.
-            </p>
 
-            <Link
-              href="/"
-              className="btn-glass-gold inline-block px-10 py-4 min-h-[44px] text-sm tracking-[0.2em] uppercase font-medium rounded-full"
-            >
-              Retour à l&apos;accueil
-            </Link>
+            <div className="space-y-3">
+              <p className="font-display italic text-[clamp(20px,2.4vw,28px)] text-bb-primary leading-snug">
+                Cette page n&apos;existe pas.
+              </p>
+              <p className="font-sans text-[14px] text-bb-on-surface/75 max-w-[460px] mx-auto leading-relaxed">
+                L&apos;adresse que vous avez suivie est incorrecte ou la page a
+                été déplacée.
+              </p>
+            </div>
 
-            <div
-              className="flex items-center justify-center gap-4 mt-10"
-              aria-hidden="true"
-            >
-              <div className="w-12 h-px bg-[#C9963A]/60" />
-              <div className="w-2 h-2 rounded-full bg-[#C9963A]" />
-              <div className="w-12 h-px bg-[#C9963A]/60" />
+            <div className="pt-2">
+              <Link
+                href="/"
+                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 min-h-[48px] bg-bb-primary text-bb-on-primary font-sans text-[12px] uppercase tracking-[0.22em] hover:bg-bb-primary-container transition-colors"
+              >
+                Retour à l&apos;accueil
+              </Link>
             </div>
           </div>
-        </div>
+        </main>
       </body>
     </html>
   );

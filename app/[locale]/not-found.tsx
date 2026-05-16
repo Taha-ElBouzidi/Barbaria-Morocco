@@ -1,64 +1,92 @@
 "use client";
 
 import { Link } from "@/i18n/navigation";
-import Image from "next/image";
 import { useTranslations } from "next-intl";
 
 /**
- * Localised 404 for paths under /[locale]/*. Marked as a Client
- * Component so it can read translations from the
- * NextIntlClientProvider mounted in app/[locale]/layout.tsx — the
- * server-only `getTranslations` doesn't reliably resolve the locale
- * inside a not-found render context, which was causing the page to
- * fail and Vercel to fall back to its default 404 UI.
+ * Localised 404 for paths under /[locale]/*. Client Component so it
+ * can read translations from the NextIntlClientProvider mounted in
+ * the locale layout. Visual: minimal, brand-typographic, no full-
+ * bleed photo (the photo overpowered the message); brand cream
+ * background, Playfair display for the code, gold accent, primary
+ * CTA + curated secondary links to the catalogue + contact.
  */
 export default function NotFound() {
   const t = useTranslations("notFound");
   return (
-    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      <Image
-        src="/brand_photos/brand-lifestyle-5.jpg"
-        alt=""
-        fill
-        className="object-cover"
-        sizes="100vw"
-        priority
-      />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#2C1A0E]/70 via-[#2C1A0E]/55 to-[#2C1A0E]/80" />
-
-      <div className="relative z-10 text-center text-[#F7F2EA] px-6 max-w-lg mx-auto">
-        <div className="flex items-center justify-center gap-4 mb-10" aria-hidden="true">
-          <div className="w-12 h-px bg-[#C9963A]/60" />
-          <div className="w-2 h-2 rounded-full bg-[#C9963A]" />
-          <div className="w-12 h-px bg-[#C9963A]/60" />
+    <main className="min-h-screen bg-bb-bg text-bb-on-surface flex items-center justify-center px-[var(--bb-margin-edge)] py-24">
+      <div className="w-full max-w-[640px] text-center space-y-10">
+        <div
+          className="flex items-center justify-center gap-3"
+          aria-hidden="true"
+        >
+          <span className="h-px w-10 bg-bb-secondary-deep/40" />
+          <span className="h-1.5 w-1.5 rounded-full bg-bb-secondary-deep" />
+          <span className="h-px w-10 bg-bb-secondary-deep/40" />
         </div>
 
-        <p className="text-xs tracking-[0.5em] uppercase text-[#C9963A] mb-4">
+        <p className="font-sans text-[11px] uppercase tracking-[0.32em] text-bb-secondary-deep">
           {t("eyebrow")}
         </p>
-        <h1 className="font-playfair text-8xl md:text-9xl font-bold mb-4 drop-shadow-lg">
+
+        <h1
+          aria-label={t("title")}
+          className="font-display text-[clamp(96px,18vw,200px)] leading-[0.9] tracking-tight text-bb-primary"
+        >
           {t("code")}
         </h1>
-        <p className="font-playfair text-xl italic text-[#E8C97A] mb-3">
-          {t("title")}
-        </p>
-        <p className="text-[#F7F2EA]/70 mb-10 leading-relaxed">
-          {t("lede")}
-        </p>
 
-        <Link
-          href="/"
-          className="btn-glass-gold inline-block px-10 py-4 min-h-[44px] text-sm tracking-[0.2em] uppercase font-medium rounded-full"
-        >
-          {t("cta")}
-        </Link>
+        <div className="space-y-3">
+          <p className="font-display italic text-[clamp(20px,2.4vw,28px)] text-bb-primary leading-snug">
+            {t("title")}
+          </p>
+          <p className="font-sans text-[14px] text-bb-on-surface/75 max-w-[460px] mx-auto leading-relaxed">
+            {t("lede")}
+          </p>
+        </div>
 
-        <div className="flex items-center justify-center gap-4 mt-10" aria-hidden="true">
-          <div className="w-12 h-px bg-[#C9963A]/60" />
-          <div className="w-2 h-2 rounded-full bg-[#C9963A]" />
-          <div className="w-12 h-px bg-[#C9963A]/60" />
+        <div className="flex flex-col items-center gap-4 pt-2">
+          <Link
+            href="/"
+            className="inline-flex items-center justify-center gap-2 px-8 py-3.5 min-h-[48px] bg-bb-primary text-bb-on-primary font-sans text-[12px] uppercase tracking-[0.22em] hover:bg-bb-primary-container transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary-deep focus-visible:ring-offset-2 focus-visible:ring-offset-bb-bg"
+          >
+            {t("cta")}
+          </Link>
+
+          <nav
+            aria-label="Site sections"
+            className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-4"
+          >
+            <Link
+              href="/products/cosmetiques"
+              className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+            >
+              {t("link_cosmetics")}
+            </Link>
+            <span aria-hidden="true" className="text-bb-line">·</span>
+            <Link
+              href="/products/epicerie_fine"
+              className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+            >
+              {t("link_epicerie")}
+            </Link>
+            <span aria-hidden="true" className="text-bb-line">·</span>
+            <Link
+              href="/story"
+              className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+            >
+              {t("link_story")}
+            </Link>
+            <span aria-hidden="true" className="text-bb-line">·</span>
+            <Link
+              href="/contact"
+              className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+            >
+              {t("link_contact")}
+            </Link>
+          </nav>
         </div>
       </div>
-    </div>
+    </main>
   );
 }
