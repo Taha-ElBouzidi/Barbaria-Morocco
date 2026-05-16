@@ -48,6 +48,7 @@ export const inquiryStatusEnum = pgEnum("inquiry_status_enum", [
 ]);
 
 export const adminRoleEnum = pgEnum("admin_role_enum", [
+  "superadmin",
   "admin",
   "sales",
   "concierge",

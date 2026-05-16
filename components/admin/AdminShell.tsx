@@ -23,7 +23,7 @@ export default function AdminShell({
 
   return (
     <div className="min-h-screen bg-bb-bg-low text-bb-on-surface flex">
-      <Sidebar open={sidebarOpen} onClose={closeSidebar} />
+      <Sidebar open={sidebarOpen} onClose={closeSidebar} role={admin.role} />
       <div className="flex-1 flex flex-col min-w-0">
         <TopBar admin={admin} onOpenSidebar={openSidebar} />
         <main id="admin-main" className="flex-1 px-4 md:px-8 py-6 md:py-10 max-w-[1280px] w-full">{children}</main>

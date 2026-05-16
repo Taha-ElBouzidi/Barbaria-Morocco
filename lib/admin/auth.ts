@@ -5,7 +5,7 @@ import { createServiceRoleClient } from "@/lib/supabase/service";
 export interface AdminUser {
   id: string;
   email: string;
-  role: "admin" | "sales" | "concierge" | "readonly";
+  role: "superadmin" | "admin" | "sales" | "concierge" | "readonly";
   displayName: string | null;
 }
 
@@ -58,6 +58,23 @@ export async function requireAdmin(): Promise<AdminUser> {
   const admin = await getCurrentAdmin();
   if (!admin) {
     redirect("/admin/login");
+  }
+  return admin;
+}
+
+/**
+ * Stricter gate for user-management pages. Returns the admin row only
+ * if the role is "superadmin"; otherwise redirects to /admin so the
+ * non-superadmin lands somewhere they can use rather than seeing a
+ * notFound() they cannot navigate from.
+ *
+ * Composes on top of requireAdmin so unauthenticated callers still get
+ * the login redirect first.
+ */
+export async function requireSuperadmin(): Promise<AdminUser> {
+  const admin = await requireAdmin();
+  if (admin.role !== "superadmin") {
+    redirect("/admin");
   }
   return admin;
 }

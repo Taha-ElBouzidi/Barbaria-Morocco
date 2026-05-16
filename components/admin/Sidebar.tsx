@@ -9,7 +9,8 @@ import Icon from "@/components/primitives/Icon";
 // Order is intentional: Inquiries before Activity so the maison sees
 // incoming requests first when they sign in. Gift Boxes + Products are
 // the daily-touched catalogue tables; everything below is configuration.
-const NAV = [
+// "Admins" is appended only for superadmins via the role prop below.
+const BASE_NAV = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/inquiries", label: "Inquiries" },
   { href: "/admin/analytics", label: "Analytics" },
@@ -24,13 +25,21 @@ const NAV = [
   { href: "/admin/activity", label: "Activity" },
 ];
 
+const SUPERADMIN_NAV = [{ href: "/admin/admins", label: "Admins" }];
+
 interface Props {
   /** Mobile-only: controls the slide-out drawer state. Ignored at md+. */
   open: boolean;
   onClose: () => void;
+  /** Drives the conditional Admins entry. Anything other than
+   * "superadmin" gets the base nav. The page itself also gates with
+   * `requireSuperadmin()`, this is just for visual cleanliness so plain
+   * admins don't see a link they'd be redirected away from. */
+  role: string;
 }
 
-export default function Sidebar({ open, onClose }: Props) {
+export default function Sidebar({ open, onClose, role }: Props) {
+  const NAV = role === "superadmin" ? [...BASE_NAV, ...SUPERADMIN_NAV] : BASE_NAV;
   const pathname = usePathname();
   const panelRef = useRef<HTMLElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);

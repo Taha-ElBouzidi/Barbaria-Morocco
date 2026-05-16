@@ -38,6 +38,8 @@ test.describe("admin route guards", () => {
     "/admin/journal",
     "/admin/inquiries",
     "/admin/analytics",
+    "/admin/admins",
+    "/admin/admins/new",
     "/admin/activity",
   ];
   for (const path of PROTECTED) {
