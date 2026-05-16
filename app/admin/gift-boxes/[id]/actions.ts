@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { createServiceRoleClient } from "@/lib/supabase/service";
 import { GiftBoxSaveSchema, type GiftBoxSaveInput } from "@/lib/admin/gift-boxes";
@@ -160,6 +160,10 @@ export async function saveGiftBox(
   revalidatePath("/fr/products", "layout");
   revalidatePath("/admin/gift-boxes");
   revalidatePath(`/admin/gift-boxes/${giftBoxId}`);
+  // Box edits change what shows up in the public inquiry drawer (item
+  // names + thumbnails are read through the cached catalogue map).
+  // Without the tag bust those entries stay stale for the 10 min TTL.
+  updateTag("products");
 
   // `redirect` throws NEXT_REDIRECT; the framework handles it and the
   // client never sees a "return" from this call. Keep CREATE on the
@@ -196,6 +200,7 @@ export async function setGiftBoxStatus(
   revalidatePath("/fr/products", "layout");
   revalidatePath(`/admin/gift-boxes/${id}`);
   revalidatePath("/admin/gift-boxes");
+  updateTag("products");
   return { ok: true };
 }
 
@@ -210,6 +215,7 @@ export async function deleteGiftBox(id: string): Promise<GiftBoxActionResult> {
   revalidatePath("/en/products", "layout");
   revalidatePath("/fr/products", "layout");
   revalidatePath("/admin/gift-boxes");
+  updateTag("products");
   // redirect throws NEXT_REDIRECT; this never actually returns. Kept
   // here so the client knows the action completed and the framework
   // navigates away from the now-deleted page.

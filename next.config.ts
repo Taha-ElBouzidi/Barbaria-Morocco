@@ -40,6 +40,16 @@ const nextConfig: NextConfig = {
     // Storage paths are content-stable; cache the optimized variants for a
     // year so we don't re-encode on every cold edge node.
     minimumCacheTTL: 60 * 60 * 24 * 365,
+    // Allow next/image to optimize images served from the project's
+    // Supabase Storage bucket. Without this remotePatterns entry the
+    // optimizer 400s on any uploaded hero image.
+    remotePatterns: [
+      {
+        protocol: "https",
+        hostname: new URL(process.env.NEXT_PUBLIC_SUPABASE_URL ?? "https://placeholder.supabase.co").hostname,
+        pathname: "/storage/v1/object/public/product-images/**",
+      },
+    ],
   },
   async headers() {
     return [

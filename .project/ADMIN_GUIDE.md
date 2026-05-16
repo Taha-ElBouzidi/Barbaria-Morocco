@@ -13,7 +13,6 @@ How to use the Barbaria admin dashboard at `https://<your-domain>/admin`. Covers
 - [Occasions](#occasions)
 - [Ateliers](#ateliers)
 - [Journal](#journal)
-- [Rituals (internal)](#rituals-internal)
 - [Inquiries](#inquiries)
 - [Activity log](#activity-log)
 - [Publishing rules](#publishing-rules)
@@ -74,12 +73,12 @@ Route: `/admin/products`.
 What this controls: every product piece. Products live as components of gift boxes; the public site does not sell products individually.
 
 ### List
-- Filter by ritual (Hammam, Botanical, Heritage) and status.
+- Filter by category (Cosmetics, Fine Épicerie) and status.
 - Search by name or slug.
-- Mobile cards show thumbnail, name, slug, status, ritual, MOQ.
+- Mobile cards show thumbnail, name, slug, status, category, MOQ.
 
 ### Create / Edit
-- Identity: category, ritual, sub-category, formats, origin, ritual label. **Slug** is generated automatically from the English name and not editable (keeps URLs stable).
+- Identity: category, formats, origin. **Slug** is generated automatically from the English name and not editable (keeps URLs stable).
 - **Removed from the editor** (kept in the DB for safety): MOQ, lead time, hero flag, application steps. MOQ now lives on each gift box, lead time is discussed at the inquiry stage with the concierge, application steps are not surfaced on the public site after the box-first IA shift.
 - Translations: EN + FR name, short, lede.
 - Images: upload to Supabase Storage. First image is the hero. Reorder with up/down arrows.
@@ -121,11 +120,6 @@ What this controls: editorial cards shown on `/journal`.
 - Identity: slug, date, image, feature flag.
 - Translations: EN + FR kicker, headline.
 - Article pages themselves are deferred to a later sprint.
-
-## Rituals (internal)
-Route: `/admin/rituals`.
-
-The rituals taxonomy (Hammam, Botanical, Heritage) is internal product tagging only. Not surfaced in the public information architecture since Sprint 2.0. Edit copy here only if you are sure of the impact on filtering.
 
 ## Inquiries
 Route: `/admin/inquiries`.

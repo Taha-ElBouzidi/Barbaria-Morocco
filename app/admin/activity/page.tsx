@@ -61,13 +61,21 @@ export default async function AdminActivityPage({ searchParams }: PageProps) {
   const totalPages = Math.max(1, Math.ceil(count / pageSize));
 
   function filterUrl(overrides: Record<string, string>) {
-    const sp = new URLSearchParams({
+    // Build the URL from non-empty values only. Overrides intentionally
+    // pass "" to clear a key — that means "remove the param", not
+    // "set the param to empty string". Without this filter the chip
+    // emitted `?entityType=` which made the server query do
+    // `.eq("entity_type", "")` and return zero rows when the user
+    // clicked "All".
+    const merged: Record<string, string> = {
       ...(entityType !== "all" ? { entityType } : {}),
       ...(action !== "all" ? { action } : {}),
       ...(range !== "30d" ? { range } : {}),
       ...overrides,
-    });
-    // Drop page=1 from URL
+    };
+    const sp = new URLSearchParams(
+      Object.fromEntries(Object.entries(merged).filter(([, v]) => v !== ""))
+    );
     if (sp.get("page") === "1") sp.delete("page");
     return `/admin/activity${sp.toString() ? `?${sp}` : ""}`;
   }

@@ -15,6 +15,26 @@ interface PhotoProps {
   needsShot?: boolean;
 }
 
+/**
+ * Resolve an image path stored in the DB to a renderable URL.
+ *
+ * Stored paths come from two sources, just like the admin uploader's
+ * helper in lib/admin/products.ts:
+ * - Sprint 1.5 seed rows hold `/brand_photos/...` — absolute paths to
+ *   files shipped in /public. Use as-is.
+ * - The admin uploader writes Supabase Storage object paths (no
+ *   leading slash). Prefix with the public-bucket URL.
+ *
+ * Without this transform, next/image would resolve relative paths
+ * against the page origin and 404 every uploaded hero image.
+ */
+function resolveImageSrc(path: string): string {
+  if (path.startsWith("/") || path.startsWith("http")) return path;
+  const base = process.env.NEXT_PUBLIC_SUPABASE_URL;
+  if (!base) return path; // dev-fallback; in prod the env is set
+  return `${base}/storage/v1/object/public/product-images/${path}`;
+}
+
 export default function Photo({
   src,
   alt,
@@ -56,11 +76,13 @@ export default function Photo({
     );
   }
 
+  const resolved = resolveImageSrc(src);
+
   if (fill) {
     return (
       <div className={cn("relative overflow-hidden", containerClassName)}>
         <Image
-          src={src}
+          src={resolved}
           alt={alt}
           fill
           sizes={sizes ?? "100vw"}
@@ -75,7 +97,7 @@ export default function Photo({
   return (
     <div className={cn("relative overflow-hidden", containerClassName)}>
       <Image
-        src={src}
+        src={resolved}
         alt={alt}
         width={width ?? 1200}
         height={height ?? 1500}
