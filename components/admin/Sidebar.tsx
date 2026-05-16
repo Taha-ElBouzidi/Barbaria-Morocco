@@ -12,6 +12,7 @@ import Icon from "@/components/primitives/Icon";
 const NAV = [
   { href: "/admin", label: "Dashboard" },
   { href: "/admin/inquiries", label: "Inquiries" },
+  { href: "/admin/analytics", label: "Analytics" },
   { href: "/admin/gift-boxes", label: "Gift Boxes" },
   { href: "/admin/products", label: "Products" },
   { href: "/admin/occasions", label: "Occasions" },
