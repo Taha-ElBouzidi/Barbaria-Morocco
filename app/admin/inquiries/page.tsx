@@ -81,25 +81,29 @@ export default async function AdminInquiriesPage({ searchParams }: PageProps) {
       {/* Filters */}
       <div className="flex flex-wrap gap-3 items-center">
         <div className="flex flex-wrap gap-1.5">
-          {STATUS_OPTIONS.map((opt) => (
-            <Link
-              key={opt.value}
-              href={pageUrl(1).replace(/(\?|$)/, (_, q) => {
-                const sp = new URLSearchParams({
-                  ...(opt.value !== "all" ? { status: opt.value } : {}),
-                  ...(sort !== "newest" ? { sort } : {}),
-                });
-                return sp.toString() ? `?${sp}` : "";
-              })}
-              className={`px-3 py-1.5 font-sans text-[11px] uppercase tracking-[0.14em] border transition-colors ${
-                status === opt.value
-                  ? "border-bb-primary text-bb-primary bg-bb-bg-low"
-                  : "border-bb-line text-bb-on-surface-variant hover:border-bb-primary"
-              }`}
-            >
-              {opt.label}
-            </Link>
-          ))}
+          {STATUS_OPTIONS.map((opt) => {
+            const active = status === opt.value;
+            return (
+              <Link
+                key={opt.value}
+                href={pageUrl(1).replace(/(\?|$)/, (_, q) => {
+                  const sp = new URLSearchParams({
+                    ...(opt.value !== "all" ? { status: opt.value } : {}),
+                    ...(sort !== "newest" ? { sort } : {}),
+                  });
+                  return sp.toString() ? `?${sp}` : "";
+                })}
+                aria-current={active ? "true" : undefined}
+                className={`px-3 py-1.5 font-sans text-[11px] uppercase tracking-[0.14em] border transition-colors ${
+                  active
+                    ? "border-bb-primary text-bb-primary bg-bb-bg-low"
+                    : "border-bb-line text-bb-on-surface-variant hover:border-bb-primary"
+                }`}
+              >
+                {opt.label}
+              </Link>
+            );
+          })}
         </div>
 
         <div className="ml-auto flex items-center gap-2">
@@ -111,12 +115,14 @@ export default async function AdminInquiriesPage({ searchParams }: PageProps) {
               ...(status !== "all" ? { status } : {}),
               ...(opt.value !== "newest" ? { sort: opt.value } : {}),
             });
+            const active = sort === opt.value;
             return (
               <Link
                 key={opt.value}
                 href={`/admin/inquiries${sp.toString() ? `?${sp}` : ""}`}
+                aria-current={active ? "true" : undefined}
                 className={`px-3 py-1.5 font-sans text-[11px] uppercase tracking-[0.14em] border transition-colors ${
-                  sort === opt.value
+                  active
                     ? "border-bb-primary text-bb-primary bg-bb-bg-low"
                     : "border-bb-line text-bb-on-surface-variant hover:border-bb-primary"
                 }`}
@@ -226,6 +232,7 @@ export default async function AdminInquiriesPage({ searchParams }: PageProps) {
                     <td className="px-4 py-3 text-right">
                       <Link
                         href={`/admin/inquiries/${inq.id}`}
+                        aria-label={`View inquiry from ${inq.company}`}
                         className="font-sans text-[12px] text-bb-primary hover:underline whitespace-nowrap"
                       >
                         View →

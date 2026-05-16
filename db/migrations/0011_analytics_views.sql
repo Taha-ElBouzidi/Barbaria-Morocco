@@ -56,17 +56,20 @@ LIMIT 10;
 
 -- Top 10 inquired-about boxes (curated + custom). One row per gift_box,
 -- carries both locale names so the page renders the right one without
--- a second round-trip.
+-- a second round-trip. LEFT JOIN on gift_boxes (inquiry_items.gift_box_id
+-- is ON DELETE SET NULL per migration 0008) so we retain historical
+-- totals for deleted boxes as a "(deleted)" row instead of silently
+-- erasing them.
 CREATE OR REPLACE VIEW top_inquired_boxes WITH (security_invoker = on) AS
 SELECT
-  gb.slug,
+  coalesce(gb.slug, '(deleted)') AS slug,
   gbt_fr.name AS name_fr,
   gbt_en.name AS name_en,
-  gb.is_customizable,
+  coalesce(gb.is_customizable, false) AS is_customizable,
   count(DISTINCT ii.inquiry_id)::int AS inquiry_count,
   coalesce(sum(ii.qty), 0)::int AS total_qty
 FROM inquiry_items ii
-JOIN gift_boxes gb ON gb.id = ii.gift_box_id
+LEFT JOIN gift_boxes gb ON gb.id = ii.gift_box_id
 LEFT JOIN gift_box_translations gbt_fr ON gbt_fr.gift_box_id = gb.id AND gbt_fr.locale = 'fr'
 LEFT JOIN gift_box_translations gbt_en ON gbt_en.gift_box_id = gb.id AND gbt_en.locale = 'en'
 GROUP BY gb.slug, gbt_fr.name, gbt_en.name, gb.is_customizable

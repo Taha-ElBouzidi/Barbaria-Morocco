@@ -45,7 +45,14 @@ export default function HorizontalBar({ rows, emptyMessage, max }: Props) {
                 ) : null}
               </span>
             </div>
-            <div className="h-1.5 bg-bb-bg-low overflow-hidden">
+            <div
+              role="meter"
+              aria-label={row.label}
+              aria-valuenow={row.value}
+              aria-valuemin={0}
+              aria-valuemax={effectiveMax}
+              className="h-1.5 bg-bb-bg-low overflow-hidden"
+            >
               <div
                 className="h-full bg-bb-secondary-deep transition-[width] duration-300"
                 style={{ width: `${pct.toFixed(2)}%` }}

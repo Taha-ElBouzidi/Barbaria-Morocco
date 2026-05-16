@@ -55,7 +55,7 @@ export default async function AdminAnalyticsPage() {
       </section>
 
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-        <article className="border border-bb-line p-4 lg:p-6 space-y-3">
+        <section className="border border-bb-line p-4 lg:p-6 space-y-3">
           <header className="space-y-1">
             <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
               Last 30 days
@@ -72,9 +72,9 @@ export default async function AdminAnalyticsPage() {
             <span>{snap.daily[0]?.day ?? ""}</span>
             <span>{snap.daily[snap.daily.length - 1]?.day ?? ""}</span>
           </div>
-        </article>
+        </section>
 
-        <article className="border border-bb-line p-4 lg:p-6 space-y-4">
+        <section className="border border-bb-line p-4 lg:p-6 space-y-4">
           <header className="space-y-1">
             <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
               Last 30 days
@@ -88,11 +88,11 @@ export default async function AdminAnalyticsPage() {
             }))}
             emptyMessage="No inquiries yet in the last 30 days."
           />
-        </article>
+        </section>
       </section>
 
       <section className="grid grid-cols-1 lg:grid-cols-2 gap-6 lg:gap-8">
-        <article className="border border-bb-line p-4 lg:p-6 space-y-4">
+        <section className="border border-bb-line p-4 lg:p-6 space-y-4">
           <header className="space-y-1">
             <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
               Lifetime
@@ -110,9 +110,9 @@ export default async function AdminAnalyticsPage() {
             }))}
             emptyMessage="No boxes have been inquired about yet."
           />
-        </article>
+        </section>
 
-        <article className="border border-bb-line p-4 lg:p-6 space-y-4">
+        <section className="border border-bb-line p-4 lg:p-6 space-y-4">
           <header className="space-y-1">
             <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">
               Lifetime
@@ -129,11 +129,16 @@ export default async function AdminAnalyticsPage() {
             rows={snap.topPieces.map((p) => ({
               label: p.name,
               value: p.pickCount,
-              sublabel: `${p.totalQty} unit${p.totalQty === 1 ? "" : "s"}`,
+              // pickCount is the number of inquiry lines containing this
+              // piece. totalQty is the sum of those lines' box-level qty,
+              // which is "box units carrying this piece" — not "units of
+              // this piece sold." Naming the sublabel "in N boxes" keeps
+              // it honest.
+              sublabel: `in ${p.totalQty} box${p.totalQty === 1 ? "" : "es"}`,
             }))}
             emptyMessage="No custom compositions yet."
           />
-        </article>
+        </section>
       </section>
 
       <section className="border border-bb-line p-4 lg:p-6 space-y-4">
