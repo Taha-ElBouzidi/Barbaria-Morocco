@@ -26,7 +26,7 @@ export default async function NewAdminPage() {
           Add an admin
         </h1>
         <p className="font-sans text-[13px] text-bb-on-surface-variant max-w-prose">
-          The maison creates an auth user with a generated password we show once.
+          The house creates an auth user with a generated password we show once.
           Share it privately. The new admin can change it via the Supabase dashboard.
         </p>
       </header>

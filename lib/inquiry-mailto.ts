@@ -29,12 +29,12 @@ const RECIPIENT = "concierge@barbariamorocco.com";
 
 export function buildMailto(form: InquiryFormData, lines: MailtoLine[]): string {
   const totalUnits = lines.reduce((sum, l) => sum + l.qty, 0);
-  const subject = `B2B Inquiry: ${form.company || form.contactName || "Maison"} (${lines.length} box${lines.length === 1 ? "" : "es"}, ${totalUnits} units)`;
+  const subject = `B2B Inquiry: ${form.company || form.contactName || "House"} (${lines.length} box${lines.length === 1 ? "" : "es"}, ${totalUnits} units)`;
 
   const out: string[] = [];
   out.push("BARBARIA · B2B Inquiry");
   out.push("");
-  out.push("── Maison ──────────────");
+  out.push("── House ───────────────");
   out.push(`Company:      ${form.company}`);
   out.push(`Contact:      ${form.contactName}`);
   out.push(`Email:        ${form.email}`);

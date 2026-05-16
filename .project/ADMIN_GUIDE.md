@@ -130,7 +130,7 @@ The rituals taxonomy (Hammam, Botanical, Heritage) is internal product tagging o
 ## Inquiries
 Route: `/admin/inquiries`.
 
-What this controls: incoming B2B quote requests. The `/api/inquiry` endpoint writes each public contact-form submission directly into Supabase (`inquiries` + `inquiry_items`). The maison sees them here in real time, sorted newest-first by default, filterable by status.
+What this controls: incoming B2B quote requests. The `/api/inquiry` endpoint writes each public contact-form submission directly into Supabase (`inquiries` + `inquiry_items`). The house sees them here in real time, sorted newest-first by default, filterable by status.
 
 Each inquiry carries: company, contact name, email, phone, occasion, event date, free-text message, locale of submission, plus one row per requested box (curated or custom). Custom boxes also carry the composition: ordered list of pieces the buyer assembled in the wizard.
 

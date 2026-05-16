@@ -247,7 +247,7 @@ export default function GiftBoxEditor({
       </section>
 
       {/* Translations — tabbed, English first. Matches the pattern used
-          in the product editor (TranslationTabs) so the maison only
+          in the product editor (TranslationTabs) so the house only
           fills out one locale at a time. */}
       <section className="space-y-6">
         <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">

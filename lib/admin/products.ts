@@ -138,7 +138,7 @@ export async function getAllFacetsForAdmin() {
  * paths and return as-is. Anything else gets prefixed with the
  * Supabase Storage public URL. Without this check, seeded rows
  * resolve to `/storage/v1/object/public/product-images//brand_photos/...`
- * which 404s — the maison reported broken thumbnails on the admin
+ * which 404s — the house reported broken thumbnails on the admin
  * product list before this fix.
  */
 export function getPublicImageUrl(path: string): string {

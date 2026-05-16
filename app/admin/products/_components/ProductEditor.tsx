@@ -338,7 +338,7 @@ export default function ProductEditor({
             the field was complex to fill and not surfaced on the public
             site after the box-first IA shift. Existing rows in
             product_application_steps stay in the DB; we just no longer
-            edit them here. Re-introduce later if the maison decides to
+            edit them here. Re-introduce later if the house decides to
             publish how-to-use content. */}
 
         {/* Actions. Sticky at the bottom so the buyer always sees the

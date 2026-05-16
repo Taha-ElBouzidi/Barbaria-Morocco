@@ -4,7 +4,7 @@ export const CONTACT_PHONE = "+212659658863";
 export const CONTACT_PHONE_TEL = "tel:+212659658863";
 export const WHATSAPP_NUMBER = "212659658863";
 
-// Social handles. Real values to be confirmed by the maison; current set
+// Social handles. Real values to be confirmed by the house; current set
 // is the placeholder mix in use across the site so the UI has somewhere
 // to point. See .project/TODO_LIST.md "Real contact data" for the swap.
 export const INSTAGRAM_HANDLE = "barbaria_00";

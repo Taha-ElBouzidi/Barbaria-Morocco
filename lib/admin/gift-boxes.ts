@@ -208,7 +208,7 @@ export interface ProductOption {
   nameEn: string;
   image: string | null;
   /** EN facet values. Used by the gift-box editor's filter panel so
-   *  the maison can narrow the picker by ingredient / use / format /
+   *  the house can narrow the picker by ingredient / use / format /
    *  packaging / certification, same UX as the public wizard. */
   tags: string[];
 }

@@ -6,7 +6,7 @@ import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
 import Icon from "@/components/primitives/Icon";
 
-// Order is intentional: Inquiries before Activity so the maison sees
+// Order is intentional: Inquiries before Activity so the house sees
 // incoming requests first when they sign in. Gift Boxes + Products are
 // the daily-touched catalogue tables; everything below is configuration.
 // "Admins" is appended only for superadmins via the role prop below.

@@ -1503,7 +1503,7 @@ export function buildMailto(form: InquiryFormData, items: Array<{ product: Produ
   const lines: string[] = [];
   lines.push("BARBARIA · B2B Inquiry");
   lines.push("");
-  lines.push("── Maison ──────────────");
+  lines.push("── House ───────────────");
   lines.push(`Company:      ${form.company}`);
   lines.push(`Contact:      ${form.contactName}`);
   lines.push(`Email:        ${form.email}`);

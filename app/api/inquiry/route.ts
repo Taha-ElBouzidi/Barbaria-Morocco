@@ -60,7 +60,7 @@ function hashIp(req: NextRequest): string {
  * validates with Zod, writes one `inquiries` row plus one `inquiry_items`
  * row per box-line, returns the new inquiry id. Email/Resend integration
  * is deferred (TODO_LIST.md) , for now an inquiry lands in Supabase and
- * the maison reads it from /admin/inquiries.
+ * the house reads it from /admin/inquiries.
  *
  * Auth: anonymous public submit. RLS is bypassed by the service-role
  * client; this route is the single trusted choke point.

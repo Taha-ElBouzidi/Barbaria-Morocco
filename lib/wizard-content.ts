@@ -1,7 +1,7 @@
 // Compose-your-box wizard content.
 //
 // Sprint 2.9 follow-up: per-step subcategory filters were removed. The
-// buyer now sees every piece the maison has assigned to the box (or
+// buyer now sees every piece the house has assigned to the box (or
 // every published piece in the category as a fallback) at every step.
 // Step copy stays for the storytelling arc, Amazigh narrative wrapping
 // the act of composing, but no longer constrains the selectable pool.
@@ -89,7 +89,7 @@ const WIZARD_STEPS: Record<StoryThemeKey, WizardStep[]> = {
         fr: "Une étoile finale. Libre à vous.",
       },
       story: {
-        en: "Add a piece that speaks to your maison. Anything from the cosmetics atelier.",
+        en: "Add a piece that speaks to your house. Anything from the cosmetics atelier.",
         fr: "Ajoutez une pièce qui parle à votre maison. N'importe quoi de l'atelier cosmétique.",
       },
     },

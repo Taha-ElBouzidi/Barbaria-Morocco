@@ -13,7 +13,7 @@ export default async function OccasionsPage() {
         <div className="min-w-0 flex-1">
           <h1 className="font-serif text-[24px] sm:text-[28px] leading-none text-bb-primary">Occasions</h1>
           <p className="font-sans text-[12px] sm:text-[13px] text-bb-on-surface-variant mt-2 max-w-[640px]">
-            Events the maison surfaces in the contact form dropdown. Add seasonal moments (Mother&apos;s Day, Eid, Christmas) to keep the list relevant.
+            Events the house surfaces in the contact form dropdown. Add seasonal moments (Mother&apos;s Day, Eid, Christmas) to keep the list relevant.
           </p>
         </div>
         <Link

@@ -36,7 +36,7 @@ export default async function AdminAnalyticsPage() {
           Concierge analytics
         </h1>
         <p className="font-sans text-[13px] text-bb-on-surface-variant max-w-prose">
-          A read of inquiry volume, the boxes the maison fields most, and the
+          A read of inquiry volume, the boxes the house fields most, and the
           pieces guests pick when they compose their own. Counts are live.
         </p>
       </header>
@@ -148,7 +148,7 @@ export default async function AdminAnalyticsPage() {
           </p>
           <h2 className="font-serif text-[20px] leading-none">Top occasions</h2>
           <p className="font-sans text-[12px] text-bb-on-surface-variant">
-            What the maison's guests are buying for. Useful to plan editorial
+            What the house's guests are buying for. Useful to plan editorial
             and seasonal pushes.
           </p>
         </header>

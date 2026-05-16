@@ -108,7 +108,7 @@ export default async function CategoryPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Sprint 2.6: curated FIRST. The maison's composed boxes are the
+      {/* Sprint 2.6: curated FIRST. The house's composed boxes are the
           primary commercial offer; the wizard CTA sits below as the
           "compose your own" alternative. */}
       <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] pt-16 lg:pt-20 pb-12 lg:pb-16">

@@ -14,7 +14,7 @@ Currently the contact form sends a `mailto:` link. Phase 2 should land server-si
 - Rate limit: 5 inquiries / minute / IP, 50 / day / IP
 
 ## Real contact data
-The site currently uses placeholder values. Replace with the actual maison data when confirmed:
+The site currently uses placeholder values. Replace with the actual house data when confirmed:
 
 - WhatsApp number (`lib/constants.ts` -> `WHATSAPP_NUMBER`)
 - Phone number for the contact page sidebar
@@ -45,7 +45,7 @@ The user flagged that several product fields no longer make sense now that produ
 - ~~MOQ on products~~ (removed, DB column retained)
 - ~~Lead time on products~~ (removed from product editor + wizard modal, DB column retained)
 - ~~Hero flag~~ (removed, DB column retained)
-- ~~Application steps~~ (removed from product editor UI, DB rows retained; bring back if the maison decides to publish how-to-use content)
+- ~~Application steps~~ (removed from product editor UI, DB rows retained; bring back if the house decides to publish how-to-use content)
 - ~~Slug input~~ (hidden, auto-generated from EN name)
 - Origin: keep
 - Ritual label: keep (powers the eyebrow on PDP and wizard zoom modal)
@@ -65,7 +65,7 @@ Long-term: consider an in-context glossary modal accessible from a "?" icon next
 ## Convert free-text fields to multi-select where practical
 Admin feedback: typing custom values is hard and error-prone. Candidates to convert to picker / multi-select inputs:
 
-- **Origin** (e.g. "Marrakech, Atlas, Souss"): could be a managed list with autocomplete (datalist) so the maison can either pick an existing region or add a new one.
+- **Origin** (e.g. "Marrakech, Atlas, Souss"): could be a managed list with autocomplete (datalist) so the house can either pick an existing region or add a new one.
 - **Ritual label** (e.g. "Or Liquide du Maroc"): low value to convert; per-product unique copy.
 - **Format**: already exists as a facet type, but products also have a text[] `formats` column. Decision needed: collapse to facet picker, or keep both.
 

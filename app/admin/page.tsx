@@ -60,7 +60,7 @@ export default async function AdminDashboard() {
         <h1 className="font-serif text-[28px] sm:text-[36px] leading-tight">Welcome back.</h1>
       </header>
 
-      {/* Inquiries get top billing: the maison is here to read incoming
+      {/* Inquiries get top billing: the house is here to read incoming
           requests first. Six stats below it, two columns on mobile, three
           at sm, six at xl. */}
       <section className="space-y-3">

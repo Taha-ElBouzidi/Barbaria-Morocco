@@ -64,7 +64,7 @@ export default function InquiryControls({ id, initialStatus, initialNotes }: Pro
           value={notes}
           onChange={(e) => setNotes(e.target.value)}
           rows={5}
-          placeholder="Anything the concierge or the maison needs to remember about this inquiry."
+          placeholder="Anything the concierge or the house needs to remember about this inquiry."
           className="w-full px-3 py-3 border border-bb-line bg-bb-bg text-bb-primary text-[13px] leading-relaxed focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
         />
       </div>

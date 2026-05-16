@@ -55,7 +55,7 @@ export default async function GiftBoxPage({ params }: PageProps) {
   const isWizard = detail.isCustomizable;
 
   // For customizable boxes we mount the BoxComposer client component.
-  // The pool is the box's admin-assigned items if the maison populated
+  // The pool is the box's admin-assigned items if the house populated
   // them; otherwise we fall back to every published product in the
   // category. Same i18n bundle pattern as before.
   if (isWizard) {
