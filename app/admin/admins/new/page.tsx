@@ -8,11 +8,14 @@ export default async function NewAdminPage() {
   await requireSuperadmin();
   return (
     <div className="space-y-6 lg:space-y-8 max-w-3xl">
-      <nav className="font-sans text-[11px] uppercase tracking-[0.14em] text-bb-on-surface-variant flex items-center gap-2">
+      <nav
+        aria-label="Breadcrumb"
+        className="font-sans text-[11px] uppercase tracking-[0.14em] text-bb-on-surface-variant flex items-center gap-2"
+      >
         <Link href="/admin/admins" className="hover:text-bb-primary transition-colors">
           Admins
         </Link>
-        <span>→</span>
+        <span aria-hidden="true">→</span>
         <span className="text-bb-on-surface">New</span>
       </nav>
       <header className="space-y-1">

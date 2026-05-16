@@ -52,11 +52,14 @@ export default async function InquiryDetailPage({ params }: PageProps) {
 
   return (
     <div className="space-y-6 md:space-y-8">
-      <nav className="flex items-center gap-2 font-sans text-[11px] uppercase tracking-[0.14em] text-bb-on-surface-variant">
+      <nav
+        aria-label="Breadcrumb"
+        className="flex items-center gap-2 font-sans text-[11px] uppercase tracking-[0.14em] text-bb-on-surface-variant"
+      >
         <Link href="/admin/inquiries" className="hover:text-bb-primary transition-colors">
           Inquiries
         </Link>
-        <span>→</span>
+        <span aria-hidden="true">→</span>
         <span className="text-bb-on-surface truncate max-w-[200px] md:max-w-none">{inquiry.company}</span>
       </nav>
 

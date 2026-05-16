@@ -29,9 +29,11 @@ export default function AdminsList({ admins, currentUserId }: Props) {
   const [pending, startTransition] = useTransition();
   const [savingId, setSavingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+  const [warning, setWarning] = useState<string | null>(null);
 
   function onRoleChange(id: string, role: string) {
     setError(null);
+    setWarning(null);
     setSavingId(id);
     const fd = new FormData();
     fd.set("id", id);
@@ -45,14 +47,19 @@ export default function AdminsList({ admins, currentUserId }: Props) {
   }
 
   function onDelete(id: string, email: string) {
-    if (!confirm(`Remove admin ${email}? This signs them out permanently.`)) return;
+    if (!confirm(`Delete admin ${email}? They lose access immediately.`)) return;
     setError(null);
+    setWarning(null);
     setSavingId(id);
     const fd = new FormData();
     fd.set("id", id);
     startTransition(async () => {
       const res = await deleteAdmin(fd);
-      if (!res.ok) setError(res.error ?? "Unknown error");
+      if (!res.ok) {
+        setError(res.error ?? "Unknown error");
+      } else if (res.warning) {
+        setWarning(res.warning);
+      }
       setSavingId(null);
       router.refresh();
     });
@@ -66,6 +73,14 @@ export default function AdminsList({ admins, currentUserId }: Props) {
           className="px-4 py-3 border border-red-200 bg-red-50 text-red-800 font-sans text-[13px]"
         >
           {error}
+        </p>
+      )}
+      {warning && (
+        <p
+          role="status"
+          className="px-4 py-3 border border-yellow-300 bg-yellow-50 text-yellow-900 font-sans text-[13px]"
+        >
+          {warning}
         </p>
       )}
 
@@ -113,11 +128,26 @@ export default function AdminsList({ admins, currentUserId }: Props) {
                     </label>
                     <select
                       id={`role-${a.id}`}
-                      value={isLegacyRole ? "admin" : a.role}
+                      value={a.role}
                       onChange={(e) => onRoleChange(a.id, e.target.value)}
                       disabled={inactionable}
+                      aria-describedby={
+                        isLegacyRole ? `role-hint-${a.id}` : undefined
+                      }
                       className="px-3 py-2 min-h-[36px] border border-bb-line bg-bb-bg text-bb-primary text-[13px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary disabled:opacity-50"
                     >
+                      {/* When the row carries a legacy role (sales /
+                          concierge / readonly), render the current
+                          value as a hidden disabled option so the
+                          <select> stays in sync. Picking "Admin" or
+                          "Superadmin" then fires a real onChange,
+                          rather than a silent no-op because the
+                          ternary already chose "admin" as the value. */}
+                      {isLegacyRole && (
+                        <option value={a.role} disabled hidden>
+                          {a.role}
+                        </option>
+                      )}
                       {ROLE_OPTIONS.map((o) => (
                         <option key={o.value} value={o.value}>
                           {o.label}
@@ -125,7 +155,10 @@ export default function AdminsList({ admins, currentUserId }: Props) {
                       ))}
                     </select>
                     {isLegacyRole && (
-                      <p className="font-sans text-[10px] text-bb-on-surface-variant mt-1">
+                      <p
+                        id={`role-hint-${a.id}`}
+                        className="font-sans text-[10px] text-bb-on-surface-variant mt-1"
+                      >
                         Legacy: {a.role}
                       </p>
                     )}

@@ -13,6 +13,15 @@ export type CreateAdminResult =
   | { ok: true; id: string; email: string; tempPassword: string }
   | { ok: false; error: string };
 
+async function countSuperadmins(): Promise<number> {
+  const supabase = createServiceRoleClient();
+  const { count } = await supabase
+    .from("admin_users")
+    .select("id", { count: "exact", head: true })
+    .eq("role", "superadmin");
+  return count ?? 0;
+}
+
 /**
  * Creates a Supabase Auth user + admin_users row. Returns the
  * generated temp password ONCE so the calling superadmin can share it
@@ -37,11 +46,13 @@ export async function createAdmin(formData: FormData): Promise<CreateAdminResult
   // Block duplicate emails up front — admin_users.email is unique and
   // the auth.users insert below would 422 either way, but checking
   // first gives a friendlier error and avoids leaving an orphan auth
-  // user behind on a partial failure.
+  // user behind on a partial failure. Use ilike so legacy mixed-case
+  // rows are still caught (Zod normalizes the input but the column
+  // is plain text, not citext).
   const { data: existing } = await supabase
     .from("admin_users")
     .select("id")
-    .eq("email", email)
+    .ilike("email", email)
     .maybeSingle();
   if (existing) {
     return { ok: false, error: "An admin with this email already exists." };
@@ -64,7 +75,10 @@ export async function createAdmin(formData: FormData): Promise<CreateAdminResult
   const userId = created.user.id;
 
   // Insert the admin_users row keyed on the auth user id. If this fails
-  // we delete the orphan auth user so retries are idempotent.
+  // we delete the orphan auth user so retries are idempotent. If the
+  // rollback ALSO fails we surface the orphan id so an operator can
+  // clean up via SQL — silently swallowing the rollback error would
+  // leave the project in a half-state with no audit trail.
   const { error: insErr } = await supabase.from("admin_users").insert({
     id: userId,
     email,
@@ -72,7 +86,17 @@ export async function createAdmin(formData: FormData): Promise<CreateAdminResult
     display_name: displayName || null,
   });
   if (insErr) {
-    await supabase.auth.admin.deleteUser(userId).catch(() => {});
+    const { error: rollbackErr } = await supabase.auth.admin.deleteUser(userId);
+    if (rollbackErr) {
+      console.error(
+        "[createAdmin] orphan auth user, manual cleanup required:",
+        { userId, email, insErr: insErr.message, rollbackErr: rollbackErr.message }
+      );
+      return {
+        ok: false,
+        error: `admin_users insert failed and auth-user rollback failed; orphan auth user ${userId} (${email}) must be removed from the Supabase dashboard.`,
+      };
+    }
     return { ok: false, error: `admin_users insert: ${insErr.message}` };
   }
 
@@ -92,13 +116,30 @@ export async function updateAdminRole(
     return { ok: false, error: parsed.error.issues[0]?.message ?? "Invalid input" };
   }
   if (parsed.data.id === me.id && parsed.data.role !== "superadmin") {
-    // Self-demote guard: refuse to leave the org with zero superadmins,
-    // and refuse to silently lock the current actor out of /admin/admins.
-    // The acting superadmin can ask another superadmin to demote them.
+    // Self-demote guard: blocks the acting superadmin from locking
+    // themselves out. Concurrent demote-of-other-superadmin is handled
+    // by the org-level lockout check below.
     return { ok: false, error: "Refusing to demote yourself." };
   }
 
   const supabase = createServiceRoleClient();
+
+  // Org-level lockout guard. If we're demoting someone whose CURRENT
+  // role is superadmin and there's only one superadmin left, refuse.
+  // Two concurrent demote-other-superadmin requests can race past this
+  // check; for Barbaria's traffic the window is acceptable, but a
+  // future hardening could use a BEFORE-UPDATE trigger on admin_users.
+  if (parsed.data.role !== "superadmin") {
+    const { data: target } = await supabase
+      .from("admin_users")
+      .select("role")
+      .eq("id", parsed.data.id)
+      .single();
+    if (target?.role === "superadmin" && (await countSuperadmins()) <= 1) {
+      return { ok: false, error: "Cannot demote the last superadmin." };
+    }
+  }
+
   const { error } = await supabase
     .from("admin_users")
     .update({ role: parsed.data.role })
@@ -109,28 +150,44 @@ export async function updateAdminRole(
   return { ok: true };
 }
 
-export async function deleteAdmin(
-  formData: FormData
-): Promise<{ ok: boolean; error?: string }> {
+export type DeleteAdminResult =
+  | { ok: true; warning?: string }
+  | { ok: false; error: string };
+
+export async function deleteAdmin(formData: FormData): Promise<DeleteAdminResult> {
   const me = await requireSuperadmin();
   const id = String(formData.get("id") ?? "");
   if (!id) return { ok: false, error: "Missing id" };
   if (id === me.id) return { ok: false, error: "Refusing to delete yourself." };
 
   const supabase = createServiceRoleClient();
-  // Delete from admin_users first so an FK ON DELETE CASCADE from
-  // auth.users doesn't fire mid-flight and leave us guessing about
-  // which side won. The CASCADE is fine on its own, but the explicit
-  // ordering makes the failure mode legible.
+
+  // Org-level lockout guard: if the target is a superadmin and they
+  // are the only one left, refuse. Stops "two superadmins delete each
+  // other simultaneously → zero left" up to a small race window.
+  const { data: target } = await supabase
+    .from("admin_users")
+    .select("role")
+    .eq("id", id)
+    .single();
+  if (target?.role === "superadmin" && (await countSuperadmins()) <= 1) {
+    return { ok: false, error: "Cannot remove the last superadmin." };
+  }
+
+  // Delete from admin_users first so the row disappears before the
+  // FK ON DELETE CASCADE from auth.users fires; this makes the failure
+  // mode legible if the auth-side delete misbehaves.
   const { error: aErr } = await supabase.from("admin_users").delete().eq("id", id);
   if (aErr) return { ok: false, error: `admin_users delete: ${aErr.message}` };
 
   const { error: uErr } = await supabase.auth.admin.deleteUser(id);
   if (uErr) {
     // admin_users row already gone — the user can no longer sign in
-    // even if the auth row stuck around. Surface the warning but
-    // don't fail the whole action.
-    return { ok: true, error: `auth user removal warning: ${uErr.message}` };
+    // even if the auth row stuck around. Surface as a warning so the
+    // operator sees it (the client treats this as success but renders
+    // the warning text).
+    revalidatePath("/admin/admins");
+    return { ok: true, warning: `Auth user removal warning: ${uErr.message}` };
   }
 
   revalidatePath("/admin/admins");

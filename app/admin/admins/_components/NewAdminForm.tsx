@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useTransition } from "react";
+import { useState, useTransition, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { createAdmin } from "../actions";
 
@@ -15,6 +15,15 @@ export default function NewAdminForm() {
   const [error, setError] = useState<string | null>(null);
   const [created, setCreated] = useState<Created | null>(null);
   const [copied, setCopied] = useState(false);
+  const createdHeadingRef = useRef<HTMLHeadingElement | null>(null);
+
+  // When the Created panel appears, move focus to its heading so
+  // assistive tech announces the change and so the keyboard user
+  // lands in the new section rather than back at the (now-missing)
+  // form below.
+  useEffect(() => {
+    if (created) createdHeadingRef.current?.focus();
+  }, [created]);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -33,7 +42,8 @@ export default function NewAdminForm() {
 
   function copyPassword() {
     if (!created) return;
-    navigator.clipboard?.writeText(created.tempPassword).then(
+    if (!navigator.clipboard) return; // insecure context fallback: user copies by hand
+    navigator.clipboard.writeText(created.tempPassword).then(
       () => {
         setCopied(true);
         window.setTimeout(() => setCopied(false), 2400);
@@ -47,12 +57,20 @@ export default function NewAdminForm() {
 
   if (created) {
     return (
-      <div className="border border-bb-secondary-deep/40 bg-bb-bg-low p-6 space-y-4">
+      <div
+        role="status"
+        aria-live="polite"
+        className="border border-bb-secondary-deep/40 bg-bb-bg-low p-6 space-y-4"
+      >
         <header className="space-y-1">
           <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-secondary-deep">
             Admin created
           </p>
-          <h2 className="font-serif text-[22px] leading-tight">
+          <h2
+            ref={createdHeadingRef}
+            tabIndex={-1}
+            className="font-serif text-[22px] leading-tight focus-visible:outline-none"
+          >
             Temporary password
           </h2>
           <p className="font-sans text-[13px] text-bb-on-surface">
@@ -67,7 +85,11 @@ export default function NewAdminForm() {
           <button
             type="button"
             onClick={copyPassword}
-            aria-label="Copy temporary password to clipboard"
+            aria-label={
+              copied
+                ? "Copied to clipboard"
+                : "Copy temporary password to clipboard"
+            }
             className="shrink-0 px-4 py-3 min-h-[44px] border border-bb-line font-sans text-[11px] uppercase tracking-[0.16em] text-bb-on-surface hover:border-bb-primary transition-colors"
           >
             {copied ? "Copied" : "Copy"}
