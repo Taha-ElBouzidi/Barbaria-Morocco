@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext } from "react";
+import { createContext, useContext, useMemo } from "react";
 
 export type ProductCatalogueEntry = { name: string; image: string | null };
 export type ProductCatalogue = Map<string, ProductCatalogueEntry>;
@@ -15,7 +15,8 @@ export function ProductCatalogueProvider({
   children: React.ReactNode;
 }) {
   // Map can't cross the server/client boundary directly; serialize as entries array.
-  const map = new Map(catalogue);
+  // Memoize so we don't rebuild the Map on every provider re-render.
+  const map = useMemo(() => new Map(catalogue), [catalogue]);
   return <Context.Provider value={map}>{children}</Context.Provider>;
 }
 

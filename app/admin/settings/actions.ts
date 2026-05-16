@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { createServiceRoleClient } from "@/lib/supabase/service";
 import { SiteSettingsSaveSchema } from "@/lib/admin/site-settings";
 import { requireAdmin } from "@/lib/admin/auth";
@@ -31,8 +31,10 @@ export async function saveSiteSettings(formData: FormData) {
   );
   if (error) throw new Error(`site_settings save: ${error.message}`);
 
-  // Public pages that surface socials: revalidate both locales.
+  // Public pages that surface socials: revalidate both locales + bust the
+  // cached getSiteSettings reader.
   revalidatePath("/en", "layout");
   revalidatePath("/fr", "layout");
   revalidatePath("/admin/settings");
+  updateTag("site-settings");
 }

@@ -31,6 +31,12 @@ const nextConfig: NextConfig = {
   },
   images: {
     formats: ["image/avif", "image/webp"],
+    // Photo defaults to quality=88 for heroes. Whitelist both 75 (next/image
+    // default) and 88 so Next stops warning on every render.
+    qualities: [75, 88],
+    // Storage paths are content-stable; cache the optimized variants for a
+    // year so we don't re-encode on every cold edge node.
+    minimumCacheTTL: 60 * 60 * 24 * 365,
   },
   async headers() {
     return [

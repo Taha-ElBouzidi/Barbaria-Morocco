@@ -6,7 +6,9 @@
  * must be updated to use `product.name` directly (already resolved).
  */
 
+import { unstable_cache } from "next/cache";
 import { createServerClient } from "@/lib/supabase/server";
+import { createPublicClient } from "@/lib/supabase/public";
 import type { LocaleCode, ProductSummary, ProductDetail } from "./types";
 
 /**
@@ -185,31 +187,46 @@ export async function getAllProductSlugs(): Promise<string[]> {
  * Minimal lookup used by the inquiry drawer / sidebar to render products
  * a user has added to their inquiry list. Returns a map keyed by slug
  * (which is what gets stored in localStorage as the productId).
+ *
+ * Wrapped in `unstable_cache`. This is called from `app/[locale]/layout.tsx`
+ * on every public navigation, so the round-trip used to hit Supabase on
+ * every page click. Cached for 10 min, tagged "products", admin product
+ * mutations call `revalidateTag("products")`.
  */
+const _getMinimalProductMap = unstable_cache(
+  async (locale: LocaleCode) => {
+    const supabase = createPublicClient();
+    const { data, error } = await supabase
+      .from("products")
+      .select(`
+        slug,
+        translations:product_translations!inner ( locale, name ),
+        images:product_images ( path, sort_order )
+      `)
+      .eq("status", "published")
+      .eq("translations.locale", locale);
+
+    // Return an Array<[slug, entry]> rather than a Map. unstable_cache
+    // serializes to JSON, and a Map round-trips to an empty object.
+    const entries: Array<[string, { name: string; image: string | null }]> = [];
+    if (error || !data) return entries;
+    for (const row of data) {
+      const name = (row.translations as any)[0]?.name ?? row.slug;
+      const sortedImages = [...((row.images as any[]) ?? [])].sort(
+        (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0)
+      );
+      entries.push([row.slug, { name, image: sortedImages[0]?.path ?? null }]);
+    }
+    return entries;
+  },
+  ["minimal-product-map"],
+  { tags: ["products"], revalidate: 600 }
+);
+
 export async function getMinimalProductMap(
   locale: LocaleCode
 ): Promise<Map<string, { name: string; image: string | null }>> {
-  const supabase = await createServerClient();
-  const { data, error } = await supabase
-    .from("products")
-    .select(`
-      slug,
-      translations:product_translations!inner ( locale, name ),
-      images:product_images ( path, sort_order )
-    `)
-    .eq("status", "published")
-    .eq("translations.locale", locale);
-
-  const map = new Map<string, { name: string; image: string | null }>();
-  if (error || !data) return map;
-  for (const row of data) {
-    const name = (row.translations as any)[0]?.name ?? row.slug;
-    const sortedImages = [...((row.images as any[]) ?? [])].sort(
-      (a, b) => (a.sort_order ?? 0) - (b.sort_order ?? 0)
-    );
-    map.set(row.slug, { name, image: sortedImages[0]?.path ?? null });
-  }
-  return map;
+  return new Map(await _getMinimalProductMap(locale));
 }
 
 // ---------- shaping helpers ----------

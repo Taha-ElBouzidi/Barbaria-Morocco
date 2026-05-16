@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { createServiceRoleClient } from "@/lib/supabase/service";
 import { requireAdmin } from "@/lib/admin/auth";
 import { FacetSaveSchema } from "@/lib/admin/facets";
@@ -55,6 +55,7 @@ export async function saveFacet(
   revalidatePath("/fr/rituals/botanical");
   revalidatePath("/en/rituals/heritage");
   revalidatePath("/fr/rituals/heritage");
+  updateTag("facets");
 
   return { ok: true };
 }
@@ -91,6 +92,7 @@ export async function deleteFacet(
   revalidatePath("/fr/rituals/botanical");
   revalidatePath("/en/rituals/heritage");
   revalidatePath("/fr/rituals/heritage");
+  updateTag("facets");
 
   return { ok: true };
 }
@@ -134,6 +136,7 @@ export async function reorderFacet(
   revalidatePath("/fr/rituals/botanical");
   revalidatePath("/en/rituals/heritage");
   revalidatePath("/fr/rituals/heritage");
+  updateTag("facets");
 
   return { ok: true };
 }

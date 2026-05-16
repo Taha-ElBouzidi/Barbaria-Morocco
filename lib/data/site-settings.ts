@@ -1,4 +1,5 @@
-import { createServerClient } from "@/lib/supabase/server";
+import { unstable_cache } from "next/cache";
+import { createPublicClient } from "@/lib/supabase/public";
 import {
   INSTAGRAM_URL,
   LINKEDIN_URL,
@@ -31,28 +32,32 @@ const FALLBACK: SiteSettings = {
  * the placeholder constants if the DB row is missing (first deploy, or
  * the table hasn't been seeded yet).
  *
- * Designed to be called from every page that surfaces socials (Footer,
- * MenuDrawer, contact page sidebar). Each call is a single round-trip;
- * Next.js's data cache deduplicates within a request.
+ * Cached via `unstable_cache` because every public page (Footer + drawer)
+ * reads this. Tag "site-settings"; the /admin/settings save action calls
+ * `revalidateTag("site-settings")` on update.
  */
-export async function getSiteSettings(): Promise<SiteSettings> {
-  try {
-    const supabase = await createServerClient();
-    const { data } = await supabase
-      .from("site_settings")
-      .select("instagram_url, linkedin_url, x_url, whatsapp_url, contact_email, contact_phone")
-      .eq("id", true)
-      .maybeSingle();
-    if (!data) return FALLBACK;
-    return {
-      instagramUrl: data.instagram_url ?? FALLBACK.instagramUrl,
-      linkedinUrl: data.linkedin_url ?? FALLBACK.linkedinUrl,
-      xUrl: data.x_url ?? FALLBACK.xUrl,
-      whatsappUrl: data.whatsapp_url ?? FALLBACK.whatsappUrl,
-      contactEmail: data.contact_email ?? FALLBACK.contactEmail,
-      contactPhone: data.contact_phone ?? FALLBACK.contactPhone,
-    };
-  } catch {
-    return FALLBACK;
-  }
-}
+export const getSiteSettings = unstable_cache(
+  async (): Promise<SiteSettings> => {
+    try {
+      const supabase = createPublicClient();
+      const { data } = await supabase
+        .from("site_settings")
+        .select("instagram_url, linkedin_url, x_url, whatsapp_url, contact_email, contact_phone")
+        .eq("id", true)
+        .maybeSingle();
+      if (!data) return FALLBACK;
+      return {
+        instagramUrl: data.instagram_url ?? FALLBACK.instagramUrl,
+        linkedinUrl: data.linkedin_url ?? FALLBACK.linkedinUrl,
+        xUrl: data.x_url ?? FALLBACK.xUrl,
+        whatsappUrl: data.whatsapp_url ?? FALLBACK.whatsappUrl,
+        contactEmail: data.contact_email ?? FALLBACK.contactEmail,
+        contactPhone: data.contact_phone ?? FALLBACK.contactPhone,
+      };
+    } catch {
+      return FALLBACK;
+    }
+  },
+  ["site-settings"],
+  { tags: ["site-settings"], revalidate: 600 }
+);

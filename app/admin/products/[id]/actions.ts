@@ -1,6 +1,6 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, updateTag } from "next/cache";
 import { redirect } from "next/navigation";
 import { createServiceRoleClient } from "@/lib/supabase/service";
 import { requireAdmin } from "@/lib/admin/auth";
@@ -151,11 +151,12 @@ export async function saveProduct(
     }
   }
 
-  // Revalidate public pages
+  // Revalidate public pages + invalidate cached catalogue map
   revalidatePath(`/en/product/${data.slug}`);
   revalidatePath(`/fr/product/${data.slug}`);
   revalidatePath(`/en/rituals/${data.ritualId}`);
   revalidatePath(`/fr/rituals/${data.ritualId}`);
+  updateTag("products");
 
   return { ok: true, id: productId };
 }
@@ -191,6 +192,7 @@ export async function setStatus(
   revalidatePath(`/fr/product/${product.slug}`);
   revalidatePath(`/en/rituals/${product.ritual_id}`);
   revalidatePath(`/fr/rituals/${product.ritual_id}`);
+  updateTag("products");
 
   return { ok: true };
 }
@@ -219,6 +221,7 @@ export async function deleteProduct(id: string): Promise<{ ok: boolean; error?: 
     revalidatePath(`/en/rituals/${product.ritual_id}`);
     revalidatePath(`/fr/rituals/${product.ritual_id}`);
   }
+  updateTag("products");
 
   return { ok: true };
 }
