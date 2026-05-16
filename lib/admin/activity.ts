@@ -8,7 +8,12 @@ export async function listAuditLog(params: {
 }) {
   const supabase = createServiceRoleClient();
   const pageSize = 50;
-  const page = Math.max(0, (params.page ?? 1) - 1);
+  const rawPage = params.page;
+  const safePage =
+    typeof rawPage === "number" && Number.isFinite(rawPage) && rawPage > 0
+      ? rawPage
+      : 1;
+  const page = safePage - 1;
 
   let q = supabase
     .from("audit_log")

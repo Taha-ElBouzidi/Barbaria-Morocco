@@ -7,7 +7,15 @@ export async function listInquiries(params: {
 }) {
   const supabase = createServiceRoleClient();
   const pageSize = 25;
-  const page = Math.max(0, (params.page ?? 1) - 1);
+  // Defense-in-depth: callers should clamp before us, but a stray NaN
+  // here propagates through `Math.max(0, NaN-1) = NaN` and PostgREST
+  // 400s. Treat anything non-finite or below 1 as page 1.
+  const rawPage = params.page;
+  const safePage =
+    typeof rawPage === "number" && Number.isFinite(rawPage) && rawPage > 0
+      ? rawPage
+      : 1;
+  const page = safePage - 1;
 
   let q = supabase
     .from("inquiries")
