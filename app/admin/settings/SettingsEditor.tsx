@@ -35,14 +35,14 @@ export default function SettingsEditor({ initial }: Props) {
     setError(null);
     const fd = new FormData(e.currentTarget);
     startTransition(async () => {
-      try {
-        await saveSiteSettings(fd);
-        setSaved(true);
-        window.setTimeout(() => setSaved(false), 2400);
-        router.refresh();
-      } catch (err) {
-        setError(err instanceof Error ? err.message : "Save failed");
+      const res = await saveSiteSettings(fd);
+      if (res && res.ok === false) {
+        setError(res.error);
+        return;
       }
+      setSaved(true);
+      window.setTimeout(() => setSaved(false), 2400);
+      router.refresh();
     });
   };
 

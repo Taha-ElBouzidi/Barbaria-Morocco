@@ -2,8 +2,20 @@ import { NextRequest, NextResponse } from "next/server";
 import { requireAdmin } from "@/lib/admin/auth";
 import { createServiceRoleClient } from "@/lib/supabase/service";
 
-const ALLOWED_MIME = new Set(["image/jpeg", "image/png", "image/webp", "image/avif"]);
-const MAX_SIZE_BYTES = 8 * 1024 * 1024; // 8 MB
+// Accept JPEG, PNG, WebP, AVIF (web-native), plus HEIC/HEIF (iOS/iPadOS
+// default camera format) and GIF (occasional brand assets). Supabase
+// Storage stores them as-is; next/image transcodes the served variants
+// to AVIF/WebP at request time per next.config.ts images.formats.
+const ALLOWED_MIME = new Set([
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/avif",
+  "image/heic",
+  "image/heif",
+  "image/gif",
+]);
+const MAX_SIZE_BYTES = 16 * 1024 * 1024; // 16 MB (HEIC + AVIF often run larger than JPEG)
 
 // ---------------------------------------------------------------------------
 // POST /api/admin/images, upload one image to Supabase Storage
@@ -32,14 +44,14 @@ export async function POST(req: NextRequest) {
 
   if (!ALLOWED_MIME.has(file.type)) {
     return NextResponse.json(
-      { ok: false, error: `File type ${file.type} is not allowed. Use JPEG, PNG, WebP, or AVIF.` },
+      { ok: false, error: `File type ${file.type} is not allowed. Use JPEG, PNG, WebP, AVIF, HEIC, HEIF, or GIF.` },
       { status: 400 }
     );
   }
 
   if (file.size > MAX_SIZE_BYTES) {
     return NextResponse.json(
-      { ok: false, error: "File exceeds the 8 MB size limit." },
+      { ok: false, error: "File exceeds the 16 MB size limit." },
       { status: 400 }
     );
   }
@@ -148,6 +160,12 @@ function extFromMime(mime: string): string {
       return "webp";
     case "image/avif":
       return "avif";
+    case "image/heic":
+      return "heic";
+    case "image/heif":
+      return "heif";
+    case "image/gif":
+      return "gif";
     default:
       return "bin";
   }

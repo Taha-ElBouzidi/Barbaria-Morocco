@@ -75,7 +75,7 @@ export default function HeroImageUploader({ value, onChange, name, aspect = "4/5
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp,image/avif"
+            accept="image/jpeg,image/png,image/webp,image/avif,image/heic,image/heif,image/gif"
             className="hidden"
             onChange={(e) => {
               const f = e.target.files?.[0];
@@ -109,7 +109,7 @@ export default function HeroImageUploader({ value, onChange, name, aspect = "4/5
       </div>
       {error && <p className="text-[12px] text-bb-tertiary">{error}</p>}
       <p className="text-[11px] text-bb-on-surface-variant">
-        JPG, PNG, WebP or AVIF. Maximum 8 MB.
+        JPG, PNG, WebP, AVIF, HEIC, HEIF, or GIF. Maximum 16 MB.
       </p>
     </div>
   );

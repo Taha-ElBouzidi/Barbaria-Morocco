@@ -24,12 +24,18 @@ export default function InquiryControls({ id, initialStatus, initialNotes }: Pro
   const [status, setStatus] = useState(initialStatus);
   const [notes, setNotes] = useState(initialNotes);
   const [saved, setSaved] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
     const fd = new FormData(e.currentTarget);
     startTransition(async () => {
-      await updateInquiry(id, fd);
+      const res = await updateInquiry(id, fd);
+      if (res && res.ok === false) {
+        setError(res.error);
+        return;
+      }
       setSaved(true);
       window.setTimeout(() => setSaved(false), 2400);
       router.refresh();
@@ -82,6 +88,14 @@ export default function InquiryControls({ id, initialStatus, initialNotes }: Pro
           </span>
         )}
       </div>
+      {error && (
+        <p
+          role="alert"
+          className="px-3 py-2 border border-red-200 bg-red-50 text-red-800 font-sans text-[12px]"
+        >
+          {error}
+        </p>
+      )}
     </form>
   );
 }

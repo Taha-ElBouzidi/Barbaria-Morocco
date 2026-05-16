@@ -28,12 +28,22 @@ export async function PATCH(req: NextRequest) {
 
   const supabase = createServiceRoleClient();
 
-  // Update each image sort_order
-  await Promise.all(
+  // Update each image sort_order. Collect per-row errors so the client
+  // sees a real failure when a single update fails — the old
+  // Promise.all swallowed errors and always returned ok:true.
+  const results = await Promise.all(
     parsed.data.images.map(({ id, sort_order }) =>
       supabase.from("product_images").update({ sort_order }).eq("id", id)
     )
   );
+  const firstError = results.find((r) => r.error)?.error;
+  if (firstError) {
+    console.error("[images/reorder] update failed:", firstError);
+    return NextResponse.json(
+      { ok: false, error: `Reorder failed: ${firstError.message}` },
+      { status: 500 }
+    );
+  }
 
   return NextResponse.json({ ok: true });
 }

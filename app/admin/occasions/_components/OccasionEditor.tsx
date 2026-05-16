@@ -13,6 +13,8 @@ export default function OccasionEditor({ initial }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [statusPending, startStatusTransition] = useTransition();
+  const [error, setError] = useState<string | null>(null);
+  const [saved, setSaved] = useState(false);
 
   const [slug, setSlug] = useState(initial?.slug ?? "");
   const [sortOrder, setSortOrder] = useState(initial?.sortOrder ?? 0);
@@ -29,18 +31,30 @@ export default function OccasionEditor({ initial }: Props) {
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
     const fd = new FormData(e.currentTarget);
     startTransition(async () => {
-      await saveOccasion(initial?.id ?? "new", fd);
+      const res = await saveOccasion(initial?.id ?? "new", fd);
+      if (res && res.ok === false) {
+        setError(res.error);
+        return;
+      }
+      setSaved(true);
+      window.setTimeout(() => setSaved(false), 2400);
       router.refresh();
     });
   };
 
   const toggleStatus = () => {
     if (!initial) return;
+    setError(null);
     const next = initial.status === "published" ? "draft" : "published";
     startStatusTransition(async () => {
-      await setOccasionStatus(initial.id, next);
+      const res = await setOccasionStatus(initial.id, next);
+      if (res && res.ok === false) {
+        setError(res.error);
+        return;
+      }
       router.refresh();
     });
   };
@@ -48,8 +62,10 @@ export default function OccasionEditor({ initial }: Props) {
   const remove = () => {
     if (!initial) return;
     if (!confirm(`Delete occasion "${initial.nameEn}"? This cannot be undone.`)) return;
+    setError(null);
     startStatusTransition(async () => {
-      await deleteOccasion(initial.id);
+      const res = await deleteOccasion(initial.id);
+      if (res && res.ok === false) setError(res.error);
     });
   };
 
@@ -103,6 +119,23 @@ export default function OccasionEditor({ initial }: Props) {
           </div>
         </div>
       </section>
+
+      {error && (
+        <p
+          role="alert"
+          className="px-4 py-3 border border-red-200 bg-red-50 text-red-800 font-sans text-[13px]"
+        >
+          {error}
+        </p>
+      )}
+      {saved && !error && (
+        <p
+          role="status"
+          className="px-4 py-3 border border-bb-secondary/40 bg-bb-secondary/10 text-bb-secondary-deep font-sans text-[13px]"
+        >
+          Saved.
+        </p>
+      )}
 
       <footer className="sticky bottom-0 bg-bb-bg border-t border-bb-line py-4 -mx-4 md:-mx-8 px-4 md:px-8 flex flex-wrap items-center gap-3">
         <button

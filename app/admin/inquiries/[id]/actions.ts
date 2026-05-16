@@ -10,18 +10,30 @@ const InquiryUpdateSchema = z.object({
   notes: z.string().max(4000).nullable().default(null),
 });
 
-export async function updateInquiry(id: string, formData: FormData) {
+export type UpdateInquiryResult =
+  | { ok: true }
+  | { ok: false; error: string };
+
+export async function updateInquiry(id: string, formData: FormData): Promise<UpdateInquiryResult> {
   await requireAdmin();
-  const data = InquiryUpdateSchema.parse({
+  const parsed = InquiryUpdateSchema.safeParse({
     status: String(formData.get("status") ?? "new"),
     notes: (formData.get("notes") as string | null) || null,
   });
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    return { ok: false, error: `${first.path.join(".")}: ${first.message}` };
+  }
   const supabase = createServiceRoleClient();
   const { error } = await supabase
     .from("inquiries")
-    .update({ status: data.status, notes: data.notes })
+    .update({ status: parsed.data.status, notes: parsed.data.notes })
     .eq("id", id);
-  if (error) throw new Error(`inquiry update: ${error.message}`);
+  if (error) {
+    console.error("[updateInquiry] failed:", { id, error });
+    return { ok: false, error: `Could not save: ${error.message}` };
+  }
   revalidatePath(`/admin/inquiries/${id}`);
   revalidatePath("/admin/inquiries");
+  return { ok: true };
 }

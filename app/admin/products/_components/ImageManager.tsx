@@ -173,7 +173,7 @@ export default function ImageManager({ productId, initialImages }: ImageManagerP
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp,image/avif"
+            accept="image/jpeg,image/png,image/webp,image/avif,image/heic,image/heif,image/gif"
             multiple
             className="sr-only"
             onChange={(e) => handleUpload(e.target.files)}
@@ -196,7 +196,7 @@ export default function ImageManager({ productId, initialImages }: ImageManagerP
       </div>
 
       <p className="font-sans text-[11px] text-bb-on-surface-variant">
-        JPEG, PNG, WebP, AVIF. Max 8 MB per image. First image is the hero.
+        JPEG, PNG, WebP, AVIF, HEIC, HEIF, or GIF. Max 16 MB per image. First image is the hero.
       </p>
     </div>
   );

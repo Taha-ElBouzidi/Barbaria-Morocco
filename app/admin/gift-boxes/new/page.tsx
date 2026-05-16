@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { requireAdmin } from "@/lib/admin/auth";
-import { getCategoryOptions, getProductOptionsForCategory } from "@/lib/admin/gift-boxes";
+import {
+  getCategoryOptions,
+  getProductOptionsForCategory,
+  getCustomizableOwnerByCategory,
+} from "@/lib/admin/gift-boxes";
 import { getAllFacetsForAdmin } from "@/lib/admin/products";
 import GiftBoxEditor from "../_components/GiftBoxEditor";
 
@@ -18,6 +22,8 @@ export default async function NewGiftBoxPage() {
   }>;
   const facetTypeByValue: Record<string, string> = {};
   for (const f of facets) facetTypeByValue[f.value_en] = f.type;
+
+  const customizableOwnerByCategory = await getCustomizableOwnerByCategory();
   return (
     <div className="space-y-8">
       <header className="space-y-3">
@@ -33,6 +39,7 @@ export default async function NewGiftBoxPage() {
         categoryOptions={categoryOptions}
         productOptionsByCategory={productOptionsByCategory}
         facetTypeByValue={facetTypeByValue}
+        customizableOwnerByCategory={customizableOwnerByCategory}
       />
     </div>
   );

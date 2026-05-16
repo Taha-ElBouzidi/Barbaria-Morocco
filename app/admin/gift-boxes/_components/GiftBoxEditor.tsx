@@ -16,6 +16,10 @@ interface Props {
   /** EN value → facet type (ingredient | use | format | packaging |
    *  certification). Used to group filter chips by axis. */
   facetTypeByValue: Record<string, string>;
+  /** Per-category id → the gift_box id that currently owns the
+   *  "Compose your own" wizard slot (or null). Used to disable the
+   *  customizable checkbox when another box already holds the slot. */
+  customizableOwnerByCategory: Record<string, string | null>;
 }
 
 const FACET_AXES: Array<{ key: string; label: string }> = [
@@ -32,10 +36,13 @@ export default function GiftBoxEditor({
   categoryOptions,
   productOptionsByCategory,
   facetTypeByValue,
+  customizableOwnerByCategory,
 }: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [statusPending, startStatusTransition] = useTransition();
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [savedAt, setSavedAt] = useState<number | null>(null);
 
   const [slug, setSlug] = useState(initial?.slug ?? "");
   const [categoryId, setCategoryId] = useState(initial?.categoryId ?? categoryOptions[0]?.id ?? "");
@@ -114,19 +121,33 @@ export default function GiftBoxEditor({
 
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setServerError(null);
     const fd = new FormData(e.currentTarget);
     fd.set("itemProductIds", itemIds.join(","));
     startTransition(async () => {
-      await saveGiftBox(initial?.id ?? "new", fd);
+      const res = await saveGiftBox(initial?.id ?? "new", fd);
+      // CREATE redirects so the await never resolves on success; only
+      // UPDATE returns a result here. ok:false is a typed error from
+      // the action (Zod miss, slot conflict, DB error).
+      if (res && res.ok === false) {
+        setServerError(res.error);
+        return;
+      }
+      setSavedAt(Date.now());
       router.refresh();
     });
   };
 
   const toggleStatus = () => {
     if (!initial) return;
+    setServerError(null);
     const next = initial.status === "published" ? "draft" : "published";
     startStatusTransition(async () => {
-      await setGiftBoxStatus(initial.id, next);
+      const res = await setGiftBoxStatus(initial.id, next);
+      if (res && res.ok === false) {
+        setServerError(res.error);
+        return;
+      }
       router.refresh();
     });
   };
@@ -134,8 +155,11 @@ export default function GiftBoxEditor({
   const remove = () => {
     if (!initial) return;
     if (!confirm(`Delete gift box "${initial.nameEn}"? This cannot be undone.`)) return;
+    setServerError(null);
     startStatusTransition(async () => {
-      await deleteGiftBox(initial.id);
+      const res = await deleteGiftBox(initial.id);
+      // Success path redirects, so this only resolves on failure.
+      if (res && res.ok === false) setServerError(res.error);
     });
   };
 
@@ -215,22 +239,41 @@ export default function GiftBoxEditor({
             <p className={HELP_CLS}>Lower numbers appear first in the catalogue grid.</p>
           </div>
           <div className="sm:col-span-2 flex items-start gap-3">
-            <input
-              id="isCustomizable"
-              name="isCustomizable"
-              type="checkbox"
-              checked={isCustomizable}
-              onChange={(e) => setIsCustomizable(e.target.checked)}
-              className="h-5 w-5 accent-bb-primary mt-0.5"
-            />
-            <div>
-              <label htmlFor="isCustomizable" className="text-[14px] text-bb-primary font-medium">
-                Compose-your-own box (wizard)
-              </label>
-              <p className={HELP_CLS}>
-                Check this for the single &quot;Compose your own&quot; entry per category. The Items section is hidden and the wizard generates each buyer&apos;s composition on demand. Curated (pre-set) boxes leave this unchecked.
-              </p>
-            </div>
+            {(() => {
+              const owner = customizableOwnerByCategory[categoryId] ?? null;
+              const ownedByAnother = owner !== null && owner !== initial?.id;
+              const disabled = ownedByAnother && !isCustomizable;
+              return (
+                <>
+                  <input
+                    id="isCustomizable"
+                    name="isCustomizable"
+                    type="checkbox"
+                    checked={isCustomizable}
+                    onChange={(e) => setIsCustomizable(e.target.checked)}
+                    disabled={disabled}
+                    aria-describedby="isCustomizable-hint"
+                    className="h-5 w-5 accent-bb-primary mt-0.5 disabled:opacity-40 disabled:cursor-not-allowed"
+                  />
+                  <div>
+                    <label
+                      htmlFor="isCustomizable"
+                      className={`text-[14px] font-medium ${disabled ? "text-bb-on-surface-variant" : "text-bb-primary"}`}
+                    >
+                      Compose-your-own box (wizard)
+                    </label>
+                    <p id="isCustomizable-hint" className={HELP_CLS}>
+                      Check this for the single &quot;Compose your own&quot; entry per category. The Items section is hidden and the wizard generates each buyer&apos;s composition on demand. Curated (pre-set) boxes leave this unchecked.
+                    </p>
+                    {ownedByAnother && (
+                      <p className="font-sans text-[11px] text-bb-tertiary mt-1 leading-snug">
+                        Another box in this category already holds the &quot;Compose your own&quot; slot. Only one customizable box per category is allowed; untick that box first if you want to move the slot here.
+                      </p>
+                    )}
+                  </div>
+                </>
+              );
+            })()}
           </div>
         </div>
 
@@ -530,6 +573,23 @@ export default function GiftBoxEditor({
             </div>
           </details>
         </section>
+      )}
+
+      {serverError && (
+        <p
+          role="alert"
+          className="px-4 py-3 border border-red-200 bg-red-50 text-red-800 font-sans text-[13px]"
+        >
+          {serverError}
+        </p>
+      )}
+      {savedAt && !serverError && (
+        <p
+          role="status"
+          className="px-4 py-3 border border-bb-secondary/40 bg-bb-secondary/10 text-bb-secondary-deep font-sans text-[13px]"
+        >
+          Saved.
+        </p>
       )}
 
       {/* Action bar. Negative margins compensate for the main container

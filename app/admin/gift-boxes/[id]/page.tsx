@@ -5,6 +5,7 @@ import {
   getGiftBoxForAdmin,
   getCategoryOptions,
   getProductOptionsForCategory,
+  getCustomizableOwnerByCategory,
 } from "@/lib/admin/gift-boxes";
 import { getAllFacetsForAdmin } from "@/lib/admin/products";
 import GiftBoxEditor from "../_components/GiftBoxEditor";
@@ -36,6 +37,10 @@ export default async function EditGiftBoxPage({ params, searchParams }: PageProp
   }>;
   const facetTypeByValue: Record<string, string> = {};
   for (const f of facets) facetTypeByValue[f.value_en] = f.type;
+
+  // Owner of the customizable slot per category (or null). The editor
+  // grays out the checkbox when another box already owns the slot.
+  const customizableOwnerByCategory = await getCustomizableOwnerByCategory();
 
   return (
     <div className="space-y-8">
@@ -72,6 +77,7 @@ export default async function EditGiftBoxPage({ params, searchParams }: PageProp
         categoryOptions={categoryOptions}
         productOptionsByCategory={productOptionsByCategory}
         facetTypeByValue={facetTypeByValue}
+        customizableOwnerByCategory={customizableOwnerByCategory}
       />
     </div>
   );

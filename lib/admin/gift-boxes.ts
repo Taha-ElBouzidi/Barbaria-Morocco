@@ -181,6 +181,25 @@ export async function getGiftBoxForAdmin(id: string): Promise<GiftBoxAdminDetail
   };
 }
 
+/**
+ * For each category, returns the gift_box ID that currently owns the
+ * customizable / "Compose your own" slot (or null). The editor uses
+ * this to gray out the checkbox when another box already holds the
+ * slot for the selected category — only one wizard entry per category.
+ */
+export async function getCustomizableOwnerByCategory(): Promise<Record<string, string | null>> {
+  const supabase = createServiceRoleClient();
+  const { data } = await supabase
+    .from("gift_boxes")
+    .select("id, category_id")
+    .eq("is_customizable", true);
+  const map: Record<string, string | null> = {};
+  for (const r of (data ?? []) as Array<{ id: string; category_id: string }>) {
+    map[r.category_id] = r.id;
+  }
+  return map;
+}
+
 /** Drop-down options for the category picker in the editor. */
 export async function getCategoryOptions(): Promise<Array<{ id: string; slug: string; nameEn: string }>> {
   const supabase = createServiceRoleClient();

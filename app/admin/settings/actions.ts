@@ -5,9 +5,13 @@ import { createServiceRoleClient } from "@/lib/supabase/service";
 import { SiteSettingsSaveSchema } from "@/lib/admin/site-settings";
 import { requireAdmin } from "@/lib/admin/auth";
 
-export async function saveSiteSettings(formData: FormData) {
+export type SaveSiteSettingsResult =
+  | { ok: true }
+  | { ok: false; error: string };
+
+export async function saveSiteSettings(formData: FormData): Promise<SaveSiteSettingsResult> {
   const admin = await requireAdmin();
-  const data = SiteSettingsSaveSchema.parse({
+  const parsed = SiteSettingsSaveSchema.safeParse({
     instagramUrl: String(formData.get("instagramUrl") ?? "").trim(),
     linkedinUrl: String(formData.get("linkedinUrl") ?? "").trim(),
     xUrl: String(formData.get("xUrl") ?? "").trim(),
@@ -15,6 +19,11 @@ export async function saveSiteSettings(formData: FormData) {
     contactEmail: String(formData.get("contactEmail") ?? "").trim(),
     contactPhone: String(formData.get("contactPhone") ?? "").trim(),
   });
+  if (!parsed.success) {
+    const first = parsed.error.issues[0];
+    return { ok: false, error: `${first.path.join(".")}: ${first.message}` };
+  }
+  const data = parsed.data;
   const supabase = createServiceRoleClient();
   const { error } = await supabase.from("site_settings").upsert(
     {
@@ -29,7 +38,10 @@ export async function saveSiteSettings(formData: FormData) {
     },
     { onConflict: "id" }
   );
-  if (error) throw new Error(`site_settings save: ${error.message}`);
+  if (error) {
+    console.error("[saveSiteSettings] failed:", error);
+    return { ok: false, error: `Could not save settings: ${error.message}` };
+  }
 
   // Public pages that surface socials: revalidate both locales + bust the
   // cached getSiteSettings reader.
@@ -37,4 +49,5 @@ export async function saveSiteSettings(formData: FormData) {
   revalidatePath("/fr", "layout");
   revalidatePath("/admin/settings");
   updateTag("site-settings");
+  return { ok: true };
 }
