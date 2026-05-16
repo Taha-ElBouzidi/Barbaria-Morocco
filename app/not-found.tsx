@@ -47,7 +47,7 @@ export default function NotFound() {
             <div className="pt-2">
               <Link
                 href="/"
-                className="inline-flex items-center justify-center gap-2 px-8 py-3.5 min-h-[48px] bg-bb-primary text-bb-on-primary font-sans text-[12px] uppercase tracking-[0.22em] hover:bg-bb-primary-container transition-colors"
+                className="inline-flex items-center gap-2 px-8 py-[14px] min-h-[44px] border border-bb-secondary-deep bg-transparent text-bb-secondary-deep font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary-deep hover:text-bb-on-primary transition-colors"
               >
                 Retour à l&apos;accueil
               </Link>
