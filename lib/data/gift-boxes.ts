@@ -117,14 +117,11 @@ export async function getGiftBoxBySlug(
       `
       id,
       slug,
-      ritual_id,
       moq,
       formats,
       lead,
       origin,
-      ritual_label,
       hero,
-      subcategory:ritual_subcategories ( slug ),
       translations:product_translations!inner ( locale, name, short, lede ),
       images:product_images ( path, alt_text, sort_order )
     `
@@ -135,14 +132,11 @@ export async function getGiftBoxBySlug(
 
   type ProdRow = {
     slug: string;
-    ritual_id: string;
     moq: number;
     formats: string[];
     lead: string;
     origin: string | null;
-    ritual_label: string | null;
     hero: boolean;
-    subcategory: { slug: string } | Array<{ slug: string }> | null;
     translations: Array<{ name: string; short: string; lede: string | null }>;
     images: Array<{ path: string; alt_text: string | null; sort_order: number }>;
   };
@@ -151,13 +145,10 @@ export async function getGiftBoxBySlug(
     const sortedImages = [...p.images].sort((a, b) => a.sort_order - b.sort_order);
     return {
       slug: p.slug,
-      ritualId: p.ritual_id as ProductSummary["ritualId"],
-      subcategorySlug: firstOf(p.subcategory)?.slug ?? null,
       moq: p.moq,
       formats: p.formats,
       lead: p.lead,
       origin: p.origin,
-      ritualLabel: p.ritual_label,
       hero: p.hero,
       name: t.name,
       short: t.short,

@@ -8,7 +8,11 @@ import { cn } from "@/lib/utils";
 interface ProductRow {
   id: string;
   slug: string;
-  ritual_id: string | null;
+  /** Resolved category slug from the joined categories row. PostgREST
+   *  returns the embedded `categories(slug)` as a single object for the
+   *  many-to-one FK, but the Supabase client types it as an array of
+   *  length 1; we accept both shapes. */
+  category: { slug: string } | Array<{ slug: string }> | null;
   moq: number;
   status: string;
   updated_at: string | null;
@@ -21,11 +25,10 @@ interface ProductsListProps {
   supabaseUrl: string;
 }
 
-const RITUAL_OPTIONS = [
-  { value: "all", label: "All rituals" },
-  { value: "hammam", label: "Hammam" },
-  { value: "botanical", label: "Botanical" },
-  { value: "heritage", label: "Heritage" },
+const CATEGORY_OPTIONS = [
+  { value: "all", label: "All categories" },
+  { value: "cosmetiques", label: "Cosmetics" },
+  { value: "epicerie_fine", label: "Fine Épicerie" },
 ];
 
 const STATUS_OPTIONS = [
@@ -34,11 +37,17 @@ const STATUS_OPTIONS = [
   { value: "draft", label: "Draft" },
 ];
 
+function resolveCategorySlug(p: ProductRow): string {
+  if (!p.category) return "";
+  if (Array.isArray(p.category)) return p.category[0]?.slug ?? "";
+  return p.category.slug ?? "";
+}
+
 export default function ProductsList({ products, supabaseUrl }: ProductsListProps) {
   const router = useRouter();
   const [, startTransition] = useTransition();
   const [search, setSearch] = useState("");
-  const [ritual, setRitual] = useState("all");
+  const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");
 
   function getPublicUrl(path: string) {
@@ -46,7 +55,7 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
   }
 
   const filtered = products.filter((p) => {
-    if (ritual !== "all" && p.ritual_id !== ritual) return false;
+    if (category !== "all" && resolveCategorySlug(p) !== category) return false;
     if (status !== "all" && p.status !== status) return false;
     if (search) {
       const q = search.toLowerCase();
@@ -80,11 +89,12 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
           className="bg-bb-bg border border-bb-line px-4 py-3 min-h-[44px] font-sans text-[13px] sm:w-[280px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
         />
         <select
-          value={ritual}
-          onChange={(e) => setRitual(e.target.value)}
+          aria-label="Filter by category"
+          value={category}
+          onChange={(e) => setCategory(e.target.value)}
           className="bg-bb-bg border border-bb-line px-4 py-3 min-h-[44px] font-sans text-[13px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
         >
-          {RITUAL_OPTIONS.map((o) => (
+          {CATEGORY_OPTIONS.map((o) => (
             <option key={o.value} value={o.value}>
               {o.label}
             </option>
@@ -152,7 +162,7 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                         {p.status}
                       </span>
                       <span className="font-sans text-[11px] text-bb-on-surface-variant capitalize">
-                        {p.ritual_id ?? "no ritual"}
+                        {resolveCategorySlug(p) || "no category"}
                       </span>
                     </div>
                   </div>
@@ -169,7 +179,7 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                   <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant w-16">Image</th>
                   <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">Name (EN)</th>
                   <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">Slug</th>
-                  <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">Ritual</th>
+                  <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">Category</th>
                   <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">Status</th>
                   <th className="text-left px-4 py-3 font-sans text-[10px] uppercase tracking-[0.18em] text-bb-on-surface-variant">Edit</th>
                 </tr>
@@ -202,7 +212,7 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                       </td>
                       <td className="px-4 py-3 font-sans text-[13px] text-bb-on-surface font-medium">{getEnName(p)}</td>
                       <td className="px-4 py-3 font-mono text-[12px] text-bb-on-surface-variant">{p.slug}</td>
-                      <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant capitalize">{p.ritual_id ?? "—"}</td>
+                      <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant capitalize">{resolveCategorySlug(p) || "—"}</td>
                       <td className="px-4 py-3">
                         <span
                           className={cn(

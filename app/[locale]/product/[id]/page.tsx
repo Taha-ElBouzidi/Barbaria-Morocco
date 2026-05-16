@@ -3,7 +3,6 @@ import { setRequestLocale } from "next-intl/server";
 import type { Metadata } from "next";
 import { createClient } from "@supabase/supabase-js";
 import { getProductBySlug, getBoxesContainingProduct } from "@/lib/data/products";
-import { getWorld } from "@/lib/data/rituals";
 import ImageStack from "@/components/product/ImageStack";
 import SpecColumn from "@/components/product/SpecColumn";
 import ProofStrip from "@/components/product/ProofStrip";
@@ -50,14 +49,13 @@ export default async function ProductPage({ params }: PageProps) {
   const p = await getProductBySlug(id, lang);
   if (!p) notFound();
 
-  const world = await getWorld(p.ritualId, lang);
   const boxes = await getBoxesContainingProduct(p.slug, lang);
 
   return (
     <article className="pt-32 lg:pt-40">
       <div className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] grid grid-cols-1 lg:grid-cols-[1.1fr_1fr] gap-12 lg:gap-20 pb-20 lg:pb-28">
         <ImageStack product={p} lang={lang} />
-        <SpecColumn product={p} worldEyebrow={world?.eyebrow ?? ""} lang={lang} />
+        <SpecColumn product={p} worldEyebrow="" lang={lang} />
       </div>
       <ProofStrip product={p} lang={lang} />
       <ApplicationRitual product={p} lang={lang} />

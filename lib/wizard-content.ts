@@ -6,7 +6,7 @@
 // Step copy stays for the storytelling arc, Amazigh narrative wrapping
 // the act of composing, but no longer constrains the selectable pool.
 
-import type { StoryThemeKey } from "./categories";
+import type { StoryThemeKey } from "./data/types";
 
 export type BoxSize = 3 | 5 | 6;
 

@@ -20,7 +20,6 @@ const BASE_NAV = [
   { href: "/admin/ateliers", label: "Ateliers" },
   { href: "/admin/journal", label: "Journal" },
   { href: "/admin/facets", label: "Tags" },
-  { href: "/admin/rituals", label: "Rituals (internal)" },
   { href: "/admin/settings", label: "Settings" },
   { href: "/admin/activity", label: "Activity" },
 ];

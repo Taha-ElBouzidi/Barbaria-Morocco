@@ -1099,9 +1099,6 @@ function ProductZoomModal({
         </div>
 
         <div className="flex flex-col gap-4 md:gap-5 p-5 sm:p-6 md:p-10">
-          {product.ritualLabel && (
-            <Eyebrow tone="gold">{product.ritualLabel}</Eyebrow>
-          )}
           <DisplayHeading size="lg" as="h3" className="text-bb-secondary leading-tight">
             {product.name}
           </DisplayHeading>

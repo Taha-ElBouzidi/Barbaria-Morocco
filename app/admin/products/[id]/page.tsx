@@ -1,6 +1,6 @@
 import { notFound } from "next/navigation";
 import Link from "next/link";
-import { getProductForEdit, getAllFacetsForAdmin, getRitualOptions, getSubcatOptions } from "@/lib/admin/products";
+import { getProductForEdit, getAllFacetsForAdmin } from "@/lib/admin/products";
 import { getCategoryOptions } from "@/lib/admin/gift-boxes";
 import ProductEditor from "../_components/ProductEditor";
 import ProductStatusToggle from "../_components/ProductStatusToggle";
@@ -19,22 +19,13 @@ export default async function EditProductPage({ params, searchParams }: PageProp
   const { id } = await params;
   const { saved } = await searchParams;
 
-  const [product, facets, rituals, categories] = await Promise.all([
+  const [product, facets, categories] = await Promise.all([
     getProductForEdit(id),
     getAllFacetsForAdmin(),
-    getRitualOptions(),
     getCategoryOptions(),
   ]);
 
   if (!product) notFound();
-
-  // Load subcats for all rituals
-  const subcatsByRitual: Record<string, Awaited<ReturnType<typeof getSubcatOptions>>> = {};
-  await Promise.all(
-    rituals.map(async (r) => {
-      subcatsByRitual[r] = await getSubcatOptions(r);
-    })
-  );
 
   const enT = (product.translations as any[]).find((t: any) => t.locale === "en");
 
@@ -77,8 +68,6 @@ export default async function EditProductPage({ params, searchParams }: PageProp
         id={id}
         initialData={product as any}
         facets={facets as any}
-        rituals={rituals}
-        subcatsByRitual={subcatsByRitual as any}
         categories={categories}
       />
     </div>

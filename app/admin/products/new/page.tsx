@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { getAllFacetsForAdmin, getRitualOptions, getSubcatOptions } from "@/lib/admin/products";
+import { getAllFacetsForAdmin } from "@/lib/admin/products";
 import { getCategoryOptions } from "@/lib/admin/gift-boxes";
 import ProductEditor from "../_components/ProductEditor";
 import { requireAdmin } from "@/lib/admin/auth";
@@ -8,19 +8,10 @@ export const dynamic = "force-dynamic";
 
 export default async function NewProductPage() {
   await requireAdmin();
-  const [facets, rituals, categories] = await Promise.all([
+  const [facets, categories] = await Promise.all([
     getAllFacetsForAdmin(),
-    getRitualOptions(),
     getCategoryOptions(),
   ]);
-
-  // Pre-load subcats for all rituals so the client can switch without a round-trip
-  const subcatsByRitual: Record<string, Awaited<ReturnType<typeof getSubcatOptions>>> = {};
-  await Promise.all(
-    rituals.map(async (r) => {
-      subcatsByRitual[r] = await getSubcatOptions(r);
-    })
-  );
 
   return (
     <div className="space-y-8">
@@ -41,8 +32,6 @@ export default async function NewProductPage() {
 
       <ProductEditor
         facets={facets as any}
-        rituals={rituals}
-        subcatsByRitual={subcatsByRitual as any}
         categories={categories}
       />
     </div>

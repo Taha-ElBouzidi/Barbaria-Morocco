@@ -11,15 +11,14 @@ export const ProductSaveSchema = z.object({
     .min(1)
     .max(120)
     .regex(/^[a-z0-9-]+$/, "Slug must be lowercase letters, numbers, and hyphens only"),
-  ritualId: z.enum(["hammam", "botanical", "heritage"]),
-  // Sprint 2 IA pivot: public storefront filters by category_id.
-  categoryId: z.string().uuid().nullable().default(null),
-  subcategoryId: z.string().uuid().nullable().default(null),
+  // Public storefront classifies on category only (sprint 6 retired
+  // the rituals taxonomy). Required now — every product belongs to
+  // one of the two categories.
+  categoryId: z.string().uuid(),
   moq: z.coerce.number().int().min(1),
   formats: z.array(z.string()).default([]),
   lead: z.string().min(1),
   origin: z.string().nullable().default(null),
-  ritualLabel: z.string().nullable().default(null),
   hero: z.boolean().default(false),
   translations: z.object({
     en: z.object({
@@ -54,22 +53,23 @@ export type ProductSaveInput = z.infer<typeof ProductSaveSchema>;
 
 export async function listProductsForAdmin(opts?: {
   search?: string;
-  ritual?: string;
+  categoryId?: string;
   status?: "draft" | "published";
 }) {
   const supabase = createServiceRoleClient();
   let q = supabase.from("products").select(`
     id,
     slug,
-    ritual_id,
+    category_id,
     moq,
     status,
     updated_at,
     translations:product_translations ( locale, name ),
-    images:product_images ( path, sort_order )
+    images:product_images ( path, sort_order ),
+    category:categories ( slug )
   `);
 
-  if (opts?.ritual && opts.ritual !== "all") q = q.eq("ritual_id", opts.ritual);
+  if (opts?.categoryId && opts.categoryId !== "all") q = q.eq("category_id", opts.categoryId);
   if (opts?.status && opts.status !== ("all" as string))
     q = q.eq("status", opts.status);
   if (opts?.search) {
@@ -104,7 +104,7 @@ export async function getProductForEdit(id: string) {
 }
 
 // ---------------------------------------------------------------------------
-// Facets + rituals for dropdowns
+// Facets + categories for dropdowns
 // ---------------------------------------------------------------------------
 
 export async function getAllFacetsForAdmin() {
@@ -117,21 +117,9 @@ export async function getAllFacetsForAdmin() {
   return data ?? [];
 }
 
-export async function getRitualOptions() {
-  const supabase = createServiceRoleClient();
-  const { data } = await supabase.from("rituals").select("id").order("sort_order");
-  return data?.map((r: { id: string }) => r.id) ?? [];
-}
-
-export async function getSubcatOptions(ritualId: string) {
-  const supabase = createServiceRoleClient();
-  const { data } = await supabase
-    .from("ritual_subcategories")
-    .select(`id, slug, translations:ritual_subcategory_translations ( locale, name )`)
-    .eq("ritual_id", ritualId)
-    .order("sort_order");
-  return data ?? [];
-}
+// Category options live in lib/admin/gift-boxes.ts (single source of
+// truth across the two admin editors that need them). Import from
+// there.
 
 // ---------------------------------------------------------------------------
 // Public storage URL helper

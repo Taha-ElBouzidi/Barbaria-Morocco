@@ -2,13 +2,10 @@ export type LocaleCode = "en" | "fr";
 
 export interface ProductSummary {
   slug: string;
-  ritualId: "hammam" | "botanical" | "heritage";
-  subcategorySlug: string | null;
   moq: number;
   formats: string[];
   lead: string;
   origin: string | null;
-  ritualLabel: string | null;
   hero: boolean;
   name: string;       // resolved per locale
   short: string;      // resolved per locale
@@ -20,21 +17,6 @@ export interface ProductSummary {
 export interface ProductDetail extends ProductSummary {
   images: { path: string; altText: string | null }[];
   applicationSteps: { stepNumber: number; title: string; body: string }[];
-}
-
-export interface RitualWorld {
-  id: "hammam" | "botanical" | "heritage";
-  heroImage: string | null;
-  eyebrow: string;
-  name: string;
-  tagline: string;
-  lede: string;
-}
-
-export interface SubCategory {
-  id: string;        // uuid
-  slug: string;      // human readable, e.g., "oils"
-  name: string;
 }
 
 export interface AtelierEntry {

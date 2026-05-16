@@ -18,14 +18,11 @@ export async function saveProduct(
 
   const raw = {
     slug: formData.get("slug"),
-    ritualId: formData.get("ritualId"),
-    categoryId: formData.get("categoryId") || null,
-    subcategoryId: formData.get("subcategoryId") || null,
+    categoryId: formData.get("categoryId"),
     moq: formData.get("moq"),
     formats: formData.getAll("formats"),
     lead: formData.get("lead"),
     origin: formData.get("origin") || null,
-    ritualLabel: formData.get("ritualLabel") || null,
     hero: formData.get("hero") === "true",
     translations: {
       en: {
@@ -56,14 +53,11 @@ export async function saveProduct(
   // Upsert the product row
   const productPayload = {
     slug: data.slug,
-    ritual_id: data.ritualId,
     category_id: data.categoryId,
-    subcategory_id: data.subcategoryId,
     moq: data.moq,
     formats: data.formats,
     lead: data.lead,
     origin: data.origin,
-    ritual_label: data.ritualLabel,
     hero: data.hero,
   };
 
@@ -187,7 +181,7 @@ export async function setStatus(
     .from("products")
     .update(updatePayload)
     .eq("id", id)
-    .select("slug, ritual_id")
+    .select("slug")
     .single();
 
   if (error || !product) {
@@ -215,7 +209,7 @@ export async function deleteProduct(id: string): Promise<{ ok: boolean; error?: 
   // Grab slug + ritual before delete for revalidation
   const { data: product } = await supabase
     .from("products")
-    .select("slug, ritual_id")
+    .select("slug")
     .eq("id", id)
     .single();
 
@@ -225,8 +219,6 @@ export async function deleteProduct(id: string): Promise<{ ok: boolean; error?: 
   if (product) {
     revalidatePath(`/en/product/${product.slug}`);
     revalidatePath(`/fr/product/${product.slug}`);
-    revalidatePath(`/en/rituals/${product.ritual_id}`);
-    revalidatePath(`/fr/rituals/${product.ritual_id}`);
   }
   revalidatePath("/en/products", "layout");
   revalidatePath("/fr/products", "layout");

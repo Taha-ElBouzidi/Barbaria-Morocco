@@ -29,13 +29,10 @@ export async function getProductBySlug(
     .from("products")
     .select(`
       slug,
-      ritual_id,
-      subcategory:ritual_subcategories ( slug ),
       moq,
       formats,
       lead,
       origin,
-      ritual_label,
       hero,
       translations:product_translations!inner ( locale, name, short, lede ),
       images:product_images ( path, alt_text, sort_order ),
@@ -74,13 +71,10 @@ export async function getProductsByCategory(
     .from("products")
     .select(`
       slug,
-      ritual_id,
-      subcategory:ritual_subcategories ( slug ),
       moq,
       formats,
       lead,
       origin,
-      ritual_label,
       hero,
       translations:product_translations!inner ( locale, name, short, lede ),
       images:product_images ( path, sort_order ),
@@ -246,13 +240,10 @@ function shapeProductSummary(row: any, locale: LocaleCode): ProductSummary {
 
   return {
     slug: row.slug,
-    ritualId: row.ritual_id,
-    subcategorySlug: row.subcategory?.slug ?? null,
     moq: row.moq,
     formats: row.formats ?? [],
     lead: row.lead,
     origin: row.origin,
-    ritualLabel: row.ritual_label,
     hero: !!row.hero,
     name: translation.name ?? row.slug,
     short: translation.short ?? "",

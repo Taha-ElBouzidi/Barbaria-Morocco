@@ -59,8 +59,6 @@ export const auditEntityTypeEnum = pgEnum("audit_entity_type_enum", [
   "product",
   "journal_card",
   "atelier",
-  "ritual",
-  "ritual_subcategory",
   "facet",
   "inquiry",
 ]);
@@ -74,82 +72,12 @@ export const auditActionEnum = pgEnum("audit_action_enum", [
   "status_change",
 ]);
 
-// ---------------------------------------------------------------------------
-// 4.1  rituals
-// ---------------------------------------------------------------------------
-
-export const rituals = pgTable("rituals", {
-  id: text("id").primaryKey(),
-  sortOrder: integer("sort_order").notNull().default(0),
-  heroImagePath: text("hero_image_path"),
-  createdAt: timestamp("created_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-  updatedAt: timestamp("updated_at", { withTimezone: true })
-    .notNull()
-    .defaultNow(),
-});
-
-// ---------------------------------------------------------------------------
-// 4.2  ritual_translations
-// ---------------------------------------------------------------------------
-
-export const ritualTranslations = pgTable(
-  "ritual_translations",
-  {
-    ritualId: text("ritual_id")
-      .references(() => rituals.id, { onDelete: "cascade" })
-      .notNull(),
-    locale: localeEnum("locale").notNull(),
-    eyebrow: text("eyebrow").notNull(),
-    name: text("name").notNull(),
-    tagline: text("tagline").notNull(),
-    lede: text("lede").notNull(),
-  },
-  (table) => ({
-    pk: primaryKey({ columns: [table.ritualId, table.locale] }),
-  })
-);
-
-// ---------------------------------------------------------------------------
-// 4.3  ritual_subcategories
-// ---------------------------------------------------------------------------
-
-export const ritualSubcategories = pgTable(
-  "ritual_subcategories",
-  {
-    id: uuid("id").primaryKey().defaultRandom(),
-    ritualId: text("ritual_id")
-      .references(() => rituals.id, { onDelete: "cascade" })
-      .notNull(),
-    slug: text("slug").notNull(),
-    sortOrder: integer("sort_order").default(0),
-  },
-  (table) => ({
-    ritualSlugUnique: uniqueIndex("ritual_subcategories_ritual_id_slug_idx").on(
-      table.ritualId,
-      table.slug
-    ),
-  })
-);
-
-// ---------------------------------------------------------------------------
-// 4.4  ritual_subcategory_translations
-// ---------------------------------------------------------------------------
-
-export const ritualSubcategoryTranslations = pgTable(
-  "ritual_subcategory_translations",
-  {
-    subcategoryId: uuid("subcategory_id")
-      .references(() => ritualSubcategories.id, { onDelete: "cascade" })
-      .notNull(),
-    locale: localeEnum("locale").notNull(),
-    name: text("name").notNull(),
-  },
-  (table) => ({
-    pk: primaryKey({ columns: [table.subcategoryId, table.locale] }),
-  })
-);
+// Rituals taxonomy retired in migration 0016. The four tables
+// (rituals, ritual_translations, ritual_subcategories,
+// ritual_subcategory_translations) and the products.ritual_id /
+// products.subcategory_id / products.ritual_label columns were
+// dropped — products are now classified by category only
+// (cosmetiques | epicerie_fine via products.category_id).
 
 // ---------------------------------------------------------------------------
 // 4.5  products
@@ -160,10 +88,6 @@ export const products = pgTable(
   {
     id: uuid("id").primaryKey().defaultRandom(),
     slug: text("slug").notNull(),
-    ritualId: text("ritual_id").references(() => rituals.id),
-    subcategoryId: uuid("subcategory_id").references(
-      () => ritualSubcategories.id
-    ),
     moq: integer("moq").notNull(),
     formats: text("formats")
       .array()
@@ -171,10 +95,8 @@ export const products = pgTable(
       .default(sql`'{}'::text[]`),
     lead: text("lead").notNull(),
     origin: text("origin"),
-    ritualLabel: text("ritual_label"),
     hero: boolean("hero").default(false),
-    // Sprint 2 IA pivot: public IA reads category_id, not ritual_id.
-    // ritual_id stays as internal product tagging. Added in 0006 migration.
+    // The public IA reads category_id directly. Added in 0006.
     categoryId: uuid("category_id"),
     status: productStatusEnum("status").notNull().default("draft"),
     publishedAt: timestamp("published_at", { withTimezone: true }),
@@ -191,9 +113,8 @@ export const products = pgTable(
   },
   (table) => ({
     slugUnique: uniqueIndex("products_slug_idx").on(table.slug),
-    statusRitualHeroIdx: index("products_status_ritual_hero_idx").on(
+    statusHeroIdx: index("products_status_hero_idx").on(
       table.status,
-      table.ritualId,
       table.hero
     ),
   })
@@ -506,58 +427,14 @@ export const auditLog = pgTable(
 // Relations
 // ---------------------------------------------------------------------------
 
-export const ritualsRelations = relations(rituals, ({ many }) => ({
-  translations: many(ritualTranslations),
-  subcategories: many(ritualSubcategories),
-  products: many(products),
-}));
+// Ritual relations dropped — rituals taxonomy retired in 0016.
 
-export const ritualTranslationsRelations = relations(
-  ritualTranslations,
-  ({ one }) => ({
-    ritual: one(rituals, {
-      fields: [ritualTranslations.ritualId],
-      references: [rituals.id],
-    }),
-  })
-);
-
-export const ritualSubcategoriesRelations = relations(
-  ritualSubcategories,
-  ({ one, many }) => ({
-    ritual: one(rituals, {
-      fields: [ritualSubcategories.ritualId],
-      references: [rituals.id],
-    }),
-    translations: many(ritualSubcategoryTranslations),
-    products: many(products),
-  })
-);
-
-export const ritualSubcategoryTranslationsRelations = relations(
-  ritualSubcategoryTranslations,
-  ({ one }) => ({
-    subcategory: one(ritualSubcategories, {
-      fields: [ritualSubcategoryTranslations.subcategoryId],
-      references: [ritualSubcategories.id],
-    }),
-  })
-);
-
-export const productsRelations = relations(products, ({ one, many }) => ({
+export const productsRelations = relations(products, ({ many }) => ({
   translations: many(productTranslations),
   images: many(productImages),
   applicationSteps: many(productApplicationSteps),
   facets: many(productFacets),
   inquiryItems: many(inquiryItems),
-  ritual: one(rituals, {
-    fields: [products.ritualId],
-    references: [rituals.id],
-  }),
-  subcategory: one(ritualSubcategories, {
-    fields: [products.subcategoryId],
-    references: [ritualSubcategories.id],
-  }),
 }));
 
 export const productTranslationsRelations = relations(

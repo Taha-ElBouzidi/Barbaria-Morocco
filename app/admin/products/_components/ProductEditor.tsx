@@ -14,12 +14,6 @@ interface Facet {
   value_fr: string;
 }
 
-interface SubcatOption {
-  id: string;
-  slug: string;
-  translations: Array<{ locale: string; name: string }>;
-}
-
 interface ApplicationStep {
   stepNumber: number;
   en: { title: string; body: string };
@@ -30,14 +24,11 @@ interface ProductEditorProps {
   id?: string; // undefined = new product
   initialData?: {
     slug: string;
-    ritual_id: string;
     category_id: string | null;
-    subcategory_id: string | null;
     moq: number;
     formats: string[];
     lead: string;
     origin: string | null;
-    ritual_label: string | null;
     hero: boolean;
     status: string;
     updated_at: string | null;
@@ -47,8 +38,6 @@ interface ProductEditorProps {
     images: Array<{ id: string; path: string; alt_text: string | null; sort_order: number | null }>;
   };
   facets: Facet[];
-  rituals: string[];
-  subcatsByRitual: Record<string, SubcatOption[]>;
   categories: Array<{ id: string; slug: string; nameEn: string }>;
 }
 
@@ -58,8 +47,6 @@ export default function ProductEditor({
   id,
   initialData,
   facets,
-  rituals,
-  subcatsByRitual,
   categories,
 }: ProductEditorProps) {
   const isNew = !id;
@@ -70,16 +57,13 @@ export default function ProductEditor({
 
   // ---- identity fields ----
   const [slug, setSlug] = useState(initialData?.slug ?? "");
-  const [ritualId, setRitualId] = useState<string>(initialData?.ritual_id ?? rituals[0] ?? "hammam");
   const [categoryId, setCategoryId] = useState<string>(
     initialData?.category_id ?? categories[0]?.id ?? ""
   );
-  const [subcategoryId, setSubcategoryId] = useState<string>(initialData?.subcategory_id ?? "");
   const [moq, setMoq] = useState(initialData?.moq?.toString() ?? "100");
   const [formats, setFormats] = useState<string>(initialData?.formats?.join(", ") ?? "");
   const [lead, setLead] = useState(initialData?.lead ?? "");
   const [origin, setOrigin] = useState(initialData?.origin ?? "");
-  const [ritualLabel, setRitualLabel] = useState(initialData?.ritual_label ?? "");
   const [hero, setHero] = useState(initialData?.hero ?? false);
 
   // ---- translations ----
@@ -115,9 +99,6 @@ export default function ProductEditor({
       };
     });
   });
-
-  // ---- subcategory options ----
-  const subcatOptions = subcatsByRitual[ritualId] ?? [];
 
   // ---- slug auto-generate from EN name ----
   function handleEnChange(locale: "en" | "fr", field: keyof LocaleFields, value: string) {
@@ -172,13 +153,10 @@ export default function ProductEditor({
 
     // Override hidden inputs with current state
     fd.set("slug", slug);
-    fd.set("ritualId", ritualId);
     fd.set("categoryId", categoryId);
-    fd.set("subcategoryId", subcategoryId);
     fd.set("moq", moq);
     fd.set("lead", lead);
     fd.set("origin", origin);
-    fd.set("ritualLabel", ritualLabel);
     fd.set("hero", hero ? "true" : "false");
     fd.set("en_name", en.name);
     fd.set("en_short", en.short);
@@ -281,50 +259,9 @@ export default function ProductEditor({
               </select>
             </label>
 
-            <label className="block">
-              <span className="block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2">
-                Ritual (internal tag)
-              </span>
-              <select
-                value={ritualId}
-                onChange={(e) => {
-                  setRitualId(e.target.value);
-                  setSubcategoryId("");
-                }}
-                className="w-full bg-bb-bg border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
-              >
-                {rituals.map((r) => (
-                  <option key={r} value={r}>
-                    {r.charAt(0).toUpperCase() + r.slice(1)}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <label className="block">
-              <span className="block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2">
-                Subcategory
-              </span>
-              <select
-                value={subcategoryId}
-                onChange={(e) => setSubcategoryId(e.target.value)}
-                className="w-full bg-bb-bg border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
-              >
-                <option value="">, none ,</option>
-                {subcatOptions.map((sc) => {
-                  const enName = sc.translations?.find((t) => t.locale === "en")?.name ?? sc.slug;
-                  return (
-                    <option key={sc.id} value={sc.id}>
-                      {enName}
-                    </option>
-                  );
-                })}
-              </select>
-            </label>
-
-            {/* MOQ and Lead time are kept as hidden form fields so the DB
-                schema stays satisfied. They are no longer surfaced on the
-                product editor: MOQ applies at the box level now, and lead
+            {/* MOQ and Lead time are kept as hidden form fields so the
+                DB schema stays satisfied. They no longer surface on the
+                product editor: MOQ applies at the box level now and lead
                 time is unused on the public site. */}
             <input type="hidden" name="moq" value={moq} />
             <input type="hidden" name="lead" value={lead} />
@@ -338,19 +275,6 @@ export default function ProductEditor({
                 value={origin}
                 onChange={(e) => setOrigin(e.target.value)}
                 placeholder="e.g. Marrakech, Morocco"
-                className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
-              />
-            </label>
-
-            <label className="block">
-              <span className="block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2">
-                Ritual label
-              </span>
-              <input
-                type="text"
-                value={ritualLabel}
-                onChange={(e) => setRitualLabel(e.target.value)}
-                placeholder="e.g. The Atlas"
                 className="w-full bg-transparent border-0 border-b border-bb-line py-2 text-bb-on-surface focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1 focus:border-bb-primary"
               />
             </label>

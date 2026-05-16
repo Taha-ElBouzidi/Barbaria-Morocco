@@ -79,17 +79,22 @@ export async function listGiftBoxesForAdmin(opts?: {
     sort_order: number;
     is_customizable: boolean;
     hero_image_path: string | null;
-    category: Array<{ slug: string }>;
+    category: { slug: string } | Array<{ slug: string }> | null;
     translations: Array<{ locale: string; name: string }>;
     items: Array<{ product_id: string }>;
   };
   let rows = (data as unknown as Row[]).map((r) => {
     const en = r.translations.find((t) => t.locale === "en");
+    // PostgREST returns a single object for many-to-one embedded FKs,
+    // but the Supabase client types it as an array. Accept both, the
+    // old code did r.category[0]?.slug which returned undefined on
+    // object-shape responses and made the filter dead.
+    const cat = Array.isArray(r.category) ? r.category[0] : r.category;
     return {
       id: r.id,
       slug: r.slug,
       categoryId: r.category_id,
-      categorySlug: r.category[0]?.slug ?? "",
+      categorySlug: cat?.slug ?? "",
       status: r.status,
       defaultQuantityMin: r.default_quantity_min,
       sortOrder: r.sort_order,
@@ -134,7 +139,7 @@ export async function getGiftBoxForAdmin(id: string): Promise<GiftBoxAdminDetail
     sort_order: number;
     is_customizable: boolean;
     hero_image_path: string | null;
-    category: Array<{ slug: string }>;
+    category: { slug: string } | Array<{ slug: string }> | null;
     translations: Array<{
       locale: string;
       name: string;
@@ -155,11 +160,12 @@ export async function getGiftBoxForAdmin(id: string): Promise<GiftBoxAdminDetail
     story_intro: null,
   };
   const sortedItems = [...r.items].sort((a, b) => a.sort_order - b.sort_order);
+  const cat = Array.isArray(r.category) ? r.category[0] : r.category;
   return {
     id: r.id,
     slug: r.slug,
     categoryId: r.category_id,
-    categorySlug: r.category[0]?.slug ?? "",
+    categorySlug: cat?.slug ?? "",
     status: r.status,
     defaultQuantityMin: r.default_quantity_min,
     sortOrder: r.sort_order,
