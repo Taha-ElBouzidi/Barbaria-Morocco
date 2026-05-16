@@ -14,6 +14,17 @@ export const AdminCreateSchema = z.object({
   email: z.string().trim().toLowerCase().email().max(254),
   displayName: z.string().trim().max(120).optional().or(z.literal("")),
   role: z.enum(["superadmin", "admin"]),
+  // Optional. When blank, the action generates a 16-char password
+  // (kept for the "no email pipeline yet" case where the maison wants
+  // a one-shot password they can read off the screen). When provided
+  // it must meet Supabase Auth's minimum (8 chars) and a reasonable
+  // ceiling. The new admin can rotate it via Supabase dashboard.
+  password: z
+    .string()
+    .min(8, "Password must be at least 8 characters.")
+    .max(128, "Password too long.")
+    .optional()
+    .or(z.literal("")),
 });
 
 export const AdminRoleUpdateSchema = z.object({

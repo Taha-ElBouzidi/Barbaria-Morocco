@@ -3,9 +3,8 @@ import { test, expect } from "@playwright/test";
 // FR is the default locale (bare path). EN is /en prefixed.
 const ROUTES = [
   "",
-  "/rituals/hammam",
-  "/rituals/botanical",
-  "/rituals/heritage",
+  "/products/cosmetiques",
+  "/products/epicerie_fine",
   "/product/huile-argan",
   "/product/savon-beldi-nila",
   "/product/brume-duo",
@@ -32,13 +31,18 @@ for (const { locale, prefix } of LOCALES) {
   }
 }
 
-// 308 redirects from retired routes
+// 308 redirects from retired routes (including the now-retired
+// /rituals/[world] public browse pages, which were unreachable from
+// the nav since the IA pivot).
 const REDIRECTS = [
-  { from: "/cosmetics", to: "/rituals/botanical" },
-  { from: "/textile",   to: "/rituals/heritage" },
-  { from: "/food",      to: "/rituals/heritage" },
+  { from: "/cosmetics", to: "/products/cosmetiques" },
+  { from: "/textile",   to: "/products/epicerie_fine" },
+  { from: "/food",      to: "/products/epicerie_fine" },
   { from: "/order",     to: "/contact" },
   { from: "/about",     to: "/story" },
+  { from: "/rituals/hammam",    to: "/products/cosmetiques" },
+  { from: "/rituals/botanical", to: "/products/cosmetiques" },
+  { from: "/rituals/heritage",  to: "/" },
 ];
 
 for (const { from, to } of REDIRECTS) {

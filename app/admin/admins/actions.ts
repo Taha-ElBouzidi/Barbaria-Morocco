@@ -10,7 +10,15 @@ import {
 } from "@/lib/admin/users";
 
 export type CreateAdminResult =
-  | { ok: true; id: string; email: string; tempPassword: string }
+  | {
+      ok: true;
+      id: string;
+      email: string;
+      /** Present only when the superadmin let us generate the password.
+       *  When they typed their own we don't echo it back — they already
+       *  have it. */
+      tempPassword?: string;
+    }
   | { ok: false; error: string };
 
 async function countSuperadmins(): Promise<number> {
@@ -34,12 +42,15 @@ export async function createAdmin(formData: FormData): Promise<CreateAdminResult
     email: formData.get("email"),
     displayName: formData.get("displayName"),
     role: formData.get("role"),
+    password: formData.get("password"),
   });
   if (!parsed.success) {
     const first = parsed.error.issues[0];
     return { ok: false, error: `${first.path.join(".")}: ${first.message}` };
   }
-  const { email, displayName, role } = parsed.data;
+  const { email, displayName, role, password } = parsed.data;
+  const customPassword = typeof password === "string" && password.length > 0;
+  const tempPassword = customPassword ? password : generateTempPassword();
 
   const supabase = createServiceRoleClient();
 
@@ -57,8 +68,6 @@ export async function createAdmin(formData: FormData): Promise<CreateAdminResult
   if (existing) {
     return { ok: false, error: "An admin with this email already exists." };
   }
-
-  const tempPassword = generateTempPassword();
 
   // Create the auth user. email_confirm:true so the new admin can log
   // in immediately without an email round-trip (we don't have the
@@ -101,7 +110,12 @@ export async function createAdmin(formData: FormData): Promise<CreateAdminResult
   }
 
   revalidatePath("/admin/admins");
-  return { ok: true, id: userId, email, tempPassword };
+  // Only echo the password back when WE generated it. If the
+  // superadmin typed their own they already have it, and showing it
+  // back on the success panel is just extra exposure.
+  return customPassword
+    ? { ok: true, id: userId, email }
+    : { ok: true, id: userId, email, tempPassword };
 }
 
 export async function updateAdminRole(

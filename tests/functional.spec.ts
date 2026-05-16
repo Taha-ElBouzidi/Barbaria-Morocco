@@ -22,13 +22,13 @@ test("add product to inquiry, persists across reload, appears in contact sidebar
 });
 
 test("locale toggle preserves route", async ({ page }) => {
-  await page.goto("/en/rituals/hammam");
+  await page.goto("/en/products/cosmetiques");
   // Header shows the OTHER locale as a link. When viewing EN, it shows "FR".
   // The footer also has FR/EN links with aria-current on the active one.
   // Click the footer FR link (non-active link = FR since we're on EN).
   const frLink = page.getByRole("link", { name: /^FR$/i }).first();
   await frLink.click();
-  await expect(page).toHaveURL(/\/rituals\/hammam$/); // FR is default, no prefix
+  await expect(page).toHaveURL(/\/products\/cosmetiques$/); // FR is default, no prefix
 });
 
 test("inquiry mailto link contains structured body", async ({ page }) => {
@@ -67,7 +67,7 @@ test("inquiry mailto link contains structured body", async ({ page }) => {
 test("inquiry list survives navigation across pages", async ({ page }) => {
   await page.goto("/en/product/savon-beldi-nila");
   await page.getByRole("button", { name: /add to inquiry/i }).first().click();
-  await page.goto("/en/rituals/botanical");
+  await page.goto("/en/products/cosmetiques");
   await page.goto("/en/product/huile-argan");
   await page.getByRole("button", { name: /add to inquiry/i }).first().click();
 

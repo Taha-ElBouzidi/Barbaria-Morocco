@@ -3,7 +3,7 @@ import AxeBuilder from "@axe-core/playwright";
 
 const PAGES = [
   { path: "/en", name: "Home" },
-  { path: "/en/rituals/hammam", name: "Category" },
+  { path: "/en/products/cosmetiques", name: "Category" },
   { path: "/en/product/savon-beldi-nila", name: "PDP" },
   { path: "/en/contact", name: "Contact" },
 ];

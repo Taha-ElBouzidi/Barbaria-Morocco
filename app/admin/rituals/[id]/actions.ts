@@ -66,8 +66,11 @@ export async function saveRitual(
 
   revalidatePath("/en");
   revalidatePath("/fr");
-  revalidatePath(`/en/rituals/${id}`);
-  revalidatePath(`/fr/rituals/${id}`);
+  // The public /rituals/[world] pages are gone; rituals are internal
+  // taxonomy now. Bust the products tree because product cards may
+  // display ritual_label.
+  revalidatePath("/en/products", "layout");
+  revalidatePath("/fr/products", "layout");
 
   return { ok: true };
 }
@@ -119,8 +122,8 @@ export async function addSubcat(
     return { ok: false, error: `Failed to save sub-category translations: ${translError.message}` };
   }
 
-  revalidatePath(`/en/rituals/${ritualId}`);
-  revalidatePath(`/fr/rituals/${ritualId}`);
+  revalidatePath("/en/products", "layout");
+  revalidatePath("/fr/products", "layout");
 
   return { ok: true };
 }
@@ -155,8 +158,8 @@ export async function renameSubcat(
 
   if (error) return { ok: false, error: error.message };
 
-  revalidatePath(`/en/rituals/${ritualId}`);
-  revalidatePath(`/fr/rituals/${ritualId}`);
+  revalidatePath("/en/products", "layout");
+  revalidatePath("/fr/products", "layout");
 
   return { ok: true };
 }
@@ -197,8 +200,8 @@ export async function reorderSubcat(
     .update({ sort_order: newOrder })
     .eq("id", subcatId);
 
-  revalidatePath(`/en/rituals/${ritualId}`);
-  revalidatePath(`/fr/rituals/${ritualId}`);
+  revalidatePath("/en/products", "layout");
+  revalidatePath("/fr/products", "layout");
 
   return { ok: true };
 }
@@ -234,8 +237,8 @@ export async function deleteSubcat(
 
   if (error) return { ok: false, error: error.message };
 
-  revalidatePath(`/en/rituals/${ritualId}`);
-  revalidatePath(`/fr/rituals/${ritualId}`);
+  revalidatePath("/en/products", "layout");
+  revalidatePath("/fr/products", "layout");
 
   return { ok: true };
 }

@@ -87,16 +87,19 @@ export default async function AdminInquiriesPage({ searchParams }: PageProps) {
         <div className="flex flex-wrap gap-1.5">
           {STATUS_OPTIONS.map((opt) => {
             const active = status === opt.value;
+            // Build the new URL fresh. The previous .replace(/(\?|$)/, …)
+            // regex only inserted at the existing "?", which left the old
+            // status param in place: clicking new → contacted produced
+            // ?status=contactedstatus=new.
+            const sp = new URLSearchParams({
+              ...(opt.value !== "all" ? { status: opt.value } : {}),
+              ...(sort !== "newest" ? { sort } : {}),
+            });
+            const href = `/admin/inquiries${sp.toString() ? `?${sp}` : ""}`;
             return (
               <Link
                 key={opt.value}
-                href={pageUrl(1).replace(/(\?|$)/, (_, q) => {
-                  const sp = new URLSearchParams({
-                    ...(opt.value !== "all" ? { status: opt.value } : {}),
-                    ...(sort !== "newest" ? { sort } : {}),
-                  });
-                  return sp.toString() ? `?${sp}` : "";
-                })}
+                href={href}
                 aria-current={active ? "true" : undefined}
                 className={`px-3 py-1.5 font-sans text-[11px] uppercase tracking-[0.14em] border transition-colors ${
                   active

@@ -49,12 +49,11 @@ export async function saveFacet(
   }
 
   // Revalidate ritual pages since they render filter chips
-  revalidatePath("/en/rituals/hammam");
-  revalidatePath("/fr/rituals/hammam");
-  revalidatePath("/en/rituals/botanical");
-  revalidatePath("/fr/rituals/botanical");
-  revalidatePath("/en/rituals/heritage");
-  revalidatePath("/fr/rituals/heritage");
+  // Public product browse pages render facet chips, so any facet
+  // mutation needs to bust their cache. The retired /rituals/[world]
+  // routes used to be revalidated here too; they're gone now.
+  revalidatePath("/en/products", "layout");
+  revalidatePath("/fr/products", "layout");
   updateTag("facets");
 
   return { ok: true };
@@ -86,12 +85,11 @@ export async function deleteFacet(
   const { error } = await supabase.from("facets").delete().eq("id", id);
   if (error) return { ok: false, error: error.message };
 
-  revalidatePath("/en/rituals/hammam");
-  revalidatePath("/fr/rituals/hammam");
-  revalidatePath("/en/rituals/botanical");
-  revalidatePath("/fr/rituals/botanical");
-  revalidatePath("/en/rituals/heritage");
-  revalidatePath("/fr/rituals/heritage");
+  // Public product browse pages render facet chips, so any facet
+  // mutation needs to bust their cache. The retired /rituals/[world]
+  // routes used to be revalidated here too; they're gone now.
+  revalidatePath("/en/products", "layout");
+  revalidatePath("/fr/products", "layout");
   updateTag("facets");
 
   return { ok: true };
@@ -130,12 +128,11 @@ export async function reorderFacet(
 
   await supabase.from("facets").update({ sort_order: newOrder }).eq("id", id);
 
-  revalidatePath("/en/rituals/hammam");
-  revalidatePath("/fr/rituals/hammam");
-  revalidatePath("/en/rituals/botanical");
-  revalidatePath("/fr/rituals/botanical");
-  revalidatePath("/en/rituals/heritage");
-  revalidatePath("/fr/rituals/heritage");
+  // Public product browse pages render facet chips, so any facet
+  // mutation needs to bust their cache. The retired /rituals/[world]
+  // routes used to be revalidated here too; they're gone now.
+  revalidatePath("/en/products", "layout");
+  revalidatePath("/fr/products", "layout");
   updateTag("facets");
 
   return { ok: true };

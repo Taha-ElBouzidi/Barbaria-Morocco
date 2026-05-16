@@ -6,7 +6,9 @@ import { createAdmin } from "../actions";
 
 interface Created {
   email: string;
-  tempPassword: string;
+  /** Present only when the server generated the password. When the
+   *  superadmin typed their own, we don't echo it back. */
+  tempPassword?: string;
 }
 
 export default function NewAdminForm() {
@@ -28,20 +30,25 @@ export default function NewAdminForm() {
   const onSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
-    const fd = new FormData(e.currentTarget);
+    const form = e.currentTarget;
+    const fd = new FormData(form);
     startTransition(async () => {
       const res = await createAdmin(fd);
       if (!res.ok) {
         setError(res.error);
         return;
       }
+      // Reset BEFORE the success panel takes over so a "Create
+      // another" press shows blank fields. Capturing `form` outside
+      // the transition keeps the ref stable across the await.
+      form.reset();
       setCreated({ email: res.email, tempPassword: res.tempPassword });
       router.refresh();
     });
   };
 
   function copyPassword() {
-    if (!created) return;
+    if (!created?.tempPassword) return; // panel is in "password not echoed" mode
     if (!navigator.clipboard) return; // insecure context fallback: user copies by hand
     navigator.clipboard.writeText(created.tempPassword).then(
       () => {
@@ -56,6 +63,7 @@ export default function NewAdminForm() {
   }
 
   if (created) {
+    const showPassword = !!created.tempPassword;
     return (
       <div
         role="status"
@@ -71,30 +79,40 @@ export default function NewAdminForm() {
             tabIndex={-1}
             className="font-serif text-[22px] leading-tight focus-visible:outline-none"
           >
-            Temporary password
+            {showPassword ? "Temporary password" : "Account ready"}
           </h2>
           <p className="font-sans text-[13px] text-bb-on-surface">
-            Share this once with <strong className="font-medium">{created.email}</strong> through a private channel. They can rotate it from the Supabase dashboard.
-            We will not show it again.
+            {showPassword ? (
+              <>
+                Share this once with <strong className="font-medium">{created.email}</strong> through a private channel. They can rotate it from the Supabase dashboard.
+                We will not show it again.
+              </>
+            ) : (
+              <>
+                <strong className="font-medium">{created.email}</strong> can now sign in at <code className="font-mono text-[12px]">/admin/login</code> with the password you set. They can rotate it from the Supabase dashboard later.
+              </>
+            )}
           </p>
         </header>
-        <div className="flex items-stretch gap-2">
-          <code className="flex-1 px-4 py-3 border border-bb-line bg-bb-bg font-mono text-[14px] tracking-wider break-all">
-            {created.tempPassword}
-          </code>
-          <button
-            type="button"
-            onClick={copyPassword}
-            aria-label={
-              copied
-                ? "Copied to clipboard"
-                : "Copy temporary password to clipboard"
-            }
-            className="shrink-0 px-4 py-3 min-h-[44px] border border-bb-line font-sans text-[11px] uppercase tracking-[0.16em] text-bb-on-surface hover:border-bb-primary transition-colors"
-          >
-            {copied ? "Copied" : "Copy"}
-          </button>
-        </div>
+        {showPassword && (
+          <div className="flex items-stretch gap-2">
+            <code className="flex-1 px-4 py-3 border border-bb-line bg-bb-bg font-mono text-[14px] tracking-wider break-all">
+              {created.tempPassword}
+            </code>
+            <button
+              type="button"
+              onClick={copyPassword}
+              aria-label={
+                copied
+                  ? "Copied to clipboard"
+                  : "Copy temporary password to clipboard"
+              }
+              className="shrink-0 px-4 py-3 min-h-[44px] border border-bb-line font-sans text-[11px] uppercase tracking-[0.16em] text-bb-on-surface hover:border-bb-primary transition-colors"
+            >
+              {copied ? "Copied" : "Copy"}
+            </button>
+          </div>
+        )}
         <div className="flex flex-wrap gap-3 pt-2">
           <button
             type="button"
@@ -160,6 +178,33 @@ export default function NewAdminForm() {
           maxLength={120}
           className="w-full px-3 py-3 min-h-[44px] border border-bb-line bg-bb-bg text-bb-primary text-[14px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
         />
+      </div>
+
+      <div className="space-y-2">
+        <label
+          htmlFor="password"
+          className="block font-sans text-[11px] uppercase tracking-[0.14em] text-bb-on-surface-variant"
+        >
+          Password <span className="text-bb-on-surface-variant lowercase tracking-normal">(optional)</span>
+        </label>
+        <input
+          id="password"
+          name="password"
+          type="text"
+          minLength={8}
+          maxLength={128}
+          autoComplete="new-password"
+          spellCheck={false}
+          placeholder="Leave blank to auto-generate"
+          aria-describedby="password-hint"
+          className="w-full px-3 py-3 min-h-[44px] border border-bb-line bg-bb-bg text-bb-primary text-[14px] font-mono focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+        />
+        <p
+          id="password-hint"
+          className="font-sans text-[11px] text-bb-on-surface-variant leading-relaxed"
+        >
+          Set a password you can share over a private channel. If left blank we generate a 16-character one and show it once on the next screen. Minimum 8 characters. The new admin can rotate it from the Supabase dashboard later.
+        </p>
       </div>
 
       <div className="space-y-2">

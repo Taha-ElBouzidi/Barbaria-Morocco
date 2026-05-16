@@ -158,8 +158,8 @@ export async function saveProduct(
   // enumerate categories.
   revalidatePath(`/en/product/${data.slug}`);
   revalidatePath(`/fr/product/${data.slug}`);
-  revalidatePath(`/en/rituals/${data.ritualId}`);
-  revalidatePath(`/fr/rituals/${data.ritualId}`);
+  // /rituals/[world] retired; the products tree revalidation below
+  // (and updateTag("products")) covers anything that surfaces this row.
   revalidatePath("/en/products", "layout");
   revalidatePath("/fr/products", "layout");
   updateTag("products");
@@ -196,8 +196,7 @@ export async function setStatus(
 
   revalidatePath(`/en/product/${product.slug}`);
   revalidatePath(`/fr/product/${product.slug}`);
-  revalidatePath(`/en/rituals/${product.ritual_id}`);
-  revalidatePath(`/fr/rituals/${product.ritual_id}`);
+  // /rituals/[world] retired; product subtree revalidation covers it.
   revalidatePath("/en/products", "layout");
   revalidatePath("/fr/products", "layout");
   updateTag("products");
