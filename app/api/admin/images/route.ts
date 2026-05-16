@@ -17,6 +17,28 @@ const ALLOWED_MIME = new Set([
 ]);
 const MAX_SIZE_BYTES = 16 * 1024 * 1024; // 16 MB (HEIC + AVIF often run larger than JPEG)
 
+// iOS Safari sometimes hands us files with `type === ""` or
+// `application/octet-stream` when the Photos picker passes a HEIC/HEIF
+// through without auto-converting. Map the filename extension to a
+// real MIME in those cases so the upload still succeeds.
+const EXT_TO_MIME: Record<string, string> = {
+  jpg: "image/jpeg",
+  jpeg: "image/jpeg",
+  png: "image/png",
+  webp: "image/webp",
+  avif: "image/avif",
+  heic: "image/heic",
+  heif: "image/heif",
+  gif: "image/gif",
+};
+
+function resolveMime(file: File): string {
+  const declared = (file.type || "").toLowerCase();
+  if (declared && declared !== "application/octet-stream") return declared;
+  const ext = file.name.split(".").pop()?.toLowerCase() ?? "";
+  return EXT_TO_MIME[ext] ?? declared;
+}
+
 // ---------------------------------------------------------------------------
 // POST /api/admin/images, upload one image to Supabase Storage
 // ---------------------------------------------------------------------------
@@ -42,9 +64,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ ok: false, error: "No file provided" }, { status: 400 });
   }
 
-  if (!ALLOWED_MIME.has(file.type)) {
+  const resolvedMime = resolveMime(file);
+
+  if (!ALLOWED_MIME.has(resolvedMime)) {
     return NextResponse.json(
-      { ok: false, error: `File type ${file.type} is not allowed. Use JPEG, PNG, WebP, AVIF, HEIC, HEIF, or GIF.` },
+      {
+        ok: false,
+        error: `File type ${resolvedMime || file.type || "(unknown)"} is not allowed. Use JPEG, PNG, WebP, AVIF, HEIC, HEIF, or GIF.`,
+      },
       { status: 400 }
     );
   }
@@ -56,7 +83,7 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const ext = extFromMime(file.type);
+  const ext = extFromMime(resolvedMime);
   const filename = `${crypto.randomUUID()}.${ext}`;
   const folder = productId ? `products/${productId}` : `drafts/${crypto.randomUUID()}`;
   const path = `${folder}/${filename}`;
@@ -66,7 +93,7 @@ export async function POST(req: NextRequest) {
 
   const { error: storageError } = await supabase.storage
     .from("product-images")
-    .upload(path, bytes, { contentType: file.type, upsert: false });
+    .upload(path, bytes, { contentType: resolvedMime, upsert: false });
 
   if (storageError) {
     return NextResponse.json(

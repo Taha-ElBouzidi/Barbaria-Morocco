@@ -300,7 +300,7 @@ export default function AtelierEditor({ id, initialData }: AtelierEditorProps) {
             <input
               ref={fileInputRef}
               type="file"
-              accept="image/jpeg,image/png,image/webp,image/avif,image/heic,image/heif,image/gif"
+              accept="image/*"
               className="sr-only"
               onChange={(e) => handleImageUpload(e.target.files)}
               disabled={uploading}

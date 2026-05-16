@@ -75,7 +75,12 @@ export default function HeroImageUploader({ value, onChange, name, aspect = "4/5
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp,image/avif,image/heic,image/heif,image/gif"
+            // image/* covers everything we accept and avoids iOS Safari
+            // throwing DOMException "The string did not match the
+            // expected pattern" when older versions don't recognise
+            // image/heic / image/heif in the accept list. The server
+            // route does strict MIME validation against ALLOWED_MIME.
+            accept="image/*"
             className="hidden"
             onChange={(e) => {
               const f = e.target.files?.[0];

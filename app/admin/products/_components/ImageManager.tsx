@@ -173,7 +173,8 @@ export default function ImageManager({ productId, initialImages }: ImageManagerP
           <input
             ref={fileInputRef}
             type="file"
-            accept="image/jpeg,image/png,image/webp,image/avif,image/heic,image/heif,image/gif"
+            // See HeroImageUploader for why this is image/* not a list.
+            accept="image/*"
             multiple
             className="sr-only"
             onChange={(e) => handleUpload(e.target.files)}
