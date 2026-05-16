@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test("add product to inquiry, persists across reload, appears in contact sidebar", async ({ page }) => {
   // Use EN locale for predictable copy
-  await page.goto("/en/product/beldi-soap");
+  await page.goto("/en/product/savon-beldi-nila");
 
   // Find and click the Add to Inquiry button
   const addBtn = page.getByRole("button", { name: /add to inquiry/i }).first();
@@ -18,7 +18,7 @@ test("add product to inquiry, persists across reload, appears in contact sidebar
 
   // Navigate to contact page; the inquiry sidebar should list this product
   await page.goto("/en/contact");
-  await expect(page.getByText(/Beldi Black Soap/i).first()).toBeVisible();
+  await expect(page.getByText(/Nila & Orange Blossom Beldi Soap/i).first()).toBeVisible();
 });
 
 test("locale toggle preserves route", async ({ page }) => {
@@ -65,7 +65,7 @@ test("inquiry mailto link contains structured body", async ({ page }) => {
 });
 
 test("inquiry list survives navigation across pages", async ({ page }) => {
-  await page.goto("/en/product/beldi-soap");
+  await page.goto("/en/product/savon-beldi-nila");
   await page.getByRole("button", { name: /add to inquiry/i }).first().click();
   await page.goto("/en/rituals/botanical");
   await page.goto("/en/product/huile-argan");

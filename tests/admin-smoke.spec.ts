@@ -32,7 +32,14 @@ test.describe("admin login page", () => {
 });
 
 test.describe("admin route guards", () => {
-  const PROTECTED = ["/admin", "/admin/products", "/admin/journal", "/admin/inquiries", "/admin/activity"];
+  const PROTECTED = [
+    "/admin",
+    "/admin/products",
+    "/admin/journal",
+    "/admin/inquiries",
+    "/admin/analytics",
+    "/admin/activity",
+  ];
   for (const path of PROTECTED) {
     test(`unauthenticated ${path} -> /admin/login`, async ({ page }) => {
       const r = await page.goto(path);
