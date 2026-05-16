@@ -50,6 +50,15 @@ export default function ImageManager({ productId, initialImages }: ImageManagerP
           break;
         }
 
+        // The storage upload may succeed while the DB insert fails;
+        // route returns ok:true with id:null in that case. Surface
+        // that as a real error so the operator doesn't end up with
+        // a row that subsequent reorder/delete cannot find.
+        if (!json.id) {
+          setError("Uploaded to storage but the DB row could not be created. Refresh and try again.");
+          break;
+        }
+
         // Re-fetch the product's images list by adding the returned image
         setImages((prev) => [
           ...prev,

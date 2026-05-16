@@ -252,7 +252,11 @@ export default function GiftBoxEditor({
                     checked={isCustomizable}
                     onChange={(e) => setIsCustomizable(e.target.checked)}
                     disabled={disabled}
-                    aria-describedby="isCustomizable-hint"
+                    aria-describedby={
+                      ownedByAnother
+                        ? "isCustomizable-hint isCustomizable-conflict"
+                        : "isCustomizable-hint"
+                    }
                     className="h-5 w-5 accent-bb-primary mt-0.5 disabled:opacity-40 disabled:cursor-not-allowed"
                   />
                   <div>
@@ -266,7 +270,10 @@ export default function GiftBoxEditor({
                       Check this for the single &quot;Compose your own&quot; entry per category. The Items section is hidden and the wizard generates each buyer&apos;s composition on demand. Curated (pre-set) boxes leave this unchecked.
                     </p>
                     {ownedByAnother && (
-                      <p className="font-sans text-[11px] text-bb-tertiary mt-1 leading-snug">
+                      <p
+                        id="isCustomizable-conflict"
+                        className="font-sans text-[11px] text-bb-tertiary mt-1 leading-snug"
+                      >
                         Another box in this category already holds the &quot;Compose your own&quot; slot. Only one customizable box per category is allowed; untick that box first if you want to move the slot here.
                       </p>
                     )}
@@ -309,9 +316,12 @@ export default function GiftBoxEditor({
             return (
               <button
                 key={t.id}
+                id={`gift-box-tab-${t.id}`}
                 type="button"
                 role="tab"
                 aria-selected={active}
+                aria-controls={`gift-box-panel-${t.id}`}
+                tabIndex={active ? 0 : -1}
                 onClick={() => setTranslationLocale(t.id)}
                 className={`pb-3 -mb-px font-sans text-[11px] uppercase tracking-[0.18em] transition-colors ${
                   active
@@ -328,7 +338,13 @@ export default function GiftBoxEditor({
         {/* Keep BOTH locales mounted so their inputs stay in the form on
             submit (browsers don't post unmounted fields). The inactive
             one hides visually but still serializes. */}
-        <div className={translationLocale === "en" ? "space-y-5" : "space-y-5 hidden"}>
+        <div
+          role="tabpanel"
+          id="gift-box-panel-en"
+          aria-labelledby="gift-box-tab-en"
+          hidden={translationLocale !== "en"}
+          className={translationLocale === "en" ? "space-y-5" : "space-y-5 hidden"}
+        >
           <div>
             <label className={labelCls} htmlFor="name_en">Name *</label>
             <input id="name_en" name="name_en" required value={nameEn} onChange={(e) => setNameEn(e.target.value)} className={inputCls} />
@@ -345,7 +361,14 @@ export default function GiftBoxEditor({
           </div>
         </div>
 
-        <div lang="fr" className={translationLocale === "fr" ? "space-y-5" : "space-y-5 hidden"}>
+        <div
+          role="tabpanel"
+          id="gift-box-panel-fr"
+          aria-labelledby="gift-box-tab-fr"
+          hidden={translationLocale !== "fr"}
+          lang="fr"
+          className={translationLocale === "fr" ? "space-y-5" : "space-y-5 hidden"}
+        >
           <div>
             <label className={labelCls} htmlFor="name_fr">Nom *</label>
             <input id="name_fr" name="name_fr" required value={nameFr} onChange={(e) => setNameFr(e.target.value)} className={inputCls} />

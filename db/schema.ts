@@ -61,6 +61,9 @@ export const auditEntityTypeEnum = pgEnum("audit_entity_type_enum", [
   "atelier",
   "facet",
   "inquiry",
+  "category",
+  "gift_box",
+  "occasion",
 ]);
 
 export const auditActionEnum = pgEnum("audit_action_enum", [
@@ -361,19 +364,31 @@ export const inquiries = pgTable(
 // 4.16  inquiry_items
 // ---------------------------------------------------------------------------
 
+// Migration 0008 reshaped inquiry_items to box-level lines: the
+// composite (inquiry_id, product_id) primary key was dropped, an `id`
+// PK was added, and `gift_box_id`, `is_custom`, `composition`, and
+// `line_index` were added. `product_id` is now nullable (custom-box
+// rows carry composition.productSlugs instead).
 export const inquiryItems = pgTable(
   "inquiry_items",
   {
+    id: uuid("id").primaryKey().defaultRandom(),
     inquiryId: uuid("inquiry_id")
       .references(() => inquiries.id, { onDelete: "cascade" })
       .notNull(),
-    productId: uuid("product_id")
-      .references(() => products.id, { onDelete: "restrict" })
-      .notNull(),
+    productId: uuid("product_id").references(() => products.id, {
+      onDelete: "restrict",
+    }),
+    giftBoxId: uuid("gift_box_id").references(() => giftBoxes.id, {
+      onDelete: "set null",
+    }),
+    isCustom: boolean("is_custom").notNull().default(false),
+    composition: jsonb("composition"),
     qty: integer("qty").notNull().default(1),
+    lineIndex: integer("line_index").notNull().default(0),
   },
   (table) => ({
-    pk: primaryKey({ columns: [table.inquiryId, table.productId] }),
+    inquiryIdx: index("inquiry_items_inquiry_id_idx").on(table.inquiryId),
   })
 );
 
@@ -580,6 +595,10 @@ export const giftBoxes = pgTable(
     updatedAt: timestamp("updated_at", { withTimezone: true })
       .notNull()
       .defaultNow(),
+    // Added in migration 0018. The audit-log fallback chain reads
+    // these from after_state when auth.uid() is null under service-role.
+    createdBy: uuid("created_by"),
+    updatedBy: uuid("updated_by"),
   },
   (table) => ({
     categoryIdx: index("gift_boxes_category_id_idx").on(table.categoryId),
@@ -644,3 +663,67 @@ export const giftBoxItemsRelations = relations(giftBoxItems, ({ one }) => ({
     references: [products.id],
   }),
 }));
+
+// ---------------------------------------------------------------------------
+// Sprint 2.x — Occasions (used by /contact occasion select + /admin/occasions)
+// Added in migration 0009; previously orphaned from this Drizzle schema.
+// ---------------------------------------------------------------------------
+
+export const occasions = pgTable("occasions", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  slug: text("slug").notNull().unique(),
+  sortOrder: integer("sort_order").notNull().default(0),
+  status: productStatusEnum("status").notNull().default("draft"),
+  publishedAt: timestamp("published_at", { withTimezone: true }),
+  createdAt: timestamp("created_at", { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp("updated_at", { withTimezone: true }).notNull().defaultNow(),
+  createdBy: uuid("created_by"),
+  updatedBy: uuid("updated_by"),
+});
+
+export const occasionTranslations = pgTable(
+  "occasion_translations",
+  {
+    occasionId: uuid("occasion_id")
+      .references(() => occasions.id, { onDelete: "cascade" })
+      .notNull(),
+    locale: localeEnum("locale").notNull(),
+    name: text("name").notNull(),
+  },
+  (table) => ({
+    pk: primaryKey({ columns: [table.occasionId, table.locale] }),
+  })
+);
+
+export const occasionsRelations = relations(occasions, ({ many }) => ({
+  translations: many(occasionTranslations),
+}));
+
+export const occasionTranslationsRelations = relations(
+  occasionTranslations,
+  ({ one }) => ({
+    occasion: one(occasions, {
+      fields: [occasionTranslations.occasionId],
+      references: [occasions.id],
+    }),
+  })
+);
+
+// ---------------------------------------------------------------------------
+// Sprint 4 — site_settings (single-row table; bool PK enforces it)
+// Added in migration 0010.
+// ---------------------------------------------------------------------------
+
+export const siteSettings = pgTable("site_settings", {
+  id: boolean("id").primaryKey().default(true),
+  instagramUrl: text("instagram_url"),
+  linkedinUrl: text("linkedin_url"),
+  xUrl: text("x_url"),
+  whatsappUrl: text("whatsapp_url"),
+  contactEmail: text("contact_email"),
+  contactPhone: text("contact_phone"),
+  updatedBy: uuid("updated_by"),
+  updatedAt: timestamp("updated_at", { withTimezone: true })
+    .notNull()
+    .defaultNow(),
+});

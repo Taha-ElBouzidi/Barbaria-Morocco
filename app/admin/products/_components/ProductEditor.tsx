@@ -192,7 +192,15 @@ export default function ProductEditor({
 
       if (publish) {
         const { setStatus } = await import("@/app/admin/products/[id]/actions");
-        await setStatus(result.id, "published");
+        const pub = await setStatus(result.id, "published");
+        if (!pub.ok) {
+          setServerError(
+            pub.error
+              ? `Saved as draft, but publish failed: ${pub.error}`
+              : "Saved as draft, but publish failed."
+          );
+          return;
+        }
       }
 
       if (isNew) {

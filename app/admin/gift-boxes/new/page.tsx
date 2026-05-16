@@ -8,13 +8,17 @@ import {
 import { getAllFacetsForAdmin } from "@/lib/admin/products";
 import GiftBoxEditor from "../_components/GiftBoxEditor";
 
+export const dynamic = "force-dynamic";
+
 export default async function NewGiftBoxPage() {
   await requireAdmin();
   const categoryOptions = await getCategoryOptions();
   const productOptionsByCategory: Record<string, Awaited<ReturnType<typeof getProductOptionsForCategory>>> = {};
-  for (const c of categoryOptions) {
-    productOptionsByCategory[c.id] = await getProductOptionsForCategory(c.id);
-  }
+  await Promise.all(
+    categoryOptions.map(async (c) => {
+      productOptionsByCategory[c.id] = await getProductOptionsForCategory(c.id);
+    })
+  );
 
   const facets = (await getAllFacetsForAdmin()) as Array<{
     type: string;

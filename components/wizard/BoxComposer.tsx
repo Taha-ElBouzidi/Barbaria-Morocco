@@ -123,7 +123,7 @@ type Action =
   | { type: "back" }
   | { type: "goReview" }
   | { type: "goQuantity" }
-  | { type: "setQty"; qty: number }
+  | { type: "setQty"; qty: number; min: number }
   | { type: "done" }
   | { type: "reset" }
   | { type: "hydrate"; state: State };
@@ -163,7 +163,10 @@ function reducer(state: State, action: Action): State {
     case "goQuantity":
       return { ...state, view: "quantity" };
     case "setQty":
-      return { ...state, quantity: Math.max(1, action.qty) };
+      // Clamp to the gift box's MOQ. Without `min` the wizard could
+      // dispatch qty=1 and deliver a submission below the maison's
+      // minimum order quantity.
+      return { ...state, quantity: Math.max(action.min, action.qty) };
     case "done":
       return { ...state, view: "done" };
     case "reset":
@@ -203,7 +206,8 @@ export default function BoxComposer({ box, products, themeKey, locale, copy, fac
   // ---------- handlers ----------
   const handleBack = () => dispatch({ type: "back" });
   const handleSize = (s: BoxSize) => dispatch({ type: "pickSize", size: s });
-  const handleQty = (q: number) => dispatch({ type: "setQty", qty: q });
+  const handleQty = (q: number) =>
+    dispatch({ type: "setQty", qty: q, min: box.defaultQuantityMin });
 
   const handleEditStep = (idx: number) => {
     dispatch({ type: "hydrate", state: { ...state, view: "step", currentStep: idx } });
@@ -404,10 +408,23 @@ export default function BoxComposer({ box, products, themeKey, locale, copy, fac
 // =========================================================================
 
 function WizardView({ keyId, children }: { keyId: string; children: React.ReactNode }) {
+  const viewRef = useRef<HTMLDivElement>(null);
+  // Move focus to the new view on every step change so keyboard +
+  // screen-reader users hear the heading of the panel that just
+  // animated in. Without this, focus stays on the (now-unmounted)
+  // Next / Back button and the context change is silent for AT.
+  useEffect(() => {
+    const node = viewRef.current;
+    if (!node) return;
+    const heading = node.querySelector<HTMLElement>("h1, h2, h3, [role='heading']");
+    (heading ?? node).focus({ preventScroll: true });
+  }, [keyId]);
   return (
     <div
       key={keyId}
-      className="motion-safe:animate-[slideInRight_500ms_cubic-bezier(0.16,1,0.3,1)] motion-safe:opacity-0"
+      ref={viewRef}
+      tabIndex={-1}
+      className="motion-safe:animate-[slideInRight_500ms_cubic-bezier(0.16,1,0.3,1)] motion-safe:opacity-0 focus-visible:outline-none"
       style={{ animationFillMode: "forwards" }}
     >
       {children}
@@ -1070,6 +1087,13 @@ function ProductZoomModal({
   // The bottom-sheet pattern avoids the iOS-Safari nested-scroll bugs
   // that the centered modal had on phones (user-reported: content too
   // big to view, no scroll).
+  const closeBtnRef = useRef<HTMLButtonElement>(null);
+  // Move focus to the close button on mount so keyboard + AT users
+  // land inside the dialog. role="dialog" + aria-modal already set
+  // the right semantics; this completes the focus contract.
+  useEffect(() => {
+    closeBtnRef.current?.focus();
+  }, []);
   return (
     <div
       role="dialog"
@@ -1084,6 +1108,7 @@ function ProductZoomModal({
         style={{ viewTransitionName: `wizard-product-${product.slug}`, WebkitOverflowScrolling: "touch" }}
       >
         <button
+          ref={closeBtnRef}
           type="button"
           onClick={onClose}
           aria-label={copy.detail_close}

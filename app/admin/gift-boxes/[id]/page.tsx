@@ -10,6 +10,8 @@ import {
 import { getAllFacetsForAdmin } from "@/lib/admin/products";
 import GiftBoxEditor from "../_components/GiftBoxEditor";
 
+export const dynamic = "force-dynamic";
+
 interface PageProps {
   params: Promise<{ id: string }>;
   searchParams: Promise<{ saved?: string }>;
@@ -23,10 +25,14 @@ export default async function EditGiftBoxPage({ params, searchParams }: PageProp
   if (!detail) notFound();
 
   const categoryOptions = await getCategoryOptions();
+  // Parallelise the per-category product fetch so the page renders in
+  // one round-trip-roundtrip pair instead of N+1 sequential calls.
   const productOptionsByCategory: Record<string, Awaited<ReturnType<typeof getProductOptionsForCategory>>> = {};
-  for (const c of categoryOptions) {
-    productOptionsByCategory[c.id] = await getProductOptionsForCategory(c.id);
-  }
+  await Promise.all(
+    categoryOptions.map(async (c) => {
+      productOptionsByCategory[c.id] = await getProductOptionsForCategory(c.id);
+    })
+  );
 
   // EN-keyed facet axis map so the items picker can group filter chips
   // the way the public wizard does (ingredient / use / format /

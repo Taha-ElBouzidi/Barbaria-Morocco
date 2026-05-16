@@ -21,11 +21,20 @@ export default function TranslationTabs({ en, fr, onChange }: TranslationTabsPro
 
   return (
     <div className="space-y-4">
-      <div className="flex border-b border-bb-line gap-0">
+      <div
+        role="tablist"
+        aria-label="Translation locale"
+        className="flex border-b border-bb-line gap-0"
+      >
         {(["en", "fr"] as const).map((locale) => (
           <button
             key={locale}
+            id={`tab-${locale}`}
             type="button"
+            role="tab"
+            aria-selected={active === locale}
+            aria-controls={`panel-${locale}`}
+            tabIndex={active === locale ? 0 : -1}
             onClick={() => setActive(locale)}
             className={cn(
               "px-6 py-3 font-sans text-[12px] uppercase tracking-[0.18em] border-b-2 -mb-px transition-colors",
@@ -39,7 +48,12 @@ export default function TranslationTabs({ en, fr, onChange }: TranslationTabsPro
         ))}
       </div>
 
-      <div className="space-y-4">
+      <div
+        role="tabpanel"
+        id={`panel-${active}`}
+        aria-labelledby={`tab-${active}`}
+        className="space-y-4"
+      >
         <label className="block">
           <span className="block font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant mb-2">
             Name *

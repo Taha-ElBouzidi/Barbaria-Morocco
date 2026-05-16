@@ -8,6 +8,13 @@
     "org_description": "Coffrets cadeaux de cosmétiques naturels et d'épicerie fine du terroir marocain. B2B, fait sur commande.",
     "breadcrumb_home": "Accueil"
   },
+  "notFound": {
+    "eyebrow": "Barbaria Morocco",
+    "code": "404",
+    "title": "Page introuvable",
+    "lede": "Cette page n'existe pas ou a été déplacée.",
+    "cta": "Retour à l'accueil"
+  },
   "nav": {
     "home": "Accueil",
     "contact": "Contact",

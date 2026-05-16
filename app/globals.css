@@ -191,14 +191,16 @@
     box-shadow: 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 0 rgba(255,255,255,0.08);
   }
 
-  /* Gold glass button */
+  /* Gold glass button. Text colour is bb-primary (#2C1810) for AA
+     contrast on the gold fill — white on gold was 2.46:1 (fail),
+     dark-brown on gold is 6.86:1 (pass). */
   .btn-glass-gold {
     background: rgba(201, 150, 58, 0.80);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(232, 201, 122, 0.50);
     box-shadow: 0 2px 16px rgba(201, 150, 58, 0.35), inset 0 1px 0 rgba(255,255,255,0.25);
-    color: #fff;
+    color: #2C1810;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .btn-glass-gold:hover {
@@ -207,14 +209,14 @@
     transform: translateY(-1px);
   }
 
-  /* Pink glass button (cosmetics) */
+  /* Pink glass button (cosmetics). Same contrast rule as gold. */
   .btn-glass-pink {
     background: rgba(226, 153, 161, 0.80);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(240, 196, 202, 0.50);
     box-shadow: 0 2px 16px rgba(226, 153, 161, 0.35), inset 0 1px 0 rgba(255,255,255,0.25);
-    color: #fff;
+    color: #2C1810;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .btn-glass-pink:hover {
@@ -223,14 +225,14 @@
     transform: translateY(-1px);
   }
 
-  /* Leather glass button (textile) */
+  /* Leather glass button (textile). Same contrast rule as gold. */
   .btn-glass-leather {
     background: rgba(160, 133, 106, 0.80);
     backdrop-filter: blur(12px);
     -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(212, 197, 169, 0.50);
     box-shadow: 0 2px 16px rgba(160, 133, 106, 0.35), inset 0 1px 0 rgba(255,255,255,0.25);
-    color: #fff;
+    color: #2C1810;
     transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
   .btn-glass-leather:hover {

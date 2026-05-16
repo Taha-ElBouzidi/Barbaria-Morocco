@@ -4,6 +4,8 @@ import { listGiftBoxesForAdmin } from "@/lib/admin/gift-boxes";
 import GiftBoxesList from "./_components/GiftBoxesList";
 import Icon from "@/components/primitives/Icon";
 
+export const dynamic = "force-dynamic";
+
 export default async function GiftBoxesPage() {
   await requireAdmin();
   const boxes = await listGiftBoxesForAdmin();

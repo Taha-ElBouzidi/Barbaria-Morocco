@@ -1,6 +1,7 @@
 import { notFound } from "next/navigation";
 import { setRequestLocale, getTranslations } from "next-intl/server";
 import type { Metadata } from "next";
+import dynamic from "next/dynamic";
 import { Link } from "@/i18n/navigation";
 import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
@@ -13,7 +14,12 @@ import { getGiftBoxBySlug } from "@/lib/data/gift-boxes";
 import { getCategoryBySlug } from "@/lib/data/categories";
 import { getProductsByCategory } from "@/lib/data/products";
 import { getAllFacets } from "@/lib/data/facets";
-import BoxComposer, { type WizardCopy, type FacetTypeByValue } from "@/components/wizard/BoxComposer";
+// The wizard is a 1k+ LOC client component. Lazy-load so curated
+// boxes (the majority) don't pay the JS cost; the import only fires
+// for `detail.isCustomizable === true` rows. Types remain a static
+// import — types erase at compile time, so they're free.
+import type { WizardCopy, FacetTypeByValue } from "@/components/wizard/BoxComposer";
+const BoxComposer = dynamic(() => import("@/components/wizard/BoxComposer"));
 import BoxAddToInquiry from "@/components/product/BoxAddToInquiry";
 import type { CategorySlug, ProductSummary } from "@/lib/data/types";
 
@@ -250,6 +256,7 @@ export default async function GiftBoxPage({ params }: PageProps) {
                       </div>
                       <ZoomLink
                         href={`/product/${item.slug}`}
+                        aria-label={`${t("view_product")}: ${item.name}`}
                         className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep hover:opacity-80 shrink-0"
                       >
                         {t("view_product")}
