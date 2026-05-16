@@ -133,8 +133,8 @@ export default async function AdminAnalyticsPage() {
               // piece. totalQty is the sum of those lines' box-level qty,
               // which is "box units carrying this piece" — not "units of
               // this piece sold." Naming the sublabel "in N boxes" keeps
-              // it honest.
-              sublabel: `in ${p.totalQty} box${p.totalQty === 1 ? "" : "es"}`,
+              // it honest. Plural form fires for everything except 1.
+              sublabel: `in ${p.totalQty} ${p.totalQty === 1 ? "box" : "boxes"}`,
             }))}
             emptyMessage="No custom compositions yet."
           />

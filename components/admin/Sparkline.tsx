@@ -33,7 +33,8 @@ export default function Sparkline({ points, height = 48, ariaLabel }: Props) {
       <div
         role="img"
         aria-label={`${ariaLabel}. No data.`}
-        className="h-12 w-full border-b border-bb-line"
+        style={{ height }}
+        className="w-full border-b border-bb-line"
       />
     );
   }

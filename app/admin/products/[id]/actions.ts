@@ -151,11 +151,17 @@ export async function saveProduct(
     }
   }
 
-  // Revalidate public pages + invalidate cached catalogue map
+  // Revalidate public pages + invalidate cached catalogue map. The
+  // /products section is broad: category listing AND every box wizard
+  // pulls product summaries through it, so layout-level revalidation
+  // covers anything that surfaces this product without us having to
+  // enumerate categories.
   revalidatePath(`/en/product/${data.slug}`);
   revalidatePath(`/fr/product/${data.slug}`);
   revalidatePath(`/en/rituals/${data.ritualId}`);
   revalidatePath(`/fr/rituals/${data.ritualId}`);
+  revalidatePath("/en/products", "layout");
+  revalidatePath("/fr/products", "layout");
   updateTag("products");
 
   return { ok: true, id: productId };
@@ -192,6 +198,8 @@ export async function setStatus(
   revalidatePath(`/fr/product/${product.slug}`);
   revalidatePath(`/en/rituals/${product.ritual_id}`);
   revalidatePath(`/fr/rituals/${product.ritual_id}`);
+  revalidatePath("/en/products", "layout");
+  revalidatePath("/fr/products", "layout");
   updateTag("products");
 
   return { ok: true };
@@ -221,6 +229,8 @@ export async function deleteProduct(id: string): Promise<{ ok: boolean; error?: 
     revalidatePath(`/en/rituals/${product.ritual_id}`);
     revalidatePath(`/fr/rituals/${product.ritual_id}`);
   }
+  revalidatePath("/en/products", "layout");
+  revalidatePath("/fr/products", "layout");
   updateTag("products");
 
   return { ok: true };

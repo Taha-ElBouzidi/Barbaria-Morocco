@@ -158,6 +158,7 @@ export default async function AdminInquiriesPage({ searchParams }: PageProps) {
               <Link
                 key={inq.id}
                 href={`/admin/inquiries/${inq.id}`}
+                aria-label={`View inquiry from ${inq.company}`}
                 className="block p-4 border border-bb-line bg-bb-bg hover:border-bb-secondary-deep transition-colors space-y-2"
               >
                 <div className="flex items-start justify-between gap-3">
