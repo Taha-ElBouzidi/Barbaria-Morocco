@@ -202,34 +202,54 @@ export async function getCategoryOptions(): Promise<Array<{ id: string; slug: st
 
 /** Product options for the gift-box item picker. Returns products in the
  *  selected category, with name + thumb. */
+export interface ProductOption {
+  id: string;
+  slug: string;
+  nameEn: string;
+  image: string | null;
+  /** EN facet values. Used by the gift-box editor's filter panel so
+   *  the maison can narrow the picker by ingredient / use / format /
+   *  packaging / certification, same UX as the public wizard. */
+  tags: string[];
+}
+
 export async function getProductOptionsForCategory(
   categoryId: string
-): Promise<Array<{ id: string; slug: string; nameEn: string; image: string | null }>> {
+): Promise<ProductOption[]> {
   const supabase = createServiceRoleClient();
   const { data } = await supabase
     .from("products")
     .select(`
       id, slug,
       translations:product_translations ( locale, name ),
-      images:product_images ( path, sort_order )
+      images:product_images ( path, sort_order ),
+      facet_links:product_facets ( facet:facets ( value_en ) )
     `)
     .eq("category_id", categoryId)
     .eq("status", "published");
   if (!data) return [];
+  type FacetLink = { facet: { value_en: string } | Array<{ value_en: string }> | null };
   type Row = {
     id: string;
     slug: string;
     translations: Array<{ locale: string; name: string }>;
     images: Array<{ path: string; sort_order: number }>;
+    facet_links: FacetLink[];
   };
   return (data as unknown as Row[]).map((r) => {
     const en = r.translations.find((t) => t.locale === "en");
     const sortedImages = [...r.images].sort((a, b) => a.sort_order - b.sort_order);
+    const tags: string[] = [];
+    for (const link of r.facet_links ?? []) {
+      const f = Array.isArray(link.facet) ? link.facet[0] : link.facet;
+      if (f?.value_en) tags.push(f.value_en);
+    }
     return {
       id: r.id,
       slug: r.slug,
       nameEn: en?.name ?? r.slug,
       image: sortedImages[0]?.path ?? null,
+      tags,
     };
   });
 }

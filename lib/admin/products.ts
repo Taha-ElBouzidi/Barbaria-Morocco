@@ -125,7 +125,24 @@ export async function getAllFacetsForAdmin() {
 // Public storage URL helper
 // ---------------------------------------------------------------------------
 
+/**
+ * Resolve an image path stored in the DB to a renderable URL.
+ *
+ * Path values come from two sources:
+ * - Sprint 1.5 seed populated rows with `/brand_photos/...` paths that
+ *   point at files shipped in the Next.js `/public` folder.
+ * - The admin uploader writes to Supabase Storage and stores the
+ *   storage object path (no leading slash).
+ *
+ * A leading `/` is the discriminator: treat those as local public
+ * paths and return as-is. Anything else gets prefixed with the
+ * Supabase Storage public URL. Without this check, seeded rows
+ * resolve to `/storage/v1/object/public/product-images//brand_photos/...`
+ * which 404s — the maison reported broken thumbnails on the admin
+ * product list before this fix.
+ */
 export function getPublicImageUrl(path: string): string {
+  if (path.startsWith("/")) return path;
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL!;
   return `${url}/storage/v1/object/public/product-images/${path}`;
 }

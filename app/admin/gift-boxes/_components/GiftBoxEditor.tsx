@@ -1,28 +1,38 @@
 "use client";
 
-import { useState, useTransition, useEffect } from "react";
+import { useState, useTransition, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { saveGiftBox, setGiftBoxStatus, deleteGiftBox } from "../[id]/actions";
-import type { GiftBoxAdminDetail } from "@/lib/admin/gift-boxes";
+import type { GiftBoxAdminDetail, ProductOption } from "@/lib/admin/gift-boxes";
 import HeroImageUploader from "@/components/admin/HeroImageUploader";
 
 const HELP_CLS = "font-sans text-[11px] text-bb-on-surface-variant mt-1 leading-snug";
-
-interface ProductOption {
-  id: string;
-  slug: string;
-  nameEn: string;
-  image: string | null;
-}
 
 interface Props {
   initial?: GiftBoxAdminDetail;
   categoryOptions: Array<{ id: string; slug: string; nameEn: string }>;
   /** Map of category id → its product options (for the items picker). */
   productOptionsByCategory: Record<string, ProductOption[]>;
+  /** EN value → facet type (ingredient | use | format | packaging |
+   *  certification). Used to group filter chips by axis. */
+  facetTypeByValue: Record<string, string>;
 }
 
-export default function GiftBoxEditor({ initial, categoryOptions, productOptionsByCategory }: Props) {
+const FACET_AXES: Array<{ key: string; label: string }> = [
+  { key: "ingredient", label: "Ingredients" },
+  { key: "use", label: "Use / Application" },
+  { key: "format", label: "Format" },
+  { key: "packaging", label: "Packaging" },
+  { key: "certification", label: "Certifications" },
+  { key: "other", label: "Other" },
+];
+
+export default function GiftBoxEditor({
+  initial,
+  categoryOptions,
+  productOptionsByCategory,
+  facetTypeByValue,
+}: Props) {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [statusPending, startStatusTransition] = useTransition();
@@ -40,8 +50,52 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
   const [taglineFr, setTaglineFr] = useState(initial?.translations.fr.tagline ?? "");
   const [storyIntroFr, setStoryIntroFr] = useState(initial?.translations.fr.storyIntro ?? "");
   const [itemIds, setItemIds] = useState<string[]>(initial?.itemProductIds ?? []);
+  const [translationLocale, setTranslationLocale] = useState<"en" | "fr">("en");
 
   const productOptions = productOptionsByCategory[categoryId] ?? [];
+
+  // ---- items picker filter state ----
+  const [search, setSearch] = useState("");
+  const [activeTags, setActiveTags] = useState<string[]>([]);
+  const [filterPanelOpen, setFilterPanelOpen] = useState(false);
+
+  // Group all unique facet values present in this category's products by
+  // axis, so the filter panel renders the right chips in the right
+  // section. "Other" catches anything the map doesn't know about (e.g.
+  // a freshly added facet type the editor wasn't yet built for).
+  const tagsByAxis = useMemo(() => {
+    const seen = new Set<string>();
+    const byAxis: Record<string, string[]> = {};
+    for (const p of productOptions) {
+      for (const tag of p.tags) {
+        if (seen.has(tag)) continue;
+        seen.add(tag);
+        const axis = facetTypeByValue[tag] ?? "other";
+        (byAxis[axis] ?? (byAxis[axis] = [])).push(tag);
+      }
+    }
+    for (const axis of Object.keys(byAxis)) byAxis[axis].sort((a, b) => a.localeCompare(b));
+    return byAxis;
+  }, [productOptions, facetTypeByValue]);
+
+  const filteredOptions = useMemo(() => {
+    const q = search.trim().toLowerCase();
+    return productOptions.filter((p) => {
+      if (activeTags.length && !activeTags.every((t) => p.tags.includes(t))) return false;
+      if (!q) return true;
+      return p.nameEn.toLowerCase().includes(q) || p.slug.toLowerCase().includes(q);
+    });
+  }, [productOptions, search, activeTags]);
+
+  const toggleTag = (value: string) => {
+    setActiveTags((prev) =>
+      prev.includes(value) ? prev.filter((v) => v !== value) : [...prev, value]
+    );
+  };
+  const clearFilters = () => {
+    setActiveTags([]);
+    setSearch("");
+  };
 
   // Auto-suggest slug from EN name when creating
   useEffect(() => {
@@ -174,7 +228,7 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
                 Compose-your-own box (wizard)
               </label>
               <p className={HELP_CLS}>
-                Check this for the single "Compose your own" entry per category. The Items section is hidden and the wizard generates each buyer's composition on demand. Curated (pre-set) boxes leave this unchecked.
+                Check this for the single &quot;Compose your own&quot; entry per category. The Items section is hidden and the wizard generates each buyer&apos;s composition on demand. Curated (pre-set) boxes leave this unchecked.
               </p>
             </div>
           </div>
@@ -192,57 +246,89 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
         </div>
       </section>
 
-      {/* Translations */}
+      {/* Translations — tabbed, English first. Matches the pattern used
+          in the product editor (TranslationTabs) so the maison only
+          fills out one locale at a time. */}
       <section className="space-y-6">
         <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
           Translations
         </h2>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <div className="space-y-5">
-            <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant">English</p>
-            <div>
-              <label className={labelCls} htmlFor="name_en">Name *</label>
-              <input id="name_en" name="name_en" required value={nameEn} onChange={(e) => setNameEn(e.target.value)} className={inputCls} />
-            </div>
-            <div>
-              <label className={labelCls} htmlFor="tagline_en">Tagline</label>
-              <input id="tagline_en" name="tagline_en" value={taglineEn} onChange={(e) => setTaglineEn(e.target.value)} className={inputCls} />
-              <p className={HELP_CLS}>A one-line evocative phrase shown under the box name. Example: "Glow, softness, relaxation."</p>
-            </div>
-            <div>
-              <label className={labelCls} htmlFor="storyIntro_en">Story intro</label>
-              <textarea id="storyIntro_en" name="storyIntro_en" rows={4} value={storyIntroEn} onChange={(e) => setStoryIntroEn(e.target.value)} className={inputCls} />
-              <p className={HELP_CLS}>2 to 3 sentences that set the scene for the buyer when they open the box detail page.</p>
-            </div>
+        <div
+          role="tablist"
+          aria-label="Translation locale"
+          className="flex gap-6 border-b border-bb-line"
+        >
+          {([
+            { id: "en", label: "English" },
+            { id: "fr", label: "Français" },
+          ] as const).map((t) => {
+            const active = translationLocale === t.id;
+            return (
+              <button
+                key={t.id}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setTranslationLocale(t.id)}
+                className={`pb-3 -mb-px font-sans text-[11px] uppercase tracking-[0.18em] transition-colors ${
+                  active
+                    ? "text-bb-primary border-b-2 border-bb-primary"
+                    : "text-bb-on-surface-variant hover:text-bb-primary"
+                }`}
+              >
+                {t.label}
+              </button>
+            );
+          })}
+        </div>
+
+        {/* Keep BOTH locales mounted so their inputs stay in the form on
+            submit (browsers don't post unmounted fields). The inactive
+            one hides visually but still serializes. */}
+        <div className={translationLocale === "en" ? "space-y-5" : "space-y-5 hidden"}>
+          <div>
+            <label className={labelCls} htmlFor="name_en">Name *</label>
+            <input id="name_en" name="name_en" required value={nameEn} onChange={(e) => setNameEn(e.target.value)} className={inputCls} />
           </div>
-          <div className="space-y-5" lang="fr">
-            <p className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant">Français</p>
-            <div>
-              <label className={labelCls} htmlFor="name_fr">Nom *</label>
-              <input id="name_fr" name="name_fr" required value={nameFr} onChange={(e) => setNameFr(e.target.value)} className={inputCls} />
-            </div>
-            <div>
-              <label className={labelCls} htmlFor="tagline_fr">Slogan</label>
-              <input id="tagline_fr" name="tagline_fr" value={taglineFr} onChange={(e) => setTaglineFr(e.target.value)} className={inputCls} />
-              <p className={HELP_CLS}>Une phrase courte sous le nom du coffret. Exemple : "Éclat, douceur, relaxation."</p>
-            </div>
-            <div>
-              <label className={labelCls} htmlFor="storyIntro_fr">Introduction</label>
-              <textarea id="storyIntro_fr" name="storyIntro_fr" rows={4} value={storyIntroFr} onChange={(e) => setStoryIntroFr(e.target.value)} className={inputCls} />
-              <p className={HELP_CLS}>2 à 3 phrases narratives, affichées en haut de la page coffret.</p>
-            </div>
+          <div>
+            <label className={labelCls} htmlFor="tagline_en">Tagline</label>
+            <input id="tagline_en" name="tagline_en" value={taglineEn} onChange={(e) => setTaglineEn(e.target.value)} className={inputCls} />
+            <p className={HELP_CLS}>A one-line evocative phrase shown under the box name. Example: &quot;Glow, softness, relaxation.&quot;</p>
+          </div>
+          <div>
+            <label className={labelCls} htmlFor="storyIntro_en">Story intro</label>
+            <textarea id="storyIntro_en" name="storyIntro_en" rows={4} value={storyIntroEn} onChange={(e) => setStoryIntroEn(e.target.value)} className={inputCls} />
+            <p className={HELP_CLS}>2 to 3 sentences that set the scene for the buyer when they open the box detail page.</p>
+          </div>
+        </div>
+
+        <div lang="fr" className={translationLocale === "fr" ? "space-y-5" : "space-y-5 hidden"}>
+          <div>
+            <label className={labelCls} htmlFor="name_fr">Nom *</label>
+            <input id="name_fr" name="name_fr" required value={nameFr} onChange={(e) => setNameFr(e.target.value)} className={inputCls} />
+          </div>
+          <div>
+            <label className={labelCls} htmlFor="tagline_fr">Slogan</label>
+            <input id="tagline_fr" name="tagline_fr" value={taglineFr} onChange={(e) => setTaglineFr(e.target.value)} className={inputCls} />
+            <p className={HELP_CLS}>Une phrase courte sous le nom du coffret. Exemple : &quot;Éclat, douceur, relaxation.&quot;</p>
+          </div>
+          <div>
+            <label className={labelCls} htmlFor="storyIntro_fr">Introduction</label>
+            <textarea id="storyIntro_fr" name="storyIntro_fr" rows={4} value={storyIntroFr} onChange={(e) => setStoryIntroFr(e.target.value)} className={inputCls} />
+            <p className={HELP_CLS}>2 à 3 phrases narratives, affichées en haut de la page coffret.</p>
           </div>
         </div>
       </section>
 
-      <section className="space-y-6">
+      {/* Items picker — hidden for wizard boxes (buyers compose
+          their own on demand). */}
+      {!isCustomizable && (
+        <section className="space-y-6">
           <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
-            Pieces ({itemIds.length})
+            Items ({itemIds.length})
           </h2>
           <p className="text-[13px] text-bb-on-surface-variant">
-            {isCustomizable
-              ? "These are the pieces buyers can choose from when they enter the compose-your-own wizard for this box. If you leave this empty, the wizard falls back to every published piece in the category."
-              : "Pick pieces from the selected category and order them. The order here is the order shown on the public box detail page."}
+            Pick items from the selected category and order them. The order here is the order shown on the public box detail page.
           </p>
 
           {/* Picked items, ordered */}
@@ -287,18 +373,116 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
             </ol>
           )}
 
-          {/* Available products to add. Compact tile grid: thumbnail + name,
-              checkmark overlay when picked. 2 columns on phone, denser on
-              desktop. */}
+          {/* Search + filter controls. Same UX as the public wizard:
+              text search + collapsible facet-axis panel + active filter
+              chips with one-click removal. */}
+          <div className="space-y-3 border border-bb-line bg-bb-bg-low p-3 sm:p-4">
+            <div className="flex flex-wrap items-center gap-3">
+              <input
+                type="search"
+                aria-label="Search items by name or slug"
+                placeholder="Search items by name or slug…"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="flex-1 min-w-[200px] px-3 py-2 min-h-[40px] border border-bb-line bg-bb-bg text-bb-primary text-[13px] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary focus-visible:ring-offset-1"
+              />
+              <button
+                type="button"
+                onClick={() => setFilterPanelOpen((v) => !v)}
+                aria-expanded={filterPanelOpen}
+                className="inline-flex items-center gap-2 px-3 py-2 min-h-[40px] border border-bb-line text-bb-on-surface text-[11px] uppercase tracking-[0.16em] hover:border-bb-primary transition-colors"
+              >
+                Filters
+                {activeTags.length > 0 && (
+                  <span className="inline-flex items-center justify-center min-w-[20px] h-5 px-1 bg-bb-secondary-deep text-white text-[10px] tabular-nums">
+                    {activeTags.length}
+                  </span>
+                )}
+              </button>
+              {(activeTags.length > 0 || search) && (
+                <button
+                  type="button"
+                  onClick={clearFilters}
+                  className="font-sans text-[11px] uppercase tracking-[0.16em] text-bb-on-surface-variant hover:text-bb-primary px-2 py-2 min-h-[40px]"
+                >
+                  Clear
+                </button>
+              )}
+            </div>
+
+            {/* Active filter chips, click to remove */}
+            {activeTags.length > 0 && (
+              <ul className="flex flex-wrap gap-2">
+                {activeTags.map((tag) => (
+                  <li key={tag}>
+                    <button
+                      type="button"
+                      onClick={() => toggleTag(tag)}
+                      aria-label={`Remove filter ${tag}`}
+                      className="inline-flex items-center gap-1 px-2 py-1 bg-bb-secondary-deep/15 text-bb-secondary-deep border border-bb-secondary-deep/40 text-[11px]"
+                    >
+                      {tag} <span aria-hidden="true">×</span>
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            )}
+
+            {filterPanelOpen && (
+              <div className="border-t border-bb-line pt-3 space-y-4">
+                {FACET_AXES.map((axis) => {
+                  const values = tagsByAxis[axis.key] ?? [];
+                  if (values.length === 0) return null;
+                  return (
+                    <div key={axis.key} className="space-y-2">
+                      <p className="font-sans text-[10px] uppercase tracking-[0.18em] text-bb-secondary-deep">
+                        {axis.label}
+                      </p>
+                      <ul className="flex flex-wrap gap-2">
+                        {values.map((value) => {
+                          const active = activeTags.includes(value);
+                          return (
+                            <li key={value}>
+                              <button
+                                type="button"
+                                onClick={() => toggleTag(value)}
+                                aria-pressed={active}
+                                className={`px-2 py-1 border text-[11px] transition-colors ${
+                                  active
+                                    ? "border-bb-secondary-deep text-bb-secondary-deep bg-bb-secondary-deep/10"
+                                    : "border-bb-line text-bb-on-surface-variant hover:border-bb-primary"
+                                }`}
+                              >
+                                {value}
+                              </button>
+                            </li>
+                          );
+                        })}
+                      </ul>
+                    </div>
+                  );
+                })}
+                {Object.keys(tagsByAxis).length === 0 && (
+                  <p className="text-[12px] text-bb-on-surface-variant italic">
+                    No facet tags assigned to items in this category yet.
+                  </p>
+                )}
+              </div>
+            )}
+          </div>
+
+          {/* Available items grid. Empty when filtered down to zero. */}
           <details className="border border-bb-line bg-bb-bg-low" open>
             <summary className="cursor-pointer px-4 py-3 font-sans text-[12px] uppercase tracking-[0.18em] text-bb-primary">
-              Pieces ({productOptions.length} available in this category)
+              Items ({filteredOptions.length} of {productOptions.length})
             </summary>
             <div className="p-3 sm:p-4 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-2 sm:gap-3">
-              {productOptions.map((p) => {
+              {filteredOptions.map((p) => {
                 const picked = itemIds.includes(p.id);
                 const imgUrl = p.image
-                  ? `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/product-images/${p.image}`
+                  ? p.image.startsWith("/")
+                    ? p.image
+                    : `${process.env.NEXT_PUBLIC_SUPABASE_URL}/storage/v1/object/public/product-images/${p.image}`
                   : null;
                 return (
                   <button
@@ -335,12 +519,18 @@ export default function GiftBoxEditor({ initial, categoryOptions, productOptions
               })}
               {productOptions.length === 0 && (
                 <p className="col-span-full text-[13px] text-bb-on-surface-variant italic">
-                  No published products in this category yet. Add products first.
+                  No published items in this category yet. Add items first.
+                </p>
+              )}
+              {productOptions.length > 0 && filteredOptions.length === 0 && (
+                <p className="col-span-full text-[13px] text-bb-on-surface-variant italic">
+                  No items match the current search or filters.
                 </p>
               )}
             </div>
           </details>
         </section>
+      )}
 
       {/* Action bar. Negative margins compensate for the main container
           padding (px-4 mobile, px-8 desktop) so the sticky footer reaches

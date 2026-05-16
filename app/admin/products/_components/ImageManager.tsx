@@ -25,6 +25,9 @@ export default function ImageManager({ productId, initialImages }: ImageManagerP
   const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
 
   function getPublicUrl(path: string) {
+    // Leading "/" → local /public file (seeded rows). Anything else is
+    // a Supabase Storage object path written by the uploader.
+    if (path.startsWith("/")) return path;
     return `${supabaseUrl}/storage/v1/object/public/product-images/${path}`;
   }
 

@@ -51,6 +51,9 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
   const [status, setStatus] = useState("all");
 
   function getPublicUrl(path: string) {
+    // Leading "/" means local /public file (sprint 1.5 seed). Everything
+    // else is a Supabase Storage object path.
+    if (path.startsWith("/")) return path;
     return `${supabaseUrl}/storage/v1/object/public/product-images/${path}`;
   }
 

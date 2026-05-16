@@ -267,7 +267,11 @@ export default function AtelierEditor({ id, initialData }: AtelierEditorProps) {
             <div className="flex items-start gap-4">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={`${supabaseUrl}/storage/v1/object/public/product-images/${imagePath}`}
+                src={
+                  imagePath.startsWith("/")
+                    ? imagePath
+                    : `${supabaseUrl}/storage/v1/object/public/product-images/${imagePath}`
+                }
                 alt="Atelier image"
                 className="w-32 h-32 object-cover border border-bb-line"
               />

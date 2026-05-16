@@ -6,6 +6,7 @@ import {
   getCategoryOptions,
   getProductOptionsForCategory,
 } from "@/lib/admin/gift-boxes";
+import { getAllFacetsForAdmin } from "@/lib/admin/products";
 import GiftBoxEditor from "../_components/GiftBoxEditor";
 
 interface PageProps {
@@ -25,6 +26,16 @@ export default async function EditGiftBoxPage({ params, searchParams }: PageProp
   for (const c of categoryOptions) {
     productOptionsByCategory[c.id] = await getProductOptionsForCategory(c.id);
   }
+
+  // EN-keyed facet axis map so the items picker can group filter chips
+  // the way the public wizard does (ingredient / use / format /
+  // packaging / certification).
+  const facets = (await getAllFacetsForAdmin()) as Array<{
+    type: string;
+    value_en: string;
+  }>;
+  const facetTypeByValue: Record<string, string> = {};
+  for (const f of facets) facetTypeByValue[f.value_en] = f.type;
 
   return (
     <div className="space-y-8">
@@ -60,6 +71,7 @@ export default async function EditGiftBoxPage({ params, searchParams }: PageProp
         initial={detail}
         categoryOptions={categoryOptions}
         productOptionsByCategory={productOptionsByCategory}
+        facetTypeByValue={facetTypeByValue}
       />
     </div>
   );
