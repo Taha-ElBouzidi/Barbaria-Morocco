@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import LegalShell from "@/components/legal/LegalShell";
+import { L } from "@/components/legal/LegalValue";
+import { CLIENT_DATA } from "@/lib/legal/client-data";
 import { Link } from "@/i18n/navigation";
 
 export const dynamic = "force-static";
@@ -19,10 +21,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       : "Privacy policy of Barbaria Morocco, under GDPR and Morocco law 09-08.",
     robots: { index: true, follow: true },
   };
-}
-
-function Fill({ children }: { children: React.ReactNode }) {
-  return <span className="legal-placeholder">{children}</span>;
 }
 
 export default async function PrivacyPage({ params }: PageProps) {
@@ -68,7 +66,7 @@ function FrenchContent() {
     <>
       <p>
         La présente politique décrit les conditions dans lesquelles{" "}
-        <Fill>[À COMPLÉTER : dénomination sociale]</Fill> (ci-après « Barbaria »)
+        <L>{CLIENT_DATA.legalName.fr}</L> (ci-après « Barbaria »)
         collecte et traite les données à caractère personnel des visiteurs et des
         clients professionnels de son site, conformément au Règlement Général sur
         la Protection des Données (UE 2016/679, ci-après « RGPD ») et à la loi
@@ -78,8 +76,8 @@ function FrenchContent() {
       <h2>1. Responsable du traitement</h2>
       <p>
         <strong>Barbaria</strong>,{" "}
-        <Fill>[À COMPLÉTER : dénomination sociale]</Fill>, siège social :{" "}
-        <Fill>[À COMPLÉTER : adresse, Marrakech, Maroc]</Fill>. RC, ICE et IF tels
+        <L>{CLIENT_DATA.legalName.fr}</L>, siège social :{" "}
+        <L>{CLIENT_DATA.fullAddress.fr}</L>. RC, ICE et IF tels
         que mentionnés dans les <Link href="/legal/legal-notice">mentions légales</Link>.
       </p>
       <p>
@@ -172,7 +170,7 @@ function FrenchContent() {
           <strong>Supabase Inc.</strong> (base de données, authentification
           administrateur) — 970 Toa Payoh North #07-04, Singapour 318992. Garanties :
           DPA Supabase incluant les CCT ; région de stockage :{" "}
-          <Fill>[À COMPLÉTER]</Fill>.
+          <L>{CLIENT_DATA.supabaseRegion.fr}</L>.
         </li>
         <li>
           <strong>Formspree (Roboflow Studios LLC)</strong> — Boston, MA, États-Unis.
@@ -192,7 +190,7 @@ function FrenchContent() {
         types adoptées par la Commission européenne (décision 2021/914). Pour les
         transferts depuis le Maroc, l&apos;autorisation de la CNDP au titre de
         l&apos;article 17 de la loi 09-08 a été{" "}
-        <Fill>[À COMPLÉTER : demandée / obtenue, référence]</Fill>.
+        <L>{CLIENT_DATA.cndpTransferAuth.fr}</L>.
       </p>
 
       <h2>8. Durées de conservation</h2>
@@ -282,7 +280,7 @@ function EnglishContent() {
   return (
     <>
       <p>
-        This policy describes how <Fill>[CLIENT-FILL: legal name]</Fill> ("Barbaria")
+        This policy describes how <L>{CLIENT_DATA.legalName.en}</L> ("Barbaria")
         collects and processes personal data of visitors and professional clients of
         its website, in accordance with the EU General Data Protection Regulation
         (2016/679, "GDPR") and Moroccan law No. 09-08.
@@ -290,8 +288,8 @@ function EnglishContent() {
 
       <h2>1. Controller</h2>
       <p>
-        <strong>Barbaria</strong>, <Fill>[CLIENT-FILL: legal name]</Fill>, registered
-        office: <Fill>[CLIENT-FILL: address, Marrakech, Morocco]</Fill>. RC, ICE and
+        <strong>Barbaria</strong>, <L>{CLIENT_DATA.legalName.en}</L>, registered
+        office: <L>{CLIENT_DATA.fullAddress.en}</L>. RC, ICE and
         IF as stated in our <Link href="/legal/legal-notice">legal notice</Link>.
       </p>
       <p>
@@ -375,7 +373,7 @@ function EnglishContent() {
         <li>
           <strong>Supabase Inc.</strong> (database, admin authentication) — 970 Toa
           Payoh North #07-04, Singapore 318992. Safeguards: Supabase DPA including
-          SCCs; storage region: <Fill>[CLIENT-FILL]</Fill>.
+          SCCs; storage region: <L>{CLIENT_DATA.supabaseRegion.en}</L>.
         </li>
         <li>
           <strong>Formspree (Roboflow Studios LLC)</strong> — Boston, MA, USA.
@@ -394,7 +392,7 @@ function EnglishContent() {
         certified) and on Standard Contractual Clauses adopted by the European
         Commission (decision 2021/914). For transfers from Morocco, CNDP authorisation
         under article 17 of law 09-08 has been{" "}
-        <Fill>[CLIENT-FILL: requested / obtained, reference]</Fill>.
+        <L>{CLIENT_DATA.cndpTransferAuth.en}</L>.
       </p>
 
       <h2>8. Retention Periods</h2>

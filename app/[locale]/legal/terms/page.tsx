@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import LegalShell from "@/components/legal/LegalShell";
+import { L } from "@/components/legal/LegalValue";
+import { CLIENT_DATA } from "@/lib/legal/client-data";
 import { Link } from "@/i18n/navigation";
 
 export const dynamic = "force-static";
@@ -19,10 +21,6 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       : "Terms of use of the Barbaria Morocco website.",
     robots: { index: true, follow: true },
   };
-}
-
-function Fill({ children }: { children: React.ReactNode }) {
-  return <span className="legal-placeholder">{children}</span>;
 }
 
 export default async function TermsPage({ params }: PageProps) {
@@ -71,7 +69,7 @@ function FrenchContent() {
       <h2>1. Objet</h2>
       <p>
         Le présent site, accessible à l&apos;adresse barbariamorocco.com (le « Site »),
-        est édité par <Fill>[À COMPLÉTER : dénomination sociale]</Fill> (« Barbaria »).
+        est édité par <L>{CLIENT_DATA.legalName.fr}</L> (« Barbaria »).
         Le Site présente une sélection de cosmétiques naturels et de produits
         d&apos;épicerie fine du terroir marocain destinée à une clientèle professionnelle :
         hôtels, spas, distributeurs et clients corporate.
@@ -214,7 +212,7 @@ function FrenchContent() {
       <p>
         Pour toute question relative aux présentes CGU :{" "}
         <a href="mailto:contact@barbariamorocco.com">contact@barbariamorocco.com</a>{" "}
-        / <Fill>[À COMPLÉTER : adresse postale, Marrakech, Maroc]</Fill>.
+        / <L>{CLIENT_DATA.postalAddress.fr}</L>.
       </p>
     </>
   );
@@ -226,7 +224,7 @@ function EnglishContent() {
       <h2>1. Purpose</h2>
       <p>
         This website, accessible at barbariamorocco.com (the "Site"), is published
-        by <Fill>[CLIENT-FILL: legal name]</Fill> ("Barbaria"). The Site presents a
+        by <L>{CLIENT_DATA.legalName.en}</L> ("Barbaria"). The Site presents a
         curated selection of natural cosmetics and fine grocery products of Moroccan
         terroir, addressed to a professional clientele: hotels, spas, distributors
         and corporate clients.
@@ -361,7 +359,7 @@ function EnglishContent() {
       <p>
         For any question regarding these Terms:{" "}
         <a href="mailto:contact@barbariamorocco.com">contact@barbariamorocco.com</a>{" "}
-        / <Fill>[CLIENT-FILL: postal address, Marrakech, Morocco]</Fill>.
+        / <L>{CLIENT_DATA.postalAddress.en}</L>.
       </p>
     </>
   );
