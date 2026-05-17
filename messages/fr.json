@@ -240,7 +240,28 @@
     "whatsapp": "WhatsApp",
     "instagram": "Instagram",
     "email": "Email",
-    "follow": "Suivez-nous"
+    "follow": "Suivez-nous",
+    "legal_aria": "Liens légaux",
+    "legal_notice": "Mentions légales",
+    "privacy": "Confidentialité",
+    "terms": "Conditions d'utilisation",
+    "cookies": "Cookies"
+  },
+  "cookies": {
+    "banner_title": "Vos préférences de cookies",
+    "banner_body": "Nous utilisons des cookies strictement nécessaires au fonctionnement du site et, avec votre accord, des cookies de mesure d'audience qui nous aident à comprendre comment vous nous visitez.",
+    "btn_accept_all": "Tout accepter",
+    "btn_reject": "Refuser le non-essentiel",
+    "btn_customize": "Personnaliser",
+    "btn_collapse": "Masquer le détail",
+    "btn_save": "Enregistrer mes choix",
+    "cat_necessary": "Strictement nécessaires",
+    "cat_necessary_desc": "Cookies indispensables au fonctionnement du site : session administrateur, préférence de langue. Toujours actifs.",
+    "cat_analytics": "Mesure d'audience",
+    "cat_analytics_desc": "Vercel Analytics et Speed Insights. Données agrégées et anonymisées qui nous aident à améliorer la performance du site.",
+    "manage_link": "Gérer les cookies",
+    "policy_link": "En savoir plus.",
+    "aria_close": "Fermer le bandeau de cookies"
   },
   "common": {
     "moq_short": "MOQ",

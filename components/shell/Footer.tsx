@@ -7,6 +7,7 @@ import Wordmark from "@/components/primitives/Wordmark";
 import { cn } from "@/lib/utils";
 import Icon from "@/components/primitives/Icon";
 import type { SiteSettings } from "@/lib/data/site-settings";
+import { useConsent } from "@/components/cookies/ConsentContext";
 
 interface FooterProps {
   socials: SiteSettings;
@@ -14,8 +15,10 @@ interface FooterProps {
 
 export default function Footer({ socials }: FooterProps) {
   const t = useTranslations("footer");
+  const tCookies = useTranslations("cookies");
   const locale = useLocale();
   const pathname = usePathname();
+  const { openBanner } = useConsent();
   const SOCIAL_LINKS = [
     { label: "Instagram", icon: "instagram" as const, href: socials.instagramUrl },
     { label: "LinkedIn", icon: "linkedin" as const, href: socials.linkedinUrl },
@@ -157,7 +160,49 @@ export default function Footer({ socials }: FooterProps) {
           </ul>
         </div>
 
-        <div className="mt-10 border-t border-bb-line pt-8">
+        {/* Legal row, full width above the copyright bar */}
+        <nav
+          aria-label={t("legal_aria")}
+          className="mt-10 border-t border-bb-line pt-8 flex flex-wrap items-center justify-center gap-x-6 gap-y-2"
+        >
+          <Link
+            href="/legal/legal-notice"
+            className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+          >
+            {t("legal_notice")}
+          </Link>
+          <span aria-hidden="true" className="text-bb-line">·</span>
+          <Link
+            href="/legal/privacy"
+            className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+          >
+            {t("privacy")}
+          </Link>
+          <span aria-hidden="true" className="text-bb-line">·</span>
+          <Link
+            href="/legal/terms"
+            className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+          >
+            {t("terms")}
+          </Link>
+          <span aria-hidden="true" className="text-bb-line">·</span>
+          <Link
+            href="/legal/cookies"
+            className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+          >
+            {t("cookies")}
+          </Link>
+          <span aria-hidden="true" className="text-bb-line">·</span>
+          <button
+            type="button"
+            onClick={openBanner}
+            className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-primary transition-colors"
+          >
+            {tCookies("manage_link")}
+          </button>
+        </nav>
+
+        <div className="mt-8 border-t border-bb-line pt-8">
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
             <Eyebrow tone="muted">{t("rights")}</Eyebrow>
 

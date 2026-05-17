@@ -4,8 +4,6 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { Analytics } from "@vercel/analytics/next";
-import { SpeedInsights } from "@vercel/speed-insights/next";
 import { BASE_URL, CONTACT_EMAIL, INSTAGRAM_HANDLE } from "@/lib/constants";
 import "../globals.css";
 import ShellChrome from "@/components/shell/ShellChrome";
@@ -14,6 +12,9 @@ import { InquiryProvider } from "@/lib/inquiry-context";
 import { ProductCatalogueProvider } from "@/lib/data/ProductCatalogueContext";
 import { getMinimalProductMap } from "@/lib/data/products";
 import { getSiteSettings } from "@/lib/data/site-settings";
+import { ConsentProvider } from "@/components/cookies/ConsentContext";
+import ConsentBanner from "@/components/cookies/ConsentBanner";
+import AnalyticsGate from "@/components/cookies/AnalyticsGate";
 
 const playfair = Playfair_Display({
   subsets: ["latin"],
@@ -125,17 +126,19 @@ export default async function LocaleLayout({
           Skip to content
         </a>
         <NextIntlClientProvider locale={locale}>
-          <InquiryProvider>
-            <ProductCatalogueProvider catalogue={catalogueEntries}>
-              <ShellChrome locale={locale} mainId="main-content" socials={socials}>
-                <div className="flex-1">{children}</div>
-              </ShellChrome>
-              <WhatsAppFloat />
-            </ProductCatalogueProvider>
-          </InquiryProvider>
+          <ConsentProvider>
+            <InquiryProvider>
+              <ProductCatalogueProvider catalogue={catalogueEntries}>
+                <ShellChrome locale={locale} mainId="main-content" socials={socials}>
+                  <div className="flex-1">{children}</div>
+                </ShellChrome>
+                <WhatsAppFloat />
+              </ProductCatalogueProvider>
+            </InquiryProvider>
+            <ConsentBanner />
+            <AnalyticsGate />
+          </ConsentProvider>
         </NextIntlClientProvider>
-        <Analytics />
-        <SpeedInsights />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
