@@ -70,7 +70,6 @@ to find the exact line.
 - [ ] ICE (15 chiffres)
 - [ ] IF (Identifiant Fiscal)
 - [ ] Patente / Taxe Professionnelle
-- [ ] CNSS (si employés)
 - [ ] Nom complet du directeur de publication
 - [ ] Numéro OMPIC pour la marque "Barbaria"
 - [ ] Numéro de notification DMP (cosmétiques, si fabricant/importateur)

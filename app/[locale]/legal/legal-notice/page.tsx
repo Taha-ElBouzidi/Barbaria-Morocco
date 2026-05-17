@@ -78,7 +78,6 @@ function FrenchContent() {
         <li>Identifiant Commun de l&apos;Entreprise (ICE) : <Fill>[À COMPLÉTER : 15 chiffres]</Fill></li>
         <li>Identifiant Fiscal (IF) : <Fill>[À COMPLÉTER]</Fill></li>
         <li>Taxe Professionnelle (Patente) : <Fill>[À COMPLÉTER]</Fill></li>
-        <li>CNSS (le cas échéant) : <Fill>[À COMPLÉTER]</Fill></li>
         <li>Téléphone : +212 6 59 65 88 63</li>
         <li>Email : contact@barbariamorocco.com</li>
       </ul>
@@ -183,7 +182,6 @@ function EnglishContent() {
         <li>Common Business Identifier (ICE): <Fill>[CLIENT-FILL: 15 digits]</Fill></li>
         <li>Tax Identifier (IF): <Fill>[CLIENT-FILL]</Fill></li>
         <li>Professional Tax (Patente): <Fill>[CLIENT-FILL]</Fill></li>
-        <li>Social Security (CNSS, if applicable): <Fill>[CLIENT-FILL]</Fill></li>
         <li>Phone: +212 6 59 65 88 63</li>
         <li>Email: contact@barbariamorocco.com</li>
       </ul>
