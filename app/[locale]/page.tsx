@@ -9,6 +9,7 @@ import EditorialBlock from "@/components/home/EditorialBlock";
 import BentoCategories from "@/components/home/BentoCategories";
 import Heritage3Up from "@/components/home/Heritage3Up";
 import JsonLd from "@/components/JsonLd";
+import { BASE_URL } from "@/lib/constants";
 
 export async function generateMetadata({
   params,
@@ -39,10 +40,10 @@ export default async function HomePage({
           "@context": "https://schema.org",
           "@type": "WebSite",
           name: "Barbaria Morocco",
-          url: "https://barbaria-morocco.vercel.app",
+          url: BASE_URL,
           potentialAction: {
             "@type": "SearchAction",
-            target: "https://barbaria-morocco.vercel.app/fr?q={search_term_string}",
+            target: `${BASE_URL}/fr?q={search_term_string}`,
             "query-input": "required name=search_term_string",
           },
         }}
