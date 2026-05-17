@@ -153,33 +153,41 @@ export default function SaharaPrestige({
       if (!pepitas) return;
       const star = document.createElement("span");
       star.className = "sp-shooting";
-      const startX = 5 + Math.random() * 75;
+      // Direction: half fall down-right, half down-left. Never upward.
+      // The down-left ones rotate to 180 minus baseAngle so the streak
+      // still translates along its local +x axis (head leads cleanly).
+      const goLeft = Math.random() < 0.5;
+      const baseAngle = 25 + Math.random() * 35;
+      const angle = goLeft ? 180 - baseAngle : baseAngle;
+      // Spawn opposite the travel side so each star has room to drift.
+      const startX = goLeft ? 70 + Math.random() * 25 : 5 + Math.random() * 25;
       const startY = 2 + Math.random() * 38;
-      const flip = Math.random() < 0.5 ? -1 : 1;
-      const angle = (25 + Math.random() * 35) * flip;
-      const travel = 60 + Math.random() * 35;
-      const duration = 2.4 + Math.random() * 3.3; // 2.4 to 5.7s
+      const travel = 60 + Math.random() * 30;
+      const duration = 2 + Math.random() * 2; // 2 to 4s
+      // Subtle gravity-pull arc: rotation drifts a few degrees toward
+      // vertical (90 deg) over the star's life. Sign matches direction.
+      const arcDeg = (goLeft ? -1 : 1) * (1.2 + Math.random() * 1.2);
       star.style.setProperty("--start-x", startX.toFixed(1) + "%");
       star.style.setProperty("--start-y", startY.toFixed(1) + "%");
       star.style.setProperty("--angle", angle.toFixed(1) + "deg");
+      star.style.setProperty("--arc", arcDeg.toFixed(2) + "deg");
       star.style.setProperty("--travel", travel.toFixed(1) + "vw");
       star.style.setProperty("--duration", duration.toFixed(2) + "s");
       pepitas.appendChild(star);
       setTimeout(() => star.remove(), (duration + 0.2) * 1000);
     }
     function scheduleNextStar() {
-      const delay = 400 + Math.random() * 1600; // 0.4 to 2s
+      const delay = 800 + Math.random() * 3200; // 0.8 to 4s
       shootingTimer = setTimeout(() => {
         if (running) spawnShootingStar();
         scheduleNextStar();
       }, delay);
     }
-    // First star in 0.6 to 1.6 seconds; quick, since stars now stay
-    // on screen long enough that delaying the first feels empty.
+    // First star in 1 to 2.5 seconds.
     shootingTimer = setTimeout(() => {
       if (running) spawnShootingStar();
       scheduleNextStar();
-    }, 600 + Math.random() * 1000);
+    }, 1000 + Math.random() * 1500);
 
     return () => {
       cancelAnimationFrame(rafId);

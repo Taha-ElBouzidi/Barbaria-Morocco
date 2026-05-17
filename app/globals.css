@@ -459,7 +459,7 @@
   0%   { opacity: 0; transform: rotate(var(--angle, 35deg)) translateX(-100px); }
   10%  { opacity: 1; }
   92%  { opacity: 1; }
-  100% { opacity: 0; transform: rotate(var(--angle, 35deg)) translateX(var(--travel, 60vw)); }
+  100% { opacity: 0; transform: rotate(calc(var(--angle, 35deg) + var(--arc, 2deg))) translateX(var(--travel, 60vw)); }
 }
 
 /* View Transitions API — applies to manual startViewTransition() calls
