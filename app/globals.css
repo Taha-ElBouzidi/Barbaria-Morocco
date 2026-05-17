@@ -519,6 +519,77 @@
     0 0 10px 2px rgba(216, 163, 97, 0.65);
 }
 
+/* Legal pages typography. Keeps long-form regulatory copy readable on
+   the cream surface without pulling in @tailwindcss/typography. */
+.legal-prose h2 {
+  font-family: var(--font-playfair), serif;
+  font-size: clamp(20px, 2.4vw, 24px);
+  line-height: 1.25;
+  color: var(--color-bb-primary);
+  margin-top: 2.5rem;
+  margin-bottom: 0.75rem;
+  letter-spacing: -0.005em;
+}
+.legal-prose h2:first-child {
+  margin-top: 0;
+}
+.legal-prose h3 {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.18em;
+  color: var(--color-bb-secondary-deep);
+  margin-top: 1.5rem;
+  margin-bottom: 0.5rem;
+}
+.legal-prose p {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-bb-on-surface);
+}
+.legal-prose p + p {
+  margin-top: 0.85rem;
+}
+.legal-prose ul, .legal-prose ol {
+  font-family: var(--font-montserrat), sans-serif;
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--color-bb-on-surface);
+  padding-left: 1.4rem;
+  margin-top: 0.6rem;
+}
+.legal-prose ul { list-style: disc; }
+.legal-prose ol { list-style: decimal; }
+.legal-prose li + li { margin-top: 0.35rem; }
+.legal-prose a {
+  color: var(--color-bb-primary);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.legal-prose a:hover {
+  color: var(--color-bb-secondary-deep);
+}
+.legal-prose strong {
+  color: var(--color-bb-primary);
+  font-weight: 600;
+}
+.legal-prose .legal-placeholder {
+  background: rgba(201, 160, 89, 0.12);
+  border-bottom: 1px dashed rgba(201, 160, 89, 0.6);
+  padding: 0 0.2em;
+  font-style: italic;
+  color: var(--color-bb-primary);
+}
+.legal-prose .legal-note {
+  font-size: 12px;
+  font-style: italic;
+  color: var(--color-bb-on-surface-variant);
+  border-left: 2px solid var(--color-bb-secondary-deep);
+  padding-left: 0.9rem;
+  margin-top: 1rem;
+}
+
 /* Honour prefers-reduced-motion: cut the SaharaPrestige twinkle and skip
    View Transitions cross-fades entirely. The decorative gold pepitas stay
    visible at their peak opacity instead of pulsing. */
