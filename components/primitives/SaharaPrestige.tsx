@@ -142,9 +142,48 @@ export default function SaharaPrestige({
     }
     rafId = requestAnimationFrame(tick);
 
+    // Shooting stars: bursty diagonal streaks at random intervals.
+    // Each is a one-shot DOM element with a CSS keyframe that self-
+    // removes after the animation ends. The recursive timer keeps
+    // ticking even when the tab is hidden — we just skip the spawn
+    // so we don't get a backlog of stars firing on tab refocus.
+    let shootingTimer: ReturnType<typeof setTimeout> | undefined;
+    function spawnShootingStar() {
+      if (!pepitas) return;
+      const star = document.createElement("span");
+      star.className = "sp-shooting";
+      const startX = 5 + Math.random() * 75;
+      const startY = 2 + Math.random() * 35;
+      const flip = Math.random() < 0.5 ? -1 : 1;
+      const angle = (25 + Math.random() * 35) * flip;
+      const travel = 55 + Math.random() * 30;
+      const duration = 0.65 + Math.random() * 0.5;
+      star.style.setProperty("--start-x", startX.toFixed(1) + "%");
+      star.style.setProperty("--start-y", startY.toFixed(1) + "%");
+      star.style.setProperty("--angle", angle.toFixed(1) + "deg");
+      star.style.setProperty("--travel", travel.toFixed(1) + "vw");
+      star.style.setProperty("--duration", duration.toFixed(2) + "s");
+      pepitas.appendChild(star);
+      setTimeout(() => star.remove(), (duration + 0.2) * 1000);
+    }
+    function scheduleNextStar() {
+      const delay = 3000 + Math.random() * 10000; // 3 to 13 seconds
+      shootingTimer = setTimeout(() => {
+        if (running) spawnShootingStar();
+        scheduleNextStar();
+      }, delay);
+    }
+    // First star comes in 1.5 to 4 seconds; gives the page a moment
+    // to settle before something flashes across it.
+    shootingTimer = setTimeout(() => {
+      if (running) spawnShootingStar();
+      scheduleNextStar();
+    }, 1500 + Math.random() * 2500);
+
     return () => {
       cancelAnimationFrame(rafId);
       document.removeEventListener("visibilitychange", onVisibility);
+      if (shootingTimer) clearTimeout(shootingTimer);
       pepitas.innerHTML = "";
     };
   }, [count, speed]);

@@ -416,6 +416,39 @@
   40%, 60% { opacity: var(--peak, 0.85); transform: scale(1); }
 }
 
+/* Shooting stars: occasional diagonal streaks. Spawned by JS at
+   random intervals; each is a one-shot element that removes itself
+   after the animation ends. The gradient gives the leading bright
+   head, the rotation makes the streak diagonal, and transform-origin
+   keeps the start point anchored so translateX travels along the
+   streak's own axis (i.e., diagonally in screen space). */
+.sp-root .sp-shooting {
+  position: absolute;
+  left: var(--start-x, 50%);
+  top: var(--start-y, 10%);
+  width: 140px;
+  height: 1.5px;
+  border-radius: 999px;
+  background: linear-gradient(
+    90deg,
+    rgba(201, 160, 89, 0) 0%,
+    rgba(201, 160, 89, 0.7) 60%,
+    rgba(255, 240, 200, 0.95) 100%
+  );
+  transform-origin: left center;
+  transform: rotate(var(--angle, 35deg)) translateX(-80px);
+  opacity: 0;
+  filter: drop-shadow(0 0 4px rgba(201, 160, 89, 0.65));
+  pointer-events: none;
+  animation: sp-shoot var(--duration, 0.9s) cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+@keyframes sp-shoot {
+  0%   { opacity: 0; transform: rotate(var(--angle, 35deg)) translateX(-80px); }
+  12%  { opacity: 1; }
+  88%  { opacity: 1; }
+  100% { opacity: 0; transform: rotate(var(--angle, 35deg)) translateX(var(--travel, 65vw)); }
+}
+
 /* View Transitions API — applies to manual startViewTransition() calls
    triggered by ZoomLink. We don't enable @view-transition { navigation:
    auto } so unrelated link clicks remain instant; only the zoom paths fire.
@@ -458,6 +491,15 @@
   background: #d8a361;
   box-shadow: 0 0 6px rgba(216, 163, 97, 0.7);
 }
+.wizard-theme--caravan .sp-root .sp-shooting {
+  background: linear-gradient(
+    90deg,
+    rgba(216, 163, 97, 0) 0%,
+    rgba(216, 163, 97, 0.7) 60%,
+    rgba(255, 240, 200, 0.95) 100%
+  );
+  filter: drop-shadow(0 0 4px rgba(216, 163, 97, 0.65));
+}
 
 /* Honour prefers-reduced-motion: cut the SaharaPrestige twinkle and skip
    View Transitions cross-fades entirely. The decorative gold pepitas stay
@@ -466,6 +508,9 @@
   .sp-root .sp-pepita {
     animation: none;
     opacity: var(--peak, 0.85);
+  }
+  .sp-root .sp-shooting {
+    display: none;
   }
   ::view-transition-old(*),
   ::view-transition-new(*) {
