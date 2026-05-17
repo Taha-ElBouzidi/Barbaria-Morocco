@@ -162,11 +162,11 @@ export default function SaharaPrestige({
       // Spawn opposite the travel side so each star has room to drift.
       const startX = goLeft ? 70 + Math.random() * 25 : 5 + Math.random() * 25;
       const startY = 2 + Math.random() * 38;
-      const travel = 60 + Math.random() * 30;
-      const duration = 2 + Math.random() * 2; // 2 to 4s
-      // Subtle gravity-pull arc: rotation drifts a few degrees toward
+      const travel = 65 + Math.random() * 30;
+      const duration = 1.6 + Math.random() * 1.5; // 1.6 to 3.1s
+      // Gravity-pull arc: rotation drifts a few degrees toward
       // vertical (90 deg) over the star's life. Sign matches direction.
-      const arcDeg = (goLeft ? -1 : 1) * (1.2 + Math.random() * 1.2);
+      const arcDeg = (goLeft ? -1 : 1) * (2.5 + Math.random() * 2.5);
       star.style.setProperty("--start-x", startX.toFixed(1) + "%");
       star.style.setProperty("--start-y", startY.toFixed(1) + "%");
       star.style.setProperty("--angle", angle.toFixed(1) + "deg");
