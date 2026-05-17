@@ -157,8 +157,8 @@ export default function SaharaPrestige({
       const startY = 2 + Math.random() * 38;
       const flip = Math.random() < 0.5 ? -1 : 1;
       const angle = (25 + Math.random() * 35) * flip;
-      const travel = 50 + Math.random() * 30;
-      const duration = 1.5 + Math.random() * 0.9; // 1.5 to 2.4s
+      const travel = 60 + Math.random() * 35;
+      const duration = 2.4 + Math.random() * 3.3; // 2.4 to 5.7s
       star.style.setProperty("--start-x", startX.toFixed(1) + "%");
       star.style.setProperty("--start-y", startY.toFixed(1) + "%");
       star.style.setProperty("--angle", angle.toFixed(1) + "deg");
@@ -168,17 +168,18 @@ export default function SaharaPrestige({
       setTimeout(() => star.remove(), (duration + 0.2) * 1000);
     }
     function scheduleNextStar() {
-      const delay = 800 + Math.random() * 2700; // 0.8 to 3.5s
+      const delay = 400 + Math.random() * 1600; // 0.4 to 2s
       shootingTimer = setTimeout(() => {
         if (running) spawnShootingStar();
         scheduleNextStar();
       }, delay);
     }
-    // First star in 1 to 2.5 seconds; lets the page settle.
+    // First star in 0.6 to 1.6 seconds; quick, since stars now stay
+    // on screen long enough that delaying the first feels empty.
     shootingTimer = setTimeout(() => {
       if (running) spawnShootingStar();
       scheduleNextStar();
-    }, 1000 + Math.random() * 1500);
+    }, 600 + Math.random() * 1000);
 
     return () => {
       cancelAnimationFrame(rafId);
