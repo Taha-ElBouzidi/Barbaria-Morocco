@@ -173,10 +173,6 @@ function FrenchContent() {
           <L>{CLIENT_DATA.supabaseRegion.fr}</L>.
         </li>
         <li>
-          <strong>Formspree (Roboflow Studios LLC)</strong>, Boston, MA, États-Unis.
-          Garanties : EU-US Data Privacy Framework et CCT.
-        </li>
-        <li>
           <strong>Équipe interne Barbaria</strong>, Casablanca, accédant aux données
           de demande dans le cadre du traitement des prospects et clients.
         </li>
@@ -371,10 +367,6 @@ function EnglishContent() {
           <strong>Supabase Inc.</strong> (database, admin authentication), 970 Toa
           Payoh North #07-04, Singapore 318992. Safeguards: Supabase DPA including
           SCCs; storage region: <L>{CLIENT_DATA.supabaseRegion.en}</L>.
-        </li>
-        <li>
-          <strong>Formspree (Roboflow Studios LLC)</strong>, Boston, MA, USA.
-          Safeguards: EU-US Data Privacy Framework and SCCs.
         </li>
         <li>
           <strong>Barbaria internal team</strong>, Casablanca, accessing inquiry data
