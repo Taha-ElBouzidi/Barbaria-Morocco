@@ -49,9 +49,12 @@ export default function Wordmark({
     : "text-bb-on-surface-variant";
 
   if (variant === "compact") {
+    // Stacked layout (ornament above the wordmark) per the brand
+    // identity Inass picked. Ornament inherits the wordmark colour so
+    // both flip together when the header crossfades dark/light.
     return (
-      <span className={cn("inline-flex items-center gap-2.5", className)}>
-        <AmazighOrnament size={20} className="text-bb-secondary shrink-0" />
+      <span className={cn("inline-flex flex-col items-center gap-1 leading-none", className)}>
+        <AmazighOrnament size={14} className={wordmarkColor} strokeWidth={1.6} />
         <span
           className={cn(
             "font-display font-semibold leading-none tracking-[0.06em] uppercase",
