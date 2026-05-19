@@ -93,13 +93,24 @@ export default function Footer({ socials }: FooterProps) {
                 {t("contact")}
               </Link>
               <a
-                href="mailto:concierge@barbariamorocco.com"
-                target="_blank"
-                rel="noopener noreferrer"
+                href={`mailto:${socials.contactEmail}`}
                 className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"
               >
-                {t("email")}
+                {socials.contactEmail}
               </a>
+              {socials.contactPhone &&
+                socials.contactPhone
+                  .split(/\s*\/\s*/)
+                  .filter(Boolean)
+                  .map((number) => (
+                    <a
+                      key={number}
+                      href={`tel:${number.replace(/[^+\d]/g, "")}`}
+                      className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"
+                    >
+                      {number}
+                    </a>
+                  ))}
               {socials.whatsappUrl && (
                 <a
                   href={socials.whatsappUrl}

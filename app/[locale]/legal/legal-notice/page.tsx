@@ -3,9 +3,13 @@ import { setRequestLocale } from "next-intl/server";
 import LegalShell from "@/components/legal/LegalShell";
 import { L } from "@/components/legal/LegalValue";
 import { CLIENT_DATA } from "@/lib/legal/client-data";
+import { getSiteSettings } from "@/lib/data/site-settings";
 import { Link } from "@/i18n/navigation";
 
-export const dynamic = "force-static";
+// Cached via the "site-settings" tag; the admin Settings page calls
+// revalidateTag("site-settings") on save so this page picks up phone
+// or email changes without a redeploy.
+export const revalidate = 600;
 
 interface PageProps {
   params: Promise<{ locale: string }>;
@@ -27,6 +31,7 @@ export default async function LegalNoticePage({ params }: PageProps) {
   const { locale } = await params;
   setRequestLocale(locale);
   const isFr = locale !== "en";
+  const settings = await getSiteSettings();
 
   return (
     <LegalShell
@@ -34,14 +39,18 @@ export default async function LegalNoticePage({ params }: PageProps) {
       title={isFr ? "Mentions légales" : "Legal notice"}
       lastUpdated={isFr ? "Dernière mise à jour : 17 mai 2026" : "Last updated: May 17, 2026"}
     >
-      {isFr ? <FrenchContent /> : <EnglishContent />}
+      {isFr ? (
+        <FrenchContent phone={settings.contactPhone} email={settings.contactEmail} />
+      ) : (
+        <EnglishContent phone={settings.contactPhone} email={settings.contactEmail} />
+      )}
 
       <hr className="border-bb-line mt-12" />
       <p className="legal-note">
         {isFr ? (
           <>
             Pour toute question relative à ces mentions, écrivez-nous à{" "}
-            <a href="mailto:contact@barbariamorocco.com">contact@barbariamorocco.com</a>. Voir
+            <a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a>. Voir
             également notre <Link href="/legal/privacy">politique de confidentialité</Link>,
             nos <Link href="/legal/terms">conditions d&apos;utilisation</Link> et notre{" "}
             <Link href="/legal/cookies">politique de cookies</Link>.
@@ -49,7 +58,7 @@ export default async function LegalNoticePage({ params }: PageProps) {
         ) : (
           <>
             For any question regarding this notice, email{" "}
-            <a href="mailto:contact@barbariamorocco.com">contact@barbariamorocco.com</a>. See
+            <a href={`mailto:${settings.contactEmail}`}>{settings.contactEmail}</a>. See
             also our <Link href="/legal/privacy">privacy policy</Link>, our{" "}
             <Link href="/legal/terms">terms of use</Link> and our{" "}
             <Link href="/legal/cookies">cookie policy</Link>. The French version of this
@@ -61,7 +70,7 @@ export default async function LegalNoticePage({ params }: PageProps) {
   );
 }
 
-function FrenchContent() {
+function FrenchContent({ phone, email }: { phone: string; email: string }) {
   return (
     <>
       <h2>1. Éditeur du site</h2>
@@ -76,8 +85,8 @@ function FrenchContent() {
         <li>Identifiant Commun de l&apos;Entreprise (ICE) : <L>{CLIENT_DATA.iceNumber.fr}</L></li>
         <li>Identifiant Fiscal (IF) : <L>{CLIENT_DATA.ifNumber.fr}</L></li>
         <li>Taxe Professionnelle (Patente) : <L>{CLIENT_DATA.patenteNumber.fr}</L></li>
-        <li>Téléphone : +212 6 59 65 88 63 / +212 6 17 83 04 10</li>
-        <li>Email : contact@barbariamorocco.com</li>
+        <li>Téléphone : {phone}</li>
+        <li>Email : <a href={`mailto:${email}`}>{email}</a></li>
       </ul>
 
       <h2>2. Directeur de la publication</h2>
@@ -140,7 +149,7 @@ function FrenchContent() {
   );
 }
 
-function EnglishContent() {
+function EnglishContent({ phone, email }: { phone: string; email: string }) {
   return (
     <>
       <h2>1. Publisher</h2>
@@ -155,8 +164,8 @@ function EnglishContent() {
         <li>Common Business Identifier (ICE): <L>{CLIENT_DATA.iceNumber.en}</L></li>
         <li>Tax Identifier (IF): <L>{CLIENT_DATA.ifNumber.en}</L></li>
         <li>Professional Tax (Patente): <L>{CLIENT_DATA.patenteNumber.en}</L></li>
-        <li>Phone: +212 6 59 65 88 63 / +212 6 17 83 04 10</li>
-        <li>Email: contact@barbariamorocco.com</li>
+        <li>Phone: {phone}</li>
+        <li>Email: <a href={`mailto:${email}`}>{email}</a></li>
       </ul>
 
       <h2>2. Publication Director</h2>
