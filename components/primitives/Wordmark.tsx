@@ -1,4 +1,3 @@
-import Image from "next/image";
 import AmazighOrnament from "./AmazighOrnament";
 import { cn } from "@/lib/utils";
 
@@ -50,25 +49,6 @@ export default function Wordmark({
     : "text-bb-on-surface-variant";
 
   if (variant === "compact") {
-    // On light/cream surfaces (header after scroll, every non-hero page),
-    // render the actual brand mark (Amazigh ornament + BARBARIA wordmark)
-    // from the house's logo asset. The image is the canonical identity.
-    if (tone !== "light") {
-      return (
-        <Image
-          src="/brand_photos/barbaria-logo-header.png"
-          alt="Barbaria Morocco"
-          width={585}
-          height={200}
-          priority
-          className={cn("h-12 lg:h-14 w-auto", className)}
-        />
-      );
-    }
-    // On dark-hero surfaces (top of /, /products, /story before scroll),
-    // the image's white background would clash. Fall back to the SVG
-    // wordmark in gold so it reads cleanly on the dark wash. On scroll,
-    // the header flips to light surface and the image takes over.
     return (
       <span className={cn("inline-flex items-center gap-2.5", className)}>
         <AmazighOrnament size={20} className="text-bb-secondary shrink-0" />
