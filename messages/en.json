@@ -102,7 +102,7 @@
       "compose_lede": "Tell us about the moment. A concierge composes the box with you within 24 hours."
     },
     "heritage_3up": {
-      "quote": "Every ritual preserves a legacy. Every gift empowers an artisan.",
+      "quote": "Every ritual preserves a legacy. Every gift sustains an artisan.",
       "c1_title": "Single-origin ingredients",
       "c1_body": "Cold-pressed, hand-distilled, never blended.",
       "c2_title": "Cooperative partnerships",
@@ -127,9 +127,9 @@
     "add_to_inquiry": "Add to Inquiry",
     "added": "Added",
     "view": "View product",
-    "showing": "Showing {count} pieces",
+    "showing": "Showing {count} items",
     "products_section_label": "Products",
-    "empty_state": "No pieces match the current filters.",
+    "empty_state": "No items match the current filters.",
     "filter_clear": "Clear ({count})"
   },
   "product": {
@@ -217,11 +217,11 @@
     "next": "Next",
     "back": "Back",
     "submit": "Request Quote",
-    "success_title": "We'll be in touch within 24h.",
+    "success_title": "We respond within 24 hours.",
     "success_body": "Your concierge has been assigned.",
     "sidebar_title": "Your Selection",
-    "sidebar_count": "{count} pieces selected",
-    "sidebar_empty": "No pieces selected yet.",
+    "sidebar_count": "{count} items selected",
+    "sidebar_empty": "No items selected yet.",
     "direct_lines": "Direct lines",
     "atelier": "Atelier"
   },
@@ -252,13 +252,13 @@
     "banner_body": "We use cookies strictly necessary to run the site and, with your consent, audience-measurement cookies that help us understand how you visit us.",
     "btn_accept_all": "Accept all",
     "btn_reject": "Reject non-essential",
-    "btn_customize": "Customize",
+    "btn_customize": "Customise",
     "btn_collapse": "Hide details",
     "btn_save": "Save my choices",
     "cat_necessary": "Strictly necessary",
     "cat_necessary_desc": "Cookies essential to the site's operation: admin session, language preference. Always on.",
     "cat_analytics": "Audience measurement",
-    "cat_analytics_desc": "Vercel Analytics and Speed Insights. Aggregated and anonymized data that helps us improve the site's performance.",
+    "cat_analytics_desc": "Vercel Analytics and Speed Insights. Aggregated and anonymised data that helps us improve the site's performance.",
     "manage_link": "Manage cookies",
     "policy_link": "Learn more.",
     "aria_close": "Close cookie banner"
@@ -315,7 +315,7 @@
     "review_edit": "Edit",
     "quantity_eyebrow": "Quantity",
     "quantity_title": "How many of this box?",
-    "quantity_lede": "Set the order quantity. The concierge returns with pricing within 24 hours.",
+    "quantity_lede": "Set the order quantity. The concierge returns with a quote within 24 hours.",
     "quantity_min_label": "Minimum {n} per order",
     "quantity_below_min_note": "Below the {n}-unit minimum, the concierge may adjust pricing on small batches.",
     "quantity_submit": "Send request",
@@ -335,18 +335,18 @@
     "curated_headline": "Composed by the house.",
     "curated_empty": "New curated boxes arrive soon. Compose your own in the meantime.",
     "moq_pill": "MOQ {n}",
-    "items_count": "{count, plural, one {# piece} other {# pieces}}",
+    "items_count": "{count, plural, one {# item} other {# items}}",
     "back_to_category": "Back to the category",
     "items_eyebrow": "What is in the box",
     "view_product": "View piece",
     "aside_eyebrow": "Place your request",
-    "aside_headline": "Move this box to inquiry.",
+    "aside_headline": "Add this box to your inquiry.",
     "aside_min": "Minimum quantity",
     "aside_items": "Pieces in the box",
     "send_request": "Send us a request",
-    "aside_note": "Pricing returned within 24 hours, signed by the concierge.",
+    "aside_note": "Quote returned within 24 hours, signed by the concierge.",
     "add_to_inquiry": "Add to inquiry",
     "added": "Added ✓",
-    "view_inquiry": "Review your inquiry"
+    "view_inquiry": "View your inquiry"
   }
 }

@@ -207,7 +207,7 @@ function EnglishContent() {
       <ul>
         <li><strong>Accept all</strong>: all cookies, including audience measurement, are activated.</li>
         <li><strong>Reject non-essential</strong>: only strictly necessary cookies are activated.</li>
-        <li><strong>Customize</strong>: you choose category by category.</li>
+        <li><strong>Customise</strong>: you choose category by category.</li>
       </ul>
       <p>
         No non-essential cookie is set before you make a choice. No box is

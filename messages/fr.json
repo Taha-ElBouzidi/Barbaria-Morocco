@@ -78,7 +78,7 @@
       "item_2": "30+ Coopératives Berbères",
       "item_3": "Fabriqué à la Commande",
       "item_4": "Délai de 4 Semaines",
-      "aria": "Crédentials de la maison"
+      "aria": "Atouts de la maison"
     },
     "editorial": {
       "eyebrow": "L'Art du Cadeau Réfléchi",
@@ -107,7 +107,7 @@
       "c1_body": "Pressés à froid, distillés à la main, jamais mélangés.",
       "c2_title": "Partenariats coopératifs",
       "c2_body": "Six ateliers, équitablement rémunérés, nommés sur chaque produit.",
-      "c3_title": "Éditions, non du stock",
+      "c3_title": "Éditions, et non du stock",
       "c3_body": "Fabriqué à la commande à l'atelier, en volume adapté à l'occasion."
     }
   },
@@ -127,9 +127,9 @@
     "add_to_inquiry": "Ajouter à la Demande",
     "added": "Ajouté",
     "view": "Voir le produit",
-    "showing": "Affichage de {count} pièces",
+    "showing": "Affichage de {count} articles",
     "products_section_label": "Produits",
-    "empty_state": "Aucune pièce ne correspond aux filtres actuels.",
+    "empty_state": "Aucun article ne correspond aux filtres actuels.",
     "filter_clear": "Effacer ({count})"
   },
   "product": {
@@ -155,7 +155,7 @@
     "ch1_years": "vers 3000 av. J.-C.",
     "ch1_title": "Aux origines de Barbaria",
     "ch1_p1": "Barbaria, du mot latin Barbaria, désignait les terres des Berbères, peuple libre des côtes méditerranéennes et des profondeurs sahariennes.",
-    "ch1_p2": "Long avant les Romains, les Amazighs cultivaient l'arganier sacré, récoltaient le safran et maîtrisaient l'art des épices. Leurs femmes tatouaient sur leur peau les signes de l'alphabet Tifinagh, transmettant sans l'écrire la mémoire du monde.",
+    "ch1_p2": "Bien avant les Romains, les Amazighs cultivaient l'arganier sacré, récoltaient le safran et maîtrisaient l'art des épices. Leurs femmes tatouaient sur leur peau les signes de l'alphabet Tifinagh, transmettant sans l'écrire la mémoire du monde.",
     "ch2_era": "Médiéval",
     "ch2_years": "VIIIe au XVe siècle",
     "ch2_title": "La Route des Caravanes",
@@ -220,8 +220,8 @@
     "success_title": "Nous vous répondrons dans les 24h.",
     "success_body": "Votre concierge a été assigné.",
     "sidebar_title": "Votre Sélection",
-    "sidebar_count": "{count} pièces sélectionnées",
-    "sidebar_empty": "Aucune pièce sélectionnée.",
+    "sidebar_count": "{count} articles sélectionnés",
+    "sidebar_empty": "Aucun article sélectionné.",
     "direct_lines": "Lignes directes",
     "atelier": "Atelier"
   },
@@ -335,7 +335,7 @@
     "curated_headline": "Composés par la maison.",
     "curated_empty": "De nouveaux coffrets curatés arrivent bientôt. Composez le vôtre en attendant.",
     "moq_pill": "MOQ {n}",
-    "items_count": "{count, plural, one {# pièce} other {# pièces}}",
+    "items_count": "{count, plural, one {# article} other {# articles}}",
     "back_to_category": "Retour à la catégorie",
     "items_eyebrow": "Ce que contient le coffret",
     "view_product": "Voir la pièce",
