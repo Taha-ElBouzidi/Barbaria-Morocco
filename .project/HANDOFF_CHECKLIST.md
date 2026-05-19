@@ -34,50 +34,7 @@ they should be completed.
       shared channel (chat, email, screenshot). Vercel env var swap, no
       code change.
 
-### A.3. CNDP declaration (Moroccan data-protection law 09-08)
-- [ ] Open https://www.cndp.ma → "Téléservices" → file a **déclaration
-      normale** for the inquiry form processing.
-- [ ] Once filed, you receive a récépissé with a reference number (format
-      `D-XXX/YYYY`).
-- [ ] Plug that number into the `[CLIENT-FILL]` slot in
-      `app/[locale]/legal/legal-notice/page.tsx` and `privacy/page.tsx`.
-
-### A.4. CNDP cross-border transfer authorisation
-- [ ] Same portal → file a **demande d'autorisation de transfert** under
-      article 17 of Loi 09-08, listing the providers we use (Vercel USA,
-      Supabase EU region, Formspree USA).
-- [ ] Once approved, plug the reference into the same `[CLIENT-FILL]` slot
-      in the privacy policy.
-
-### A.5. Sub-processor DPAs (one-click each)
-- [ ] **Vercel**: sign the Data Processing Addendum from the Vercel dashboard
-      (Account → Privacy → DPA). Save the signed PDF.
-- [ ] **Supabase**: same flow (Account → Settings → DPA).
-- [ ] **Formspree**: same flow (Account → Privacy).
-- [ ] File the three PDFs in a shared folder.
-
-### A.6. Client data the legal pages need (`[CLIENT-FILL: ...]` swap list)
-Pass these as a single intake to the house and plug them into the legal
-pages once received. Every value below appears verbatim somewhere in
-`app/[locale]/legal/*/page.tsx` — search for `[CLIENT-FILL:` or `[À COMPLÉTER:`
-to find the exact line.
-
-- [ ] Dénomination sociale exacte (legal name, e.g. "Barbaria SARL")
-- [ ] Forme juridique (SARL / SARL AU / SA)
-- [ ] Capital social en MAD
-- [ ] Adresse complète du siège (Marrakech)
-- [ ] Numéro RC + ville
-- [ ] ICE (15 chiffres)
-- [ ] IF (Identifiant Fiscal)
-- [ ] Patente / Taxe Professionnelle
-- [ ] Nom complet du directeur de publication
-- [ ] Numéro OMPIC pour la marque "Barbaria"
-- [ ] Numéro de notification DMP (cosmétiques, si fabricant/importateur)
-- [ ] Numéro d'agrément ONSSA (épicerie fine, si applicable)
-- [ ] Crédits photographies / agence design
-- [ ] Email "privacy@" dédié (recommandé : `privacy@barbariamorocco.com`)
-
-### A.7. Catalogue content review
+### A.3. Catalogue content review
 - [ ] Open `/admin/products`, walk through all 39 seeded products, confirm
       names / descriptions / images / pricing tier are what the house
       wants the world to see. The seed came from the client's B2B PDF;
@@ -88,7 +45,7 @@ to find the exact line.
 - [ ] Decide whether any seeded products should be draft-state instead
       of published.
 
-### A.8. Admin bootstrap
+### A.4. Admin bootstrap
 - [ ] In Vercel env, ensure `BOOTSTRAP_ADMIN_EMAIL` is set to your email
       (`ta.elbouzidi@gmail.com`).
 - [ ] Sign in at `/admin/login` with that email's Supabase password. The
@@ -98,7 +55,7 @@ to find the exact line.
 - [ ] If the house wants additional admins, create them from
       `/admin/admins` once you have the superadmin role.
 
-### A.9. OG image audit
+### A.5. OG image audit
 - [ ] Open `/brand_photos/products-all-three.jpg`, confirm it is at least
       1200×630 px (preferred 2400×1260 for retina). If not, replace it
       with a properly-sized image. The path is referenced in
@@ -156,15 +113,15 @@ DKIM/SPF records propagated, the implementation is a half-day code session.
 
 ---
 
-## D. Final pre-launch smoke test (to run after A.1 to A.6 are done)
+## D. Final pre-launch smoke test (to run after A is done)
 
 - [ ] `/` redirects to `/fr` (or `/en` based on browser language).
 - [ ] All locale switching works on every page.
 - [ ] Cookie banner appears on first visit; accept-all hides it; "Manage
       cookies" in the footer reopens it; reject saves a state where
       `/_vercel/insights` is **not** loaded (check DevTools Network).
-- [ ] All four legal pages render in FR and EN, every `[CLIENT-FILL]`
-      placeholder is replaced with real data.
+- [ ] All four legal pages render in FR and EN with real company data
+      (Barbaria Morocco SARL, RC 719643, ICE, IF, TP, OMPIC 3121576).
 - [ ] `/admin/login` works with your Supabase password.
 - [ ] You can publish a new product end-to-end from `/admin/products/new`,
       and it appears on the public catalogue.

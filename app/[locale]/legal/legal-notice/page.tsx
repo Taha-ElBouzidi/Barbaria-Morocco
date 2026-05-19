@@ -129,36 +129,12 @@ function FrenchContent() {
         et droits voisins.
       </p>
 
-      <h2>5. Activité réglementée</h2>
-      <p>
-        Le cas échéant, lorsque les produits cosmétiques sont fabriqués ou importés par
-        l&apos;éditeur :
-      </p>
-      <ul>
-        <li>
-          Numéro de notification cosmétique (Direction du Médicament et de la Pharmacie,
-          DMP) : <L>{CLIENT_DATA.dmpNumber.fr}</L>
-        </li>
-        <li>
-          Numéro d&apos;agrément ONSSA (épicerie fine) :{" "}
-          <L>{CLIENT_DATA.onssaNumber.fr}</L>
-        </li>
-      </ul>
-
-      <h2>6. Crédits</h2>
-      <ul>
-        <li>Conception et développement : <L>{CLIENT_DATA.designCredits.fr}</L></li>
-        <li>Photographies : <L>{CLIENT_DATA.photoCredits.fr}</L></li>
-      </ul>
-
-      <h2>7. Données personnelles</h2>
+      <h2>5. Données personnelles</h2>
       <p>
         Le traitement des données personnelles effectué sur ce site est détaillé dans
-        notre <Link href="/legal/privacy">politique de confidentialité</Link>. Une
-        déclaration auprès de la Commission Nationale de Contrôle de la Protection des
-        Données à Caractère Personnel (CNDP) a été déposée sous le numéro{" "}
-        <L>{CLIENT_DATA.cndpReceipt.fr}</L>, conformément à la loi
-        marocaine n° 09-08.
+        notre <Link href="/legal/privacy">politique de confidentialité</Link>,
+        conformément au Règlement Général sur la Protection des Données (UE 2016/679)
+        et à la loi marocaine n° 09-08.
       </p>
     </>
   );
@@ -230,33 +206,11 @@ function EnglishContent() {
         rights.
       </p>
 
-      <h2>5. Regulated Activity</h2>
-      <p>Where the publisher manufactures or imports the products presented:</p>
-      <ul>
-        <li>
-          Cosmetic notification number (Direction du Médicament et de la Pharmacie,
-          DMP): <L>{CLIENT_DATA.dmpNumber.en}</L>
-        </li>
-        <li>
-          ONSSA registration number (fine grocery):{" "}
-          <L>{CLIENT_DATA.onssaNumber.en}</L>
-        </li>
-      </ul>
-
-      <h2>6. Credits</h2>
-      <ul>
-        <li>Design and development: <L>{CLIENT_DATA.designCredits.en}</L></li>
-        <li>Photography: <L>{CLIENT_DATA.photoCredits.en}</L></li>
-      </ul>
-
-      <h2>7. Personal Data</h2>
+      <h2>5. Personal Data</h2>
       <p>
         Processing of personal data on this site is detailed in our{" "}
-        <Link href="/legal/privacy">privacy policy</Link>. A declaration has been
-        filed with the Commission Nationale de Contrôle de la Protection des Données à
-        Caractère Personnel (CNDP) under reference{" "}
-        <L>{CLIENT_DATA.cndpReceipt.en}</L>, in accordance with Moroccan
-        law No. 09-08.
+        <Link href="/legal/privacy">privacy policy</Link>, in accordance with the
+        EU General Data Protection Regulation (2016/679) and Moroccan law No. 09-08.
       </p>
     </>
   );

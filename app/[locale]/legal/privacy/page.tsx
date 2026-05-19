@@ -187,10 +187,7 @@ function FrenchContent() {
         Certains de nos prestataires sont situés aux États-Unis. Les transferts
         s&apos;appuient sur la décision d&apos;adéquation EU-US Data Privacy Framework
         (lorsque le prestataire y est certifié) et sur les clauses contractuelles
-        types adoptées par la Commission européenne (décision 2021/914). Pour les
-        transferts depuis le Maroc, l&apos;autorisation de la CNDP au titre de
-        l&apos;article 17 de la loi 09-08 a été{" "}
-        <L>{CLIENT_DATA.cndpTransferAuth.fr}</L>.
+        types adoptées par la Commission européenne (décision 2021/914 du 4 juin 2021).
       </p>
 
       <h2>8. Durées de conservation</h2>
@@ -390,9 +387,7 @@ function EnglishContent() {
         Some of our providers are located in the United States. Transfers rely on the
         EU-US Data Privacy Framework adequacy decision (where the provider is
         certified) and on Standard Contractual Clauses adopted by the European
-        Commission (decision 2021/914). For transfers from Morocco, CNDP authorisation
-        under article 17 of law 09-08 has been{" "}
-        <L>{CLIENT_DATA.cndpTransferAuth.en}</L>.
+        Commission (decision 2021/914 of 4 June 2021).
       </p>
 
       <h2>8. Retention Periods</h2>
