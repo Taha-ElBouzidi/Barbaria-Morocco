@@ -50,7 +50,7 @@ export default function Wordmark({
   if (variant === "compact") {
     return (
       <span className={cn("inline-block", colorClass, className)}>
-        <BrandMark size={56} variant="name" />
+        <BrandMark size={46} variant="name" />
       </span>
     );
   }
@@ -88,9 +88,12 @@ export default function Wordmark({
     );
   }
 
-  // stacked (default, footer/drawer)
+  // stacked (default, footer/drawer). Block + text-center so the
+  // inline-flex BrandMark child sits horizontally centred inside
+  // whatever container the wordmark drops into. The previous
+  // inline-block + mx-auto did not centre on inline-flex content.
   return (
-    <span className={cn("inline-block", colorClass, className)}>
+    <span className={cn("block text-center", colorClass, className)}>
       <BrandMark size={180} variant={showSubtitle ? "full" : "name"} />
     </span>
   );

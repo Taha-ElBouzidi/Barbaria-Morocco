@@ -69,11 +69,11 @@ export default async function BrandInspectionPage({ params }: PageProps) {
 
         <Section title="Composed: BrandMark variant=&quot;name&quot; — used in the HEADER">
           <p className="font-sans text-[13px] text-bb-on-surface/70 -mt-3">
-            Live header renders at <strong>56 px total height</strong> (fits
-            the 72 px header bar with breathing room). Larger sizes shown for
-            comparison.
+            Live header renders at <strong>46 px total height</strong> (fits
+            the 72 px header bar with comfortable breathing room). Larger
+            sizes shown for comparison.
           </p>
-          <SizeRow sizes={[200, 100, 56]}>
+          <SizeRow sizes={[200, 100, 46]}>
             {(s) => <BrandMark size={s} variant="name" />}
           </SizeRow>
         </Section>
