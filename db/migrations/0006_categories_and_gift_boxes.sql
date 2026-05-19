@@ -1,4 +1,4 @@
--- Sprint 2.0 — Categories and Gift Boxes
+-- Sprint 2.0, Categories and Gift Boxes
 -- Adds the public-facing 2-category taxonomy (Cosmétiques, Épicerie Fine)
 -- and the gift_boxes domain. Rituals are retained as internal product
 -- tagging but no longer surfaced in public IA.
@@ -78,7 +78,7 @@ CREATE TRIGGER gift_boxes_set_updated_at
   BEFORE UPDATE ON public.gift_boxes
   FOR EACH ROW EXECUTE FUNCTION extensions.moddatetime(updated_at);
 
--- 5b. Audit triggers — wire the new tables into the existing log_audit.
+-- 5b. Audit triggers, wire the new tables into the existing log_audit.
 DROP TRIGGER IF EXISTS categories_audit ON categories;
 CREATE TRIGGER categories_audit
   AFTER INSERT OR UPDATE OR DELETE ON categories
@@ -89,7 +89,7 @@ CREATE TRIGGER gift_boxes_audit
   AFTER INSERT OR UPDATE OR DELETE ON gift_boxes
   FOR EACH ROW EXECUTE FUNCTION log_audit('gift_box');
 
--- 6. RLS — categories and gift_boxes follow same pattern as products:
+-- 6. RLS, categories and gift_boxes follow same pattern as products:
 -- public can SELECT published rows; admin (via is_admin) can write.
 ALTER TABLE categories ENABLE ROW LEVEL SECURITY;
 ALTER TABLE category_translations ENABLE ROW LEVEL SECURITY;

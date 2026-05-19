@@ -8,7 +8,7 @@
 -- on `is_admin()`. authenticated callers couldn't invoke the
 -- function, so policies silently denied and counts came back zero.
 --
--- The advisor warning is informational only — anon already lost
+-- The advisor warning is informational only, anon already lost
 -- EXECUTE (stays revoked) and authenticated calling /rest/v1/rpc/is_admin
 -- just gets back true/false for their own id, which the dashboard
 -- already exposes by virtue of being an admin. Live functionality

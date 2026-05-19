@@ -50,7 +50,7 @@ export async function saveGiftBox(
 ): Promise<SaveGiftBoxResult> {
   const admin = await requireAdmin();
 
-  // Zod parse can throw on bad input — catch so we return a typed
+  // Zod parse can throw on bad input, catch so we return a typed
   // error to the client instead of a generic server-error digest.
   // The maison saw repeated "reload" errors when invalid form state
   // hit the action; this turns them into actionable messages.
@@ -67,7 +67,7 @@ export async function saveGiftBox(
   const isCreate = id === "new";
 
   // One-customizable-per-category rule. Tick the box on at most one
-  // gift box per category — that becomes the "Compose your own"
+  // gift box per category, that becomes the "Compose your own"
   // wizard entry for that category. Block the save with a typed error
   // when another box already owns the slot.
   if (data.isCustomizable) {
@@ -140,7 +140,7 @@ export async function saveGiftBox(
   }
 
   // Items: wipe and replace based on the form's ordered list. For a
-  // customizable box we explicitly keep gift_box_items empty — the
+  // customizable box we explicitly keep gift_box_items empty, the
   // wizard generates each buyer's composition on demand.
   await supabase.from("gift_box_items").delete().eq("gift_box_id", giftBoxId);
   if (!data.isCustomizable && data.itemProductIds.length > 0) {

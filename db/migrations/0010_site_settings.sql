@@ -1,4 +1,4 @@
--- Sprint 2.5 follow-up — Editable site settings (social handles + contact).
+-- Sprint 2.5 follow-up, Editable site settings (social handles + contact).
 -- Single-row table guaranteed by the boolean PK check. Public anon can
 -- SELECT (footer, drawers, contact page all read it on every request);
 -- only admins can write.

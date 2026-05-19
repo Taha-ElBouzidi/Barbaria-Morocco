@@ -109,7 +109,7 @@ function FrenchContent() {
         Certaines pages sont réservées aux administrateurs autorisés de Barbaria.
         Toute tentative d&apos;accès non autorisée constitue une infraction
         susceptible d&apos;être poursuivie au titre de la loi marocaine n° 07-03
-        relative à la cybercriminalité (article 607-3 du Code pénal — accès
+        relative à la cybercriminalité (article 607-3 du Code pénal, accès
         frauduleux à un système de traitement automatisé de données).
       </p>
 
@@ -260,7 +260,7 @@ function EnglishContent() {
       <p>
         Certain pages are reserved for authorised Barbaria administrators. Any
         unauthorised attempt to access these pages constitutes an offence under
-        Moroccan law No. 07-03 on cybercrime (article 607-3 of the Penal Code —
+        Moroccan law No. 07-03 on cybercrime (article 607-3 of the Penal Code,
         fraudulent access to an automated data processing system) and may be
         prosecuted.
       </p>

@@ -1,4 +1,4 @@
--- Sprint 2.7 — Occasions table, admin-configurable.
+-- Sprint 2.7, Occasions table, admin-configurable.
 -- Replaces the hardcoded options in the contact form so the maison can
 -- surface seasonal events (Mother's Day, Eid, Ramadan, Christmas, etc.)
 -- without a code deploy.

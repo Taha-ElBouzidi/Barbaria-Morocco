@@ -1,7 +1,7 @@
 -- Add created_by / updated_by to gift_boxes so the admin actions can
 -- stamp the actor on every row write. Without these columns,
 -- saveGiftBox's payload (which already included updated_by) got
--- rejected by PostgREST with "column does not exist" — that's the
+-- rejected by PostgREST with "column does not exist", that's the
 -- root cause of the repeated save errors on /admin/gift-boxes/[id].
 --
 -- Same shape as products + journal_cards + occasions for consistency.

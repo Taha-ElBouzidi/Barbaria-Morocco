@@ -12,7 +12,7 @@ export const ProductSaveSchema = z.object({
     .max(120)
     .regex(/^[a-z0-9-]+$/, "Slug must be lowercase letters, numbers, and hyphens only"),
   // Public storefront classifies on category only (sprint 6 retired
-  // the rituals taxonomy). Required now — every product belongs to
+  // the rituals taxonomy). Required now, every product belongs to
   // one of the two categories.
   categoryId: z.string().uuid(),
   moq: z.coerce.number().int().min(1),
@@ -138,7 +138,7 @@ export async function getAllFacetsForAdmin() {
  * paths and return as-is. Anything else gets prefixed with the
  * Supabase Storage public URL. Without this check, seeded rows
  * resolve to `/storage/v1/object/public/product-images//brand_photos/...`
- * which 404s — the house reported broken thumbnails on the admin
+ * which 404s, the house reported broken thumbnails on the admin
  * product list before this fix.
  */
 export function getPublicImageUrl(path: string): string {

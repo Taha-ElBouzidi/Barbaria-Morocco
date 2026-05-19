@@ -15,7 +15,7 @@ const ROUTES = [
 ];
 
 const LOCALES = [
-  { locale: "fr", prefix: "" },        // FR is default — no prefix
+  { locale: "fr", prefix: "" },        // FR is default, no prefix
   { locale: "en", prefix: "/en" },     // EN prefixed
 ];
 

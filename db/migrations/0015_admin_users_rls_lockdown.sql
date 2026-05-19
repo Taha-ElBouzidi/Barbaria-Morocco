@@ -4,7 +4,7 @@
 -- "any authenticated user in admin_users may do ANYTHING on
 -- admin_users", letting a plain admin self-promote to superadmin via a
 -- direct PostgREST PATCH. Replace with a self-only read policy and no
--- authenticated write policies — all mutations now flow through the
+-- authenticated write policies, all mutations now flow through the
 -- service-role server actions in app/admin/admins/actions.ts, which
 -- gate with requireSuperadmin().
 

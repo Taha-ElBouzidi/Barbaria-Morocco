@@ -6,7 +6,7 @@
 --
 -- The subquery against admin_users is itself gated by the policy above, so
 -- the membership check requires admin membership before it can read
--- admin_users to determine membership. Catch-22 — always returns false.
+-- admin_users to determine membership. Catch-22, always returns false.
 -- Result: logged-in admins fail the is-admin check inside callback and get
 -- bounced to /admin/login?error=unauthorized.
 --

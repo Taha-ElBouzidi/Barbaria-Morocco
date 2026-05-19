@@ -20,7 +20,7 @@ interface AuditEntryRowProps {
 
 /**
  * Read-only activity row. Sprint 2.5 follow-up removed the JSON
- * expand/collapse — the raw before/after_state was too low-level for the
+ * expand/collapse, the raw before/after_state was too low-level for the
  * non-developer admin user. If forensic depth is needed later, point
  * power users at the Supabase audit_log table directly.
  */

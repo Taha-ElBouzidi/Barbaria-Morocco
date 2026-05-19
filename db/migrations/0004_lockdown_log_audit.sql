@@ -7,7 +7,7 @@
 -- (anyone could write arbitrary entries to audit_log via this function).
 --
 -- Fix: revoke EXECUTE from anon, authenticated, public. Triggers don't
--- require EXECUTE grant on the function — they invoke it directly with
+-- require EXECUTE grant on the function, they invoke it directly with
 -- the table owner's privileges (postgres / the function's owner).
 -- After this REVOKE, triggers continue to fire normally but the function
 -- is no longer reachable from the REST API.

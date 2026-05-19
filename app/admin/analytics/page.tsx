@@ -20,11 +20,11 @@ export default async function AdminAnalyticsPage() {
   const snap = await getAnalyticsSnapshot("en");
 
   // Conversion rate among closed inquiries (won + lost). Soft-launch
-  // safe: show "—" rather than NaN when there are no closed inquiries
+  // safe: show "," rather than NaN when there are no closed inquiries
   // yet.
   const closed = snap.lifetime.wonCount + snap.lifetime.lostCount;
   const winRate =
-    closed > 0 ? `${Math.round((snap.lifetime.wonCount / closed) * 100)}%` : "—";
+    closed > 0 ? `${Math.round((snap.lifetime.wonCount / closed) * 100)}%` : ",";
 
   return (
     <div className="space-y-8 lg:space-y-10">
@@ -131,7 +131,7 @@ export default async function AdminAnalyticsPage() {
               value: p.pickCount,
               // pickCount is the number of inquiry lines containing this
               // piece. totalQty is the sum of those lines' box-level qty,
-              // which is "box units carrying this piece" — not "units of
+              // which is "box units carrying this piece", not "units of
               // this piece sold." Naming the sublabel "in N boxes" keeps
               // it honest. Plural form fires for everything except 1.
               sublabel: `in ${p.totalQty} ${p.totalQty === 1 ? "box" : "boxes"}`,

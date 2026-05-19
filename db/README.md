@@ -4,9 +4,9 @@ Drizzle ORM schema and migrations for Supabase Postgres.
 
 ## Files
 
-- `schema.ts` — TS schema (source of truth for migrations)
-- `migrations/` — generated + hand-written SQL
-- `seed.ts` — one-shot seed populating products + ateliers + journal from the TS data files in `lib/`
+- `schema.ts`, TS schema (source of truth for migrations)
+- `migrations/`, generated + hand-written SQL
+- `seed.ts`, one-shot seed populating products + ateliers + journal from the TS data files in `lib/`
 
 ## Run the seed (one-time per environment)
 

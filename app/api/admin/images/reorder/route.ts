@@ -29,7 +29,7 @@ export async function PATCH(req: NextRequest) {
   const supabase = createServiceRoleClient();
 
   // Update each image sort_order. Collect per-row errors so the client
-  // sees a real failure when a single update fails — the old
+  // sees a real failure when a single update fails, the old
   // Promise.all swallowed errors and always returned ok:true.
   const results = await Promise.all(
     parsed.data.images.map(({ id, sort_order }) =>

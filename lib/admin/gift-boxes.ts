@@ -185,7 +185,7 @@ export async function getGiftBoxForAdmin(id: string): Promise<GiftBoxAdminDetail
  * For each category, returns the gift_box ID that currently owns the
  * customizable / "Compose your own" slot (or null). The editor uses
  * this to gray out the checkbox when another box already holds the
- * slot for the selected category — only one wizard entry per category.
+ * slot for the selected category, only one wizard entry per category.
  */
 export async function getCustomizableOwnerByCategory(): Promise<Record<string, string | null>> {
   const supabase = createServiceRoleClient();

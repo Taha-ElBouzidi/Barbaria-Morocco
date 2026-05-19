@@ -296,7 +296,7 @@ export default function GiftBoxEditor({
         </div>
       </section>
 
-      {/* Translations — tabbed, English first. Matches the pattern used
+      {/* Translations, tabbed, English first. Matches the pattern used
           in the product editor (TranslationTabs) so the house only
           fills out one locale at a time. */}
       <section className="space-y-6">
@@ -386,7 +386,7 @@ export default function GiftBoxEditor({
         </div>
       </section>
 
-      {/* Items picker — hidden for wizard boxes (buyers compose
+      {/* Items picker, hidden for wizard boxes (buyers compose
           their own on demand). */}
       {!isCustomizable && (
         <section className="space-y-6">

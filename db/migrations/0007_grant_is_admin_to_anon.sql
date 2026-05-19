@@ -1,4 +1,4 @@
--- Sprint 2.3c — Public anon must be able to CALL is_admin() so that the
+-- Sprint 2.3c, Public anon must be able to CALL is_admin() so that the
 -- "OR is_admin()" half of the gift_boxes / categories / category_translations
 -- / gift_box_items / gift_box_translations SELECT policies evaluates
 -- instead of throwing "permission denied for function is_admin".

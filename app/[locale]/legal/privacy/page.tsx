@@ -161,23 +161,23 @@ function FrenchContent() {
       </p>
       <ul>
         <li>
-          <strong>Vercel Inc.</strong> (hébergement, CDN) — 440 N Barranca Avenue,
+          <strong>Vercel Inc.</strong> (hébergement, CDN), 440 N Barranca Avenue,
           #4133, Covina, CA 91723, États-Unis. Garanties : certification EU-US Data
           Privacy Framework et clauses contractuelles types (CCT) intégrées au DPA
           de Vercel.
         </li>
         <li>
           <strong>Supabase Inc.</strong> (base de données, authentification
-          administrateur) — 970 Toa Payoh North #07-04, Singapour 318992. Garanties :
+          administrateur), 970 Toa Payoh North #07-04, Singapour 318992. Garanties :
           DPA Supabase incluant les CCT ; région de stockage :{" "}
           <L>{CLIENT_DATA.supabaseRegion.fr}</L>.
         </li>
         <li>
-          <strong>Formspree (Roboflow Studios LLC)</strong> — Boston, MA, États-Unis.
+          <strong>Formspree (Roboflow Studios LLC)</strong>, Boston, MA, États-Unis.
           Garanties : EU-US Data Privacy Framework et CCT.
         </li>
         <li>
-          <strong>Équipe interne Barbaria</strong> — Casablanca, accédant aux données
+          <strong>Équipe interne Barbaria</strong>, Casablanca, accédant aux données
           de demande dans le cadre du traitement des prospects et clients.
         </li>
       </ul>
@@ -239,7 +239,7 @@ function FrenchContent() {
       <p>Vous pouvez introduire une réclamation auprès de :</p>
       <ul>
         <li>
-          <strong>CNDP, Maroc</strong> — Commission Nationale de Contrôle de la
+          <strong>CNDP, Maroc</strong>, Commission Nationale de Contrôle de la
           Protection des Données à Caractère Personnel, Angle Boulevard Annakhil et
           Avenue Mehdi Ben Barka, Immeuble Les Patios, 3ème étage, Hay Riad, Rabat.
           Tél. +212 5 37 57 11 24. Email : contact@cndp.ma. Site :{" "}
@@ -363,21 +363,21 @@ function EnglishContent() {
       </p>
       <ul>
         <li>
-          <strong>Vercel Inc.</strong> (hosting, CDN) — 440 N Barranca Avenue, #4133,
+          <strong>Vercel Inc.</strong> (hosting, CDN), 440 N Barranca Avenue, #4133,
           Covina, CA 91723, USA. Safeguards: EU-US Data Privacy Framework
           certification and Standard Contractual Clauses (SCCs) in Vercel's DPA.
         </li>
         <li>
-          <strong>Supabase Inc.</strong> (database, admin authentication) — 970 Toa
+          <strong>Supabase Inc.</strong> (database, admin authentication), 970 Toa
           Payoh North #07-04, Singapore 318992. Safeguards: Supabase DPA including
           SCCs; storage region: <L>{CLIENT_DATA.supabaseRegion.en}</L>.
         </li>
         <li>
-          <strong>Formspree (Roboflow Studios LLC)</strong> — Boston, MA, USA.
+          <strong>Formspree (Roboflow Studios LLC)</strong>, Boston, MA, USA.
           Safeguards: EU-US Data Privacy Framework and SCCs.
         </li>
         <li>
-          <strong>Barbaria internal team</strong> — Casablanca, accessing inquiry data
+          <strong>Barbaria internal team</strong>, Casablanca, accessing inquiry data
           to handle prospects and clients.
         </li>
       </ul>
@@ -429,7 +429,7 @@ function EnglishContent() {
       <p>You may lodge a complaint with:</p>
       <ul>
         <li>
-          <strong>CNDP, Morocco</strong> — Commission Nationale de Contrôle de la
+          <strong>CNDP, Morocco</strong>, Commission Nationale de Contrôle de la
           Protection des Données à Caractère Personnel, Angle Boulevard Annakhil et
           Avenue Mehdi Ben Barka, Immeuble Les Patios, 3rd floor, Hay Riad, Rabat.
           Phone +212 5 37 57 11 24. Email: contact@cndp.ma. Site:{" "}

@@ -16,7 +16,7 @@ const ROLE_OPTIONS = [
 ];
 
 function formatDate(iso: string | null) {
-  if (!iso) return "—";
+  if (!iso) return ",";
   return new Date(iso).toLocaleDateString("en-GB", {
     day: "numeric",
     month: "short",
@@ -121,7 +121,7 @@ export default function AdminsList({ admins, currentUserId }: Props) {
                     )}
                   </td>
                   <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant">
-                    {a.displayName ?? "—"}
+                    {a.displayName ?? ","}
                   </td>
                   <td className="px-4 py-3">
                     <label className="sr-only" htmlFor={`role-${a.id}`}>

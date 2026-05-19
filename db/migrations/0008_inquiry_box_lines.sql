@@ -1,4 +1,4 @@
--- Sprint 2.6 — Inquiry is box-level, not product-level.
+-- Sprint 2.6, Inquiry is box-level, not product-level.
 -- Each row of inquiry_items now represents either a curated gift box (just
 -- gift_box_id + qty) or a custom composition (gift_box_id of the parent
 -- "compose-*" box + composition jsonb with the ordered product slugs).

@@ -20,7 +20,7 @@ interface PhotoProps {
  *
  * Stored paths come from two sources, just like the admin uploader's
  * helper in lib/admin/products.ts:
- * - Sprint 1.5 seed rows hold `/brand_photos/...` — absolute paths to
+ * - Sprint 1.5 seed rows hold `/brand_photos/...`, absolute paths to
  *   files shipped in /public. Use as-is.
  * - The admin uploader writes Supabase Storage object paths (no
  *   leading slash). Prefix with the public-bucket URL.

@@ -79,7 +79,7 @@ export const auditActionEnum = pgEnum("audit_action_enum", [
 // (rituals, ritual_translations, ritual_subcategories,
 // ritual_subcategory_translations) and the products.ritual_id /
 // products.subcategory_id / products.ritual_label columns were
-// dropped — products are now classified by category only
+// dropped, products are now classified by category only
 // (cosmetiques | epicerie_fine via products.category_id).
 
 // ---------------------------------------------------------------------------
@@ -442,7 +442,7 @@ export const auditLog = pgTable(
 // Relations
 // ---------------------------------------------------------------------------
 
-// Ritual relations dropped — rituals taxonomy retired in 0016.
+// Ritual relations dropped, rituals taxonomy retired in 0016.
 
 export const productsRelations = relations(products, ({ many }) => ({
   translations: many(productTranslations),
@@ -538,7 +538,7 @@ export const inquiryItemsRelations = relations(inquiryItems, ({ one }) => ({
 }));
 
 // ---------------------------------------------------------------------------
-// Sprint 2 — Categories (public-facing taxonomy, replaces rituals in IA)
+// Sprint 2, Categories (public-facing taxonomy, replaces rituals in IA)
 // ---------------------------------------------------------------------------
 
 export const categories = pgTable("categories", {
@@ -572,7 +572,7 @@ export const categoryTranslations = pgTable(
 );
 
 // ---------------------------------------------------------------------------
-// Sprint 2 — Gift Boxes (curated and customizable)
+// Sprint 2, Gift Boxes (curated and customizable)
 // ---------------------------------------------------------------------------
 
 export const giftBoxes = pgTable(
@@ -665,7 +665,7 @@ export const giftBoxItemsRelations = relations(giftBoxItems, ({ one }) => ({
 }));
 
 // ---------------------------------------------------------------------------
-// Sprint 2.x — Occasions (used by /contact occasion select + /admin/occasions)
+// Sprint 2.x, Occasions (used by /contact occasion select + /admin/occasions)
 // Added in migration 0009; previously orphaned from this Drizzle schema.
 // ---------------------------------------------------------------------------
 
@@ -710,7 +710,7 @@ export const occasionTranslationsRelations = relations(
 );
 
 // ---------------------------------------------------------------------------
-// Sprint 4 — site_settings (single-row table; bool PK enforces it)
+// Sprint 4, site_settings (single-row table; bool PK enforces it)
 // Added in migration 0010.
 // ---------------------------------------------------------------------------
 

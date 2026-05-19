@@ -17,7 +17,7 @@ import { getAllFacets } from "@/lib/data/facets";
 // The wizard is a 1k+ LOC client component. Lazy-load so curated
 // boxes (the majority) don't pay the JS cost; the import only fires
 // for `detail.isCustomizable === true` rows. Types remain a static
-// import — types erase at compile time, so they're free.
+// import, types erase at compile time, so they're free.
 import type { WizardCopy, FacetTypeByValue } from "@/components/wizard/BoxComposer";
 const BoxComposer = dynamic(() => import("@/components/wizard/BoxComposer"));
 import BoxAddToInquiry from "@/components/product/BoxAddToInquiry";

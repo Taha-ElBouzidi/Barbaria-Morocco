@@ -215,7 +215,7 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                       </td>
                       <td className="px-4 py-3 font-sans text-[13px] text-bb-on-surface font-medium">{getEnName(p)}</td>
                       <td className="px-4 py-3 font-mono text-[12px] text-bb-on-surface-variant">{p.slug}</td>
-                      <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant capitalize">{resolveCategorySlug(p) || "—"}</td>
+                      <td className="px-4 py-3 font-sans text-[12px] text-bb-on-surface-variant capitalize">{resolveCategorySlug(p) || ","}</td>
                       <td className="px-4 py-3">
                         <span
                           className={cn(

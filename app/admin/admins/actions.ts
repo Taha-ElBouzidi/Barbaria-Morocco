@@ -15,7 +15,7 @@ export type CreateAdminResult =
       id: string;
       email: string;
       /** Present only when the superadmin let us generate the password.
-       *  When they typed their own we don't echo it back — they already
+       *  When they typed their own we don't echo it back, they already
        *  have it. */
       tempPassword?: string;
     }
@@ -54,7 +54,7 @@ export async function createAdmin(formData: FormData): Promise<CreateAdminResult
 
   const supabase = createServiceRoleClient();
 
-  // Block duplicate emails up front — admin_users.email is unique and
+  // Block duplicate emails up front, admin_users.email is unique and
   // the auth.users insert below would 422 either way, but checking
   // first gives a friendlier error and avoids leaving an orphan auth
   // user behind on a partial failure. Use ilike so legacy mixed-case
@@ -71,7 +71,7 @@ export async function createAdmin(formData: FormData): Promise<CreateAdminResult
 
   // Create the auth user. email_confirm:true so the new admin can log
   // in immediately without an email round-trip (we don't have the
-  // Resend pipeline yet — see TODO_LIST.md).
+  // Resend pipeline yet, see TODO_LIST.md).
   const { data: created, error: authErr } = await supabase.auth.admin.createUser({
     email,
     password: tempPassword,
@@ -86,7 +86,7 @@ export async function createAdmin(formData: FormData): Promise<CreateAdminResult
   // Insert the admin_users row keyed on the auth user id. If this fails
   // we delete the orphan auth user so retries are idempotent. If the
   // rollback ALSO fails we surface the orphan id so an operator can
-  // clean up via SQL — silently swallowing the rollback error would
+  // clean up via SQL, silently swallowing the rollback error would
   // leave the project in a half-state with no audit trail.
   const { error: insErr } = await supabase.from("admin_users").insert({
     id: userId,
@@ -199,7 +199,7 @@ export async function deleteAdmin(formData: FormData): Promise<DeleteAdminResult
 
   const { error: uErr } = await supabase.auth.admin.deleteUser(id);
   if (uErr) {
-    // admin_users row already gone — the user can no longer sign in
+    // admin_users row already gone, the user can no longer sign in
     // even if the auth row stuck around. Surface as a warning that
     // names the target so it stays meaningful after the row vanishes
     // from the list.

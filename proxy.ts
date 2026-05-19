@@ -30,7 +30,7 @@ export async function proxy(request: NextRequest) {
   upstreamHeaders.delete(USER_ID_HEADER);
 
   // Initial response. setAll (called inside getUser when tokens refresh)
-  // writes Set-Cookie headers DIRECTLY onto this response object —
+  // writes Set-Cookie headers DIRECTLY onto this response object,
   // we never re-create the response or copy cookies by name/value, which
   // would strip critical options (maxAge, httpOnly, secure, sameSite).
   let supabaseResponse = NextResponse.next({
@@ -70,7 +70,7 @@ export async function proxy(request: NextRequest) {
 
   // If authenticated, rebuild the response with the trusted user-id header
   // so downstream RSCs can read it. Preserve cookies by copying Set-Cookie
-  // HEADERS verbatim (preserves maxAge/httpOnly/secure/sameSite — critical;
+  // HEADERS verbatim (preserves maxAge/httpOnly/secure/sameSite, critical;
   // copying via ResponseCookies.set(name, value) would lose those options
   // and the browser would treat the session as ephemeral / mis-scoped).
   if (user) {
@@ -101,7 +101,7 @@ export async function proxy(request: NextRequest) {
     return supabaseResponse;
   }
 
-  // /api/* — set the trusted user-id header for /api/admin/* handlers
+  // /api/*, set the trusted user-id header for /api/admin/* handlers
   // that gate with requireAdmin(), but never run next-intl on API
   // routes (intl would try to redirect to a localised path and break
   // POST/PATCH/DELETE). The handler decides whether to require auth.

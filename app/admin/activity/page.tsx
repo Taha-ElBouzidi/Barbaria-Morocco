@@ -62,7 +62,7 @@ export default async function AdminActivityPage({ searchParams }: PageProps) {
 
   function filterUrl(overrides: Record<string, string>) {
     // Build the URL from non-empty values only. Overrides intentionally
-    // pass "" to clear a key — that means "remove the param", not
+    // pass "" to clear a key, that means "remove the param", not
     // "set the param to empty string". Without this filter the chip
     // emitted `?entityType=` which made the server query do
     // `.eq("entity_type", "")` and return zero rows when the user

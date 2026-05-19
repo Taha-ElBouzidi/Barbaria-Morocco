@@ -9,7 +9,7 @@ they should be completed.
 
 ## A. What only Taha can do (manual steps, no code can replace these)
 
-### A.1. Domain & DNS — gate for half the items below
+### A.1. Domain & DNS, gate for half the items below
 - [ ] Confirm the real domain with the house (`barbariamorocco.com` or other).
 - [ ] Buy or transfer the domain to whichever registrar is convenient.
 - [ ] In Vercel project settings, add the domain. Vercel will display the DNS
@@ -80,12 +80,12 @@ broke.
 - ✅ **Image upload pipeline** with sharp compression (WebP, 2400px max,
       EXIF strip).
 - ✅ **Inquiry endpoint** stores submissions in DB. **Email delivery is
-      DEFERRED** — see B.1 below.
+      DEFERRED**, see B.1 below.
 - ✅ **Honeypot field** on inquiry form. **Turnstile not yet integrated.**
 - ✅ **Admin dashboard** with products/gift-boxes/ateliers/journal/
       inquiries/admins CRUD, dashboard analytics, audit log.
 
-### B.1. Inquiry email pipeline — code waiting on domain DNS
+### B.1. Inquiry email pipeline, code waiting on domain DNS
 
 The decision doc is at `.project/inquiry-email-brainstorm.md`.
 Recommendation: **Resend** (3000 emails/month free permanent, best DX,

@@ -146,7 +146,7 @@ export default function SaharaPrestige({
     // frequency overlaps stars' lifetime, so several can be in flight
     // at once. Each is a one-shot DOM element with a CSS keyframe
     // that self-removes after the animation ends. The recursive
-    // timer keeps ticking even when the tab is hidden — we just skip
+    // timer keeps ticking even when the tab is hidden, we just skip
     // the spawn so we don't get a backlog firing on tab refocus.
     let shootingTimer: ReturnType<typeof setTimeout> | undefined;
     function spawnShootingStar() {
