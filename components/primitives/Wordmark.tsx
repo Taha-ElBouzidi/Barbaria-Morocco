@@ -1,4 +1,4 @@
-import AmazighOrnament from "./AmazighOrnament";
+import BrandMark from "./BrandMark";
 import { cn } from "@/lib/utils";
 
 type WordmarkVariant = "compact" | "stacked" | "hero";
@@ -9,69 +9,52 @@ interface WordmarkProps {
   tone?: WordmarkTone;
   className?: string;
   /**
-   * When true (default for "compact"), Maroc/Morocco subtitle is hidden.
-   * Header uses the compact wordmark so the BARBARIA word reads on a 72px bar.
+   * For "stacked": show MOROCCO subtitle. Default true.
+   * For "compact": ignored (compact is always name-only).
    */
   showSubtitle?: boolean;
-  /** Country tagline shown between Tifinagh marks on the hero variant.
-   *  Defaults to "Maroc"; pass "Morocco" on EN routes. */
+  /** Country tagline shown on the hero variant. Defaults to "Maroc". */
   tagline?: string;
 }
 
 /**
- * Wordmark, typographic brand mark, "BARBARIA / MOROCCO" set in the
- * display serif, optionally crowned by the Amazigh diamond ornament.
+ * Wordmark, the Barbaria brand identity, rendered from the inline
+ * BrandMark SVG so it inherits the parent's text colour via
+ * `currentColor`. Works on any surface (cream, sahara, gold, dark)
+ * in any colour without per-surface assets.
  *
  * Variants:
- * - compact:  small inline word, header use. No ornament, no subtitle.
- * - stacked:  ornament above, BARBARIA + MOROCCO stacked. Footer / drawer.
- * - hero:     full composition with the "⵿ · MAROC · ⵿" tagline line,
- *             enormous BARBARIA, MOROCCO subtitle. Homepage hero only.
- *
- * Tones map to the surrounding surface: "light" on dark heroes, "dark"
- * everywhere else. Gold ornament + brand-primary type by default.
+ *  - compact: small "ornament + BARBARIA" for the header
+ *  - stacked: medium "ornament + BARBARIA + MOROCCO" for the footer
+ *  - hero:    the ornament alone on top, the huge wordmark composed
+ *             in Playfair below with the Tifinagh tagline line in
+ *             between (kept custom because the homepage hero needs
+ *             responsive typography that the static SVG cannot give)
  */
 export default function Wordmark({
   variant = "stacked",
   tone = "dark",
   className,
-  showSubtitle,
+  showSubtitle = true,
   tagline = "Maroc",
 }: WordmarkProps) {
-  const subtitleVisible = showSubtitle ?? variant !== "compact";
-  const wordmarkColor =
+  const colorClass =
     tone === "gold" ? "text-bb-secondary"
     : tone === "light" ? "text-white"
     : "text-bb-primary";
-  const subtitleColor =
-    tone === "gold" ? "text-bb-secondary/80"
-    : tone === "light" ? "text-white/70"
-    : "text-bb-on-surface-variant";
 
   if (variant === "compact") {
-    // Stacked layout (ornament above the wordmark) per the brand
-    // identity Inass picked. Ornament inherits the wordmark colour so
-    // both flip together when the header crossfades dark/light.
     return (
-      <span className={cn("inline-flex flex-col items-center gap-1 leading-none", className)}>
-        <AmazighOrnament size={14} className={wordmarkColor} strokeWidth={1.6} />
-        <span
-          className={cn(
-            "font-display font-semibold leading-none tracking-[0.06em] uppercase",
-            wordmarkColor
-          )}
-          style={{ fontSize: "20px" }}
-        >
-          Barbaria
-        </span>
+      <span className={cn("inline-block", colorClass, className)}>
+        <BrandMark size={42} variant="name" />
       </span>
     );
   }
 
   if (variant === "hero") {
     return (
-      <div className={cn("flex flex-col items-center gap-4", className)}>
-        <AmazighOrnament size={36} className="text-bb-secondary" />
+      <div className={cn("flex flex-col items-center gap-4", className, colorClass)}>
+        <BrandMark size={36} variant="ornament" />
         <div
           className={cn(
             "flex items-center gap-3 font-display uppercase",
@@ -84,17 +67,14 @@ export default function Wordmark({
           <span aria-hidden>ⵣ</span>
         </div>
         <h1
-          className={cn(
-            "font-display font-bold leading-[0.95] tracking-[0.04em] uppercase",
-            wordmarkColor
-          )}
+          className="font-display font-bold leading-[0.95] tracking-[0.04em] uppercase"
           style={{ fontSize: "clamp(56px, 10vw, 112px)" }}
         >
           Barbaria
         </h1>
-        {subtitleVisible && (
+        {showSubtitle && (
           <span
-            className={cn("font-display uppercase", subtitleColor)}
+            className="font-display uppercase opacity-80"
             style={{ fontSize: "clamp(15px, 2vw, 22px)", letterSpacing: "0.55em" }}
           >
             Morocco
@@ -104,27 +84,10 @@ export default function Wordmark({
     );
   }
 
-  // stacked (default, used in footer, menu drawer)
+  // stacked (default, footer/drawer)
   return (
-    <div className={cn("flex flex-col items-center gap-2.5", className)}>
-      <AmazighOrnament size={26} className="text-bb-secondary" />
-      <span
-        className={cn(
-          "font-display font-bold leading-none tracking-[0.06em] uppercase",
-          wordmarkColor
-        )}
-        style={{ fontSize: "32px" }}
-      >
-        Barbaria
-      </span>
-      {subtitleVisible && (
-        <span
-          className={cn("font-display uppercase", subtitleColor)}
-          style={{ fontSize: "11px", letterSpacing: "0.4em" }}
-        >
-          Morocco
-        </span>
-      )}
-    </div>
+    <span className={cn("inline-block", colorClass, className)}>
+      <BrandMark size={100} variant={showSubtitle ? "full" : "name"} />
+    </span>
   );
 }
