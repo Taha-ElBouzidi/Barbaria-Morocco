@@ -4,7 +4,7 @@ import { NextIntlClientProvider, hasLocale } from "next-intl";
 import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
-import { BASE_URL, CONTACT_EMAIL, INSTAGRAM_HANDLE } from "@/lib/constants";
+import { BASE_URL, INSTAGRAM_HANDLE } from "@/lib/constants";
 import "../globals.css";
 import ShellChrome from "@/components/shell/ShellChrome";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
@@ -132,7 +132,7 @@ export default async function LocaleLayout({
                 <ShellChrome locale={locale} mainId="main-content" socials={socials}>
                   <div className="flex-1">{children}</div>
                 </ShellChrome>
-                <WhatsAppFloat />
+                <WhatsAppFloat href={socials.whatsappUrl} />
               </ProductCatalogueProvider>
             </InquiryProvider>
             <ConsentBanner />
@@ -151,11 +151,11 @@ export default async function LocaleLayout({
               description: orgDescription,
               contactPoint: {
                 "@type": "ContactPoint",
-                email: CONTACT_EMAIL,
+                email: socials.contactEmail,
                 contactType: "customer service",
                 availableLanguage: ["French", "English"],
               },
-              email: CONTACT_EMAIL,
+              email: socials.contactEmail,
               sameAs: [
                 `https://instagram.com/${INSTAGRAM_HANDLE}`,
               ],

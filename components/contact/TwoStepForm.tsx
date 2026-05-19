@@ -2,7 +2,7 @@
 
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
-import Link from "next/link";
+import { Link } from "@/i18n/navigation";
 import { cn } from "@/lib/utils";
 import { useInquiry } from "@/lib/inquiry-context";
 import { useProductCatalogue } from "@/lib/data/ProductCatalogueContext";
@@ -190,7 +190,7 @@ export default function TwoStepForm({ locale, occasions }: Props) {
           href="/"
           className="mt-4 font-sans text-[12px] uppercase tracking-[0.18em] text-bb-secondary hover:text-bb-primary transition-colors"
         >
-          ← Back to home
+          ← {t("success_back_home")}
         </Link>
       </div>
     );

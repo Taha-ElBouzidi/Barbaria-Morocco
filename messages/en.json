@@ -218,6 +218,7 @@
     "submit": "Request Quote",
     "success_title": "We respond within 24 hours.",
     "success_body": "Your concierge has been assigned.",
+    "success_back_home": "Back to home",
     "sidebar_title": "Your Selection",
     "sidebar_count": "{count} items selected",
     "sidebar_empty": "No items selected yet.",

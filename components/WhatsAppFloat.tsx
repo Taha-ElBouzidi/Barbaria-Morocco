@@ -1,16 +1,26 @@
 "use client";
 
 import { FaWhatsapp } from "react-icons/fa";
-import { WHATSAPP_NUMBER } from "@/lib/constants";
 import { useInquiry } from "@/lib/inquiry-context";
 
-export default function WhatsAppFloat() {
+interface WhatsAppFloatProps {
+  /** Full WhatsApp URL from site_settings (e.g., `https://wa.me/212659658863`). */
+  href: string;
+}
+
+/**
+ * Floating WhatsApp call-to-action shown on every public page.
+ * Receives the URL from the locale layout so it tracks the admin's
+ * site-settings change (no redeploy needed when the WhatsApp number
+ * is edited via /admin/settings).
+ */
+export default function WhatsAppFloat({ href }: WhatsAppFloatProps) {
   const { totalBoxes } = useInquiry();
   const lifted = totalBoxes > 0;
-
+  if (!href) return null;
   return (
     <a
-      href={`https://wa.me/${WHATSAPP_NUMBER}`}
+      href={href}
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contact us on WhatsApp"
