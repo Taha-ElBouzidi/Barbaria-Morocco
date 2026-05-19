@@ -43,38 +43,29 @@ function bilingual(fr: string, en: string): Bilingual {
 
 export const CLIENT_DATA = {
   // ─── Company identity ────────────────────────────────────────────
-  legalName: placeholder("dénomination sociale", "legal name"),
-  companyForm: placeholder(
-    "forme juridique, ex. SARL / SARL AU / SA",
-    "company form, e.g. SARL / SARL AU / SA"
+  legalName: value("Barbaria Morocco SARL"),
+  companyForm: value("SARL"),
+  capital: value("100 000 MAD"),
+  fullAddress: bilingual(
+    "Rue Soumaya, Immeuble 82, 2ème étage N°04, Quartier Palmier, Casablanca, Maroc",
+    "Rue Soumaya, Immeuble 82, 2ème étage N°04, Quartier Palmier, Casablanca, Morocco"
   ),
-  capital: placeholder("capital social en MAD", "share capital in MAD"),
-  fullAddress: placeholder(
-    "adresse complète du siège, Marrakech, Maroc",
-    "full address, Marrakech, Morocco"
+  postalAddress: bilingual(
+    "Rue Soumaya, Immeuble 82, 2ème étage N°04, Quartier Palmier, Casablanca, Maroc",
+    "Rue Soumaya, Immeuble 82, 2ème étage N°04, Quartier Palmier, Casablanca, Morocco"
   ),
-  postalAddress: placeholder(
-    "adresse postale, Marrakech, Maroc",
-    "postal address, Marrakech, Morocco"
-  ),
-  directorName: placeholder(
-    "nom complet du gérant / représentant légal",
-    "full name of the legal representative"
-  ),
+  directorName: value("Inass MOUSSADEK"),
 
   // ─── Identifiants officiels ──────────────────────────────────────
-  rcNumber: placeholder("RC Marrakech n° XXXXX", "RC Marrakech No. XXXXX"),
-  iceNumber: placeholder("ICE, 15 chiffres", "ICE, 15 digits"),
-  ifNumber: placeholder("Identifiant Fiscal", "Tax Identifier (IF)"),
-  patenteNumber: placeholder(
-    "Patente / Taxe Professionnelle",
-    "Patente / Professional Tax"
-  ),
+  rcNumber: value("RC Casablanca n° 719643"),
+  iceNumber: value("003886371000061"),
+  ifNumber: value("71744183"),
+  patenteNumber: value("34772428"),
 
   // ─── Marque ──────────────────────────────────────────────────────
-  ompicMark: placeholder(
-    "marque déposée OMPIC n° XXXX, ou en cours de dépôt",
-    "registered with OMPIC under No. XXXX, or pending"
+  ompicMark: bilingual(
+    "marque déposée OMPIC n° 3121576",
+    "registered with OMPIC under No. 3121576"
   ),
 
   // ─── Activité réglementée (optional, only if applicable) ─────────

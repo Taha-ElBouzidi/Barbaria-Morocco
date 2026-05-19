@@ -196,7 +196,7 @@ function FrenchContent() {
       <p>
         Les présentes CGU sont régies par le droit marocain. Tout litige relatif
         à leur interprétation ou à leur exécution relève de la compétence
-        exclusive du <strong>Tribunal de Commerce de Marrakech</strong>, sauf
+        exclusive du <strong>Tribunal de Commerce de Casablanca</strong>, sauf
         disposition impérative contraire.
       </p>
       <p>
@@ -344,7 +344,7 @@ function EnglishContent() {
       <p>
         These Terms are governed by Moroccan law. Any dispute relating to their
         interpretation or execution falls within the exclusive jurisdiction of the{" "}
-        <strong>Commercial Court of Marrakech</strong>, except where mandatory rules
+        <strong>Commercial Court of Casablanca</strong>, except where mandatory rules
         state otherwise.
       </p>
       <p>

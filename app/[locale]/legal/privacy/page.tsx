@@ -177,7 +177,7 @@ function FrenchContent() {
           Garanties : EU-US Data Privacy Framework et CCT.
         </li>
         <li>
-          <strong>Équipe interne Barbaria</strong> — Marrakech, accédant aux données
+          <strong>Équipe interne Barbaria</strong> — Casablanca, accédant aux données
           de demande dans le cadre du traitement des prospects et clients.
         </li>
       </ul>
@@ -380,7 +380,7 @@ function EnglishContent() {
           Safeguards: EU-US Data Privacy Framework and SCCs.
         </li>
         <li>
-          <strong>Barbaria internal team</strong> — Marrakech, accessing inquiry data
+          <strong>Barbaria internal team</strong> — Casablanca, accessing inquiry data
           to handle prospects and clients.
         </li>
       </ul>
