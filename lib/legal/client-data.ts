@@ -19,7 +19,7 @@ function bilingual(fr: string, en: string): Bilingual {
 
 export const CLIENT_DATA = {
   // ─── Company identity ────────────────────────────────────────────
-  legalName: value("Barbaria Morocco SARL"),
+  legalName: value("Barbaria Morocco"),
   companyForm: value("SARL"),
   capital: value("100 000 MAD"),
   fullAddress: bilingual(

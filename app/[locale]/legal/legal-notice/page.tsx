@@ -76,7 +76,7 @@ function FrenchContent() {
         <li>Identifiant Commun de l&apos;Entreprise (ICE) : <L>{CLIENT_DATA.iceNumber.fr}</L></li>
         <li>Identifiant Fiscal (IF) : <L>{CLIENT_DATA.ifNumber.fr}</L></li>
         <li>Taxe Professionnelle (Patente) : <L>{CLIENT_DATA.patenteNumber.fr}</L></li>
-        <li>Téléphone : +212 6 59 65 88 63</li>
+        <li>Téléphone : +212 6 59 65 88 63 / +212 6 17 83 04 10</li>
         <li>Email : contact@barbariamorocco.com</li>
       </ul>
 
@@ -155,7 +155,7 @@ function EnglishContent() {
         <li>Common Business Identifier (ICE): <L>{CLIENT_DATA.iceNumber.en}</L></li>
         <li>Tax Identifier (IF): <L>{CLIENT_DATA.ifNumber.en}</L></li>
         <li>Professional Tax (Patente): <L>{CLIENT_DATA.patenteNumber.en}</L></li>
-        <li>Phone: +212 6 59 65 88 63</li>
+        <li>Phone: +212 6 59 65 88 63 / +212 6 17 83 04 10</li>
         <li>Email: contact@barbariamorocco.com</li>
       </ul>
 
