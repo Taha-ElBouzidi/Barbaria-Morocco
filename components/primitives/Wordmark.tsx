@@ -43,10 +43,14 @@ export default function Wordmark({
     : tone === "light" ? "text-white"
     : "text-bb-primary";
 
+  // Sizes are the TOTAL composite height in px. Pieces auto-scale
+  // using the source artwork's ratios (186:35:88:50:50). Header lives
+  // in a 72px bar so the compact mark gets ~56px of vertical room;
+  // footer is a destination area that can carry a much bigger mark.
   if (variant === "compact") {
     return (
       <span className={cn("inline-block", colorClass, className)}>
-        <BrandMark size={42} variant="name" />
+        <BrandMark size={56} variant="name" />
       </span>
     );
   }
@@ -54,7 +58,7 @@ export default function Wordmark({
   if (variant === "hero") {
     return (
       <div className={cn("flex flex-col items-center gap-4", className, colorClass)}>
-        <BrandMark size={36} variant="ornament" />
+        <BrandMark size={48} variant="ornament" />
         <div
           className={cn(
             "flex items-center gap-3 font-display uppercase",
@@ -87,7 +91,7 @@ export default function Wordmark({
   // stacked (default, footer/drawer)
   return (
     <span className={cn("inline-block", colorClass, className)}>
-      <BrandMark size={100} variant={showSubtitle ? "full" : "name"} />
+      <BrandMark size={180} variant={showSubtitle ? "full" : "name"} />
     </span>
   );
 }

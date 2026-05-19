@@ -57,15 +57,33 @@ export default async function BrandInspectionPage({ params }: PageProps) {
           </SizeRow>
         </Section>
 
-        <Section title="Composed: BrandMark variant=&quot;full&quot;">
-          <SizeRow sizes={[260, 150, 80]}>
+        <Section title="Composed: BrandMark variant=&quot;full&quot; — used in the FOOTER">
+          <p className="font-sans text-[13px] text-bb-on-surface/70 -mt-3">
+            Live footer renders at <strong>180 px total height</strong>. The
+            other sizes are for visual comparison.
+          </p>
+          <SizeRow sizes={[260, 180, 100]}>
             {(s) => <BrandMark size={s} variant="full" />}
           </SizeRow>
         </Section>
 
-        <Section title="Composed: BrandMark variant=&quot;name&quot;">
-          <SizeRow sizes={[200, 120, 60]}>
+        <Section title="Composed: BrandMark variant=&quot;name&quot; — used in the HEADER">
+          <p className="font-sans text-[13px] text-bb-on-surface/70 -mt-3">
+            Live header renders at <strong>56 px total height</strong> (fits
+            the 72 px header bar with breathing room). Larger sizes shown for
+            comparison.
+          </p>
+          <SizeRow sizes={[200, 100, 56]}>
             {(s) => <BrandMark size={s} variant="name" />}
+          </SizeRow>
+        </Section>
+
+        <Section title="Ornament only — used at the top of the HERO">
+          <p className="font-sans text-[13px] text-bb-on-surface/70 -mt-3">
+            Live hero renders at <strong>48 px</strong> above the Tifinagh tagline.
+          </p>
+          <SizeRow sizes={[100, 64, 48]}>
+            {(s) => <BrandMark size={s} variant="ornament" />}
           </SizeRow>
         </Section>
 
