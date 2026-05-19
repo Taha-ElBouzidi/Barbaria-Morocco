@@ -3,6 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import LegalShell from "@/components/legal/LegalShell";
 import { L } from "@/components/legal/LegalValue";
 import { CLIENT_DATA } from "@/lib/legal/client-data";
+import { pageMetadata } from "@/lib/seo/page-metadata";
 import { Link } from "@/i18n/navigation";
 
 export const dynamic = "force-static";
@@ -15,10 +16,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale } = await params;
   const isFr = locale !== "en";
   return {
-    title: isFr ? "Conditions d'utilisation" : "Terms of use",
-    description: isFr
-      ? "Conditions générales d'utilisation du site Barbaria Morocco."
-      : "Terms of use of the Barbaria Morocco website.",
+    ...pageMetadata({
+      locale,
+      path: "/legal/terms",
+      title: isFr ? "Conditions d'utilisation" : "Terms of use",
+      description: isFr
+        ? "Conditions générales d'utilisation du site Barbaria Morocco."
+        : "Terms of use of the Barbaria Morocco website.",
+    }),
     robots: { index: true, follow: true },
   };
 }

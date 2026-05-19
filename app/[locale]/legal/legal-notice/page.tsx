@@ -4,6 +4,7 @@ import LegalShell from "@/components/legal/LegalShell";
 import { L } from "@/components/legal/LegalValue";
 import { CLIENT_DATA } from "@/lib/legal/client-data";
 import { getSiteSettings } from "@/lib/data/site-settings";
+import { pageMetadata } from "@/lib/seo/page-metadata";
 import { Link } from "@/i18n/navigation";
 
 // Cached via the "site-settings" tag; the admin Settings page calls
@@ -19,10 +20,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale } = await params;
   const isFr = locale !== "en";
   return {
-    title: isFr ? "Mentions légales" : "Legal notice",
-    description: isFr
-      ? "Mentions légales du site Barbaria Morocco."
-      : "Legal notice of the Barbaria Morocco website.",
+    ...pageMetadata({
+      locale,
+      path: "/legal/legal-notice",
+      title: isFr ? "Mentions légales" : "Legal notice",
+      description: isFr
+        ? "Mentions légales du site Barbaria Morocco."
+        : "Legal notice of the Barbaria Morocco website.",
+    }),
     robots: { index: true, follow: true },
   };
 }

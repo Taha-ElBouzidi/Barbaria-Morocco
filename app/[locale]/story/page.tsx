@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { pageMetadata } from "@/lib/seo/page-metadata";
 import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
@@ -18,10 +19,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "story" });
-  return {
-    title: `${t("hero_headline")} | Barbaria Morocco`,
+  return pageMetadata({
+    locale,
+    path: "/story",
+    title: t("hero_headline"),
     description: t("hero_lede"),
-  };
+  });
 }
 
 // Six Tifinagh symbols. Glyphs and transliterations are constants (not

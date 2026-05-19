@@ -3,6 +3,7 @@ import { setRequestLocale } from "next-intl/server";
 import LegalShell from "@/components/legal/LegalShell";
 import { L } from "@/components/legal/LegalValue";
 import { CLIENT_DATA } from "@/lib/legal/client-data";
+import { pageMetadata } from "@/lib/seo/page-metadata";
 import { Link } from "@/i18n/navigation";
 
 export const dynamic = "force-static";
@@ -15,10 +16,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale } = await params;
   const isFr = locale !== "en";
   return {
-    title: isFr ? "Politique de confidentialité" : "Privacy policy",
-    description: isFr
-      ? "Politique de confidentialité de Barbaria Morocco, en application du RGPD et de la loi 09-08."
-      : "Privacy policy of Barbaria Morocco, under GDPR and Morocco law 09-08.",
+    ...pageMetadata({
+      locale,
+      path: "/legal/privacy",
+      title: isFr ? "Politique de confidentialité" : "Privacy policy",
+      description: isFr
+        ? "Politique de confidentialité de Barbaria Morocco, en application du RGPD et de la loi 09-08."
+        : "Privacy policy of Barbaria Morocco, under GDPR and Morocco law 09-08.",
+    }),
     robots: { index: true, follow: true },
   };
 }

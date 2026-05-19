@@ -11,6 +11,7 @@ import Icon from "@/components/primitives/Icon";
 import { getCategoryBySlug } from "@/lib/data/categories";
 import { getGiftBoxesByCategory } from "@/lib/data/gift-boxes";
 import type { CategorySlug } from "@/lib/data/types";
+import { pageMetadata } from "@/lib/seo/page-metadata";
 
 export const revalidate = 60;
 
@@ -32,13 +33,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const lang = locale === "fr" ? "fr" : "en";
   const cat = await getCategoryBySlug(category, lang);
   if (!cat) return {};
-  return {
-    title: `${cat.name} | Barbaria Morocco`,
+  return pageMetadata({
+    locale,
+    path: `/products/${category}`,
+    title: cat.name,
     description: cat.lede,
-    openGraph: {
-      images: cat.heroImage ? [{ url: cat.heroImage }] : [{ url: "/brand_photos/gift-box-open.jpg" }],
-    },
-  };
+    ogImage: cat.heroImage || "/brand_photos/gift-box-open.jpg",
+  });
 }
 
 export default async function CategoryPage({ params }: PageProps) {

@@ -51,10 +51,14 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       template: t("site_title_template"),
     },
     description: t("site_description"),
+    // Default alternates point to the locale root. Each page overrides
+    // with its own path via the pageMetadata helper.
     alternates: {
+      canonical: `${BASE_URL}/${locale}`,
       languages: {
         fr: `${BASE_URL}/fr`,
         en: `${BASE_URL}/en`,
+        "x-default": `${BASE_URL}/fr`,
       },
     },
     openGraph: {
@@ -112,12 +116,6 @@ export default async function LocaleLayout({
       lang={locale}
       className={`${playfair.variable} ${cormorant.variable} ${montserrat.variable} h-full antialiased`}
     >
-      <head>
-        <link rel="canonical" href={`${BASE_URL}/${locale}`} />
-        <link rel="alternate" hrefLang="fr" href={`${BASE_URL}/fr`} />
-        <link rel="alternate" hrefLang="en" href={`${BASE_URL}/en`} />
-        <link rel="alternate" hrefLang="x-default" href={`${BASE_URL}/fr`} />
-      </head>
       <body className="min-h-full flex flex-col bg-bb-bg text-bb-on-surface font-sans antialiased">
         <a
           href="#main-content"

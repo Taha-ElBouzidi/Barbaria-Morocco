@@ -10,6 +10,7 @@ import BentoCategories from "@/components/home/BentoCategories";
 import Heritage3Up from "@/components/home/Heritage3Up";
 import JsonLd from "@/components/JsonLd";
 import { BASE_URL } from "@/lib/constants";
+import { pageMetadata } from "@/lib/seo/page-metadata";
 
 export async function generateMetadata({
   params,
@@ -18,11 +19,13 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "home" });
-  return {
-    title: "Barbaria Morocco | " + t("hero.headline"),
+  return pageMetadata({
+    locale,
+    path: "",
+    title: t("hero.headline"),
     description: t("hero.lede"),
-    openGraph: { images: [{ url: "/brand_photos/gift-box-open.jpg" }] },
-  };
+    ogImage: "/brand_photos/gift-box-open.jpg",
+  });
 }
 
 export default async function HomePage({

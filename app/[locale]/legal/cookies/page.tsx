@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { setRequestLocale } from "next-intl/server";
 import LegalShell from "@/components/legal/LegalShell";
+import { pageMetadata } from "@/lib/seo/page-metadata";
 import { Link } from "@/i18n/navigation";
 
 export const dynamic = "force-static";
@@ -13,10 +14,14 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale } = await params;
   const isFr = locale !== "en";
   return {
-    title: isFr ? "Politique de cookies" : "Cookie policy",
-    description: isFr
-      ? "Politique de cookies du site Barbaria Morocco."
-      : "Cookie policy of the Barbaria Morocco website.",
+    ...pageMetadata({
+      locale,
+      path: "/legal/cookies",
+      title: isFr ? "Politique de cookies" : "Cookie policy",
+      description: isFr
+        ? "Politique de cookies du site Barbaria Morocco."
+        : "Cookie policy of the Barbaria Morocco website.",
+    }),
     robots: { index: true, follow: true },
   };
 }

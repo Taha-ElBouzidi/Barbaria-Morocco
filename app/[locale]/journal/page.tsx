@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { setRequestLocale, getTranslations } from "next-intl/server";
+import { pageMetadata } from "@/lib/seo/page-metadata";
 import { cn } from "@/lib/utils";
 import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
@@ -20,10 +21,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "journal" });
-  return {
-    title: `${t("hero_headline")} | Barbaria Morocco`,
+  return pageMetadata({
+    locale,
+    path: "/journal",
+    title: t("hero_headline"),
     description: t("meta_description"),
-  };
+  });
 }
 
 function formatJournalDate(iso: string, locale: "en" | "fr"): string {

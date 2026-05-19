@@ -22,6 +22,7 @@ import type { WizardCopy, FacetTypeByValue } from "@/components/wizard/BoxCompos
 const BoxComposer = dynamic(() => import("@/components/wizard/BoxComposer"));
 import BoxAddToInquiry from "@/components/product/BoxAddToInquiry";
 import type { CategorySlug, ProductSummary } from "@/lib/data/types";
+import { pageMetadata } from "@/lib/seo/page-metadata";
 
 export const revalidate = 60;
 
@@ -32,17 +33,17 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { locale, box } = await params;
+  const { locale, category, box } = await params;
   const lang = locale === "fr" ? "fr" : "en";
   const detail = await getGiftBoxBySlug(box, lang);
   if (!detail) return {};
-  return {
-    title: `${detail.name} | Barbaria Morocco`,
+  return pageMetadata({
+    locale,
+    path: `/products/${category}/${box}`,
+    title: detail.name,
     description: detail.storyIntro ?? detail.tagline ?? detail.name,
-    openGraph: {
-      images: detail.heroImage ? [{ url: detail.heroImage }] : undefined,
-    },
-  };
+    ogImage: detail.heroImage ?? undefined,
+  });
 }
 
 export default async function GiftBoxPage({ params }: PageProps) {

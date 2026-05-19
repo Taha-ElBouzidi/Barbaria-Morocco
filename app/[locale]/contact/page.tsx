@@ -8,6 +8,7 @@ import Reveal from "@/components/primitives/Reveal";
 import AmazighProverb from "@/components/primitives/AmazighProverb";
 import { getOccasions } from "@/lib/data/occasions";
 import { getSiteSettings } from "@/lib/data/site-settings";
+import { pageMetadata } from "@/lib/seo/page-metadata";
 
 interface PageProps { params: Promise<{ locale: string }>; }
 
@@ -20,10 +21,12 @@ export function generateStaticParams() {
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { locale } = await params;
   const t = await getTranslations({ locale, namespace: "contact" });
-  return {
-    title: `${t("hero_headline")} | Barbaria Morocco`,
+  return pageMetadata({
+    locale,
+    path: "/contact",
+    title: t("hero_headline"),
     description: t("hero_headline"),
-  };
+  });
 }
 
 export default async function ContactPage({ params }: PageProps) {

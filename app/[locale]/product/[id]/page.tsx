@@ -9,6 +9,7 @@ import ProofStrip from "@/components/product/ProofStrip";
 import ApplicationRitual from "@/components/product/ApplicationRitual";
 import CooperativeBand from "@/components/product/CooperativeBand";
 import BoxesContainingPiece from "@/components/product/BoxesContainingPiece";
+import { pageMetadata } from "@/lib/seo/page-metadata";
 
 export const revalidate = 60;
 
@@ -35,11 +36,13 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const lang = locale === "fr" ? "fr" : "en";
   const p = await getProductBySlug(id, lang);
   if (!p) return {};
-  return {
-    title: `${p.name} | Barbaria Morocco`,
+  return pageMetadata({
+    locale,
+    path: `/product/${id}`,
+    title: p.name,
     description: p.short,
-    openGraph: { images: p.heroImage ? [{ url: p.heroImage }] : [] },
-  };
+    ogImage: p.heroImage ?? undefined,
+  });
 }
 
 export default async function ProductPage({ params }: PageProps) {

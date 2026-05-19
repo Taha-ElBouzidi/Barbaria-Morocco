@@ -78,6 +78,13 @@ const nextConfig: NextConfig = {
       ["/rituals/botanical", "/products/cosmetiques"],
       ["/rituals/heritage",  "/"],
       ["/rituals",           "/products/cosmetiques"],
+      // Short-path aliases for the legal pages so /privacy, /terms, /cookies
+      // and /mentions-legales all resolve to /legal/* instead of 404.
+      ["/privacy",          "/legal/privacy"],
+      ["/terms",            "/legal/terms"],
+      ["/cookies",          "/legal/cookies"],
+      ["/legal-notice",     "/legal/legal-notice"],
+      ["/mentions-legales", "/legal/legal-notice"],
     ];
     const out: Array<{ source: string; destination: string; permanent: true }> = [];
     for (const [from, to] of PAIRS) {
