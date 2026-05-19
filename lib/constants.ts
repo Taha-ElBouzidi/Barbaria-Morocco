@@ -3,7 +3,7 @@
 // so every canonical, sitemap entry, OG meta, and JSON-LD URL stays
 // consistent across dev/preview without manual edits.
 export const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL ?? "https://barbaria-morocco.vercel.app";
+  process.env.NEXT_PUBLIC_BASE_URL ?? "https://barbaria-morocco-website.vercel.app";
 export const CONTACT_EMAIL = "Contact@barbariamorocco.com";
 export const CONTACT_PHONE = "+212659658863";
 export const CONTACT_PHONE_TEL = "tel:+212659658863";
