@@ -11,10 +11,9 @@ interface WordmarkProps {
   /**
    * For "stacked": show MOROCCO subtitle. Default true.
    * For "compact": ignored (compact is always name-only).
+   * For "hero": show the "ⵣ · Morocco · ⵣ" line under BARBARIA.
    */
   showSubtitle?: boolean;
-  /** Country tagline shown on the hero variant. Defaults to "Maroc". */
-  tagline?: string;
 }
 
 /**
@@ -36,7 +35,6 @@ export default function Wordmark({
   tone = "dark",
   className,
   showSubtitle = true,
-  tagline = "Maroc",
 }: WordmarkProps) {
   const colorClass =
     tone === "gold" ? "text-bb-secondary"
@@ -56,20 +54,13 @@ export default function Wordmark({
   }
 
   if (variant === "hero") {
+    // Layout: ornament, BARBARIA, then a single "ⵣ · Morocco · ⵣ"
+    // line below the wordmark. "Morocco" is never translated so the
+    // brand reads the same on /fr and /en; the Tifinagh marks bracket
+    // it on both sides.
     return (
       <div className={cn("flex flex-col items-center gap-4", className, colorClass)}>
         <BrandMark size={48} variant="ornament" />
-        <div
-          className={cn(
-            "flex items-center gap-3 font-display uppercase",
-            tone === "light" ? "text-bb-secondary-fixed-dim" : "text-bb-secondary"
-          )}
-          style={{ fontSize: "13px", letterSpacing: "0.4em" }}
-        >
-          <span aria-hidden>ⵣ</span>
-          <span>·&nbsp;{tagline}&nbsp;·</span>
-          <span aria-hidden>ⵣ</span>
-        </div>
         <h1
           className="font-display font-bold leading-[0.95] tracking-[0.04em] uppercase"
           style={{ fontSize: "clamp(56px, 10vw, 112px)" }}
@@ -77,12 +68,14 @@ export default function Wordmark({
           Barbaria
         </h1>
         {showSubtitle && (
-          <span
-            className="font-display uppercase opacity-80"
+          <div
+            className="flex items-center gap-3 font-display uppercase opacity-85"
             style={{ fontSize: "clamp(15px, 2vw, 22px)", letterSpacing: "0.55em" }}
           >
-            Morocco
-          </span>
+            <span aria-hidden>ⵣ</span>
+            <span>·&nbsp;Morocco&nbsp;·</span>
+            <span aria-hidden>ⵣ</span>
+          </div>
         )}
       </div>
     );
