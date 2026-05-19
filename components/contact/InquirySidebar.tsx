@@ -3,9 +3,13 @@ import { useTranslations } from "next-intl";
 import { useInquiry } from "@/lib/inquiry-context";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import Icon from "@/components/primitives/Icon";
-import { WHATSAPP_NUMBER } from "@/lib/constants";
 
-interface Props { lang: "en" | "fr"; }
+interface Props {
+  lang: "en" | "fr";
+  contactEmail: string;
+  contactPhone: string;
+  whatsappUrl: string;
+}
 
 /**
  * Sprint 2.6 box-level sidebar. Each inquiry line carries its own qty
@@ -13,10 +17,18 @@ interface Props { lang: "en" | "fr"; }
  * boxes show a "Custom box · N pieces" subline; curated show the
  * snapshot name and a "Curated box" tag.
  */
-export default function InquirySidebar({ lang: _lang }: Props) {
+export default function InquirySidebar({
+  lang: _lang,
+  contactEmail,
+  contactPhone,
+  whatsappUrl,
+}: Props) {
   const t = useTranslations("contact");
   const tNav = useTranslations("nav");
   const { lines, setQty, remove, totalBoxes, totalUnits } = useInquiry();
+  const phones = contactPhone
+    ? contactPhone.split(/\s*\/\s*/).filter(Boolean)
+    : [];
 
   return (
     <aside className="lg:sticky lg:top-[88px] lg:self-start space-y-10">
@@ -95,31 +107,45 @@ export default function InquirySidebar({ lang: _lang }: Props) {
       <div className="border-t border-bb-line pt-8 space-y-4">
         <Eyebrow tone="green">{t("direct_lines")}</Eyebrow>
         <ul className="space-y-2 font-sans text-[14px] text-bb-on-surface">
-          <li>
-            <a
-              href={`https://wa.me/${WHATSAPP_NUMBER}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="hover:text-bb-secondary-deep transition-colors inline-flex items-center gap-2"
-            >
-              WhatsApp <Icon name="arrow-up-right" size={12} />
-            </a>
-          </li>
-          <li>
-            <a
-              href="mailto:concierge@barbariamorocco.com"
-              className="hover:text-bb-secondary-deep transition-colors"
-            >
-              concierge@barbariamorocco.com
-            </a>
-          </li>
+          {whatsappUrl && (
+            <li>
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hover:text-bb-secondary-deep transition-colors inline-flex items-center gap-2"
+              >
+                WhatsApp <Icon name="arrow-up-right" size={12} />
+              </a>
+            </li>
+          )}
+          {phones.map((number) => (
+            <li key={number}>
+              <a
+                href={`tel:${number.replace(/[^+\d]/g, "")}`}
+                className="hover:text-bb-secondary-deep transition-colors"
+              >
+                {number}
+              </a>
+            </li>
+          ))}
+          {contactEmail && (
+            <li>
+              <a
+                href={`mailto:${contactEmail}`}
+                className="hover:text-bb-secondary-deep transition-colors"
+              >
+                {contactEmail}
+              </a>
+            </li>
+          )}
         </ul>
       </div>
       <div className="space-y-2">
         <Eyebrow tone="green">{t("atelier")}</Eyebrow>
         <address className="not-italic font-sans text-[14px] text-bb-on-surface-variant leading-relaxed">
-          Avenue Hassan II<br />
-          Marrakech, Morocco
+          Quartier Palmier<br />
+          Casablanca, {_lang === "fr" ? "Maroc" : "Morocco"}
         </address>
       </div>
     </aside>

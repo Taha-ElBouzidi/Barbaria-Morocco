@@ -7,6 +7,7 @@ import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
 import AmazighProverb from "@/components/primitives/AmazighProverb";
 import { getOccasions } from "@/lib/data/occasions";
+import { getSiteSettings } from "@/lib/data/site-settings";
 
 interface PageProps { params: Promise<{ locale: string }>; }
 
@@ -30,7 +31,10 @@ export default async function ContactPage({ params }: PageProps) {
   setRequestLocale(locale);
   const t = await getTranslations({ locale, namespace: "contact" });
   const lang = locale === "fr" ? "fr" : "en";
-  const occasions = await getOccasions(lang);
+  const [occasions, settings] = await Promise.all([
+    getOccasions(lang),
+    getSiteSettings(),
+  ]);
 
   return (
     <div className="pt-32 lg:pt-40 pb-24 lg:pb-32">
@@ -47,7 +51,12 @@ export default async function ContactPage({ params }: PageProps) {
             <TwoStepForm locale={locale} occasions={occasions} />
           </div>
           <div className="order-1 lg:order-2">
-            <InquirySidebar lang={lang} />
+            <InquirySidebar
+              lang={lang}
+              contactEmail={settings.contactEmail}
+              contactPhone={settings.contactPhone}
+              whatsappUrl={settings.whatsappUrl}
+            />
           </div>
         </div>
       </section>
