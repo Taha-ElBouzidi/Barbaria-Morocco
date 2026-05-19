@@ -60,7 +60,7 @@ export default function Wordmark({
     // it on both sides.
     return (
       <div className={cn("flex flex-col items-center gap-4", className, colorClass)}>
-        <BrandMark size={48} variant="ornament" />
+        <BrandMark size={80} variant="ornament" />
         <h1
           className="font-display font-bold leading-[0.95] tracking-[0.04em] uppercase"
           style={{ fontSize: "clamp(56px, 10vw, 112px)" }}
