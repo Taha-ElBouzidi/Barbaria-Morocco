@@ -10,7 +10,6 @@ import Icon from "@/components/primitives/Icon";
 import { useInquiry } from "@/lib/inquiry-context";
 import {
   stepsForSize,
-  BOX_SIZES,
   type BoxSize,
   type WizardStep,
 } from "@/lib/wizard-content";
@@ -180,7 +179,6 @@ export default function BoxComposer({ box, products, themeKey, locale, copy, fac
   const router = useRouter();
   const { addBox } = useInquiry();
   const [expandedSlug, setExpandedSlug] = useState<string | null>(null);
-  const containerRef = useRef<HTMLElement>(null);
   const productBySlug = new Map(products.map((p) => [p.slug, p]));
 
   // Sprint 2.8 follow-up: the wizard intentionally does NOT persist its
@@ -291,7 +289,6 @@ export default function BoxComposer({ box, products, themeKey, locale, copy, fac
   // ---------- render ----------
   return (
     <section
-      ref={containerRef}
       role="dialog"
       aria-modal="true"
       aria-label={copy.exit_aria}

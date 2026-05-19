@@ -2,7 +2,7 @@
 
 import { useEffect, useRef } from "react";
 import { Link } from "@/i18n/navigation";
-import { useTranslations, useLocale } from "next-intl";
+import { useTranslations } from "next-intl";
 import Icon from "@/components/primitives/Icon";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import { useInquiry } from "@/lib/inquiry-context";
@@ -15,9 +15,6 @@ interface InquiryDrawerProps {
 
 export default function InquiryDrawer({ open, onClose }: InquiryDrawerProps) {
   const t = useTranslations("nav");
-  const locale = useLocale();
-  const lang: "en" | "fr" = locale === "fr" ? "fr" : "en";
-  void lang;
   const { lines, setQty, remove, clear, totalBoxes } = useInquiry();
   const panelRef = useRef<HTMLDivElement>(null);
   const closeBtnRef = useRef<HTMLButtonElement>(null);

@@ -5,7 +5,7 @@
  * and EN.
  */
 
-export type Bilingual = { fr: string; en: string };
+type Bilingual = { fr: string; en: string };
 
 /** A value that is the same in both locales (proper names, numbers). */
 function value(text: string): Bilingual {
@@ -47,5 +47,3 @@ export const CLIENT_DATA = {
   // ─── Pre-filled by engineering (do not change unless infra moves) ─
   supabaseRegion: value("eu-west-1 (Francfort / Frankfurt)"),
 } as const satisfies Record<string, Bilingual>;
-
-export type ClientDataKey = keyof typeof CLIENT_DATA;

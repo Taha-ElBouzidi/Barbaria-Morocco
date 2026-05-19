@@ -175,5 +175,3 @@ export function stepsForSize(themeKey: StoryThemeKey, size: BoxSize): WizardStep
   const all = WIZARD_STEPS[themeKey];
   return all.slice(0, size);
 }
-
-export const BOX_SIZES: BoxSize[] = [3, 5, 6];

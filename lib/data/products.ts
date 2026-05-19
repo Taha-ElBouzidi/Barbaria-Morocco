@@ -165,19 +165,6 @@ export async function getBoxesContainingProduct(
 }
 
 /**
- * Pre-render helper: list every published product slug for generateStaticParams.
- */
-export async function getAllProductSlugs(): Promise<string[]> {
-  const supabase = await createServerClient();
-  const { data, error } = await supabase
-    .from("products")
-    .select("slug")
-    .eq("status", "published");
-  if (error || !data) return [];
-  return data.map((p) => p.slug);
-}
-
-/**
  * Minimal lookup used by the inquiry drawer / sidebar to render products
  * a user has added to their inquiry list. Returns a map keyed by slug
  * (which is what gets stored in localStorage as the productId).
