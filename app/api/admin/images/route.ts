@@ -62,7 +62,21 @@ export async function POST(req: NextRequest) {
   }
 
   const file = formData.get("file");
-  const productId = (formData.get("productId") as string | null) ?? null;
+  const rawProductId = (formData.get("productId") as string | null) ?? null;
+  // Validate productId is a UUID before interpolating into the storage
+  // path. Without this, an attacker (or a future write-API mistake) could
+  // pass "../drafts/../etc" and write outside the intended folder.
+  const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+  let productId: string | null = null;
+  if (rawProductId !== null && rawProductId !== "") {
+    if (!UUID_RE.test(rawProductId)) {
+      return NextResponse.json(
+        { ok: false, error: "Invalid productId" },
+        { status: 400 }
+      );
+    }
+    productId = rawProductId;
+  }
 
   if (!(file instanceof File)) {
     return NextResponse.json({ ok: false, error: "No file provided" }, { status: 400 });
@@ -102,9 +116,24 @@ export async function POST(req: NextRequest) {
   let outputMime: string;
   let outputExt: string;
   if (resolvedMime === "image/gif") {
-    outputBuffer = inputBuffer;
-    outputMime = "image/gif";
-    outputExt = "gif";
+    // Re-encode GIFs through sharp's animated pipeline so polyglot
+    // payloads (GIF/HTML or GIF/SVG hybrids) cannot survive the
+    // round-trip. Preserves animation; emits a clean WebP that the
+    // CDN serves with the correct Content-Type.
+    try {
+      outputBuffer = await sharp(inputBuffer, { animated: true, failOn: "none" })
+        .rotate()
+        .resize({ width: 2400, height: 2400, fit: "inside", withoutEnlargement: true })
+        .webp({ quality: 82, effort: 4 })
+        .toBuffer();
+      outputMime = "image/webp";
+      outputExt = "webp";
+    } catch {
+      return NextResponse.json(
+        { ok: false, error: "Could not process the GIF. Try a different file." },
+        { status: 500 }
+      );
+    }
   } else {
     try {
       outputBuffer = await sharp(inputBuffer, { failOn: "none" })

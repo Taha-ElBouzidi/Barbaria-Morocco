@@ -7,9 +7,22 @@ const withNextIntl = createNextIntlPlugin();
 const securityHeaders = [
   { key: "X-Content-Type-Options", value: "nosniff" },
   { key: "X-Frame-Options", value: "DENY" },
-  { key: "X-XSS-Protection", value: "1; mode=block" },
+  // X-XSS-Protection removed: deprecated and ignored by modern browsers.
   { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+  // HSTS: 2-year max-age + subdomains + preload-eligible. Once the
+  // apex domain is wired and stable for a month, submit to
+  // hstspreload.org so Chrome/Firefox/Safari hardcode HTTPS.
+  {
+    key: "Strict-Transport-Security",
+    value: "max-age=63072000; includeSubDomains; preload",
+  },
+  // Isolate the browsing context from cross-origin scripts so a
+  // compromised iframe (we deny framing anyway) cannot read window
+  // state, and so embedded payloads in 3rd-party assets cannot
+  // exfiltrate via window.opener.
+  { key: "Cross-Origin-Opener-Policy", value: "same-origin" },
+  { key: "Cross-Origin-Resource-Policy", value: "same-origin" },
   {
     key: "Content-Security-Policy",
     value: [
@@ -31,6 +44,18 @@ const nextConfig: NextConfig = {
   turbopack: {
     // Pin workspace root to this app (otherwise Next picks D:\dev\Havok\package-lock.json).
     root: path.resolve(__dirname),
+  },
+  // Lock Server Actions to the production origin (set via env once
+  // the real domain is wired) plus the Vercel preview URL. Anything
+  // else cannot POST a Server Action to this app even if a token is
+  // leaked. NEXT_PUBLIC_BASE_URL is already the canonical origin.
+  experimental: {
+    serverActions: {
+      allowedOrigins: [
+        new URL(process.env.NEXT_PUBLIC_BASE_URL ?? "https://barbaria-morocco-website.vercel.app").host,
+        "barbaria-morocco-website.vercel.app",
+      ],
+    },
   },
   images: {
     formats: ["image/avif", "image/webp"],

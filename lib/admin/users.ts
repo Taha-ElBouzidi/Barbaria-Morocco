@@ -60,9 +60,11 @@ export async function listAdminUsers(): Promise<AdminListRow[]> {
  * dashboard whenever they like.
  */
 export function generateTempPassword(): string {
+  // 20 chars × 62-char alphabet ≈ 119 bits of entropy. Modern guidance
+  // (NIST SP 800-63B) targets ≥112 bits for high-value accounts.
   const alphabet =
     "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const bytes = new Uint8Array(16);
+  const bytes = new Uint8Array(20);
   crypto.getRandomValues(bytes);
   let out = "";
   for (const b of bytes) out += alphabet[b % alphabet.length];

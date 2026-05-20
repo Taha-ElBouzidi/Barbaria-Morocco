@@ -8,12 +8,13 @@ interface PageProps {
 
 export default async function LoginPage({ searchParams }: PageProps) {
   const params = await searchParams;
-  const errorMessage = params.error === "unauthorized"
-    ? "This email is not authorized for the admin dashboard."
-    : params.error === "invalid_credentials"
-    ? "Invalid email or password."
-    : params.error === "invalid_email"
+  // Collapse "unauthorized" and "invalid_credentials" into one
+  // generic message so an attacker cannot tell which admin emails
+  // exist. The granular distinction stays in server logs.
+  const errorMessage = params.error === "invalid_email"
     ? "Please enter a valid email address."
+    : params.error === "unauthorized" || params.error === "invalid_credentials"
+    ? "Invalid email or password."
     : params.error
     ? "Something went wrong. Try again."
     : null;

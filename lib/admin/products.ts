@@ -73,7 +73,14 @@ export async function listProductsForAdmin(opts?: {
   if (opts?.status && opts.status !== ("all" as string))
     q = q.eq("status", opts.status);
   if (opts?.search) {
-    q = q.or(`slug.ilike.%${opts.search}%`);
+    // Whitelist input chars before interpolating into a PostgREST
+    // .or() filter. PostgREST parses commas, parens, asterisks, etc.
+    // as filter syntax; a hostile admin search like `*),slug.like.*`
+    // would otherwise leak the entire table including drafts.
+    const sanitized = opts.search.replace(/[^a-zA-Z0-9À-ſ\- ]/g, "").slice(0, 40);
+    if (sanitized) {
+      q = q.ilike("slug", `%${sanitized}%`);
+    }
   }
 
   const { data, error } = await q.order("updated_at", { ascending: false });

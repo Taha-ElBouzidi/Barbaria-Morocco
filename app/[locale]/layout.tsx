@@ -13,6 +13,7 @@ import { ProductCatalogueProvider } from "@/lib/data/ProductCatalogueContext";
 import { getMinimalProductMap } from "@/lib/data/products";
 import { getSiteSettings } from "@/lib/data/site-settings";
 import { ConsentProvider } from "@/components/cookies/ConsentContext";
+import JsonLd from "@/components/JsonLd";
 import ConsentBanner from "@/components/cookies/ConsentBanner";
 import AnalyticsGate from "@/components/cookies/AnalyticsGate";
 
@@ -137,44 +138,36 @@ export default async function LocaleLayout({
             <AnalyticsGate />
           </ConsentProvider>
         </NextIntlClientProvider>
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "Organization",
-              name: "Barbaria Morocco",
-              url: BASE_URL,
-              logo: `${BASE_URL}/brand_photos/barbaria-logo-new.jpg`,
-              description: orgDescription,
-              contactPoint: {
-                "@type": "ContactPoint",
-                email: socials.contactEmail,
-                contactType: "customer service",
-                availableLanguage: ["French", "English"],
-              },
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Barbaria Morocco",
+            url: BASE_URL,
+            logo: `${BASE_URL}/brand_photos/barbaria-logo-new.jpg`,
+            description: orgDescription,
+            contactPoint: {
+              "@type": "ContactPoint",
               email: socials.contactEmail,
-              sameAs: [
-                `https://instagram.com/${INSTAGRAM_HANDLE}`,
-              ],
-            }),
+              contactType: "customer service",
+              availableLanguage: ["French", "English"],
+            },
+            email: socials.contactEmail,
+            sameAs: [`https://instagram.com/${INSTAGRAM_HANDLE}`],
           }}
         />
-        <script
-          type="application/ld+json"
-          dangerouslySetInnerHTML={{
-            __html: JSON.stringify({
-              "@context": "https://schema.org",
-              "@type": "BreadcrumbList",
-              itemListElement: [
-                {
-                  "@type": "ListItem",
-                  position: 1,
-                  name: breadcrumbHome,
-                  item: `${BASE_URL}/${locale}`,
-                },
-              ],
-            }),
+        <JsonLd
+          data={{
+            "@context": "https://schema.org",
+            "@type": "BreadcrumbList",
+            itemListElement: [
+              {
+                "@type": "ListItem",
+                position: 1,
+                name: breadcrumbHome,
+                item: `${BASE_URL}/${locale}`,
+              },
+            ],
           }}
         />
       </body>

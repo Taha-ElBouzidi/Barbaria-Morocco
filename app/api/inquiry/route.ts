@@ -41,14 +41,19 @@ function checkRateLimit(ipHash: string): { ok: boolean; reason?: string } {
 }
 
 function hashIp(req: NextRequest): string {
-  // Vercel sets `x-real-ip` to the platform-trusted client IP. The
-  // leftmost x-forwarded-for value is user-controllable and a hostile
-  // caller can rotate it to dodge the per-IP rate limit. Trust the
-  // platform header first; fall back to xff only when running outside
-  // Vercel (local dev) where x-real-ip is unset.
+  // Order of trust:
+  //   1. x-vercel-forwarded-for: Vercel-injected, cannot be spoofed.
+  //   2. x-real-ip: Vercel-injected fallback, same trust.
+  //   3. x-forwarded-for FIRST entry: the originating client address.
+  //      Last-entry parsing (.pop()) would collapse every request
+  //      behind a proxy chain into one bucket per-proxy, which an
+  //      attacker could exploit. Take the leftmost address only on
+  //      non-Vercel hosts (local dev, future moves) where xff is the
+  //      best signal available.
   const ip =
+    req.headers.get("x-vercel-forwarded-for") ??
     req.headers.get("x-real-ip") ??
-    req.headers.get("x-forwarded-for")?.split(",").pop()?.trim() ??
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
     "unknown";
   return crypto.createHash("sha256").update(ip + "|barbaria").digest("hex").slice(0, 32);
 }
