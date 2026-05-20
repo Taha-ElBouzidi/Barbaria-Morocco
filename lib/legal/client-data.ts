@@ -34,15 +34,17 @@ export const CLIENT_DATA = {
 
   // ─── Identifiants officiels ──────────────────────────────────────
   rcNumber: value("RC Casablanca n° 719643"),
-  iceNumber: value("003886371000061"),
+  iceNumber: value("003829477000010"),
   ifNumber: value("71744183"),
   patenteNumber: value("34772428"),
 
-  // ─── Marque ──────────────────────────────────────────────────────
-  ompicMark: bilingual(
-    "marque déposée OMPIC n° 3121576",
-    "registered with OMPIC under No. 3121576"
-  ),
+  // ─── OMPIC ───────────────────────────────────────────────────────
+  // 3121576 is the Certificat Négatif number (the OMPIC document
+  // that reserves the company name), NOT a trademark deposit. The
+  // legal-notice prose phrases it correctly. If the house ever files
+  // an actual Dépôt de marque, add a second field for that number
+  // and update the IP section.
+  ompicCertNegatif: value("3121576"),
 
   // ─── Pre-filled by engineering (do not change unless infra moves) ─
   supabaseRegion: value("eu-west-1 (Francfort / Frankfurt)"),

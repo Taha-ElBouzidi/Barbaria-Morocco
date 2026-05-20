@@ -130,10 +130,12 @@ function FrenchContent({ phone, email }: { phone: string; email: string }) {
       <h2>4. Propriété intellectuelle</h2>
       <p>
         L&apos;ensemble des contenus présents sur ce site (textes, photographies, vidéos,
-        illustrations, logos, marques, mise en page, code source) est la propriété
+        illustrations, logos, mise en page, code source) est la propriété
         exclusive de <L>{CLIENT_DATA.legalName.fr}</L> ou utilisé sous
-        licence. La marque « Barbaria » est{" "}
-        <L>{CLIENT_DATA.ompicMark.fr}</L>.
+        licence. La dénomination commerciale « BARBARIA MOROCCO » est réservée
+        auprès de l&apos;OMPIC sous certificat négatif n°{" "}
+        <L>{CLIENT_DATA.ompicCertNegatif.fr}</L>. La marque n&apos;a pas encore
+        fait l&apos;objet d&apos;un dépôt formel.
       </p>
       <p>
         Toute reproduction, représentation, modification, publication, adaptation,
@@ -207,10 +209,11 @@ function EnglishContent({ phone, email }: { phone: string; email: string }) {
       <h2>4. Intellectual Property</h2>
       <p>
         All content on this site (text, photography, video, illustrations, logos,
-        trademarks, layout, source code) is the exclusive property of{" "}
-        <L>{CLIENT_DATA.legalName.en}</L> or used under licence. The "Barbaria"
-        trademark is{" "}
-        <L>{CLIENT_DATA.ompicMark.en}</L>.
+        layout, source code) is the exclusive property of{" "}
+        <L>{CLIENT_DATA.legalName.en}</L> or used under licence. The commercial
+        name "BARBARIA MOROCCO" is reserved with OMPIC under negative
+        certificate No. <L>{CLIENT_DATA.ompicCertNegatif.en}</L>. No formal
+        trademark application has been filed to date.
       </p>
       <p>
         Any reproduction, representation, modification, publication, adaptation,
