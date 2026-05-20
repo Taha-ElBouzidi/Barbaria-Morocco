@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  pull_request:
+    branches: [master]
+  push:
+    branches: [master]
+
+jobs:
+  typecheck-and-audit:
+    name: Type check + security audit
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: "npm"
+
+      - name: Install
+        run: npm ci
+
+      - name: TypeScript
+        run: npx tsc --noEmit
+
+      # Block only on CRITICAL CVEs in production deps. We accept HIGH
+      # because the current two HIGH findings (fast-uri, path-to-regexp)
+      # are bundled inside `next` itself and clear automatically when
+      # Next.js ships its next patch. CRITICAL we never accept.
+      # `--omit=dev` skips dev-only chains so we do not block on tooling
+      # noise; the real attack surface is what ships to production.
+      - name: npm audit (critical only, prod deps)
+        run: npm audit --omit=dev --audit-level=critical
