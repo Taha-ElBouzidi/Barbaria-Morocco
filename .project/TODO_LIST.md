@@ -3,24 +3,34 @@
 Forward-looking items the client team can pick up after handoff. Items that
 were already completed during development are not listed.
 
-## Inquiry submission pipeline (phase 2, partially shipped)
+## Inquiry submission pipeline (phase 2, mostly shipped)
 
-The POST `/api/inquiry` endpoint, Zod validation, persistence into `inquiries`
-+ `inquiry_items`, the honeypot field, and the in-memory rate limiter are all
-in place. **Remaining work** (blocked on the client signing up Resend now that
-the domain is live):
+The full inquiry pipeline now runs end-to-end: Zod-validated POST
+`/api/inquiry`, persistence into `inquiries` + `inquiry_items`, honeypot
+field, in-memory rate limiter, **and Resend email** (one house notification
+to `contact@barbariamorocco.com` + one auto-reply to the buyer in FR or
+EN, depending on form locale). Templates live in `lib/email/templates/`
+and the client wrapper in `lib/email/resend.ts`.
 
-- Verify `mail.barbariamorocco.com` in Resend (DKIM + SPF + DMARC records to
-  paste into Cloudflare DNS — Resend generates them after domain add).
-- Wire `RESEND_API_KEY` into Vercel env (Production + Preview).
-- Implement the send: one to `inquiries@barbariamorocco.com` for the house,
-  one auto-reply to the buyer. Template lives in `lib/inquiry/email.ts` (to
-  be created); references for both FR + EN tone are in
-  `.project/inquiry-email-brainstorm.md`.
-- Webhook `/api/webhooks/resend` for bounces / complaints, updates the
-  inquiry record (`bounced` flag on `inquiries`).
-- Rate limit: in-memory bucket is currently 5/min/IP, 50/day/IP. When the
-  client is ready, migrate to Upstash Redis so it survives cold starts.
+**Operational steps the owner team still needs to do**:
+
+- **Verify `mail.barbariamorocco.com` in Resend.** Resend will generate
+  DKIM + SPF records on first add; paste into Cloudflare DNS. Until
+  verified, emails ship from `onboarding@resend.dev` which works but
+  shows a Resend sender in the recipient's inbox.
+- **Once verified, override `RESEND_FROM_EMAIL`** in Vercel env to
+  something like `"Barbaria <inquiries@mail.barbariamorocco.com>"`.
+- **Set `RESEND_API_KEY`** in Vercel (Production + Preview). Use a
+  freshly-generated key, never one that has ever appeared in chat or
+  documentation. Code is wired to fall open if the key is missing
+  (inquiry still saves; warning logged).
+
+**Deferred (not blocking launch)**:
+
+- Webhook `/api/webhooks/resend` for bounces / complaints (updates the
+  `inquiries` row with a `bounced` flag when delivery fails).
+- Rate limit: in-memory bucket is 5/min/IP, 50/day/IP. When the client
+  is ready, migrate to Upstash Redis so the limit survives cold starts.
 - Optional: Cloudflare Turnstile on the form (honeypot is the v1
   protection; Turnstile adds defence-in-depth without breaking real users).
 

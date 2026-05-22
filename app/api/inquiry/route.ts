@@ -2,6 +2,17 @@ import { NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import crypto from "node:crypto";
 import { createServiceRoleClient } from "@/lib/supabase/service";
+import { getResendClient, RESEND_FROM, HOUSE_NOTIFY_TO } from "@/lib/email/resend";
+import {
+  houseEmailSubject,
+  houseEmailHtml,
+  houseEmailText,
+} from "@/lib/email/templates/inquiry-house";
+import {
+  buyerEmailSubject,
+  buyerEmailHtml,
+  buyerEmailText,
+} from "@/lib/email/templates/inquiry-buyer";
 
 // In-memory sliding-window rate limiter, sufficient for a single-instance
 // Vercel deployment. Two windows per IP: 5 inquiries / minute and
@@ -206,6 +217,60 @@ export async function POST(req: NextRequest) {
     console.error("[/api/inquiry] insert inquiry_items failed:", itemErr.message);
     // Don't 500 here , the parent inquiry is saved; the concierge can
     // recover the line list from the email/snapshot.
+  }
+
+  // Fire-and-forget email side-effect. The DB write is the source of truth;
+  // a Resend outage must not turn into a 500 for the buyer. We do await so
+  // the Vercel function does not terminate before the request completes,
+  // but Promise.allSettled keeps either email failure from cascading.
+  const resend = getResendClient();
+  if (resend) {
+    const housePayload = {
+      inquiryId: inquiry.id,
+      company: data.company,
+      contactName: data.contactName,
+      email: data.email,
+      phone: data.phone ?? null,
+      occasion: data.occasion ?? null,
+      eventDate: data.eventDate ?? null,
+      message: data.message ?? null,
+      locale: data.locale,
+      lines: data.lines,
+    };
+    const buyerPayload = {
+      contactName: data.contactName,
+      company: data.company,
+      locale: data.locale,
+    };
+    const results = await Promise.allSettled([
+      resend.emails.send({
+        from: RESEND_FROM,
+        to: HOUSE_NOTIFY_TO,
+        replyTo: data.email,
+        subject: houseEmailSubject(housePayload),
+        html: houseEmailHtml(housePayload),
+        text: houseEmailText(housePayload),
+      }),
+      resend.emails.send({
+        from: RESEND_FROM,
+        to: data.email,
+        subject: buyerEmailSubject(buyerPayload),
+        html: buyerEmailHtml(buyerPayload),
+        text: buyerEmailText(buyerPayload),
+      }),
+    ]);
+    results.forEach((r, i) => {
+      if (r.status === "rejected") {
+        console.error(
+          `[/api/inquiry] resend email ${i === 0 ? "house" : "buyer"} failed:`,
+          r.reason
+        );
+      }
+    });
+  } else {
+    console.warn(
+      "[/api/inquiry] RESEND_API_KEY not set; inquiry saved but no email sent."
+    );
   }
 
   return NextResponse.json({ ok: true, id: inquiry.id });
