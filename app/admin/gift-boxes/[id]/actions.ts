@@ -22,6 +22,9 @@ function parseFormData(formData: FormData): GiftBoxSaveInput {
     leadTimeWeeksMax: formData.get("leadTimeWeeksMax") ?? 6,
     sortOrder: formData.get("sortOrder") ?? 0,
     isCustomizable: formData.get("isCustomizable") === "on",
+    // Multi-select checkboxes return one entry per checked value
+    // under the same name; getAll() collects them as strings.
+    customSizeOptions: formData.getAll("customSizeOptions"),
     translations: {
       en: {
         name: String(formData.get("name_en") ?? "").trim(),
@@ -99,6 +102,11 @@ export async function saveGiftBox(
       error: "Lead time max must be at least the min value.",
     };
   }
+  // Dedupe + sort the custom size options for storage. The DB CHECK
+  // requires each value in {1..6}; Zod already validates that.
+  const sortedSizes = Array.from(new Set(data.customSizeOptions)).sort(
+    (a, b) => a - b
+  );
   const payload = {
     slug: data.slug,
     category_id: data.categoryId,
@@ -108,6 +116,7 @@ export async function saveGiftBox(
     lead_time_weeks_max: data.leadTimeWeeksMax,
     sort_order: data.sortOrder,
     is_customizable: data.isCustomizable,
+    custom_size_options: sortedSizes,
     updated_by: admin.id,
   };
 

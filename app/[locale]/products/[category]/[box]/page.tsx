@@ -90,12 +90,9 @@ export default async function GiftBoxPage({ params }: PageProps) {
       size_eyebrow: wizardT("size_eyebrow"),
       size_title: wizardT("size_title"),
       size_lede: wizardT("size_lede"),
-      size_3_label: wizardT("size_3_label"),
-      size_3_desc: wizardT("size_3_desc"),
-      size_5_label: wizardT("size_5_label"),
-      size_5_desc: wizardT("size_5_desc"),
-      size_6_label: wizardT("size_6_label"),
-      size_6_desc: wizardT("size_6_desc"),
+      // Pass templates raw so the client interpolates per chosen size.
+      size_label_template: wizardT.raw("size_label_template") as string,
+      size_desc_template: wizardT.raw("size_desc_template") as string,
       // Templates with {n}/{total} placeholders are passed as raw strings
       // so the client component (BoxComposer) can interpolate at render
       // time. Calling t() here would throw because the values aren't

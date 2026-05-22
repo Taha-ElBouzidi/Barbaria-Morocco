@@ -67,6 +67,9 @@ export interface GiftBoxSummary {
   /** Production lead-time band in weeks. min == max means a fixed lead. */
   leadTimeWeeksMin: number;
   leadTimeWeeksMax: number;
+  /** Sizes the wizard offers for customizable boxes; ignored when
+   *  isCustomizable is false. Values are integers in [1, 6]. */
+  customSizeOptions: number[];
   isCustomizable: boolean;
   name: string;
   tagline: string | null;

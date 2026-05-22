@@ -45,12 +45,11 @@ export interface WizardCopy {
   size_eyebrow: string;
   size_title: string;
   size_lede: string;
-  size_3_label: string;
-  size_3_desc: string;
-  size_5_label: string;
-  size_5_desc: string;
-  size_6_label: string;
-  size_6_desc: string;
+  /** ICU plural-aware label template, interpolated per chosen size on
+   *  the size-pick screen. Passed as a raw template so the client can
+   *  format(n) at render time. */
+  size_label_template: string;
+  size_desc_template: string;
   step_eyebrow_progress: string; // "Step {n} of {total}"
   step_no_products: string;
   step_search_placeholder: string;
@@ -115,7 +114,7 @@ const INITIAL: State = {
 };
 
 type Action =
-  | { type: "begin" }
+  | { type: "begin"; sizeOptions: BoxSize[] }
   | { type: "pickSize"; size: BoxSize }
   | { type: "pick"; productSlug: string }
   | { type: "skip" }
@@ -131,8 +130,20 @@ function reducer(state: State, action: Action): State {
   // Step count always equals box size by construction (see stepsForSize).
   const stepCount = state.size ?? 0;
   switch (action.type) {
-    case "begin":
+    case "begin": {
+      // Auto-skip the size-pick step when the admin offered only one
+      // size option for this box: there is no choice for the buyer to
+      // make, so we jump straight into step 1 with that size locked in.
+      if (action.sizeOptions.length === 1) {
+        return {
+          ...state,
+          size: action.sizeOptions[0],
+          view: "step",
+          currentStep: 0,
+        };
+      }
       return { ...state, view: "size" };
+    }
     case "pickSize":
       return { ...state, size: action.size, view: "step", currentStep: 0 };
     case "pick": {
@@ -331,12 +342,22 @@ export default function BoxComposer({ box, products, themeKey, locale, copy, fac
             <IntroView
               box={box}
               copy={copy}
-              onBegin={() => dispatch({ type: "begin" })}
+              onBegin={() =>
+                dispatch({
+                  type: "begin",
+                  sizeOptions: box.customSizeOptions as BoxSize[],
+                })
+              }
             />
           )}
 
           {state.view === "size" && (
-            <SizeView copy={copy} onPick={handleSize} onBack={handleBack} />
+            <SizeView
+              copy={copy}
+              sizeOptions={box.customSizeOptions as BoxSize[]}
+              onPick={handleSize}
+              onBack={handleBack}
+            />
           )}
 
           {state.view === "step" && currentStepDef && (
@@ -497,20 +518,41 @@ function IntroView({
   );
 }
 
+/**
+ * Naive ICU plural interpolator: handles the subset we use
+ *   "{n, plural, one {A} other {B}}"
+ * with `#` substitution for the count. next-intl supports full ICU on
+ * the server, but here we hold the raw template string and need to
+ * format on the client per chosen size without pulling in a full
+ * ICU formatter.
+ */
+function formatPluralTemplate(template: string, n: number): string {
+  const match = template.match(
+    /\{[^,]+,\s*plural,\s*one\s*\{([^}]*)\}\s*other\s*\{([^}]*)\}\s*\}/
+  );
+  if (!match) return template.replace(/#/g, String(n));
+  const chosen = n === 1 ? match[1] : match[2];
+  return chosen.replace(/#/g, String(n));
+}
+
 function SizeView({
   copy,
+  sizeOptions,
   onPick,
   onBack,
 }: {
   copy: WizardCopy;
+  sizeOptions: BoxSize[];
   onPick: (size: BoxSize) => void;
   onBack: () => void;
 }) {
-  const options: Array<{ size: BoxSize; label: string; desc: string }> = [
-    { size: 3, label: copy.size_3_label, desc: copy.size_3_desc },
-    { size: 5, label: copy.size_5_label, desc: copy.size_5_desc },
-    { size: 6, label: copy.size_6_label, desc: copy.size_6_desc },
-  ];
+  // Sort ascending and limit columns intelligently so 2/4/5/6 layouts
+  // do not look ragged. Up to three columns, then wraps.
+  const sorted = [...sizeOptions].sort((a, b) => a - b);
+  const gridCols =
+    sorted.length === 1 ? "md:grid-cols-1 max-w-[420px] mx-auto" :
+    sorted.length === 2 ? "md:grid-cols-2 max-w-[820px] mx-auto" :
+    "md:grid-cols-3";
 
   return (
     <div className="max-w-[1040px] mx-auto space-y-10">
@@ -523,20 +565,22 @@ function SizeView({
           {copy.size_lede}
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 lg:gap-8">
-        {options.map((opt) => (
+      <div className={`grid grid-cols-1 ${gridCols} gap-6 lg:gap-8`}>
+        {sorted.map((size) => (
           <button type="button"
-            key={opt.size}
-            onClick={() => onPick(opt.size)}
+            key={size}
+            onClick={() => onPick(size)}
             className="group relative border border-bb-secondary/30 bg-bb-primary p-8 text-left hover:border-bb-secondary hover:bg-bb-primary-container transition-colors"
           >
             <div className="font-display text-[64px] text-bb-secondary leading-none mb-4">
-              {opt.size}
+              {size}
             </div>
             <div className="text-[11px] uppercase tracking-[0.18em] text-bb-secondary mb-2">
-              {opt.label}
+              {formatPluralTemplate(copy.size_label_template, size)}
             </div>
-            <p className="text-[14px] text-white/70 leading-relaxed">{opt.desc}</p>
+            <p className="text-[14px] text-white/70 leading-relaxed">
+              {formatPluralTemplate(copy.size_desc_template, size)}
+            </p>
             <span className="absolute top-6 right-6 inline-flex h-10 w-10 items-center justify-center border border-bb-secondary/40 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
               <Icon name="arrow-up-right" size={14} className="text-bb-secondary" />
             </span>

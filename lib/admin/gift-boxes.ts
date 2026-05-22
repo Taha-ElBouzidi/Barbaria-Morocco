@@ -21,6 +21,15 @@ export const GiftBoxSaveSchema = z.object({
   leadTimeWeeksMax: z.coerce.number().int().min(1).max(52).default(6),
   sortOrder: z.coerce.number().int().min(0).default(0),
   isCustomizable: z.boolean().default(false),
+  // Size options offered by the wizard for customizable boxes. Each
+  // value is 1..6 (the narrative step ceiling). Curated boxes ignore
+  // this. Defaults to the legacy {3, 5, 6} so existing boxes keep
+  // their current behaviour after the migration ships.
+  customSizeOptions: z
+    .array(z.coerce.number().int().min(1).max(6))
+    .min(1)
+    .max(6)
+    .default([3, 5, 6]),
   translations: z.object({
     en: z.object({
       name: z.string().min(1),
@@ -54,6 +63,7 @@ export interface GiftBoxAdminRow {
   leadTimeWeeksMax: number;
   sortOrder: number;
   isCustomizable: boolean;
+  customSizeOptions: number[];
   heroImagePath: string | null;
   nameEn: string;
   itemCount: number;
@@ -69,7 +79,7 @@ export async function listGiftBoxesForAdmin(opts?: {
     .select(`
       id, slug, category_id, status, default_quantity_min,
       lead_time_weeks_min, lead_time_weeks_max, sort_order,
-      is_customizable, hero_image_path,
+      is_customizable, custom_size_options, hero_image_path,
       category:categories ( slug ),
       translations:gift_box_translations ( locale, name ),
       items:gift_box_items ( product_id )
@@ -87,6 +97,7 @@ export async function listGiftBoxesForAdmin(opts?: {
     lead_time_weeks_min: number;
     lead_time_weeks_max: number;
     sort_order: number;
+    custom_size_options: number[];
     is_customizable: boolean;
     hero_image_path: string | null;
     category: { slug: string } | Array<{ slug: string }> | null;
@@ -111,6 +122,7 @@ export async function listGiftBoxesForAdmin(opts?: {
       leadTimeWeeksMax: r.lead_time_weeks_max,
       sortOrder: r.sort_order,
       isCustomizable: r.is_customizable,
+      customSizeOptions: r.custom_size_options ?? [3, 5, 6],
       heroImagePath: r.hero_image_path,
       nameEn: en?.name ?? r.slug,
       itemCount: r.items.length,
@@ -135,7 +147,7 @@ export async function getGiftBoxForAdmin(id: string): Promise<GiftBoxAdminDetail
     .select(`
       id, slug, category_id, status, default_quantity_min,
       lead_time_weeks_min, lead_time_weeks_max, sort_order,
-      is_customizable, hero_image_path,
+      is_customizable, custom_size_options, hero_image_path,
       category:categories ( slug ),
       translations:gift_box_translations ( locale, name, tagline, story_intro ),
       items:gift_box_items ( product_id, sort_order )
@@ -152,6 +164,7 @@ export async function getGiftBoxForAdmin(id: string): Promise<GiftBoxAdminDetail
     lead_time_weeks_min: number;
     lead_time_weeks_max: number;
     sort_order: number;
+    custom_size_options: number[];
     is_customizable: boolean;
     hero_image_path: string | null;
     category: { slug: string } | Array<{ slug: string }> | null;
@@ -187,6 +200,7 @@ export async function getGiftBoxForAdmin(id: string): Promise<GiftBoxAdminDetail
     leadTimeWeeksMax: r.lead_time_weeks_max,
     sortOrder: r.sort_order,
     isCustomizable: r.is_customizable,
+    customSizeOptions: r.custom_size_options ?? [3, 5, 6],
     heroImagePath: r.hero_image_path,
     nameEn: en.name,
     itemCount: sortedItems.length,

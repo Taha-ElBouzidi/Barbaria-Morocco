@@ -8,7 +8,7 @@
 
 import type { StoryThemeKey } from "./data/types";
 
-export type BoxSize = 3 | 5 | 6;
+export type BoxSize = 1 | 2 | 3 | 4 | 5 | 6;
 
 export interface WizardStep {
   eyebrow: { en: string; fr: string };

@@ -50,6 +50,16 @@ export default function GiftBoxEditor({
   const [defaultQuantityMin, setDefaultQuantityMin] = useState(initial?.defaultQuantityMin ?? 5);
   const [leadTimeWeeksMin, setLeadTimeWeeksMin] = useState(initial?.leadTimeWeeksMin ?? 4);
   const [leadTimeWeeksMax, setLeadTimeWeeksMax] = useState(initial?.leadTimeWeeksMax ?? 6);
+  const [customSizeOptions, setCustomSizeOptions] = useState<number[]>(
+    initial?.customSizeOptions ?? [3, 5, 6]
+  );
+  const toggleCustomSize = (n: number) => {
+    setCustomSizeOptions((prev) =>
+      prev.includes(n)
+        ? prev.filter((v) => v !== n)
+        : [...prev, n].sort((a, b) => a - b)
+    );
+  };
   const [sortOrder, setSortOrder] = useState(initial?.sortOrder ?? 0);
   const [isCustomizable, setIsCustomizable] = useState(initial?.isCustomizable ?? false);
   const [nameEn, setNameEn] = useState(initial?.translations.en.name ?? "");
@@ -315,6 +325,42 @@ export default function GiftBoxEditor({
               );
             })()}
           </div>
+          {isCustomizable && (
+            <div className="sm:col-span-2">
+              <label className={labelCls}>Wizard size options</label>
+              <div className="flex flex-wrap items-center gap-x-5 gap-y-3 pt-1">
+                {[1, 2, 3, 4, 5, 6].map((n) => {
+                  const checked = customSizeOptions.includes(n);
+                  return (
+                    <label
+                      key={n}
+                      htmlFor={`customSize-${n}`}
+                      className={`inline-flex items-center gap-2 cursor-pointer select-none ${checked ? "text-bb-primary" : "text-bb-on-surface-variant"}`}
+                    >
+                      <input
+                        id={`customSize-${n}`}
+                        name="customSizeOptions"
+                        type="checkbox"
+                        value={n}
+                        checked={checked}
+                        onChange={() => toggleCustomSize(n)}
+                        className="h-4 w-4 accent-bb-primary"
+                      />
+                      <span className="text-[14px]">{n} {n === 1 ? "piece" : "pieces"}</span>
+                    </label>
+                  );
+                })}
+              </div>
+              <p className={HELP_CLS}>
+                Which sizes the wizard offers buyers for this box. At least one must be selected (the DB rejects an empty array). When only one size is ticked, the size-pick screen is skipped and the wizard jumps straight to product selection.
+              </p>
+              {customSizeOptions.length === 0 && (
+                <p className="font-sans text-[11px] text-bb-tertiary mt-1">
+                  At least one size must be selected.
+                </p>
+              )}
+            </div>
+          )}
         </div>
 
         <div>

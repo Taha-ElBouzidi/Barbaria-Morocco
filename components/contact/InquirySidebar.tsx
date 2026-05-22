@@ -69,6 +69,16 @@ export default function InquirySidebar({
                   <p className="font-sans text-[11px] text-bb-on-surface-variant">
                     {tNav("inquiry_min_pill", { n: line.minQty })}
                   </p>
+                  {line.leadTimeWeeksMax !== undefined && (
+                    <p className="font-sans text-[11px] text-bb-on-surface-variant">
+                      {line.leadTimeWeeksMin === line.leadTimeWeeksMax
+                        ? tNav("inquiry_lead_single", { n: line.leadTimeWeeksMax })
+                        : tNav("inquiry_lead_range", {
+                            min: line.leadTimeWeeksMin ?? line.leadTimeWeeksMax,
+                            max: line.leadTimeWeeksMax,
+                          })}
+                    </p>
+                  )}
                   <div className="flex items-center gap-2 pt-1">
                     <button
                       type="button"
