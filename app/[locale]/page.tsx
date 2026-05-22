@@ -22,8 +22,12 @@ export async function generateMetadata({
   return pageMetadata({
     locale,
     path: "",
-    title: t("hero.headline"),
-    description: t("hero.lede"),
+    // Use the SEO-optimised meta_title + meta_description (keyword
+    // aware, brand suffix included), not the poetic hero copy. The
+    // hero stays branded and emotional on the visible page; the meta
+    // is engineered for buyer queries.
+    title: t("meta_title"),
+    description: t("meta_description"),
     ogImage: "/brand_photos/gift-box-open.jpg",
   });
 }

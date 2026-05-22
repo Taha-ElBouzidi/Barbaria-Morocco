@@ -1,7 +1,7 @@
 {
   "faq": {
-    "meta_title": "Questions fréquentes",
-    "meta_description": "Délai, quantité minimum, personnalisation, durabilité, échantillons, tarification, paiement et livraison. Huit questions que les acheteurs hôteliers et entreprises posent avant de travailler avec Barbaria Morocco.",
+    "meta_title": "MOQ, Délais, Personnalisation : FAQ B2B | Barbaria Morocco",
+    "meta_description": "Quantité minimum, délai de fabrication, personnalisation, paiement, livraison internationale : les huit questions des acheteurs hôteliers chez Barbaria.",
     "eyebrow": "Travailler avec la maison",
     "headline": "Questions fréquentes",
     "lede": "Huit questions que les acheteurs hôteliers, retail et corporate gifting nous posent le plus souvent avant une première commande chez Barbaria Morocco. Si votre question ne figure pas ci-dessous, notre conciergerie répond à chaque demande sous 24 heures ouvrées.",
@@ -93,6 +93,8 @@
     "menu_email": "Email"
   },
   "home": {
+    "meta_title": "Barbaria Morocco | Coffrets Cadeaux Marocains pour Hôtels, Spas et Entreprises",
+    "meta_description": "Maison marocaine de Casablanca : coffrets cadeaux de cosmétiques marocaines (huile d'argan, savon beldi, ghassoul) et d'épicerie fine (safran de Taliouine, amlou, ras el hanout). B2B pour hôtels, spas, entreprises.",
     "hero": {
       "eyebrow": "Authentique · Naturel · Éthique",
       "headline": "Héritage. Raffiné. Offert.",
@@ -178,6 +180,8 @@
     "boxes_containing_piece": "Coffrets contenant cette pièce"
   },
   "story": {
+    "meta_title": "L'Histoire de la Maison Barbaria, Casablanca | Barbaria Morocco",
+    "meta_description": "Maison marocaine de Casablanca qui compose des coffrets cadeaux à partir de coopératives berbères et d'ateliers marocains. Argan, safran, ghassoul, ras el hanout.",
     "hero_eyebrow": "Notre Histoire",
     "hero_headline": "L'Âme du Maroc",
     "hero_lede": "De l'Antiquité à aujourd'hui: une terre, un peuple, une excellence.",
@@ -219,17 +223,22 @@
     "sym_yar_desc": "Le soleil guide et illumine. Associé à l'astre solaire, ce signe représente la sagesse des anciens, la lumière de la connaissance transmise de génération en génération autour des feux."
   },
   "ateliers": {
+    "meta_title": "Nos Six Coopératives Marocaines Partenaires | Barbaria Morocco",
+    "meta_description": "Argan de Taliouine, rose de Kelaat M'Gouna, céramique de Tamegroute, cèdre de Meknès : six ateliers marocains qui fournissent chaque coffret Barbaria.",
     "hero_eyebrow": "Nos Coopératives",
     "hero_headline": "Six ateliers, un Royaume.",
     "hero_lede": "Barbaria collabore avec six coopératives marocaines dans les traditions de l'argan, de la rose, de la céramique, du cèdre, du tissage et de l'argile.",
     "since": "Partenaire depuis {year}"
   },
   "journal": {
+    "meta_title": "Le Journal Barbaria : Notes d'Atelier Marocain | Barbaria Morocco",
+    "meta_description": "Notes de terrain, dépêches, portraits depuis l'atelier Barbaria et nos coopératives partenaires à travers les arganiers, les vallées de rose et les montagnes de sel.",
     "hero_eyebrow": "Journal",
-    "hero_headline": "Notes de terrain, dépêches, portraits.",
-    "meta_description": "Notes de terrain, dépêches, portraits. Six pièces éditoriales depuis l'atelier Barbaria et ses partenaires coopératifs à travers le Maroc."
+    "hero_headline": "Notes de terrain, dépêches, portraits."
   },
   "contact": {
+    "meta_title": "Contacter Barbaria : Demande de Devis B2B | Barbaria Morocco",
+    "meta_description": "Envoyez-nous votre demande. Coffrets cadeaux de cosmétiques marocaines et d'épicerie fine pour hôtels, spas et entreprises. Réponse sous 24 heures ouvrées.",
     "hero_eyebrow": "Cadeaux d'Entreprise",
     "hero_headline": "Parlez-nous de l'occasion.",
     "step1_number": "01",
@@ -404,6 +413,14 @@
     "aside_min_value": "{n} par commande",
     "aside_lead_label": "Délai de fabrication",
     "aside_lead_range": "{min} à {max} semaines",
-    "aside_lead_single": "{n} semaines"
+    "aside_lead_single": "{n} semaines",
+    "meta_title_cosmetiques": "Cosmétiques Marocaines B2B : Argan, Beldi, Ghassoul | Barbaria Morocco",
+    "meta_description_cosmetiques": "Coffrets cadeaux de cosmétiques marocaines pour hôtels, spas et marque blanche : huile d'argan pressée à froid, savon beldi, ghassoul, gommages et hydrolats artisanaux.",
+    "meta_title_epicerie_fine": "Épicerie Fine Marocaine B2B : Safran, Argan, Amlou | Barbaria Morocco",
+    "meta_description_epicerie_fine": "Coffrets cadeaux d'épicerie fine marocaine pour entreprises et hôtels : safran de Taliouine, huile d'argan culinaire, amlou, miels d'oranger et ras el hanout.",
+    "editorial_cosmetiques_heading": "Le terroir cosmétique du Maroc, composé pour les maisons exigeantes",
+    "editorial_cosmetiques_body": "Chaque coffret cosmétique Barbaria rassemble les piliers de la beauté marocaine : huile d'argan première pression à froid des coopératives berbères du Souss, savon beldi traditionnel à l'huile d'olive et eucalyptus, ghassoul argileux des carrières de l'Atlas, eaux florales distillées de rose de Kelaat M'Gouna et de fleur d'oranger de Berkane, gommages au sucre brun et au khôl. Conçus à la demande pour les hôtels 5 étoiles, les spas, les programmes d'accueil et le corporate gifting, ils incarnent la rigueur d'un atelier de Casablanca et le savoir-faire ancestral des coopératives partenaires.",
+    "editorial_epicerie_heading": "L'épicerie fine du Maroc, composée pour la table et le cadeau d'entreprise",
+    "editorial_epicerie_body": "Nos coffrets d'épicerie fine racontent la route des caravanes : safran rouge de Taliouine trié à la main, huile d'argan culinaire pressée à froid, amlou onctueux d'amandes torréfiées et de miel, miel d'oranger de Berkane et miel de thym de l'Atlas, ras el hanout aux quinze épices, sel rose des sources de montagne. Pensés pour les hôtels, les chefs étoilés et les programmes de cadeau corporate, ils marient les terroirs marocains avec une présentation digne d'une maison de luxe."
   }
 }

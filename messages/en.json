@@ -1,7 +1,7 @@
 {
   "faq": {
-    "meta_title": "Frequently asked questions",
-    "meta_description": "Lead time, minimum order, customisation, sustainability, samples, pricing, payment, and delivery. Eight questions hospitality and corporate buyers ask before working with Barbaria Morocco.",
+    "meta_title": "MOQ, Lead Time, Customisation: B2B FAQ | Barbaria Morocco",
+    "meta_description": "Minimum order, production lead time, customisation, payment, international shipping: eight questions hospitality buyers ask before working with Barbaria.",
     "eyebrow": "Working with the house",
     "headline": "Frequently asked questions",
     "lede": "Eight things hospitality, retail, and corporate-gifting buyers most often ask before placing a first order with Barbaria Morocco. If your question is not here, our concierge replies to every inquiry within 24 working hours.",
@@ -93,6 +93,8 @@
     "menu_email": "Email"
   },
   "home": {
+    "meta_title": "Barbaria Morocco | Moroccan Gift Boxes for Hotels, Spas and Corporate Gifting",
+    "meta_description": "A Casablanca luxury house: Moroccan cosmetics gift boxes (argan oil, beldi soap, ghassoul) and fine épicerie boxes (Taliouine saffron, amlou, ras el hanout). B2B for hotels, spas, corporate gifting.",
     "hero": {
       "eyebrow": "Authentic · Natural · Ethical",
       "headline": "Heritage. Refined. Gifted.",
@@ -178,6 +180,8 @@
     "boxes_containing_piece": "Boxes that contain this piece"
   },
   "story": {
+    "meta_title": "The Story of Barbaria Morocco, Casablanca | Barbaria Morocco",
+    "meta_description": "A Casablanca luxury house composing gift boxes from Berber cooperatives, Moroccan ateliers and artisanal terroir know-how. Argan, saffron, ghassoul, ras el hanout.",
     "hero_eyebrow": "Our Story",
     "hero_headline": "The Soul of Morocco",
     "hero_lede": "From antiquity to today: one land, one people, one excellence.",
@@ -219,17 +223,22 @@
     "sym_yar_desc": "The sun guides and illuminates. Associated with the solar star, the sign carries the wisdom of the elders, the light of knowledge passed from generation to generation around the campfires."
   },
   "ateliers": {
+    "meta_title": "Our Six Moroccan Cooperative Partners | Barbaria Morocco",
+    "meta_description": "Argan from Taliouine, rose from Kelaat M'Gouna, ceramics from Tamegroute, cedar from Meknès: six Moroccan ateliers supplying every Barbaria gift box.",
     "hero_eyebrow": "Our Cooperatives",
     "hero_headline": "Six ateliers, one Kingdom.",
     "hero_lede": "Barbaria works with six Moroccan cooperatives across argan, rose, ceramic, cedar, weaving and clay traditions.",
     "since": "Partner since {year}"
   },
   "journal": {
+    "meta_title": "The Barbaria Journal: Moroccan Atelier Notes | Barbaria Morocco",
+    "meta_description": "Field notes, dispatches, portraits from the Barbaria atelier and our cooperative partners across the argan groves, rose valleys, and salt mountains of Morocco.",
     "hero_eyebrow": "Journal",
-    "hero_headline": "Field notes, dispatches, portraits.",
-    "meta_description": "Field notes, dispatches, portraits. Six editorial pieces from the Barbaria atelier and its cooperative partners across Morocco."
+    "hero_headline": "Field notes, dispatches, portraits."
   },
   "contact": {
+    "meta_title": "Contact Barbaria: Inquiry Form for Hotels and Corporate Gifting | Barbaria Morocco",
+    "meta_description": "Send us your inquiry. We curate Moroccan cosmetics and fine épicerie gift boxes for hotels, spas, and corporate clients. Our concierge replies within 24 hours.",
     "hero_eyebrow": "Corporate Gifting",
     "hero_headline": "Tell us about the moment.",
     "step1_number": "01",
@@ -404,6 +413,14 @@
     "aside_min_value": "{n} per order",
     "aside_lead_label": "Lead time",
     "aside_lead_range": "{min} to {max} weeks",
-    "aside_lead_single": "{n} weeks"
+    "aside_lead_single": "{n} weeks",
+    "meta_title_cosmetiques": "Moroccan Cosmetics B2B: Argan, Beldi, Ghassoul | Barbaria Morocco",
+    "meta_description_cosmetiques": "Moroccan cosmetics gift boxes for hotels, spas and private label: cold-pressed argan oil, beldi soap, ghassoul clay, artisan scrubs and hydrosols. Made to order.",
+    "meta_title_epicerie_fine": "Moroccan Fine Épicerie B2B: Saffron, Argan, Amlou | Barbaria Morocco",
+    "meta_description_epicerie_fine": "Moroccan fine épicerie gift boxes for corporate gifting and hotels: Taliouine saffron, culinary argan oil, amlou, orange-blossom and thyme honeys, ras el hanout.",
+    "editorial_cosmetiques_heading": "The Moroccan cosmetic terroir, composed for exacting houses",
+    "editorial_cosmetiques_body": "Every Barbaria cosmetics box gathers the pillars of Moroccan beauty: first-press cold-extracted argan oil from the Berber cooperatives of the Souss, traditional beldi soap built on olive oil and eucalyptus, ghassoul clay from the Atlas quarries, floral waters distilled from the rose of Kelaat M'Gouna and the orange blossom of Berkane, brown-sugar scrubs and kohl. Made to order for five-star hotels, spas, welcome-amenity programs and corporate gifting, they embody the rigour of a Casablanca atelier and the ancestral know-how of our cooperative partners.",
+    "editorial_epicerie_heading": "Moroccan fine épicerie, composed for the table and corporate gifting",
+    "editorial_epicerie_body": "Our épicerie boxes retrace the caravan route: red saffron of Taliouine hand-graded, cold-pressed culinary argan oil, silky amlou of roasted almonds and honey, orange-blossom honey from Berkane and thyme honey from the Atlas, ras el hanout with fifteen spices, pink rock salt from mountain springs. Curated for hotels, starred chefs and corporate gifting programs, they pair Moroccan terroirs with a presentation worthy of a luxury house."
   }
 }

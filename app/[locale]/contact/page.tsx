@@ -24,8 +24,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return pageMetadata({
     locale,
     path: "/contact",
-    title: t("hero_headline"),
-    description: t("hero_headline"),
+    title: t("meta_title"),
+    description: t("meta_description"),
   });
 }
 

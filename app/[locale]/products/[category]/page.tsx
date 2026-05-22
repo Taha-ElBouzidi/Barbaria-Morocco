@@ -33,13 +33,21 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   const { locale, category } = await params;
   if (!VALID_CATEGORIES.includes(category as CategorySlug)) return {};
   const lang = locale === "fr" ? "fr" : "en";
-  const cat = await getCategoryBySlug(category, lang);
+  const [cat, t] = await Promise.all([
+    getCategoryBySlug(category, lang),
+    getTranslations({ locale, namespace: "products" }),
+  ]);
   if (!cat) return {};
+  // Use SEO-optimised per-category meta keys (keyword-aware, brand
+  // suffix included). Falls back to the DB category name + lede if a
+  // key is missing.
+  const titleKey = `meta_title_${category}`;
+  const descKey = `meta_description_${category}`;
   return pageMetadata({
     locale,
     path: `/products/${category}`,
-    title: cat.name,
-    description: cat.lede,
+    title: t.has(titleKey) ? t(titleKey) : cat.name,
+    description: t.has(descKey) ? t(descKey) : cat.lede,
     ogImage: cat.heroImage || "/brand_photos/gift-box-open.jpg",
   });
 }
@@ -140,6 +148,33 @@ export default async function CategoryPage({ params }: PageProps) {
         </div>
       </section>
 
+      {/* Editorial paragraph: names the flagship ingredients in body
+          copy so the page actually contains the keywords buyers
+          search for (argan, beldi, ghassoul for cosmetics; saffron,
+          amlou, ras el hanout for épicerie). Without this, the
+          flagship category pages were ranking for nothing because
+          the body had zero mentions of the brand's hero ingredients. */}
+      {(() => {
+        const headingKey = `editorial_${category === "epicerie_fine" ? "epicerie" : "cosmetiques"}_heading`;
+        const bodyKey = `editorial_${category === "epicerie_fine" ? "epicerie" : "cosmetiques"}_body`;
+        return (
+          <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] pt-12 lg:pt-16 pb-4 lg:pb-6">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8 lg:gap-16 items-start">
+              <Reveal>
+                <h2 className="font-display text-[clamp(22px,2.4vw,32px)] leading-tight text-bb-primary max-w-[440px]">
+                  {t(headingKey)}
+                </h2>
+              </Reveal>
+              <Reveal delayMs={120}>
+                <p className="font-display text-[clamp(15px,1.3vw,18px)] leading-relaxed text-bb-on-surface max-w-[760px]">
+                  {t(bodyKey)}
+                </p>
+              </Reveal>
+            </div>
+          </section>
+        );
+      })()}
+
       {/* Sprint 2.6: curated FIRST. The house's composed boxes are the
           primary commercial offer; the wizard CTA sits below as the
           "compose your own" alternative. */}
@@ -149,7 +184,7 @@ export default async function CategoryPage({ params }: PageProps) {
             <Eyebrow tone="green">{t("curated_eyebrow")}</Eyebrow>
           </Reveal>
           <Reveal delayMs={80}>
-            <DisplayHeading size="md" as="h2">
+            <DisplayHeading size="md" as="h3">
               {t("curated_headline")}
             </DisplayHeading>
           </Reveal>

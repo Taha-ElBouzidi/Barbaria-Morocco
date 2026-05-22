@@ -23,8 +23,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   return pageMetadata({
     locale,
     path: "/ateliers",
-    title: t("hero_headline"),
-    description: t("hero_lede"),
+    title: t("meta_title"),
+    description: t("meta_description"),
   });
 }
 

@@ -48,7 +48,12 @@ export function pageMetadata({
       },
     },
   };
-  if (title) meta.title = title;
+  // Use absolute titles so every page gets the exact string we
+  // intended, bypassing the layout's title.template (which was
+  // inconsistently applied; home pages rendered without the brand
+  // suffix while category pages had it). Each page is responsible
+  // for including the brand in its full title.
+  if (title) meta.title = { absolute: title };
   if (description) meta.description = description;
   if (ogImage) meta.openGraph = { images: [{ url: ogImage }] };
   return meta;
