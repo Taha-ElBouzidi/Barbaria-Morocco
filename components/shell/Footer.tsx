@@ -92,6 +92,12 @@ export default function Footer({ socials }: FooterProps) {
               >
                 {t("contact")}
               </Link>
+              <Link
+                href="/faq"
+                className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"
+              >
+                {t("faq")}
+              </Link>
               <a
                 href={`mailto:${socials.contactEmail}`}
                 className="font-sans text-[14px] tracking-[0.04em] text-bb-on-surface transition-opacity hover:opacity-70"

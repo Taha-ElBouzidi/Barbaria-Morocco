@@ -18,27 +18,31 @@ import { BASE_URL } from "@/lib/constants";
  */
 const AI_FRIENDLY_CRAWLERS = [
   // OpenAI / ChatGPT
-  "GPTBot",
-  "ChatGPT-User",
-  "OAI-SearchBot",
-  // Anthropic / Claude
-  "ClaudeBot",
-  "Claude-Web",
-  "anthropic-ai",
+  "GPTBot",            // training
+  "ChatGPT-User",      // user-initiated fetch when typing into ChatGPT
+  "OAI-SearchBot",     // grounds ChatGPT search citations
+  // Anthropic / Claude (clarified by Anthropic Feb 2026)
+  "ClaudeBot",         // training
+  "Claude-User",       // user-initiated fetch in Claude.ai
+  "Claude-SearchBot",  // grounds Claude search citations
+  "Claude-Web",        // legacy, still emitted by some Anthropic crawlers
+  "anthropic-ai",      // legacy
   // Perplexity
-  "PerplexityBot",
-  "Perplexity-User",
-  // Google AI (separate from Googlebot; controls training/grounding use)
+  "PerplexityBot",     // indexing for Perplexity answers
+  "Perplexity-User",   // user-initiated fetch
+  // Google AI (a robots token, not a crawler; controls Gemini grounding + AI Overviews)
   "Google-Extended",
-  // Apple Intelligence
+  // Apple Intelligence (robots token, controls Apple Intelligence training)
   "Applebot-Extended",
-  // Common Crawl (used to train many models)
+  // Common Crawl (training corpus for many models)
   "CCBot",
   // Cohere
   "cohere-ai",
   // Meta / Llama
   "FacebookBot",
   "meta-externalagent",
+  // Microsoft Bing / Copilot indexing
+  "bingbot",
   // Diffbot (used by various AI agents)
   "Diffbot",
 ];
