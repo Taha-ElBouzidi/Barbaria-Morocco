@@ -45,7 +45,7 @@ export default function ImageStack({ product, lang: _lang }: Props) {
             >
               <Photo
                 src={src}
-                alt=""
+                alt={`${product.name}, image ${i + 1} of ${imagePaths.length}`}
                 width={200}
                 height={200}
                 sizes="20vw"
