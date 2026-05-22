@@ -1,28 +1,40 @@
 # Future TODOs
 
-Things flagged by Taha that are not in scope for the current sprint but need to be remembered.
+Forward-looking items the client team can pick up after handoff. Items that
+were already completed during development are not listed.
 
-## Inquiry submission pipeline (phase 2)
-Currently the contact form sends a `mailto:` link. Phase 2 should land server-side persistence + transactional email.
+## Inquiry submission pipeline (phase 2, partially shipped)
 
-- POST `/api/inquiry` endpoint with Zod validation
-- Persist to `inquiries` + `inquiry_items` (schema already shipped in migration 0008)
-- Transactional email via Resend (or equivalent): one to `concierge@barbariamorocco.com`, one auto-reply to the buyer
-- Verify barbariamorocco.com domain in Resend with DKIM + SPF + DMARC
-- Webhook for bounces / complaints, updates the inquiry record
-- Anti-spam: Cloudflare Turnstile + honeypot already in place
-- Rate limit: 5 inquiries / minute / IP, 50 / day / IP
+The POST `/api/inquiry` endpoint, Zod validation, persistence into `inquiries`
++ `inquiry_items`, the honeypot field, and the in-memory rate limiter are all
+in place. **Remaining work** (blocked on the client signing up Resend now that
+the domain is live):
 
-## Real contact data
-The site currently uses placeholder values. Replace with the actual house data when confirmed:
+- Verify `mail.barbariamorocco.com` in Resend (DKIM + SPF + DMARC records to
+  paste into Cloudflare DNS — Resend generates them after domain add).
+- Wire `RESEND_API_KEY` into Vercel env (Production + Preview).
+- Implement the send: one to `inquiries@barbariamorocco.com` for the house,
+  one auto-reply to the buyer. Template lives in `lib/inquiry/email.ts` (to
+  be created); references for both FR + EN tone are in
+  `.project/inquiry-email-brainstorm.md`.
+- Webhook `/api/webhooks/resend` for bounces / complaints, updates the
+  inquiry record (`bounced` flag on `inquiries`).
+- Rate limit: in-memory bucket is currently 5/min/IP, 50/day/IP. When the
+  client is ready, migrate to Upstash Redis so it survives cold starts.
+- Optional: Cloudflare Turnstile on the form (honeypot is the v1
+  protection; Turnstile adds defence-in-depth without breaking real users).
 
-- WhatsApp number (`lib/constants.ts` -> `WHATSAPP_NUMBER`)
-- Phone number for the contact page sidebar
-- Email address (`CONTACT_EMAIL` in `lib/constants.ts`)
-- Instagram handle (`INSTAGRAM_HANDLE` in `lib/constants.ts`)
-- Add LinkedIn URL when available
-- Add X / Twitter URL when available
-- Decide whether to add Facebook / Pinterest
+## Contact data (managed in admin dashboard)
+
+Public-facing contact info lives in `site_settings` (single row, editable
+from `/admin/settings`). Fallback values in `lib/constants.ts` exist only
+for cases where the row is missing. The dashboard is the source of truth:
+
+- Phones (split on `/` for multi-line dial-tos)
+- Contact email
+- WhatsApp number
+- Instagram, LinkedIn, X handles (LinkedIn / X currently placeholders;
+  set or hide via `site_settings` when confirmed)
 
 ## Social media visibility
 Once the real social handles are in, surface them prominently. Two candidates:

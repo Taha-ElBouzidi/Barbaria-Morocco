@@ -475,7 +475,8 @@ Le prestataire est invité à soumettre une proposition comprenant :
 
 - **Format attendu** : PDF + fichier source modifiable (Word, Pages, Google Docs).
 - **Délai de réponse** : 3 semaines à compter de la réception de ce document.
-- **Contact** : Taha El Bouzidi, ta.elbouzidi@gmail.com
+- **Contact propriétaire** : Barbaria Morocco SARL, admin@barbariamorocco.com (compte de service).
+- **Contact technique (développeur sortant)** : Taha El Bouzidi, ta.elbouzidi@gmail.com.
 - **Confidentialité** : ce document et toute donnée associée (catalogue, code, accès) sont confidentiels. Une convention de confidentialité (NDA) peut être signée préalablement à la transmission de l'accès au dépôt et à la base de données.
 
 ---

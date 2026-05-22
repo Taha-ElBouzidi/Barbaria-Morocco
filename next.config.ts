@@ -45,15 +45,17 @@ const nextConfig: NextConfig = {
     // Pin workspace root to this app (otherwise Next picks D:\dev\Havok\package-lock.json).
     root: path.resolve(__dirname),
   },
-  // Lock Server Actions to the production origin (set via env once
-  // the real domain is wired) plus the Vercel preview URL. Anything
+  // Lock Server Actions to the configured production origin plus the
+  // current Vercel deployment URL (auto-injected per build). Anything
   // else cannot POST a Server Action to this app even if a token is
-  // leaked. NEXT_PUBLIC_BASE_URL is already the canonical origin.
+  // leaked. NEXT_PUBLIC_BASE_URL is the canonical origin; VERCEL_URL
+  // is set automatically by Vercel for every deployment so previews
+  // keep working without hardcoding any URL.
   experimental: {
     serverActions: {
       allowedOrigins: [
-        new URL(process.env.NEXT_PUBLIC_BASE_URL ?? "https://barbaria-morocco-website.vercel.app").host,
-        "barbaria-morocco-website.vercel.app",
+        new URL(process.env.NEXT_PUBLIC_BASE_URL ?? "https://barbariamorocco.com").host,
+        ...(process.env.VERCEL_URL ? [process.env.VERCEL_URL] : []),
       ],
     },
   },

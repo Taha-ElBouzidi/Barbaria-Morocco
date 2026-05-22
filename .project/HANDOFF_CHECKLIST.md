@@ -1,38 +1,43 @@
-# Pre-Launch Handoff Checklist
+# Handoff Checklist
 
-Last updated: 2026-05-17. Maintained by the engineering lead (Taha).
-Every item here is a thing that **must be true before the production URL goes
-to the client**. Items are grouped by who can do them, in roughly the order
-they should be completed.
+Last updated: 2026-05-22. Maintained by the outgoing engineering lead until
+final transfer, then by the client team.
+
+Ownership transfer status:
+- ✅ Supabase project transferred to the `barbariamorocco` org (`admin@barbariamorocco.com`)
+- ✅ Vercel project transferred to the Barbaria team
+- ⏳ GitHub repository transfer (in progress — see Chunk 6 below)
+
+Items below are grouped by responsibility, in roughly the order they should
+be completed. Each is something that **must be true before the client can
+operate the site without engineering on call**.
 
 ---
 
-## A. What only Taha can do (manual steps, no code can replace these)
+## A. Owner-team manual steps (Dashboard work, no code can replace these)
 
-### A.1. Domain & DNS, gate for half the items below
-- [ ] Confirm the real domain with the house (`barbariamorocco.com` or other).
-- [ ] Buy or transfer the domain to whichever registrar is convenient.
-- [ ] In Vercel project settings, add the domain. Vercel will display the DNS
-      records (A / CNAME) needed at the registrar.
-- [ ] Add those records at the registrar. Wait for propagation (5 minutes to
-      a few hours).
-- [ ] In Vercel → Settings → Environment Variables, set in **both** Production
-      and Preview environments:
-      ```
-      NEXT_PUBLIC_BASE_URL = https://www.barbariamorocco.com   (or your domain)
-      ```
-- [ ] Trigger a redeploy. Every canonical, sitemap entry, OG meta, JSON-LD
-      URL, and `robots.txt` will automatically use the new domain.
+### A.1. Domain & DNS
+- [x] Domain `barbariamorocco.com` purchased at Cloudflare Registrar.
+- [x] DNS records (A apex, CNAME www) added in Cloudflare; proxy enabled.
+- [x] Domain added to the Vercel project; cert issued.
+- [x] `NEXT_PUBLIC_BASE_URL = https://barbariamorocco.com` set in Vercel
+      Production + Preview environments.
+- [ ] Trigger a redeploy after this PR lands. Every canonical, sitemap
+      entry, OG meta, JSON-LD URL, and `robots.txt` will automatically
+      pick up the production domain.
 
 ### A.2. Supabase security toggles (Dashboard, no code)
-- [ ] Sign in to Supabase → project `jnparcnvkghiuryarbac` → Authentication
-      → Providers → Email → enable **"Password protection (HIBP check)"**. This
-      makes Supabase reject passwords that appear in known breach corpora.
-- [ ] Confirm the **storage region** of the project matches what we declare
-      in the privacy policy (currently a `[CLIENT-FILL]` placeholder).
-- [ ] Rotate the `SUPABASE_SERVICE_ROLE_KEY` if it has ever appeared in a
-      shared channel (chat, email, screenshot). Vercel env var swap, no
-      code change.
+- [ ] Sign in to Supabase as `admin@barbariamorocco.com` → project
+      `BARBARIA DASH` → Authentication → Providers → Email → enable
+      **"Password protection (HIBP check)"**. Requires the Pro plan; if
+      staying on Free, this stays an accepted advisor warning.
+- [x] Storage region declared in the privacy policy is correct
+      (`eu-west-1` / Frankfurt).
+- [ ] **Rotate `SUPABASE_SERVICE_ROLE_KEY`** at handoff (Settings → API
+      → Reset → update the Vercel env var). Mandatory: the previous key
+      was held by the outgoing engineer.
+- [ ] **Enable MFA on `admin@barbariamorocco.com`** (avatar → Account →
+      Authentication → add TOTP, save backup codes).
 
 ### A.3. Catalogue content review
 - [ ] Open `/admin/products`, walk through all 39 seeded products, confirm
@@ -46,14 +51,14 @@ they should be completed.
       of published.
 
 ### A.4. Admin bootstrap
-- [ ] In Vercel env, ensure `BOOTSTRAP_ADMIN_EMAIL` is set to your email
-      (`ta.elbouzidi@gmail.com`).
-- [ ] Sign in at `/admin/login` with that email's Supabase password. The
-      first sign-in auto-creates the admin_users row.
-- [ ] After bootstrap, **unset** `BOOTSTRAP_ADMIN_EMAIL` in Vercel so the
-      flag isn't a recovery hatch in production.
-- [ ] If the house wants additional admins, create them from
-      `/admin/admins` once you have the superadmin role.
+- [x] First superadmin row exists in `admin_users` (created during
+      development; survived the org transfer).
+- [ ] In Vercel env, ensure `BOOTSTRAP_ADMIN_EMAIL` is **unset** in
+      Production (it was used during dev to bootstrap the first row; in
+      a transferred project it should not stay as an open back-door).
+- [ ] The client adds their own staff admins from `/admin/users` once
+      they have a superadmin login. Promote others to `superadmin` only
+      as needed.
 
 ### A.5. OG image audit
 - [ ] Open `/brand_photos/products-all-three.jpg`, confirm it is at least
@@ -121,8 +126,9 @@ DKIM/SPF records propagated, the implementation is a half-day code session.
       cookies" in the footer reopens it; reject saves a state where
       `/_vercel/insights` is **not** loaded (check DevTools Network).
 - [ ] All four legal pages render in FR and EN with real company data
-      (Barbaria Morocco SARL, RC 719643, ICE, IF, TP, OMPIC 3121576).
-- [ ] `/admin/login` works with your Supabase password.
+      (Barbaria Morocco, SARL, RC 719643, ICE 003829477000010, IF 71744183,
+      TP 34772428, Certificat Négatif OMPIC 3121576).
+- [ ] `/admin/login` works with the `admin@barbariamorocco.com` magic link.
 - [ ] You can publish a new product end-to-end from `/admin/products/new`,
       and it appears on the public catalogue.
 - [ ] You can submit a real inquiry from `/contact`, see it land in

@@ -1,9 +1,9 @@
-// Production origin. Set NEXT_PUBLIC_BASE_URL in Vercel when the real
-// domain is wired up; until then the Vercel preview URL is the fallback
-// so every canonical, sitemap entry, OG meta, and JSON-LD URL stays
-// consistent across dev/preview without manual edits.
+// Production origin. Set NEXT_PUBLIC_BASE_URL in Vercel for every
+// environment. The fallback is the production domain so canonicals,
+// sitemap entries, OG meta, and JSON-LD URLs stay coherent even if
+// the env var is forgotten on a preview deploy.
 export const BASE_URL =
-  process.env.NEXT_PUBLIC_BASE_URL ?? "https://barbaria-morocco-website.vercel.app";
+  process.env.NEXT_PUBLIC_BASE_URL ?? "https://barbariamorocco.com";
 export const CONTACT_EMAIL = "Contact@barbariamorocco.com";
 export const CONTACT_PHONE = "+212659658863";
 export const WHATSAPP_NUMBER = "212659658863";

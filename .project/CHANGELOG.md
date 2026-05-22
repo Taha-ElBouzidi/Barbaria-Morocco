@@ -6,6 +6,12 @@ Format: `YYYY-MM-DD HH:MM TZ , <one-line summary>`
 
 ---
 
+## 2026-05-22
+
+- **Ownership transfer milestones.** Domain `barbariamorocco.com` purchased at Cloudflare Registrar; DNS + Vercel cert green; Cloudflare proxy enabled (WAF + Bot Fight). Zoho Mail set up on the EU datacenter with SPF + DKIM (`zmail._domainkey`) + DMARC (`p=none`, monitor-only) records published in Cloudflare. Mailbox `inass.moussadek@barbariamorocco.com` plus role aliases `admin@`, `contact@`, `privacy@`, `security@`. Supabase project `BARBARIA DASH` (ref `jnparcnvkghiuryarbac`) transferred to the new `barbariamorocco` org owned by `admin@barbariamorocco.com`; verified via MCP, RLS policies (41), migrations (24 including 0023 `scope_categories_public_read_to_anon`), storage bucket, and all rows intact. Vercel team created for the client and project transfer prepared.
+- **Legal corrections post-Certificat Négatif** (`1f083a1`). Client received the OMPIC Certificat Négatif which corrected two facts on file. ICE on the legal pages changed from `003886371000061` to `003829477000010`. The `OMPIC n° 3121576` reference was wrong: it is a Certificat Négatif (company-name reservation), not a trademark deposit. § 4 of the mentions légales / legal notice rewritten in FR + EN to say the commercial name is reserved with OMPIC under cert négatif n° 3121576 and no formal trademark has been filed yet. `CLIENT_DATA.ompicMark` renamed to `ompicCertNegatif`.
+- **Handoff polish push** (this commit). README rewritten from create-next-app scaffolding default to a proper project README (stack, env vars, deploy, admin pointer, contact). `.env.example` BASE_URL updated from Vercel preview to `https://barbariamorocco.com`. `lib/constants.ts` fallback updated to the production domain. `next.config.ts` Server Actions allow-list now uses `VERCEL_URL` (auto-injected per build) instead of a hardcoded preview hostname. HANDOFF_CHECKLIST.md ticked through the items that completed during the transfer week. CNDP filing guide added at `.project/CNDP_FILING_GUIDE.md` for the client to forward to Inass.
+
 ## 2026-05-17
 
 - 03:10 CET. **Autonomous pre-handoff sprint, six commits**. Taha went to sleep; sprint scope was a punch-list of launch blockers (legal pages, cookie consent, production-URL abstraction, inquiry-email research, BASE_URL plumbing). All six commits on master past `e8b4b29`:
