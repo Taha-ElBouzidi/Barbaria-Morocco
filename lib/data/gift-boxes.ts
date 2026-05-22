@@ -22,6 +22,8 @@ type GiftBoxRow = {
   slug: string;
   hero_image_path: string | null;
   default_quantity_min: number;
+  lead_time_weeks_min: number;
+  lead_time_weeks_max: number;
   is_customizable: boolean;
   sort_order: number;
   category: EmbeddedCategory;
@@ -40,6 +42,8 @@ const GIFT_BOX_SELECT = `
   slug,
   hero_image_path,
   default_quantity_min,
+  lead_time_weeks_min,
+  lead_time_weeks_max,
   is_customizable,
   sort_order,
   category:categories ( slug ),
@@ -57,6 +61,8 @@ function rowToSummary(row: GiftBoxRow): GiftBoxSummary {
     categorySlug: catSlug as CategorySlug,
     heroImage: row.hero_image_path,
     defaultQuantityMin: row.default_quantity_min,
+    leadTimeWeeksMin: row.lead_time_weeks_min,
+    leadTimeWeeksMax: row.lead_time_weeks_max,
     isCustomizable: row.is_customizable,
     name: t.name ?? row.slug,
     tagline: t.tagline,

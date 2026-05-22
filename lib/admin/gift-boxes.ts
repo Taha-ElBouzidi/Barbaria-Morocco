@@ -14,6 +14,11 @@ export const GiftBoxSaveSchema = z.object({
   categoryId: z.string().uuid(),
   heroImagePath: z.string().nullable().default(null),
   defaultQuantityMin: z.coerce.number().int().min(1).default(5),
+  // Lead-time band in weeks. Min defaults to 4 (the "curated standard"
+  // band published in the FAQ); bespoke boxes get higher values set
+  // explicitly. DB enforces max >= min via CHECK constraint.
+  leadTimeWeeksMin: z.coerce.number().int().min(1).max(52).default(4),
+  leadTimeWeeksMax: z.coerce.number().int().min(1).max(52).default(6),
   sortOrder: z.coerce.number().int().min(0).default(0),
   isCustomizable: z.boolean().default(false),
   translations: z.object({
@@ -45,6 +50,8 @@ export interface GiftBoxAdminRow {
   categorySlug: string;
   status: "draft" | "published";
   defaultQuantityMin: number;
+  leadTimeWeeksMin: number;
+  leadTimeWeeksMax: number;
   sortOrder: number;
   isCustomizable: boolean;
   heroImagePath: string | null;
@@ -60,7 +67,8 @@ export async function listGiftBoxesForAdmin(opts?: {
   let q = supabase
     .from("gift_boxes")
     .select(`
-      id, slug, category_id, status, default_quantity_min, sort_order,
+      id, slug, category_id, status, default_quantity_min,
+      lead_time_weeks_min, lead_time_weeks_max, sort_order,
       is_customizable, hero_image_path,
       category:categories ( slug ),
       translations:gift_box_translations ( locale, name ),
@@ -76,6 +84,8 @@ export async function listGiftBoxesForAdmin(opts?: {
     category_id: string;
     status: "draft" | "published";
     default_quantity_min: number;
+    lead_time_weeks_min: number;
+    lead_time_weeks_max: number;
     sort_order: number;
     is_customizable: boolean;
     hero_image_path: string | null;
@@ -97,6 +107,8 @@ export async function listGiftBoxesForAdmin(opts?: {
       categorySlug: cat?.slug ?? "",
       status: r.status,
       defaultQuantityMin: r.default_quantity_min,
+      leadTimeWeeksMin: r.lead_time_weeks_min,
+      leadTimeWeeksMax: r.lead_time_weeks_max,
       sortOrder: r.sort_order,
       isCustomizable: r.is_customizable,
       heroImagePath: r.hero_image_path,
@@ -121,7 +133,8 @@ export async function getGiftBoxForAdmin(id: string): Promise<GiftBoxAdminDetail
   const { data } = await supabase
     .from("gift_boxes")
     .select(`
-      id, slug, category_id, status, default_quantity_min, sort_order,
+      id, slug, category_id, status, default_quantity_min,
+      lead_time_weeks_min, lead_time_weeks_max, sort_order,
       is_customizable, hero_image_path,
       category:categories ( slug ),
       translations:gift_box_translations ( locale, name, tagline, story_intro ),
@@ -136,6 +149,8 @@ export async function getGiftBoxForAdmin(id: string): Promise<GiftBoxAdminDetail
     category_id: string;
     status: "draft" | "published";
     default_quantity_min: number;
+    lead_time_weeks_min: number;
+    lead_time_weeks_max: number;
     sort_order: number;
     is_customizable: boolean;
     hero_image_path: string | null;
@@ -168,6 +183,8 @@ export async function getGiftBoxForAdmin(id: string): Promise<GiftBoxAdminDetail
     categorySlug: cat?.slug ?? "",
     status: r.status,
     defaultQuantityMin: r.default_quantity_min,
+    leadTimeWeeksMin: r.lead_time_weeks_min,
+    leadTimeWeeksMax: r.lead_time_weeks_max,
     sortOrder: r.sort_order,
     isCustomizable: r.is_customizable,
     heroImagePath: r.hero_image_path,

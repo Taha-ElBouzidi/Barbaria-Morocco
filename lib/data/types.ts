@@ -64,6 +64,9 @@ export interface GiftBoxSummary {
   categorySlug: CategorySlug;
   heroImage: string | null;
   defaultQuantityMin: number;
+  /** Production lead-time band in weeks. min == max means a fixed lead. */
+  leadTimeWeeksMin: number;
+  leadTimeWeeksMax: number;
   isCustomizable: boolean;
   name: string;
   tagline: string | null;

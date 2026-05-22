@@ -386,6 +386,11 @@
     "price_on_request": "Prix sur demande, B2B.",
     "piece_origin_label": "Origine",
     "piece_format_label": "Formats",
-    "piece_lead_label": "Délai"
+    "piece_lead_label": "Délai",
+    "aside_min_label": "Quantité minimum",
+    "aside_min_value": "{n} par commande",
+    "aside_lead_label": "Délai de fabrication",
+    "aside_lead_range": "{min} à {max} semaines",
+    "aside_lead_single": "{n} semaines"
   }
 }

@@ -386,6 +386,11 @@
     "price_on_request": "Price on request, B2B inquiry.",
     "piece_origin_label": "Origin",
     "piece_format_label": "Formats",
-    "piece_lead_label": "Lead time"
+    "piece_lead_label": "Lead time",
+    "aside_min_label": "Minimum quantity",
+    "aside_min_value": "{n} per order",
+    "aside_lead_label": "Lead time",
+    "aside_lead_range": "{min} to {max} weeks",
+    "aside_lead_single": "{n} weeks"
   }
 }

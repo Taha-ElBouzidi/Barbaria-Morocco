@@ -48,6 +48,8 @@ export default function GiftBoxEditor({
   const [categoryId, setCategoryId] = useState(initial?.categoryId ?? categoryOptions[0]?.id ?? "");
   const [heroImagePath, setHeroImagePath] = useState(initial?.heroImagePath ?? "");
   const [defaultQuantityMin, setDefaultQuantityMin] = useState(initial?.defaultQuantityMin ?? 5);
+  const [leadTimeWeeksMin, setLeadTimeWeeksMin] = useState(initial?.leadTimeWeeksMin ?? 4);
+  const [leadTimeWeeksMax, setLeadTimeWeeksMax] = useState(initial?.leadTimeWeeksMax ?? 6);
   const [sortOrder, setSortOrder] = useState(initial?.sortOrder ?? 0);
   const [isCustomizable, setIsCustomizable] = useState(initial?.isCustomizable ?? false);
   const [nameEn, setNameEn] = useState(initial?.translations.en.name ?? "");
@@ -224,6 +226,37 @@ export default function GiftBoxEditor({
               className={inputCls}
             />
             <p className={HELP_CLS}>MOQ. Buyers cannot drop the box quantity below this value.</p>
+          </div>
+          <div>
+            <label className={labelCls} htmlFor="leadTimeWeeksMin">Lead time (weeks)</label>
+            <div className="flex items-center gap-2">
+              <input
+                id="leadTimeWeeksMin"
+                name="leadTimeWeeksMin"
+                type="number"
+                min={1}
+                max={52}
+                required
+                value={leadTimeWeeksMin}
+                onChange={(e) => setLeadTimeWeeksMin(parseInt(e.target.value, 10) || 1)}
+                className={inputCls}
+                aria-label="Lead time minimum weeks"
+              />
+              <span className="text-bb-on-surface-variant text-[12px]">to</span>
+              <input
+                id="leadTimeWeeksMax"
+                name="leadTimeWeeksMax"
+                type="number"
+                min={leadTimeWeeksMin}
+                max={52}
+                required
+                value={leadTimeWeeksMax}
+                onChange={(e) => setLeadTimeWeeksMax(parseInt(e.target.value, 10) || leadTimeWeeksMin)}
+                className={inputCls}
+                aria-label="Lead time maximum weeks"
+              />
+            </div>
+            <p className={HELP_CLS}>Production lead-time band in weeks, shown publicly on the box page and in the Product schema. Curated boxes default to 4 to 6 weeks; bespoke configurations typically 8 to 10.</p>
           </div>
           <div>
             <label className={labelCls} htmlFor="sortOrder">Display order</label>

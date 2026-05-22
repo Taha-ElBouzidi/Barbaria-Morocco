@@ -188,6 +188,15 @@ export default async function GiftBoxPage({ params }: PageProps) {
         minValue: detail.defaultQuantityMin,
         unitCode: "C62",
       },
+      // Production lead-time band, surfaced on the public page as
+      // "X to Y weeks". schema.org allows min/max via QuantitativeValue
+      // so search engines + AI engines can reason about urgency.
+      deliveryLeadTime: {
+        "@type": "QuantitativeValue",
+        minValue: detail.leadTimeWeeksMin,
+        maxValue: detail.leadTimeWeeksMax,
+        unitCode: "WEE",
+      },
       priceSpecification: {
         "@type": "PriceSpecification",
         priceCurrency: "MAD",
@@ -344,6 +353,23 @@ export default async function GiftBoxPage({ params }: PageProps) {
                   <dt className="text-bb-on-surface-variant">{t("aside_items")}</dt>
                   <dd className="text-bb-primary font-medium">
                     {t("items_count", { count: detail.items.length })}
+                  </dd>
+                </div>
+                <div className="flex justify-between border-b border-bb-line pb-3">
+                  <dt className="text-bb-on-surface-variant">{t("aside_min_label")}</dt>
+                  <dd className="text-bb-primary font-medium">
+                    {t("aside_min_value", { n: detail.defaultQuantityMin })}
+                  </dd>
+                </div>
+                <div className="flex justify-between border-b border-bb-line pb-3">
+                  <dt className="text-bb-on-surface-variant">{t("aside_lead_label")}</dt>
+                  <dd className="text-bb-primary font-medium">
+                    {detail.leadTimeWeeksMin === detail.leadTimeWeeksMax
+                      ? t("aside_lead_single", { n: detail.leadTimeWeeksMin })
+                      : t("aside_lead_range", {
+                          min: detail.leadTimeWeeksMin,
+                          max: detail.leadTimeWeeksMax,
+                        })}
                   </dd>
                 </div>
               </dl>

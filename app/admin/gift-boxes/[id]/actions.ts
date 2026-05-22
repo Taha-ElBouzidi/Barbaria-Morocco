@@ -18,6 +18,8 @@ function parseFormData(formData: FormData): GiftBoxSaveInput {
     categoryId: String(formData.get("categoryId") ?? "").trim(),
     heroImagePath: (formData.get("heroImagePath") as string | null) || null,
     defaultQuantityMin: formData.get("defaultQuantityMin") ?? 5,
+    leadTimeWeeksMin: formData.get("leadTimeWeeksMin") ?? 4,
+    leadTimeWeeksMax: formData.get("leadTimeWeeksMax") ?? 6,
     sortOrder: formData.get("sortOrder") ?? 0,
     isCustomizable: formData.get("isCustomizable") === "on",
     translations: {
@@ -89,11 +91,21 @@ export async function saveGiftBox(
     }
   }
 
+  // Surface the cross-field constraint client-side; the DB CHECK
+  // (lead_time_weeks_max >= lead_time_weeks_min) is the final gate.
+  if (data.leadTimeWeeksMax < data.leadTimeWeeksMin) {
+    return {
+      ok: false,
+      error: "Lead time max must be at least the min value.",
+    };
+  }
   const payload = {
     slug: data.slug,
     category_id: data.categoryId,
     hero_image_path: data.heroImagePath,
     default_quantity_min: data.defaultQuantityMin,
+    lead_time_weeks_min: data.leadTimeWeeksMin,
+    lead_time_weeks_max: data.leadTimeWeeksMax,
     sort_order: data.sortOrder,
     is_customizable: data.isCustomizable,
     updated_by: admin.id,
