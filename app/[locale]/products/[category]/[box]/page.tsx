@@ -291,6 +291,7 @@ export default async function GiftBoxPage({ params }: PageProps) {
                 giftBoxSlug={detail.slug}
                 name={detail.name}
                 minQty={detail.defaultQuantityMin}
+                categorySlug={category}
               />
               <p className="text-[12px] text-bb-on-surface-variant text-center italic">
                 {t("aside_note")}

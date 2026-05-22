@@ -43,6 +43,7 @@
     "inquiry_request": "Demander un Devis",
     "inquiry_decrease": "Diminuer la quantité de {name}",
     "inquiry_increase": "Augmenter la quantité de {name}",
+    "inquiry_qty_input": "Quantité pour {name}",
     "inquiry_remove": "Retirer {name} de la demande",
     "inquiry_box_curated": "Coffret curaté",
     "inquiry_box_custom": "Coffret sur mesure",
@@ -349,6 +350,9 @@
     "aside_note": "Devis renvoyé sous 24 h, signé par le concierge.",
     "add_to_inquiry": "Ajouter à la demande",
     "added": "Ajouté ✓",
-    "view_inquiry": "Voir ma demande"
+    "view_inquiry": "Voir ma demande",
+    "added_to_inquiry": "Ajouté à votre demande",
+    "continue_browsing": "Continuer à parcourir",
+    "add_another": "Ajouter un autre coffret"
   }
 }

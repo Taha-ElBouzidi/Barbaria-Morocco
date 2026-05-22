@@ -10,26 +10,83 @@ interface Props {
   giftBoxSlug: string;
   name: string;
   minQty: number;
+  /** Category slug so the post-add "Continue browsing" CTA can return the
+   *  buyer to the right list (cosmetiques vs epicerie_fine) instead of
+   *  the products index. */
+  categorySlug: string;
 }
 
 /**
- * Sprint 2.6 , Curated-box "Add to inquiry" CTA with admin-MOQ-respecting
- * qty stepper. Replaces the bare "Send us a request" Link to /contact; the
- * inquiry is now box-level, so the buyer adds the box itself (not its
- * pieces) to their inquiry list.
+ * Curated-box "Add to inquiry" CTA with a typeable quantity input flanked
+ * by stepper buttons. After the buyer adds a box, the control replaces
+ * itself with a persistent confirmation card offering "Continue browsing"
+ * (back to the category list) and "Review your inquiry" (jump to /contact).
+ * Standard add-to-cart pattern, except the cart is a B2B inquiry sidebar.
  */
-export default function BoxAddToInquiry({ giftBoxSlug, name, minQty }: Props) {
+export default function BoxAddToInquiry({
+  giftBoxSlug,
+  name,
+  minQty,
+  categorySlug,
+}: Props) {
   const t = useTranslations("products");
   const tNav = useTranslations("nav");
   const { addBox } = useInquiry();
   const [qty, setQty] = useState(minQty);
   const [added, setAdded] = useState(false);
 
+  const handleQtyChange = (raw: string) => {
+    const parsed = parseInt(raw, 10);
+    if (Number.isNaN(parsed)) {
+      // Allow the field to be visually empty during typing; setQty stays at
+      // last valid value so re-submit still works. blur snaps to min.
+      setQty(minQty);
+      return;
+    }
+    setQty(Math.max(minQty, parsed));
+  };
+
   const handleAdd = () => {
     addBox({ giftBoxSlug, minQty, initialQty: qty, nameSnapshot: name });
     setAdded(true);
-    window.setTimeout(() => setAdded(false), 2400);
   };
+
+  if (added) {
+    return (
+      <div className="border border-bb-secondary/30 bg-bb-primary-container p-6 space-y-5">
+        <div className="flex items-center gap-2 text-bb-secondary-deep">
+          <Icon name="check" size={16} />
+          <span className="font-sans text-[11px] uppercase tracking-[0.18em]">
+            {t("added_to_inquiry")}
+          </span>
+        </div>
+        <p className="font-display text-bb-on-surface text-[16px]">
+          {name} <span className="text-bb-on-surface-variant">&middot;</span> {qty}
+        </p>
+        <div className="flex flex-col gap-3 pt-1">
+          <Link
+            href={`/products/${categorySlug}`}
+            className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 border border-bb-secondary text-bb-secondary-deep font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary/5 transition-colors"
+          >
+            {t("continue_browsing")}
+          </Link>
+          <Link
+            href="/contact"
+            className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors"
+          >
+            {t("view_inquiry")} <Icon name="arrow-up-right" size={14} />
+          </Link>
+        </div>
+        <button
+          type="button"
+          onClick={() => setAdded(false)}
+          className="block w-full text-center font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-secondary-deep transition-colors"
+        >
+          {t("add_another")}
+        </button>
+      </div>
+    );
+  }
 
   return (
     <div className="space-y-4">
@@ -47,7 +104,19 @@ export default function BoxAddToInquiry({ giftBoxSlug, name, minQty }: Props) {
           >
             <Icon name="minus" size={12} />
           </button>
-          <span className="w-10 text-center font-sans text-[15px] text-bb-on-surface">{qty}</span>
+          <input
+            type="number"
+            inputMode="numeric"
+            min={minQty}
+            value={qty}
+            onChange={(e) => handleQtyChange(e.target.value)}
+            onBlur={(e) => {
+              const parsed = parseInt(e.target.value, 10);
+              if (Number.isNaN(parsed) || parsed < minQty) setQty(minQty);
+            }}
+            className="w-16 min-h-[44px] text-center font-sans text-[15px] text-bb-on-surface bg-transparent border border-bb-line px-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+            aria-label={tNav("inquiry_qty_input", { name })}
+          />
           <button
             type="button"
             onClick={() => setQty((q) => q + 1)}
@@ -61,25 +130,10 @@ export default function BoxAddToInquiry({ giftBoxSlug, name, minQty }: Props) {
       <button
         type="button"
         onClick={handleAdd}
-        disabled={added}
-        className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[12px] uppercase tracking-[0.18em] transition-colors hover:bg-bb-secondary-fixed-dim disabled:opacity-70"
+        className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[12px] uppercase tracking-[0.18em] transition-colors hover:bg-bb-secondary-fixed-dim"
       >
-        {added ? (
-          <>
-            <Icon name="check" size={14} /> {t("added")}
-          </>
-        ) : (
-          <>
-            {t("add_to_inquiry")} <Icon name="arrow-up-right" size={14} />
-          </>
-        )}
+        {t("add_to_inquiry")} <Icon name="arrow-up-right" size={14} />
       </button>
-      <Link
-        href="/contact"
-        className="block text-center font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep hover:text-bb-primary transition-colors"
-      >
-        {t("view_inquiry")}
-      </Link>
     </div>
   );
 }

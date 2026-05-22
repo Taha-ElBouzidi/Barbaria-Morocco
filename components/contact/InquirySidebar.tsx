@@ -79,7 +79,28 @@ export default function InquirySidebar({
                     >
                       <Icon name="minus" size={12} />
                     </button>
-                    <span className="w-8 text-center font-sans text-[14px] text-bb-on-surface">{line.qty}</span>
+                    <input
+                      type="number"
+                      inputMode="numeric"
+                      min={line.minQty}
+                      value={line.qty}
+                      onChange={(e) => {
+                        const raw = parseInt(e.target.value, 10);
+                        if (Number.isNaN(raw)) {
+                          setQty(line.id, line.minQty);
+                        } else {
+                          setQty(line.id, Math.max(line.minQty, raw));
+                        }
+                      }}
+                      onBlur={(e) => {
+                        const parsed = parseInt(e.target.value, 10);
+                        if (Number.isNaN(parsed) || parsed < line.minQty) {
+                          setQty(line.id, line.minQty);
+                        }
+                      }}
+                      className="w-14 h-11 text-center font-sans text-[14px] text-bb-on-surface bg-transparent border border-bb-line px-1 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+                      aria-label={tNav("inquiry_qty_input", { name })}
+                    />
                     <button
                       type="button"
                       onClick={() => setQty(line.id, line.qty + 1)}

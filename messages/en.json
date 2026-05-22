@@ -43,6 +43,7 @@
     "inquiry_request": "Request Quote",
     "inquiry_decrease": "Decrease quantity of {name}",
     "inquiry_increase": "Increase quantity of {name}",
+    "inquiry_qty_input": "Quantity for {name}",
     "inquiry_remove": "Remove {name} from inquiry",
     "inquiry_box_curated": "Curated box",
     "inquiry_box_custom": "Custom box",
@@ -349,6 +350,9 @@
     "aside_note": "Quote returned within 24 hours, signed by the concierge.",
     "add_to_inquiry": "Add to inquiry",
     "added": "Added ✓",
-    "view_inquiry": "View your inquiry"
+    "view_inquiry": "View your inquiry",
+    "added_to_inquiry": "Added to your inquiry",
+    "continue_browsing": "Continue browsing",
+    "add_another": "Add another box"
   }
 }
