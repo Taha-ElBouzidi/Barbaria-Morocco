@@ -353,6 +353,9 @@
     "view_inquiry": "Voir ma demande",
     "added_to_inquiry": "Ajouté à votre demande",
     "continue_browsing": "Continuer à parcourir",
-    "add_another": "Ajouter un autre coffret"
+    "add_another": "Ajouter un autre coffret",
+    "breadcrumb_home": "Accueil",
+    "breadcrumb_products": "Coffrets",
+    "price_on_request": "Prix sur demande, B2B."
   }
 }

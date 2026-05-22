@@ -353,6 +353,9 @@
     "view_inquiry": "View your inquiry",
     "added_to_inquiry": "Added to your inquiry",
     "continue_browsing": "Continue browsing",
-    "add_another": "Add another box"
+    "add_another": "Add another box",
+    "breadcrumb_home": "Home",
+    "breadcrumb_products": "Gift boxes",
+    "price_on_request": "Price on request, B2B inquiry."
   }
 }

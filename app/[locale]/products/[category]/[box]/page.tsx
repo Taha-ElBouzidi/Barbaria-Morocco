@@ -21,8 +21,10 @@ import { getAllFacets } from "@/lib/data/facets";
 import type { WizardCopy, FacetTypeByValue } from "@/components/wizard/BoxComposer";
 const BoxComposer = dynamic(() => import("@/components/wizard/BoxComposer"));
 import BoxAddToInquiry from "@/components/product/BoxAddToInquiry";
+import JsonLd from "@/components/JsonLd";
 import type { CategorySlug, ProductSummary } from "@/lib/data/types";
 import { pageMetadata } from "@/lib/seo/page-metadata";
+import { BASE_URL } from "@/lib/constants";
 
 export const revalidate = 60;
 
@@ -153,8 +155,54 @@ export default async function GiftBoxPage({ params }: PageProps) {
     );
   }
 
+  // SEO structured data: Product schema for the gift box itself plus a
+  // BreadcrumbList rooted at Home so search results render the full
+  // path Home > Products > Category > Box. No price in the Product
+  // payload, B2B inquiry pricing is negotiated and not public.
+  const pageUrl = `${BASE_URL}/${locale}/products/${category}/${box}`;
+  const productSchema = {
+    "@context": "https://schema.org",
+    "@type": "Product",
+    name: detail.name,
+    description: detail.storyIntro ?? detail.tagline ?? detail.name,
+    url: pageUrl,
+    image: detail.heroImage ? `${BASE_URL}${detail.heroImage}` : undefined,
+    category: cat.name,
+    brand: {
+      "@type": "Brand",
+      name: "Barbaria Morocco",
+    },
+    offers: {
+      "@type": "Offer",
+      availability: "https://schema.org/MadeToOrder",
+      priceCurrency: "MAD",
+      price: "0",
+      priceSpecification: {
+        "@type": "PriceSpecification",
+        description: t("price_on_request"),
+      },
+      url: pageUrl,
+      seller: {
+        "@type": "Organization",
+        name: "Barbaria Morocco",
+      },
+    },
+  };
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: t("breadcrumb_home"), item: `${BASE_URL}/${locale}` },
+      { "@type": "ListItem", position: 2, name: t("breadcrumb_products"), item: `${BASE_URL}/${locale}/products` },
+      { "@type": "ListItem", position: 3, name: cat.name, item: `${BASE_URL}/${locale}/products/${category}` },
+      { "@type": "ListItem", position: 4, name: detail.name, item: pageUrl },
+    ],
+  };
+
   return (
     <>
+      <JsonLd data={productSchema} />
+      <JsonLd data={breadcrumbSchema} />
       {/* Hero */}
       <section className="relative h-[55vh] min-h-[440px] overflow-hidden">
         <Photo

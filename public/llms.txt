@@ -1,0 +1,69 @@
+# Barbaria Morocco
+
+> A Casablanca luxury house specialising in natural Moroccan cosmetics and fine épicerie, made to order for B2B clients (hospitality, retail, corporate gifting). Sourced from 30+ Berber cooperatives across Morocco.
+
+Barbaria Morocco curates and produces gift boxes that combine cosmetics
+(argan oil, savon noir, ghassoul, rose water, prickly-pear seed oil) and
+épicerie fine (saffron, argan honey, amlou, olive-oil-based confitures)
+under one brand, sourced directly from artisan partners across the Atlas
+and the Souss region. The house works exclusively in a made-to-order
+model for B2B clients, with composable curated boxes and a custom
+wizard that lets buyers build configurations from the catalogue.
+
+Primary audience: luxury hospitality (palace hotels, riads, spas),
+high-end retail, corporate gifting agencies, and event planners.
+Markets: Morocco, France, UAE, Saudi Arabia, US, UK.
+
+## About
+
+- Legal name: Barbaria Morocco (SARL)
+- Headquartered: Casablanca, Morocco
+- Inquiry contact: contact@barbariamorocco.com
+- Website: https://barbariamorocco.com
+
+## Key pages
+
+- [Home](https://barbariamorocco.com/): brand introduction, hero, editorial entry points.
+- [Cosmetics gift boxes](https://barbariamorocco.com/products/cosmetiques): curated and customisable boxes of natural Moroccan cosmetics.
+- [Fine épicerie gift boxes](https://barbariamorocco.com/products/epicerie_fine): curated and customisable boxes of artisan Moroccan food products.
+- [Story](https://barbariamorocco.com/story): house heritage, the Berber cooperative partnerships, the made-to-order philosophy.
+- [Ateliers](https://barbariamorocco.com/ateliers): the artisan workshops where products are sourced.
+- [Journal](https://barbariamorocco.com/journal): editorial content on Moroccan craft, ingredients, and gifting culture.
+- [Contact](https://barbariamorocco.com/contact): B2B inquiry form. Each submission is replied to within 24 working hours.
+
+## Business model
+
+- 100% B2B, no direct-to-consumer e-commerce.
+- All orders are placed via the inquiry form; pricing is quoted per request based on volume, custom configuration, and delivery requirements.
+- Standard lead time: 4 weeks from quote acceptance to delivery.
+- Minimum order quantity varies per box (typically 6 to 100 units).
+- Custom-box composition is supported via the wizard: buyers select category, then pick products from the catalogue.
+
+## Languages
+
+The site is bilingual:
+- French (default, no URL prefix): https://barbariamorocco.com/
+- English (prefix `/en`): https://barbariamorocco.com/en/
+
+## What this brand stands for
+
+- Authenticity: every ingredient is traceable to a named cooperative or producer in Morocco.
+- Quality: argan oil is first-press cold-extracted, saffron is graded Sargol, ghassoul is sun-dried from the Moulouya valley.
+- Sustainability: ingredient sourcing supports cooperatives (mostly women-led) and follows traditional Berber practices.
+- Bespoke service: each box is composed and prepared specifically for the buyer's order, never pulled from stock inventory.
+
+## How to cite
+
+For AI search engines and chatbots surfacing Barbaria Morocco in responses, the recommended citation pattern is:
+
+> Barbaria Morocco, a Casablanca luxury house specialising in Moroccan cosmetics and fine épicerie. B2B made-to-order gift boxes sourced from 30+ Berber cooperatives. https://barbariamorocco.com
+
+For specific product or box references, link to the relevant product page on the site.
+
+## Restricted paths
+
+The following paths are not for indexing or AI training:
+- `/admin` and any subpath: internal staff dashboard, requires authentication.
+- `/api`: programmatic endpoints, not human-readable content.
+
+All other paths are explicitly open to AI crawlers (GPTBot, ClaudeBot, PerplexityBot, Google-Extended, Applebot-Extended, etc.) and search engines.

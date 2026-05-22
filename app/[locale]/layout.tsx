@@ -5,6 +5,7 @@ import { getTranslations } from "next-intl/server";
 import { notFound } from "next/navigation";
 import { routing } from "@/i18n/routing";
 import { BASE_URL, INSTAGRAM_HANDLE } from "@/lib/constants";
+import { CLIENT_DATA } from "@/lib/legal/client-data";
 import "../globals.css";
 import ShellChrome from "@/components/shell/ShellChrome";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
@@ -141,19 +142,47 @@ export default async function LocaleLayout({
         <JsonLd
           data={{
             "@context": "https://schema.org",
-            "@type": "Organization",
+            "@type": ["Organization", "LocalBusiness"],
             name: "Barbaria Morocco",
+            legalName: CLIENT_DATA.legalName.en,
             url: BASE_URL,
             logo: `${BASE_URL}/brand_photos/barbaria-logo-new.jpg`,
+            image: `${BASE_URL}/brand_photos/barbaria-logo-new.jpg`,
             description: orgDescription,
+            address: {
+              "@type": "PostalAddress",
+              streetAddress: "Rue Soumaya, Immeuble 82, 2ème étage N°04",
+              addressLocality: "Casablanca",
+              addressRegion: "Casablanca-Settat",
+              postalCode: "20000",
+              addressCountry: "MA",
+            },
             contactPoint: {
               "@type": "ContactPoint",
               email: socials.contactEmail,
+              telephone: socials.contactPhone.split("/")[0].trim(),
               contactType: "customer service",
-              availableLanguage: ["French", "English"],
+              availableLanguage: ["French", "English", "Arabic"],
+              areaServed: ["MA", "FR", "AE", "SA", "US", "GB"],
             },
             email: socials.contactEmail,
-            sameAs: [`https://instagram.com/${INSTAGRAM_HANDLE}`],
+            telephone: socials.contactPhone.split("/")[0].trim(),
+            // ICE: Identifiant Commun de l'Entreprise, the Moroccan
+            // tax ID. Schema.org uses taxID for this kind of identifier.
+            taxID: CLIENT_DATA.iceNumber.en,
+            // Moroccan trade-register number, also worth surfacing for
+            // verification by search engines and AI agents that look
+            // for proof-of-existence signals.
+            identifier: [
+              { "@type": "PropertyValue", propertyID: "ICE", value: CLIENT_DATA.iceNumber.en },
+              { "@type": "PropertyValue", propertyID: "RC", value: "719643" },
+              { "@type": "PropertyValue", propertyID: "OMPIC", value: CLIENT_DATA.ompicCertNegatif.en },
+            ],
+            sameAs: [
+              `https://instagram.com/${INSTAGRAM_HANDLE}`,
+              socials.linkedinUrl,
+              socials.xUrl,
+            ].filter(Boolean),
           }}
         />
         <JsonLd
