@@ -29,7 +29,7 @@ export interface HouseEmailPayload {
 
 export function houseEmailSubject(payload: HouseEmailPayload): string {
   const base = `[Inquiry] ${payload.company}`;
-  return payload.occasion ? `${base} — ${payload.occasion}` : base;
+  return payload.occasion ? `${base} (${payload.occasion})` : base;
 }
 
 function escapeHtml(s: string): string {
@@ -55,7 +55,7 @@ export function houseEmailHtml(payload: HouseEmailPayload): string {
     .join("");
 
   return `<!DOCTYPE html><html><body style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#1a1a1a;max-width:640px;margin:0 auto;padding:24px;">
-<h2 style="color:#7a5230;margin-bottom:4px;">Nouvelle demande B2B</h2>
+<h2 style="color:#7a5230;margin-bottom:4px;">Barbaria Morocco, nouvelle demande B2B</h2>
 <p style="color:#666;margin-top:0;">Reçue depuis barbariamorocco.com (${payload.locale.toUpperCase()})</p>
 
 <h3 style="margin-bottom:4px;">Contact</h3>
@@ -67,7 +67,7 @@ ${escapeHtml(payload.contactName)}<br>
 
 ${payload.occasion || payload.eventDate ? `<h3 style="margin-bottom:4px;">Occasion</h3>
 <p style="margin:0 0 16px 0;">
-${payload.occasion ? escapeHtml(payload.occasion) : ""}${payload.occasion && payload.eventDate ? " — " : ""}${payload.eventDate ? `<em>${escapeHtml(payload.eventDate)}</em>` : ""}
+${payload.occasion ? escapeHtml(payload.occasion) : ""}${payload.occasion && payload.eventDate ? " &middot; " : ""}${payload.eventDate ? `<em>${escapeHtml(payload.eventDate)}</em>` : ""}
 </p>` : ""}
 
 <h3 style="margin-bottom:4px;">Coffrets demandés</h3>
