@@ -34,6 +34,33 @@ and the client wrapper in `lib/email/resend.ts`.
 - Optional: Cloudflare Turnstile on the form (honeypot is the v1
   protection; Turnstile adds defence-in-depth without breaking real users).
 
+## UX fixes flagged 2026-05-22 by Taha
+
+These came out of live testing on `barbariamorocco.com` after the
+launch deployment. Not blocking, but worth fixing in the next polish
+sprint.
+
+### 1. Quantity input is stepper-only
+The wizard and box-detail pages use a `[-] qty [+]` control with no
+typeable field, so a buyer wanting 250 units has to click `+` 244
+times from the default of 6. Replace with a number input that accepts
+direct typing, with the stepper buttons as a flanking convenience.
+Bound to the same `minQty` / `maxQty` validation already wired into
+the Zod schema on `/api/inquiry`. Files: the qty control component
+(probably `components/wizard/QuantityStepper.tsx` or similar) plus
+any consumer that imports it.
+
+### 2. No "back to menu" after adding a box
+When a buyer adds a box to their inquiry, the page stays exactly
+where it was, with no visible cue that the action succeeded and no
+path back to discovery. **Recommendation: a toast/modal confirmation
+with two CTAs**: "Continue browsing" (returns to the gift-boxes
+menu) and "Review your inquiry" (jumps to the inquiry cart/checkout
+state). This is the standard e-commerce add-to-cart pattern and
+serves both single-box and multi-box buyers. Files: the box card or
+wizard "add" action, plus likely a new shared `<InquiryAddedToast>`
+or modal.
+
 ## Contact data (managed in admin dashboard)
 
 Public-facing contact info lives in `site_settings` (single row, editable
