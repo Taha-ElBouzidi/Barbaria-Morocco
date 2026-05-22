@@ -83,8 +83,17 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
       description: t("site_twitter_description"),
       images: ["/brand_photos/products-all-three.jpg"],
     },
+    // Google Search requires the favicon to be at least 48×48 to render
+    // in SERP results. The legacy /favicon.ico is 32×32, so we serve
+    // two higher-res PNGs (192/512) generated from the brand SVG and
+    // keep favicon.ico as the legacy-browser fallback. Apple devices
+    // pick up apple-touch-icon as before.
     icons: {
-      icon: "/favicon.ico",
+      icon: [
+        { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
+        { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
+        { url: "/favicon.ico", sizes: "32x32" },
+      ],
       apple: "/apple-touch-icon.png",
     },
     manifest: "/manifest.json",
