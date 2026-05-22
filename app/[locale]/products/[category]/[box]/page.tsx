@@ -174,11 +174,23 @@ export default async function GiftBoxPage({ params }: PageProps) {
     },
     offers: {
       "@type": "Offer",
+      // Made-to-order B2B: no public price field. Per Google's 2026
+      // guidance, omit `price` entirely rather than emit "0" (Search
+      // Console flags zero-priced offers). The PriceSpecification
+      // description carries the explanation; eligibleQuantity carries
+      // the MOQ; businessFunction + eligibleCustomerType signal B2B
+      // intent so AI engines can route procurement queries here.
       availability: "https://schema.org/MadeToOrder",
-      priceCurrency: "MAD",
-      price: "0",
+      businessFunction: "https://purl.org/goodrelations/v1#Sell",
+      eligibleCustomerType: "https://purl.org/goodrelations/v1#Business",
+      eligibleQuantity: {
+        "@type": "QuantitativeValue",
+        minValue: detail.defaultQuantityMin,
+        unitCode: "C62",
+      },
       priceSpecification: {
         "@type": "PriceSpecification",
+        priceCurrency: "MAD",
         description: t("price_on_request"),
       },
       url: pageUrl,

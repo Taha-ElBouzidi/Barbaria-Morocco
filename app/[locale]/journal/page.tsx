@@ -6,7 +6,9 @@ import Photo from "@/components/primitives/Photo";
 import Eyebrow from "@/components/primitives/Eyebrow";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
+import JsonLd from "@/components/JsonLd";
 import { getAllJournalCards } from "@/lib/data/journal";
+import { BASE_URL } from "@/lib/constants";
 
 export const revalidate = 60;
 
@@ -48,8 +50,51 @@ export default async function JournalPage({ params }: PageProps) {
   const feature = cards.find((c) => c.feature);
   const standards = cards.filter((c) => !c.feature);
 
+  // SEO: Blog + BlogPosting entries so AI engines can extract the
+  // editorial cadence even before per-post detail pages exist.
+  // `mainEntityOfPage` points at the list URL until each post gets
+  // its own route; `dateModified` defaults to the post's date.
+  const pageUrl = `${BASE_URL}/${locale}/journal`;
+  const blogSchema = {
+    "@context": "https://schema.org",
+    "@type": "Blog",
+    name: t("hero_headline"),
+    description: t("meta_description"),
+    url: pageUrl,
+    inLanguage: locale,
+    publisher: {
+      "@type": "Organization",
+      name: "Barbaria Morocco",
+      url: BASE_URL,
+      logo: `${BASE_URL}/brand_photos/barbaria-logo-new.jpg`,
+    },
+    blogPost: cards.map((card) => ({
+      "@type": "BlogPosting",
+      headline: card.headline,
+      image: card.image ? `${BASE_URL}${card.image}` : undefined,
+      datePublished: card.date,
+      dateModified: card.date,
+      author: { "@type": "Organization", name: "Barbaria Morocco" },
+      publisher: { "@type": "Organization", name: "Barbaria Morocco" },
+      articleSection: card.kicker,
+      mainEntityOfPage: pageUrl,
+      inLanguage: locale,
+    })),
+  };
+  const t2 = await getTranslations({ locale, namespace: "products" });
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: t2("breadcrumb_home"), item: `${BASE_URL}/${locale}` },
+      { "@type": "ListItem", position: 2, name: t("hero_headline"), item: pageUrl },
+    ],
+  };
+
   return (
     <div className="pt-32 lg:pt-40 pb-20 lg:pb-32">
+      <JsonLd data={blogSchema} />
+      <JsonLd data={breadcrumbSchema} />
       {/* Page header */}
       <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] mb-20 lg:mb-28">
         <div className="max-w-[820px] space-y-6">

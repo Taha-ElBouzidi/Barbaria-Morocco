@@ -356,6 +356,9 @@
     "add_another": "Add another box",
     "breadcrumb_home": "Home",
     "breadcrumb_products": "Gift boxes",
-    "price_on_request": "Price on request, B2B inquiry."
+    "price_on_request": "Price on request, B2B inquiry.",
+    "piece_origin_label": "Origin",
+    "piece_format_label": "Formats",
+    "piece_lead_label": "Lead time"
   }
 }

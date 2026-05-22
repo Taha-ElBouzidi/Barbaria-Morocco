@@ -356,6 +356,9 @@
     "add_another": "Ajouter un autre coffret",
     "breadcrumb_home": "Accueil",
     "breadcrumb_products": "Coffrets",
-    "price_on_request": "Prix sur demande, B2B."
+    "price_on_request": "Prix sur demande, B2B.",
+    "piece_origin_label": "Origine",
+    "piece_format_label": "Formats",
+    "piece_lead_label": "Délai"
   }
 }

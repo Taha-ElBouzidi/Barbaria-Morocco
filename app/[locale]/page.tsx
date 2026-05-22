@@ -44,11 +44,10 @@ export default async function HomePage({
           "@type": "WebSite",
           name: "Barbaria Morocco",
           url: BASE_URL,
-          potentialAction: {
-            "@type": "SearchAction",
-            target: `${BASE_URL}/fr?q={search_term_string}`,
-            "query-input": "required name=search_term_string",
-          },
+          inLanguage: locale,
+          // No SearchAction: the site has no on-site search endpoint and
+          // emitting a target Google cannot reach would 404 the Sitelinks
+          // search-box query. Add this back if/when a /search route lands.
         }}
       />
       <Hero />

@@ -8,10 +8,12 @@ import DisplayHeading from "@/components/primitives/DisplayHeading";
 import Reveal from "@/components/primitives/Reveal";
 import SaharaPrestige from "@/components/primitives/SaharaPrestige";
 import Icon from "@/components/primitives/Icon";
+import JsonLd from "@/components/JsonLd";
 import { getCategoryBySlug } from "@/lib/data/categories";
 import { getGiftBoxesByCategory } from "@/lib/data/gift-boxes";
 import type { CategorySlug } from "@/lib/data/types";
 import { pageMetadata } from "@/lib/seo/page-metadata";
+import { BASE_URL } from "@/lib/constants";
 
 export const revalidate = 60;
 
@@ -58,8 +60,37 @@ export default async function CategoryPage({ params }: PageProps) {
   const customizable = boxes.find((b) => b.isCustomizable);
   const curated = boxes.filter((b) => !b.isCustomizable);
 
+  // SEO: BreadcrumbList for the category trail + ItemList wrapping each
+  // curated box on the page so AI engines can extract the collection
+  // shape (which boxes belong to this category, in what order).
+  const pageUrl = `${BASE_URL}/${locale}/products/${category}`;
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: t("breadcrumb_home"), item: `${BASE_URL}/${locale}` },
+      { "@type": "ListItem", position: 2, name: t("breadcrumb_products"), item: `${BASE_URL}/${locale}/products` },
+      { "@type": "ListItem", position: 3, name: cat.name, item: pageUrl },
+    ],
+  };
+  const itemListSchema = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: cat.name,
+    description: cat.lede,
+    numberOfItems: boxes.length,
+    itemListElement: boxes.map((box, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: `${BASE_URL}/${locale}/products/${category}/${box.slug}`,
+      name: box.name,
+    })),
+  };
+
   return (
     <>
+      <JsonLd data={breadcrumbSchema} />
+      <JsonLd data={itemListSchema} />
       {/* Hero */}
       <section className="relative h-[60vh] min-h-[480px] overflow-hidden">
         <Photo
