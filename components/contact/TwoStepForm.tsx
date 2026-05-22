@@ -93,6 +93,48 @@ export default function TwoStepForm({ locale, occasions }: Props) {
     if (validateStep1()) setStep(2);
   };
 
+  // Compute the earliest selectable event date: today + the longest
+  // production lead-time across every box in the inquiry. If a box has
+  // 6-week lead and another has 2-week lead, the buyer cannot expect
+  // delivery before 6 weeks from today because the inquiry is delivered
+  // as one shipment. Lines that pre-date the lead-time feature fall
+  // back to 6 weeks (the curated default published in the FAQ) so old
+  // sessionStorage payloads remain safe.
+  const minEventDateISO = useMemo(() => {
+    if (lines.length === 0) {
+      return new Date().toISOString().slice(0, 10);
+    }
+    const maxLeadWeeks = lines.reduce(
+      (max, l) => Math.max(max, l.leadTimeWeeksMax ?? 6),
+      0
+    );
+    const earliest = new Date();
+    earliest.setDate(earliest.getDate() + maxLeadWeeks * 7);
+    return earliest.toISOString().slice(0, 10);
+  }, [lines]);
+
+  // Pretty-format the same date in the active locale for a small helper
+  // line beneath the input ("Earliest: 15 July 2026").
+  const minEventDateLabel = useMemo(() => {
+    const d = new Date(minEventDateISO);
+    return new Intl.DateTimeFormat(currentLocale === "fr" ? "fr-FR" : "en-US", {
+      day: "numeric",
+      month: "long",
+      year: "numeric",
+    }).format(d);
+  }, [minEventDateISO, currentLocale]);
+
+  // If the buyer entered a date earlier than the new minimum (e.g.,
+  // they typed in dev tools or the inquiry changed after they picked),
+  // surface a soft warning by clearing the field. The min= attribute
+  // on the input prevents the picker from offering invalid dates, but
+  // typed values can sneak past.
+  useEffect(() => {
+    if (form.eventDate && form.eventDate < minEventDateISO) {
+      setForm((prev) => ({ ...prev, eventDate: "" }));
+    }
+  }, [minEventDateISO, form.eventDate]);
+
   const mailtoLines: MailtoLine[] = useMemo(
     () =>
       lines.map((line) => {
@@ -308,8 +350,15 @@ export default function TwoStepForm({ locale, occasions }: Props) {
                 type="date"
                 value={form.eventDate}
                 onChange={(e) => update("eventDate", e.target.value)}
+                min={minEventDateISO}
                 className={cn(INPUT_CLASS)}
+                aria-describedby="event-date-help"
               />
+              {lines.length > 0 && (
+                <p id="event-date-help" className="text-[12px] text-bb-on-surface-variant mt-2 italic">
+                  {t("f_event_date_min", { date: minEventDateLabel })}
+                </p>
+              )}
             </div>
 
             <div>

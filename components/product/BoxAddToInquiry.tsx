@@ -10,6 +10,8 @@ interface Props {
   giftBoxSlug: string;
   name: string;
   minQty: number;
+  leadTimeWeeksMin: number;
+  leadTimeWeeksMax: number;
   /** Category slug so the post-add "Continue browsing" CTA can return the
    *  buyer to the right list (cosmetiques vs epicerie_fine) instead of
    *  the products index. */
@@ -27,6 +29,8 @@ export default function BoxAddToInquiry({
   giftBoxSlug,
   name,
   minQty,
+  leadTimeWeeksMin,
+  leadTimeWeeksMax,
   categorySlug,
 }: Props) {
   const t = useTranslations("products");
@@ -47,7 +51,14 @@ export default function BoxAddToInquiry({
   };
 
   const handleAdd = () => {
-    addBox({ giftBoxSlug, minQty, initialQty: qty, nameSnapshot: name });
+    addBox({
+      giftBoxSlug,
+      minQty,
+      leadTimeWeeksMin,
+      leadTimeWeeksMax,
+      initialQty: qty,
+      nameSnapshot: name,
+    });
     setAdded(true);
   };
 

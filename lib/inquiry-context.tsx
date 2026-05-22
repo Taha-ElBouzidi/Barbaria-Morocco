@@ -34,6 +34,11 @@ export interface InquiryLine {
   nameSnapshot?: string;
   /** Admin-defined minimum quantity for this box; UI prevents qty from dropping below. */
   minQty: number;
+  /** Admin-defined production lead-time band (weeks). Optional so old
+   *  sessionStorage payloads from before the lead-time feature still
+   *  hydrate; missing values fall back to the curated default. */
+  leadTimeWeeksMin?: number;
+  leadTimeWeeksMax?: number;
 }
 
 export type InquiryState = InquiryLine[];
@@ -115,6 +120,8 @@ interface InquiryContextValue {
   addBox: (input: {
     giftBoxSlug: string;
     minQty: number;
+    leadTimeWeeksMin?: number;
+    leadTimeWeeksMax?: number;
     initialQty?: number;
     nameSnapshot?: string;
     custom?: CustomBoxComposition;
@@ -158,12 +165,12 @@ export function InquiryProvider({ children }: { children: ReactNode }) {
     }
   }, [lines]);
 
-  const addBox = useCallback<InquiryContextValue["addBox"]>(({ giftBoxSlug, minQty, initialQty, nameSnapshot, custom }) => {
+  const addBox = useCallback<InquiryContextValue["addBox"]>(({ giftBoxSlug, minQty, leadTimeWeeksMin, leadTimeWeeksMax, initialQty, nameSnapshot, custom }) => {
     const id = genId();
     const qty = Math.max(minQty, initialQty ?? minQty);
     dispatch({
       type: "addLine",
-      line: { id, giftBoxSlug, qty, minQty, nameSnapshot, custom },
+      line: { id, giftBoxSlug, qty, minQty, leadTimeWeeksMin, leadTimeWeeksMax, nameSnapshot, custom },
     });
     return id;
   }, []);

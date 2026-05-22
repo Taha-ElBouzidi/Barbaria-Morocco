@@ -240,6 +240,7 @@
     "step2_title": "L'Occasion",
     "f_quantity": "Quantité",
     "f_event_date": "Date de l'événement",
+    "f_event_date_min": "Au plus tôt : {date}, selon le délai de fabrication de votre sélection.",
     "f_occasion": "Occasion",
     "f_message": "Parlez-nous de l'occasion",
     "next": "Suivant",

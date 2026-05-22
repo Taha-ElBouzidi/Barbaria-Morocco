@@ -240,6 +240,7 @@
     "step2_title": "The Occasion",
     "f_quantity": "Quantity",
     "f_event_date": "Event date",
+    "f_event_date_min": "Earliest possible: {date}, based on the production lead time of your selection.",
     "f_occasion": "Occasion",
     "f_message": "Tell us about the moment",
     "next": "Next",

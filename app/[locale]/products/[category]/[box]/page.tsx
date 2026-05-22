@@ -377,6 +377,8 @@ export default async function GiftBoxPage({ params }: PageProps) {
                 giftBoxSlug={detail.slug}
                 name={detail.name}
                 minQty={detail.defaultQuantityMin}
+                leadTimeWeeksMin={detail.leadTimeWeeksMin}
+                leadTimeWeeksMax={detail.leadTimeWeeksMax}
                 categorySlug={category}
               />
               <p className="text-[12px] text-bb-on-surface-variant text-center italic">

@@ -226,6 +226,8 @@ export default function BoxComposer({ box, products, themeKey, locale, copy, fac
     addBox({
       giftBoxSlug: box.slug,
       minQty: box.defaultQuantityMin,
+      leadTimeWeeksMin: box.leadTimeWeeksMin,
+      leadTimeWeeksMax: box.leadTimeWeeksMax,
       initialQty: state.quantity,
       nameSnapshot: box.name,
       custom: { categorySlug, productSlugs: composedSlugs },
