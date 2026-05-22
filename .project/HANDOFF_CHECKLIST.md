@@ -13,6 +13,12 @@ Ownership transfer status:
   Taha's personal Cloudflare account; from **2026-06-01** onwards, move it
   via Dashboard → domain → Overview → Advanced Actions → Move to another
   Cloudflare account → `admin@barbariamorocco.com`.
+- ⏳ **Rotate every credential before final delivery to the client.** The
+  Resend API key, Supabase service-role key, and any other token issued
+  during development should be regenerated at handoff so the outgoing
+  engineer's chat logs / local files no longer hold live credentials.
+  Mandatory before the project is declared complete and final payment
+  is released.
 
 Items below are grouped by responsibility, in roughly the order they should
 be completed. Each is something that **must be true before the client can
