@@ -53,37 +53,28 @@ export default function BoxAddToInquiry({
 
   if (added) {
     return (
-      <div className="border border-bb-secondary/30 bg-bb-primary-container p-6 space-y-5">
-        <div className="flex items-center gap-2 text-bb-secondary-deep">
-          <Icon name="check" size={16} />
+      <div className="space-y-4">
+        <div className="flex items-center gap-2 border-b border-bb-line pb-3 text-bb-secondary-deep">
+          <Icon name="check" size={14} />
           <span className="font-sans text-[11px] uppercase tracking-[0.18em]">
             {t("added_to_inquiry")}
           </span>
         </div>
-        <p className="font-display text-bb-on-surface text-[16px]">
+        <p className="font-display text-bb-on-surface text-[15px]">
           {name} <span className="text-bb-on-surface-variant">&middot;</span> {qty}
         </p>
-        <div className="flex flex-col gap-3 pt-1">
-          <Link
-            href={`/products/${categorySlug}`}
-            className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 border border-bb-secondary text-bb-secondary-deep font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary/5 transition-colors"
-          >
-            {t("continue_browsing")}
-          </Link>
-          <Link
-            href="/contact"
-            className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors"
-          >
-            {t("view_inquiry")} <Icon name="arrow-up-right" size={14} />
-          </Link>
-        </div>
-        <button
-          type="button"
-          onClick={() => setAdded(false)}
-          className="block w-full text-center font-sans text-[11px] uppercase tracking-[0.18em] text-bb-on-surface-variant hover:text-bb-secondary-deep transition-colors"
+        <Link
+          href={`/products/${categorySlug}`}
+          className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 border border-bb-secondary text-bb-secondary-deep font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary/5 transition-colors"
         >
-          {t("add_another")}
-        </button>
+          {t("continue_browsing")}
+        </Link>
+        <Link
+          href="/contact"
+          className="inline-flex w-full items-center justify-center gap-2 px-6 py-4 border border-bb-secondary bg-bb-secondary text-bb-primary font-sans text-[12px] uppercase tracking-[0.18em] hover:bg-bb-secondary-fixed-dim transition-colors"
+        >
+          {t("view_inquiry")} <Icon name="arrow-up-right" size={14} />
+        </Link>
       </div>
     );
   }

@@ -52,10 +52,45 @@ function genId(): string {
   return `line_${Date.now().toString(36)}_${Math.random().toString(36).slice(2, 8)}`;
 }
 
+function sameComposition(
+  a: CustomBoxComposition | undefined,
+  b: CustomBoxComposition | undefined
+): boolean {
+  // Both curated (no composition) is a match. A curated line and a
+  // custom line with the same parent slug are NOT the same; the qty
+  // semantics differ (custom carries the buyer's chosen pieces).
+  if (!a && !b) return true;
+  if (!a || !b) return false;
+  if (a.categorySlug !== b.categorySlug) return false;
+  if (a.productSlugs.length !== b.productSlugs.length) return false;
+  // Order-insensitive: same products in a different order is the same
+  // custom box. The wizard happens to preserve pick order, but for
+  // dedupe-on-add we treat the multiset of products as identity.
+  const aSorted = [...a.productSlugs].sort();
+  const bSorted = [...b.productSlugs].sort();
+  return aSorted.every((slug, i) => slug === bSorted[i]);
+}
+
 function reducer(state: InquiryState, action: Action): InquiryState {
   switch (action.type) {
-    case "addLine":
+    case "addLine": {
+      // Dedupe: a buyer who adds the same curated box twice (or the
+      // same custom composition twice) should see one line whose qty
+      // is the sum, not two identical lines. Otherwise the inquiry
+      // sidebar fills with visual duplicates and the house has to
+      // mentally collapse them.
+      const matchIdx = state.findIndex(
+        (existing) =>
+          existing.giftBoxSlug === action.line.giftBoxSlug &&
+          sameComposition(existing.custom, action.line.custom)
+      );
+      if (matchIdx !== -1) {
+        return state.map((line, i) =>
+          i === matchIdx ? { ...line, qty: line.qty + action.line.qty } : line
+        );
+      }
       return [...state, action.line];
+    }
     case "setQty":
       return state.map((l) =>
         l.id === action.id ? { ...l, qty: Math.max(l.minQty, action.qty) } : l
