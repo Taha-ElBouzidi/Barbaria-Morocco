@@ -182,6 +182,10 @@ export default async function LocaleLayout({
               `https://instagram.com/${INSTAGRAM_HANDLE}`,
               socials.linkedinUrl,
               socials.xUrl,
+              // Wikidata Q-number for Barbaria Morocco. Cross-links the
+              // brand entity into the open knowledge graph that feeds
+              // every AI search engine's "who is this company" answer.
+              "https://www.wikidata.org/wiki/Q139891256",
             ].filter(Boolean),
           }}
         />
