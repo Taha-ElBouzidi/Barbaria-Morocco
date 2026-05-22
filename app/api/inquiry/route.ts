@@ -117,7 +117,12 @@ const InquirySchema = z.object({
   // still accept submissions; production presence is enforced by the
   // verifyTurnstile() check below.
   turnstileToken: z.string().max(2048).optional(),
-  lines: z.array(InquiryLineSchema).min(1).max(50),
+  // Lines are now optional (min 0) so the contact form doubles as a
+  // general-inquiry surface. A buyer with no specific box in mind can
+  // still ask about shipping, partnership, sampling, press, etc. The
+  // honeypot + rate-limit + Turnstile cover the spam vector that this
+  // looseness might otherwise open.
+  lines: z.array(InquiryLineSchema).max(50),
 });
 
 /**
@@ -207,20 +212,26 @@ export async function POST(req: NextRequest) {
   // whole submission. Without this check an anonymous caller could
   // flood inquiry_items + the analytics top_custom_pieces view with
   // arbitrary attacker-chosen slugs (the rate limit caps the rate but
-  // not the content).
-  const slugs = Array.from(new Set(data.lines.map((l) => l.giftBoxSlug)));
-  const { data: boxes } = await supabase
-    .from("gift_boxes")
-    .select("id, slug")
-    .in("slug", slugs)
-    .eq("status", "published");
-  const slugToId = new Map((boxes ?? []).map((b: { id: string; slug: string }) => [b.slug, b.id]));
-  const unknownSlug = slugs.find((s) => !slugToId.has(s));
-  if (unknownSlug) {
-    return NextResponse.json(
-      { ok: false, error: `Unknown gift box: ${unknownSlug}` },
-      { status: 400 }
-    );
+  // not the content). Skipped entirely when lines is empty (general
+  // inquiries from buyers without a specific box in mind).
+  const slugToId = new Map<string, string>();
+  if (data.lines.length > 0) {
+    const slugs = Array.from(new Set(data.lines.map((l) => l.giftBoxSlug)));
+    const { data: boxes } = await supabase
+      .from("gift_boxes")
+      .select("id, slug")
+      .in("slug", slugs)
+      .eq("status", "published");
+    for (const b of (boxes ?? []) as Array<{ id: string; slug: string }>) {
+      slugToId.set(b.slug, b.id);
+    }
+    const unknownSlug = slugs.find((s) => !slugToId.has(s));
+    if (unknownSlug) {
+      return NextResponse.json(
+        { ok: false, error: `Unknown gift box: ${unknownSlug}` },
+        { status: 400 }
+      );
+    }
   }
 
   const sourceUrl = req.headers.get("referer") ?? null;
@@ -253,28 +264,33 @@ export async function POST(req: NextRequest) {
     );
   }
 
-  const itemRows = data.lines.map((line, i) => ({
-    inquiry_id: inquiry.id,
-    gift_box_id: slugToId.get(line.giftBoxSlug) ?? null,
-    is_custom: line.isCustom,
-    composition: line.composition
-      ? {
-          categorySlug: line.composition.categorySlug,
-          productSlugs: line.composition.productSlugs,
-          nameSnapshot: line.nameSnapshot ?? null,
-          minQty: line.minQty,
-          giftBoxSlug: line.giftBoxSlug,
-        }
-      : { nameSnapshot: line.nameSnapshot ?? null, minQty: line.minQty, giftBoxSlug: line.giftBoxSlug },
-    qty: line.qty,
-    line_index: i,
-  }));
+  // Skip the inquiry_items insert entirely if the buyer submitted no
+  // boxes (general-inquiry path). The parent inquiry row carries the
+  // message + occasion, which is enough for the concierge to follow up.
+  if (data.lines.length > 0) {
+    const itemRows = data.lines.map((line, i) => ({
+      inquiry_id: inquiry.id,
+      gift_box_id: slugToId.get(line.giftBoxSlug) ?? null,
+      is_custom: line.isCustom,
+      composition: line.composition
+        ? {
+            categorySlug: line.composition.categorySlug,
+            productSlugs: line.composition.productSlugs,
+            nameSnapshot: line.nameSnapshot ?? null,
+            minQty: line.minQty,
+            giftBoxSlug: line.giftBoxSlug,
+          }
+        : { nameSnapshot: line.nameSnapshot ?? null, minQty: line.minQty, giftBoxSlug: line.giftBoxSlug },
+      qty: line.qty,
+      line_index: i,
+    }));
 
-  const { error: itemErr } = await supabase.from("inquiry_items").insert(itemRows);
-  if (itemErr) {
-    console.error("[/api/inquiry] insert inquiry_items failed:", itemErr.message);
-    // Don't 500 here , the parent inquiry is saved; the concierge can
-    // recover the line list from the email/snapshot.
+    const { error: itemErr } = await supabase.from("inquiry_items").insert(itemRows);
+    if (itemErr) {
+      console.error("[/api/inquiry] insert inquiry_items failed:", itemErr.message);
+      // Don't 500 here , the parent inquiry is saved; the concierge can
+      // recover the line list from the email/snapshot.
+    }
   }
 
   // Fire-and-forget email side-effect. The DB write is the source of truth;

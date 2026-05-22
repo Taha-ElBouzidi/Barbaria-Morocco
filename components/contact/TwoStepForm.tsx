@@ -449,10 +449,10 @@ export default function TwoStepForm({ locale, occasions }: Props) {
 
             <button
               type="submit"
-              disabled={submitting || submitted || lines.length === 0 || (turnstileEnabled && !turnstileToken)}
+              disabled={submitting || submitted || (turnstileEnabled && !turnstileToken)}
               className={cn(
                 "font-sans text-[12px] uppercase tracking-[0.18em] bg-bb-primary text-bb-on-primary px-8 py-3.5 hover:bg-bb-secondary transition-colors flex items-center gap-2",
-                (submitting || submitted || lines.length === 0 || (turnstileEnabled && !turnstileToken)) && "opacity-50 cursor-not-allowed"
+                (submitting || submitted || (turnstileEnabled && !turnstileToken)) && "opacity-50 cursor-not-allowed"
               )}
             >
               {submitting ? "Sending…" : t("submit")} <Icon name="arrow-up-right" size={14} />

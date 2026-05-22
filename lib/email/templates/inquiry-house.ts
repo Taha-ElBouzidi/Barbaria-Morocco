@@ -70,10 +70,11 @@ ${payload.occasion || payload.eventDate ? `<h3 style="margin-bottom:4px;">Occasi
 ${payload.occasion ? escapeHtml(payload.occasion) : ""}${payload.occasion && payload.eventDate ? " &middot; " : ""}${payload.eventDate ? `<em>${escapeHtml(payload.eventDate)}</em>` : ""}
 </p>` : ""}
 
-<h3 style="margin-bottom:4px;">Coffrets demandés</h3>
+${payload.lines.length > 0 ? `<h3 style="margin-bottom:4px;">Coffrets demandés</h3>
 <ul style="margin:0 0 16px 0;padding-left:20px;line-height:1.5;">
 ${linesHtml}
-</ul>
+</ul>` : `<h3 style="margin-bottom:4px;">Coffrets demandés</h3>
+<p style="margin:0 0 16px 0;color:#666;font-style:italic;">Demande générale, aucun coffret spécifique sélectionné. Voir le message ci-dessous.</p>`}
 
 ${payload.message ? `<h3 style="margin-bottom:4px;">Message</h3>
 <blockquote style="border-left:3px solid #c9a059;margin:0 0 16px 0;padding:8px 16px;background:#faf6f0;color:#444;white-space:pre-wrap;">${escapeHtml(payload.message)}</blockquote>` : ""}
@@ -115,7 +116,9 @@ export function houseEmailText(payload: HouseEmailPayload): string {
     payload.eventDate ? `  Date: ${payload.eventDate}` : null,
     payload.occasion || payload.eventDate ? "" : null,
     "COFFRETS",
-    lines,
+    payload.lines.length > 0
+      ? lines
+      : "  Demande générale, aucun coffret spécifique sélectionné.",
     "",
     payload.message ? "MESSAGE" : null,
     payload.message ? payload.message : null,
