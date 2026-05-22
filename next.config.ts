@@ -30,11 +30,16 @@ const securityHeaders = [
       // 'unsafe-eval' was dropped from script-src, no app code uses
       // eval/new Function. 'unsafe-inline' stays for now because Next
       // emits inline boot scripts; future work: nonce + strict-dynamic.
-      "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
+      // challenges.cloudflare.com hosts the Turnstile widget script.
+      "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com https://challenges.cloudflare.com",
       "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
       "font-src 'self' https://fonts.gstatic.com",
       "img-src 'self' data: blob: https:",
       "connect-src 'self' https://vitals.vercel-insights.com https://va.vercel-scripts.com",
+      // Turnstile renders its challenge inside an iframe from
+      // challenges.cloudflare.com; without frame-src it inherits
+      // default-src 'self' which blocks the iframe entirely.
+      "frame-src https://challenges.cloudflare.com",
       "frame-ancestors 'none'",
     ].join("; "),
   },
