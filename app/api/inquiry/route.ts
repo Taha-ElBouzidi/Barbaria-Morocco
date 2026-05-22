@@ -254,6 +254,7 @@ export async function POST(req: NextRequest) {
       resend.emails.send({
         from: RESEND_FROM,
         to: data.email,
+        replyTo: HOUSE_NOTIFY_TO,
         subject: buyerEmailSubject(buyerPayload),
         html: buyerEmailHtml(buyerPayload),
         text: buyerEmailText(buyerPayload),
