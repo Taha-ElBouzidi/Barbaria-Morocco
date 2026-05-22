@@ -1,4 +1,4 @@
-# Guide de déclaration CNDP — Barbaria Morocco
+# Guide de déclaration CNDP, Barbaria Morocco
 
 Document à destination de la gérante (Inass MOUSSADEK) ou du DPO désigné.
 Décrit pas à pas les déclarations à déposer auprès de la **Commission
@@ -52,7 +52,7 @@ en moyenne. Sans récépissé, l'activité reste exposée à des sanctions
    - Raison sociale : **Barbaria Morocco**
    - Forme juridique : **SARL**
    - ICE : **003829477000010**
-   - RC : **719643 — Casablanca**
+   - RC : **719643, Casablanca**
    - Nom du responsable du traitement : **Inass MOUSSADEK** (gérante)
    - Email de contact : (email professionnel de la gérante)
    - Téléphone : **+212 6 59 65 88 63**
@@ -60,21 +60,21 @@ en moyenne. Sans récépissé, l'activité reste exposée à des sanctions
 
 ---
 
-## 4. Déclaration n° 1 — Fichier « Prospects / contacts site web »
+## 4. Déclaration n° 1 : Fichier « Prospects / contacts site web »
 
 Depuis le tableau de bord, cliquer sur **« Nouvelle déclaration »**, puis
 choisir **« Déclaration préalable ordinaire »**.
 
-### Section A — Identité du responsable du traitement
+### Section A. Identité du responsable du traitement
 - Pré-remplie depuis le compte. Vérifier l'exactitude.
 
-### Section B — Finalité du traitement
+### Section B. Finalité du traitement
 > *Gestion des demandes d'information et de devis émanant de clients
 > professionnels potentiels (hôtels, spas, distributeurs, particuliers)
 > via le formulaire de contact du site barbariamorocco.com. Constitution
 > d'un fichier de prospects pour le suivi commercial.*
 
-### Section C — Catégories de données collectées
+### Section C. Catégories de données collectées
 Cocher / saisir :
 - Identité : **nom, prénom**
 - Coordonnées : **adresse email, numéro de téléphone**
@@ -82,29 +82,29 @@ Cocher / saisir :
 - Données de connexion : **adresse IP (conservée 30 jours pour la
   prévention d'abus)**
 
-### Section D — Personnes concernées
+### Section D. Personnes concernées
 - Clients professionnels (B2B)
 - Particuliers ayant soumis une demande de devis
 
-### Section E — Destinataires des données
+### Section E. Destinataires des données
 - Personnel commercial interne de Barbaria Morocco
 - Sous-traitants techniques :
-  - **Supabase Inc.** (hébergement base de données — Francfort, UE)
-  - **Vercel Inc.** (hébergement applicatif — global)
+  - **Supabase Inc.** (hébergement base de données, Francfort, UE)
+  - **Vercel Inc.** (hébergement applicatif, global)
 
-### Section F — Durée de conservation
+### Section F. Durée de conservation
 - Données de prospects : **3 ans à compter du dernier contact**
 - Logs techniques : **30 jours**
 - Consentement cookies : **6 mois**
 
-### Section G — Mesures de sécurité
+### Section G. Mesures de sécurité
 > *Connexions chiffrées HTTPS (TLS 1.3), authentification multi-facteurs
 > sur les comptes administrateurs, politiques de sécurité au niveau base
 > de données (Row Level Security PostgreSQL), journalisation des actions
 > administratives, sauvegardes chiffrées quotidiennes, limitation par
 > adresse IP du formulaire de contact pour prévenir les abus.*
 
-### Section H — Droits des personnes
+### Section H. Droits des personnes
 > *Droit d'accès, de rectification, d'opposition, d'effacement et de
 > portabilité exercé par email à privacy@barbariamorocco.com.
 > Réponse sous 30 jours conformément à l'article 7 de la loi 09-08.*
@@ -113,15 +113,15 @@ Joindre les pièces 1 à 7 (cf. section 2). Soumettre.
 
 ---
 
-## 5. Déclaration n° 2 — Transfert de données vers l'étranger
+## 5. Déclaration n° 2 : Transfert de données vers l'étranger
 
 Depuis le tableau de bord, **« Nouvelle déclaration »** → **« Déclaration
 de transfert hors du Maroc »**.
 
 ### Pays de destination
-- **Allemagne** (région UE) — pour Supabase (base de données et stockage
+- **Allemagne** (région UE), pour Supabase (base de données et stockage
   fichiers, datacentres à Francfort)
-- **États-Unis** — pour Vercel (siège social, certains nœuds CDN)
+- **États-Unis**, pour Vercel (siège social, certains nœuds CDN)
 
 ### Base légale du transfert (article 43 de la loi 09-08)
 Pour l'Allemagne :
@@ -149,7 +149,7 @@ Soumettre.
 ## 6. Après le dépôt
 
 1. La CNDP envoie un **accusé de réception** sous 48 h
-2. Un agent CNDP peut demander des compléments par email — répondre dans
+2. Un agent CNDP peut demander des compléments par email ; répondre dans
    les **15 jours**
 3. Le **récépissé définitif** arrive sous 1 à 2 mois
 4. Conserver le récépissé : il doit être présentable en cas de contrôle
@@ -179,7 +179,7 @@ Délai de mise à jour : **dans le mois** suivant le changement.
 
 ## 8. Contact CNDP
 
-- Adresse : **Avenue Mehdi Ben Barka, Rabat — Hay Riad**
+- Adresse : **Avenue Mehdi Ben Barka, Rabat, Hay Riad**
 - Téléphone : **+212 5 37 57 26 90**
 - Email : **contact@cndp.ma**
 - Portail : **https://www.cndp.ma**

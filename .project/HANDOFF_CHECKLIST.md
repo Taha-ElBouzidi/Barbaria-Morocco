@@ -6,7 +6,7 @@ final transfer, then by the client team.
 Ownership transfer status:
 - ✅ Supabase project transferred to the `barbariamorocco` org (`admin@barbariamorocco.com`)
 - ✅ Vercel project transferred to the Barbaria team
-- ⏳ GitHub repository transfer (in progress — see Chunk 6 below)
+- ⏳ GitHub repository transfer (in progress, see Chunk 6 below)
 - ⏳ Cloudflare domain transfer **blocked until 2026-05-31**. Cloudflare's
   anti-abuse rule prevents account-to-account moves for the first 10 days
   after registration. `barbariamorocco.com` was bought on 2026-05-21 in

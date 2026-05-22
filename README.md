@@ -1,6 +1,6 @@
 # Barbaria Morocco
 
-Public site and admin dashboard for **Barbaria Morocco** — a Casablanca luxury house specialising in cosmetics and épicerie fine, sourced from artisanal partners across Morocco.
+Public site and admin dashboard for **Barbaria Morocco**, a Casablanca luxury house specialising in cosmetics and épicerie fine, sourced from artisanal partners across Morocco.
 
 The site serves a bilingual storefront (French default, English at `/en`), a B2B inquiry flow, and an admin dashboard at `/admin` for the house team to manage the catalogue, gift boxes, journal, ateliers, occasions, and incoming inquiries.
 
@@ -103,13 +103,13 @@ feature/*  ───►  staging  ───►  master  ───►  production
 
 Operational and historical docs live in `.project/`:
 
-- [`ADMIN_GUIDE.md`](.project/ADMIN_GUIDE.md) — how to use the admin dashboard
-- [`ADMIN_GLOSSARY.md`](.project/ADMIN_GLOSSARY.md) — terms used across the UI
-- [`HANDOFF_CHECKLIST.md`](.project/HANDOFF_CHECKLIST.md) — items to verify after ownership transfer
-- [`CNDP_FILING_GUIDE.md`](.project/CNDP_FILING_GUIDE.md) — Moroccan data-protection filing walkthrough
-- [`CHANGELOG.md`](.project/CHANGELOG.md) — chronological record of decisions and shipped work
-- [`DECISIONS.md`](.project/DECISIONS.md) — architectural decisions and rationale
-- [`cahier-des-charges.md`](.project/cahier-des-charges.md) — full functional and technical specification
+- [`ADMIN_GUIDE.md`](.project/ADMIN_GUIDE.md): how to use the admin dashboard
+- [`ADMIN_GLOSSARY.md`](.project/ADMIN_GLOSSARY.md): terms used across the UI
+- [`HANDOFF_CHECKLIST.md`](.project/HANDOFF_CHECKLIST.md): items to verify after ownership transfer
+- [`CNDP_FILING_GUIDE.md`](.project/CNDP_FILING_GUIDE.md): Moroccan data-protection filing walkthrough
+- [`CHANGELOG.md`](.project/CHANGELOG.md): chronological record of decisions and shipped work
+- [`DECISIONS.md`](.project/DECISIONS.md): architectural decisions and rationale
+- [`cahier-des-charges.md`](.project/cahier-des-charges.md): full functional and technical specification
 
 ## Contact
 

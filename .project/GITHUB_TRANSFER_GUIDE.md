@@ -158,8 +158,8 @@ After the transfer is confirmed working:
 
 | Carries over | Does not |
 |---|---|
-| All branches, tags, commit history | Local clones — must be re-pointed |
-| All issues + PRs (with full thread history) | Vercel ↔ GitHub link — re-connect required |
+| All branches, tags, commit history | Local clones, must be re-pointed |
+| All issues + PRs (with full thread history) | Vercel ↔ GitHub link, re-connect required |
 | Wikis | Personal access tokens / GitHub Apps installed on the old owner |
 | GitHub Pages (none in this repo) | GitHub Actions secrets that contained owner-specific values |
 | Releases + release artefacts | Webhooks pointing at the old owner's services |

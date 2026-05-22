@@ -9,12 +9,12 @@
 
 <!-- Tick all that apply. -->
 
-- [ ] `feat` — new user-facing capability
-- [ ] `fix` — bug correction
-- [ ] `refactor` — code change with no behavioural impact
-- [ ] `docs` — documentation only
-- [ ] `chore` / `ci` — tooling, deps, infra, CI
-- [ ] `security` — vulnerability patch, header hardening, RLS tightening
+- [ ] `feat`: new user-facing capability
+- [ ] `fix`: bug correction
+- [ ] `refactor`: code change with no behavioural impact
+- [ ] `docs`: documentation only
+- [ ] `chore` / `ci`: tooling, deps, infra, CI
+- [ ] `security`: vulnerability patch, header hardening, RLS tightening
 
 ## Test plan
 
