@@ -248,6 +248,8 @@
     "next": "Next",
     "back": "Back",
     "submit": "Request Quote",
+    "turnstile_pending": "Please complete the verification check before submitting.",
+    "turnstile_failed": "Verification failed. Please refresh the page and try again.",
     "success_title": "We respond within 24 hours.",
     "success_body": "Your concierge has been assigned.",
     "success_back_home": "Back to home",

@@ -3,6 +3,7 @@
 import { useState, useMemo, useEffect, useRef } from "react";
 import { useTranslations, useLocale } from "next-intl";
 import { Link } from "@/i18n/navigation";
+import { Turnstile } from "@marsidev/react-turnstile";
 import { cn } from "@/lib/utils";
 import { useInquiry } from "@/lib/inquiry-context";
 import { useProductCatalogue } from "@/lib/data/ProductCatalogueContext";
@@ -10,6 +11,8 @@ import { buildMailto, type MailtoLine, type InquiryFormData } from "@/lib/inquir
 import type { OccasionOption } from "@/lib/data/occasions";
 import Icon from "@/components/primitives/Icon";
 import DisplayHeading from "@/components/primitives/DisplayHeading";
+
+const TURNSTILE_SITE_KEY = process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY;
 
 interface Props {
   locale: string;
@@ -166,11 +169,22 @@ export default function TwoStepForm({ locale, occasions }: Props) {
 
   const { clear: clearInquiry } = useInquiry();
   const [submitError, setSubmitError] = useState<string | null>(null);
+  // Cloudflare Turnstile token. Held in state because the widget
+  // returns the token via callback; we then pass it to the server with
+  // the inquiry payload for verification. If TURNSTILE_SITE_KEY is not
+  // set (dev / preview env), the widget is not rendered and submission
+  // proceeds without a token, matching the server's fail-open behaviour.
+  const [turnstileToken, setTurnstileToken] = useState<string | null>(null);
+  const turnstileEnabled = !!TURNSTILE_SITE_KEY;
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (honeypot) return;
     if (!validateStep2() || !validateStep1()) return;
+    if (turnstileEnabled && !turnstileToken) {
+      setSubmitError(t("turnstile_pending"));
+      return;
+    }
     setSubmitting(true);
     setSubmitError(null);
     try {
@@ -184,6 +198,7 @@ export default function TwoStepForm({ locale, occasions }: Props) {
         message: form.message || null,
         locale: currentLocale || locale,
         honeypot,
+        turnstileToken: turnstileToken ?? undefined,
         lines: lines.map((line) => ({
           giftBoxSlug: line.giftBoxSlug,
           qty: line.qty,
@@ -407,6 +422,22 @@ export default function TwoStepForm({ locale, occasions }: Props) {
               </a>
             </p>
           )}
+          {turnstileEnabled && (
+            <div className="pt-2">
+              <Turnstile
+                siteKey={TURNSTILE_SITE_KEY!}
+                onSuccess={(token) => setTurnstileToken(token)}
+                onExpire={() => setTurnstileToken(null)}
+                onError={() => setTurnstileToken(null)}
+                options={{
+                  theme: "light",
+                  size: "flexible",
+                  language: currentLocale === "fr" ? "fr" : "en",
+                }}
+              />
+            </div>
+          )}
+
           <div className="flex items-center justify-between pt-4">
             <button
               type="button"
@@ -418,10 +449,10 @@ export default function TwoStepForm({ locale, occasions }: Props) {
 
             <button
               type="submit"
-              disabled={submitting || submitted || lines.length === 0}
+              disabled={submitting || submitted || lines.length === 0 || (turnstileEnabled && !turnstileToken)}
               className={cn(
                 "font-sans text-[12px] uppercase tracking-[0.18em] bg-bb-primary text-bb-on-primary px-8 py-3.5 hover:bg-bb-secondary transition-colors flex items-center gap-2",
-                (submitting || submitted || lines.length === 0) && "opacity-50 cursor-not-allowed"
+                (submitting || submitted || lines.length === 0 || (turnstileEnabled && !turnstileToken)) && "opacity-50 cursor-not-allowed"
               )}
             >
               {submitting ? "Sending…" : t("submit")} <Icon name="arrow-up-right" size={14} />

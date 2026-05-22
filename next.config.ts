@@ -45,6 +45,9 @@ const nextConfig: NextConfig = {
     // Pin workspace root to this app (otherwise Next picks D:\dev\Havok\package-lock.json).
     root: path.resolve(__dirname),
   },
+  // Drop the "X-Powered-By: Next.js" header. Stack fingerprinting is
+  // a free recon hint for attackers; removing it is a free hardening.
+  poweredByHeader: false,
   // Lock Server Actions to the configured production origin plus the
   // current Vercel deployment URL (auto-injected per build). Anything
   // else cannot POST a Server Action to this app even if a token is

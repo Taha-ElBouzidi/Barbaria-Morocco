@@ -111,8 +111,50 @@ const InquirySchema = z.object({
   message: z.string().trim().max(2000).optional().nullable(),
   locale: z.enum(["en", "fr"]).default("fr"),
   honeypot: z.string().max(200).optional(),
+  // Cloudflare Turnstile token. Verified server-side against
+  // challenges.cloudflare.com before any DB write. Optional in the
+  // schema so dev / preview environments without a configured secret
+  // still accept submissions; production presence is enforced by the
+  // verifyTurnstile() check below.
+  turnstileToken: z.string().max(2048).optional(),
   lines: z.array(InquiryLineSchema).min(1).max(50),
 });
+
+/**
+ * Verify a Cloudflare Turnstile token. Returns true if Cloudflare
+ * confirms the token is valid for our secret, false otherwise. If
+ * TURNSTILE_SECRET_KEY is not set, the function fail-opens and returns
+ * true so dev environments without keys can still accept submissions.
+ *
+ * Endpoint: https://developers.cloudflare.com/turnstile/get-started/server-side-validation/
+ */
+async function verifyTurnstile(
+  token: string | undefined,
+  remoteIp: string | undefined
+): Promise<boolean> {
+  const secret = process.env.TURNSTILE_SECRET_KEY;
+  if (!secret) {
+    // Fail open in dev/preview where the key is not configured.
+    return true;
+  }
+  if (!token) {
+    return false;
+  }
+  try {
+    const form = new URLSearchParams();
+    form.set("secret", secret);
+    form.set("response", token);
+    if (remoteIp) form.set("remoteip", remoteIp);
+    const res = await fetch(
+      "https://challenges.cloudflare.com/turnstile/v0/siteverify",
+      { method: "POST", body: form }
+    );
+    const json = (await res.json()) as { success?: boolean };
+    return json.success === true;
+  } catch {
+    return false;
+  }
+}
 
 export async function POST(req: NextRequest) {
   let body: unknown;
@@ -134,6 +176,22 @@ export async function POST(req: NextRequest) {
   // Silent honeypot trap. Bots fill the hidden field; we pretend success.
   if (data.honeypot && data.honeypot.trim().length > 0) {
     return NextResponse.json({ ok: true, id: null });
+  }
+
+  // Cloudflare Turnstile verification. Runs BEFORE rate-limit checks
+  // because a verified human deserves the full 5/min rate budget, and
+  // a failed verification should never count against the bucket.
+  const realIp =
+    req.headers.get("x-vercel-forwarded-for") ??
+    req.headers.get("x-real-ip") ??
+    req.headers.get("x-forwarded-for")?.split(",")[0]?.trim() ??
+    undefined;
+  const turnstileOk = await verifyTurnstile(data.turnstileToken, realIp);
+  if (!turnstileOk) {
+    return NextResponse.json(
+      { ok: false, error: "Verification failed. Please refresh the page and try again." },
+      { status: 403 }
+    );
   }
 
   const ipHash = hashIp(req);
