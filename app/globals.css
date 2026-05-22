@@ -285,10 +285,12 @@
     }
   }
 
-  /* Credential strip marquee, 40s gentle right-to-left loop */
+  /* Credential strip marquee, 40s gentle right-to-left loop. Triplicated
+     in JSX, so the keyframe end is -33.333% (one-third of the rendered
+     width = one full set) to land back on a seamless seam. */
   @keyframes bb-marquee {
     from { transform: translateX(0); }
-    to   { transform: translateX(-50%); }
+    to   { transform: translateX(-33.333%); }
   }
 
   .bb-marquee {
