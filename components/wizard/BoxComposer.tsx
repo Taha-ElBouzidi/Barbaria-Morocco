@@ -45,11 +45,16 @@ export interface WizardCopy {
   size_eyebrow: string;
   size_title: string;
   size_lede: string;
-  /** ICU plural-aware label template, interpolated per chosen size on
-   *  the size-pick screen. Passed as a raw template so the client can
+  /** ICU plural-aware label template, theme-specific so the size-pick
+   *  cards read "5 stars" for the sahara theme and "5 halts" for the
+   *  caravan theme. Passed as a raw template so the client can
    *  format(n) at render time. */
   size_label_template: string;
-  size_desc_template: string;
+  /** Theme-specific descriptions, one per size 1..6 (indexed 0..5).
+   *  The page builds this array from the active theme so the size-pick
+   *  screen reads on-brand for both cosmetics (sahara) and épicerie
+   *  (caravan). */
+  size_descriptions: string[];
   step_eyebrow_progress: string; // "Step {n} of {total}"
   step_no_products: string;
   step_search_placeholder: string;
@@ -579,7 +584,7 @@ function SizeView({
               {formatPluralTemplate(copy.size_label_template, size)}
             </div>
             <p className="text-[14px] text-white/70 leading-relaxed">
-              {formatPluralTemplate(copy.size_desc_template, size)}
+              {copy.size_descriptions[size - 1]}
             </p>
             <span className="absolute top-6 right-6 inline-flex h-10 w-10 items-center justify-center border border-bb-secondary/40 transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5">
               <Icon name="arrow-up-right" size={14} className="text-bb-secondary" />

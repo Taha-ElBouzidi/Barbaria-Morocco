@@ -72,6 +72,9 @@ export default async function GiftBoxPage({ params }: PageProps) {
       getTranslations({ locale, namespace: "wizard" }),
       getAllFacets(lang),
     ]);
+    // Hoist the theme key into local scope so the WizardCopy builder
+    // below can pick the right theme-specific labels and descriptions.
+    const themeKey = cat.storyThemeKey;
     const products: ProductSummary[] =
       detail.items.length > 0
         ? detail.items
@@ -90,9 +93,21 @@ export default async function GiftBoxPage({ params }: PageProps) {
       size_eyebrow: wizardT("size_eyebrow"),
       size_title: wizardT("size_title"),
       size_lede: wizardT("size_lede"),
-      // Pass templates raw so the client interpolates per chosen size.
-      size_label_template: wizardT.raw("size_label_template") as string,
-      size_desc_template: wizardT.raw("size_desc_template") as string,
+      // Theme-specific size cards. The label uses theme-flavoured plural
+      // ("stars" vs "halts"); the descriptions are written one per size
+      // so each card reads on-brand. Both are picked here against the
+      // box's storyThemeKey so the wizard never has to know which theme
+      // is active.
+      size_label_template: wizardT.raw(
+        themeKey === "sahara_stars" ? "size_label_sahara" : "size_label_caravan"
+      ) as string,
+      size_descriptions: [1, 2, 3, 4, 5, 6].map((n) =>
+        wizardT(
+          themeKey === "sahara_stars"
+            ? `size_desc_sahara_${n}`
+            : `size_desc_caravan_${n}`
+        )
+      ),
       // Templates with {n}/{total} placeholders are passed as raw strings
       // so the client component (BoxComposer) can interpolate at render
       // time. Calling t() here would throw because the values aren't
