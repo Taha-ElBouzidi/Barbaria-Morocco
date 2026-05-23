@@ -153,6 +153,17 @@ export default async function LocaleLayout({
             "@context": "https://schema.org",
             "@type": ["Organization", "LocalBusiness"],
             name: "Barbaria Morocco",
+            // Aliases so Google + AI search engines know the brand
+            // by the variants buyers actually type. "Barbaria Maroc"
+            // is the French rendering; "Barbaria" alone is how
+            // returning buyers shortcut the name; "Barbaria Casablanca"
+            // anchors the geo association.
+            alternateName: [
+              "Barbaria",
+              "Barbaria Maroc",
+              "Barbaria Casablanca",
+              "Maison Barbaria",
+            ],
             legalName: CLIENT_DATA.legalName.en,
             url: BASE_URL,
             logo: `${BASE_URL}/brand_photos/barbaria-logo-new.jpg`,
