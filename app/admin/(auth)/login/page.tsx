@@ -1,3 +1,5 @@
+import { redirect } from "next/navigation";
+import { getCurrentAdmin } from "@/lib/admin/auth";
 import { signInWithPassword } from "./actions";
 
 export const dynamic = "force-dynamic";
@@ -7,6 +9,12 @@ interface PageProps {
 }
 
 export default async function LoginPage({ searchParams }: PageProps) {
+  // Already-authenticated admins land on the dashboard. The parent
+  // layout cannot enforce this (calling requireAdmin() there would
+  // loop on /admin/login itself), so the gate lives here.
+  const admin = await getCurrentAdmin();
+  if (admin) redirect("/admin");
+
   const params = await searchParams;
   // Collapse "unauthorized" and "invalid_credentials" into one
   // generic message so an attacker cannot tell which admin emails
