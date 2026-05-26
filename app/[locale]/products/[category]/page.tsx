@@ -148,33 +148,6 @@ export default async function CategoryPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Editorial paragraph: names the flagship ingredients in body
-          copy so the page actually contains the keywords buyers
-          search for (argan, beldi, ghassoul for cosmetics; saffron,
-          amlou, ras el hanout for épicerie). Without this, the
-          flagship category pages were ranking for nothing because
-          the body had zero mentions of the brand's hero ingredients. */}
-      {(() => {
-        const headingKey = `editorial_${category === "epicerie_fine" ? "epicerie" : "cosmetiques"}_heading`;
-        const bodyKey = `editorial_${category === "epicerie_fine" ? "epicerie" : "cosmetiques"}_body`;
-        return (
-          <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] pt-12 lg:pt-16 pb-4 lg:pb-6">
-            <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8 lg:gap-16 items-start">
-              <Reveal>
-                <h2 className="font-display text-[clamp(22px,2.4vw,32px)] leading-tight text-bb-primary max-w-[440px]">
-                  {t(headingKey)}
-                </h2>
-              </Reveal>
-              <Reveal delayMs={120}>
-                <p className="font-display text-[clamp(15px,1.3vw,18px)] leading-relaxed text-bb-on-surface max-w-[760px]">
-                  {t(bodyKey)}
-                </p>
-              </Reveal>
-            </div>
-          </section>
-        );
-      })()}
-
       {/* Sprint 2.6: curated FIRST. The house's composed boxes are the
           primary commercial offer; the wizard CTA sits below as the
           "compose your own" alternative. */}
@@ -184,7 +157,7 @@ export default async function CategoryPage({ params }: PageProps) {
             <Eyebrow tone="green">{t("curated_eyebrow")}</Eyebrow>
           </Reveal>
           <Reveal delayMs={80}>
-            <DisplayHeading size="md" as="h3">
+            <DisplayHeading size="md" as="h2">
               {t("curated_headline")}
             </DisplayHeading>
           </Reveal>
@@ -269,6 +242,35 @@ export default async function CategoryPage({ params }: PageProps) {
           </Reveal>
         </section>
       )}
+
+      {/* Editorial paragraph at the bottom of the page. Used to live
+          above the curated grid, which pushed the boxes below the
+          fold; moved here per the house's request. Still on the page
+          for SEO: Google indexes the full document, so the keyword
+          density (argan, beldi, ghassoul / saffron, amlou, ras el
+          hanout) still feeds the ranking signal. Above-the-grid
+          filler is also a 2025+ Helpful Content negative signal, so
+          bottom placement is the safer pattern. */}
+      {(() => {
+        const headingKey = `editorial_${category === "epicerie_fine" ? "epicerie" : "cosmetiques"}_heading`;
+        const bodyKey = `editorial_${category === "epicerie_fine" ? "epicerie" : "cosmetiques"}_body`;
+        return (
+          <section className="mx-auto max-w-[1440px] px-[var(--bb-margin-edge)] pb-20 lg:pb-28 border-t border-bb-line pt-12 lg:pt-16">
+            <div className="grid grid-cols-1 lg:grid-cols-[1fr_2fr] gap-8 lg:gap-16 items-start">
+              <Reveal>
+                <h2 className="font-display text-[clamp(22px,2.4vw,32px)] leading-tight text-bb-primary max-w-[440px]">
+                  {t(headingKey)}
+                </h2>
+              </Reveal>
+              <Reveal delayMs={120}>
+                <p className="font-display text-[clamp(15px,1.3vw,18px)] leading-relaxed text-bb-on-surface max-w-[760px]">
+                  {t(bodyKey)}
+                </p>
+              </Reveal>
+            </div>
+          </section>
+        );
+      })()}
     </>
   );
 }
