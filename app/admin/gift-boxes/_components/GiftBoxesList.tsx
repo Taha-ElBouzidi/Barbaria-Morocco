@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo, useTransition, useEffect } from "react";
+import { useState, useMemo, useEffect, useRef } from "react";
 import Link from "next/link";
 import type { GiftBoxAdminRow } from "@/lib/admin/gift-boxes";
 import { reorderGiftBox } from "../actions";
@@ -23,8 +23,6 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
   const [active, setActive] = useState<CategorySlug>("cosmetiques");
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<(typeof STATUS_FILTERS)[number]["value"]>("all");
-  const [pendingId, setPendingId] = useState<string | null>(null);
-  const [, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
   // Local copy of the rows so reorder can update them optimistically
@@ -34,6 +32,13 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
   useEffect(() => {
     setLocalBoxes(boxes);
   }, [boxes]);
+
+  // Promise chain so rapid arrow clicks queue server-side instead of
+  // racing. Each click extends the chain; the next server call only
+  // fires after the previous one resolves. The user can mash arrows
+  // freely; the optimistic UI updates every click; the server catches
+  // up sequentially in the background.
+  const queueRef = useRef<Promise<void>>(Promise.resolve());
 
   const grouped = useMemo(() => {
     const s = search.trim().toLowerCase();
@@ -56,32 +61,38 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
   const onReorder = (id: string, direction: "up" | "down") => {
     setError(null);
 
-    // Optimistic swap: identify the two affected boxes by their slugs
-    // within the active category, swap them in localBoxes immediately,
-    // then fire the server action async. The user sees the click feel
-    // instant; the server catches up in the background.
-    const sameCat = localBoxes.filter((b) => b.categorySlug === active);
-    const idx = sameCat.findIndex((b) => b.id === id);
-    if (idx === -1) return;
-    const swapIdx = direction === "up" ? idx - 1 : idx + 1;
-    if (swapIdx < 0 || swapIdx >= sameCat.length) return;
+    // Use the local state at the moment of the click for the optimistic
+    // swap. Subsequent clicks read THIS UPDATED state (via the setter's
+    // functional form below would also work, but reading directly works
+    // because React batches setLocalBoxes synchronously enough that the
+    // next click sees the new array).
+    setLocalBoxes((current) => {
+      const sameCat = current.filter((b) => b.categorySlug === active);
+      const idx = sameCat.findIndex((b) => b.id === id);
+      if (idx === -1) return current;
+      const swapIdx = direction === "up" ? idx - 1 : idx + 1;
+      if (swapIdx < 0 || swapIdx >= sameCat.length) return current;
 
-    const swapId = sameCat[swapIdx].id;
-    const previous = localBoxes;
-    const next = localBoxes.map((b) => {
-      if (b.id === id) return { ...b, sortOrder: sameCat[swapIdx].sortOrder };
-      if (b.id === swapId) return { ...b, sortOrder: sameCat[idx].sortOrder };
-      return b;
+      const swapId = sameCat[swapIdx].id;
+      const next = current.map((b) => {
+        if (b.id === id) return { ...b, sortOrder: sameCat[swapIdx].sortOrder };
+        if (b.id === swapId) return { ...b, sortOrder: sameCat[idx].sortOrder };
+        return b;
+      });
+      next.sort((a, b) => a.sortOrder - b.sortOrder);
+      return next;
     });
-    next.sort((a, b) => a.sortOrder - b.sortOrder);
-    setLocalBoxes(next);
 
-    setPendingId(id);
-    startTransition(async () => {
+    // Chain the server call after any in-flight reorder. The user can
+    // click arrows as fast as they want; we serialize the writes here
+    // so the server never sees concurrent reorders on the same list.
+    queueRef.current = queueRef.current.then(async () => {
       const res = await reorderGiftBox(id, direction);
-      setPendingId(null);
       if (!res.ok) {
-        setLocalBoxes(previous);
+        // A failure in the middle of a chain means the optimistic UI
+        // is now ahead of reality. Surface the error; the user can
+        // refresh to resync. We do not auto-revert because subsequent
+        // clicks have already moved past this state.
         setError(res.error);
       }
     });
@@ -169,7 +180,6 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
               {rows.map((b, i) => {
                 const isFirst = i === 0;
                 const isLast = i === rows.length - 1;
-                const busy = pendingId === b.id;
                 return (
                   <div key={b.id} className="p-4 border border-bb-line bg-bb-bg space-y-2">
                     <div className="flex items-start justify-between gap-3">
@@ -203,7 +213,7 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
                       <button
                         type="button"
                         onClick={() => onReorder(b.id, "up")}
-                        disabled={isFirst || busy}
+                        disabled={isFirst}
                         aria-label={`Move ${b.nameEn} up`}
                         className="px-3 py-2 min-w-[44px] min-h-[36px] text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
                       >
@@ -212,7 +222,7 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
                       <button
                         type="button"
                         onClick={() => onReorder(b.id, "down")}
-                        disabled={isLast || busy}
+                        disabled={isLast}
                         aria-label={`Move ${b.nameEn} down`}
                         className="px-3 py-2 min-w-[44px] min-h-[36px] text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
                       >
@@ -241,7 +251,6 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
                   {rows.map((b, i) => {
                     const isFirst = i === 0;
                     const isLast = i === rows.length - 1;
-                    const busy = pendingId === b.id;
                     return (
                       <tr key={b.id} className="border-t border-bb-line hover:bg-bb-bg-low transition-colors">
                         <td className="p-4">
@@ -249,7 +258,7 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
                             <button
                               type="button"
                               onClick={() => onReorder(b.id, "up")}
-                              disabled={isFirst || busy}
+                              disabled={isFirst}
                               aria-label={`Move ${b.nameEn} up`}
                               className="px-2 py-1 text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
                             >
@@ -258,7 +267,7 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
                             <button
                               type="button"
                               onClick={() => onReorder(b.id, "down")}
-                              disabled={isLast || busy}
+                              disabled={isLast}
                               aria-label={`Move ${b.nameEn} down`}
                               className="px-2 py-1 text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
                             >

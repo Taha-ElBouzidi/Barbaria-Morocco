@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { reorderProduct } from "../actions";
@@ -46,20 +46,25 @@ function resolveCategorySlug(p: ProductRow): string {
 }
 
 export default function ProductsList({ products, supabaseUrl }: ProductsListProps) {
-  const [, startTransition] = useTransition();
   const [active, setActive] = useState<CategorySlug>("cosmetiques");
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
-  const [pendingId, setPendingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
 
   // Local copy of the rows so reorder can update them optimistically
   // without waiting for the server round trip. The action runs in the
-  // background; on failure we revert to the previous order.
+  // background.
   const [localProducts, setLocalProducts] = useState(products);
   useEffect(() => {
     setLocalProducts(products);
   }, [products]);
+
+  // Promise chain so rapid arrow clicks queue server-side instead of
+  // racing. Each click extends the chain; the next server call only
+  // fires after the previous one resolves. The user can mash arrows
+  // freely; the optimistic UI updates every click; the server catches
+  // up sequentially in the background.
+  const queueRef = useRef<Promise<void>>(Promise.resolve());
 
   function getPublicUrl(path: string) {
     if (path.startsWith("/")) return path;
@@ -103,35 +108,35 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
   const onReorder = (id: string, direction: "up" | "down") => {
     setError(null);
 
-    // Optimistic swap: identify the two affected rows in the active
-    // category, swap their sort_order in localProducts immediately,
-    // then fire the server action in the background. The user sees
-    // the click feel instant; if the server returns ok:false, we
-    // revert to the previous order and show the error.
-    const sameCat = localProducts.filter(
-      (p) => resolveCategorySlug(p) === active
-    );
-    const idx = sameCat.findIndex((p) => p.id === id);
-    if (idx === -1) return;
-    const swapIdx = direction === "up" ? idx - 1 : idx + 1;
-    if (swapIdx < 0 || swapIdx >= sameCat.length) return;
+    // Optimistic swap. Use the functional setter so rapid clicks
+    // compose on the latest state, not a stale closure.
+    setLocalProducts((current) => {
+      const sameCat = current.filter((p) => resolveCategorySlug(p) === active);
+      const idx = sameCat.findIndex((p) => p.id === id);
+      if (idx === -1) return current;
+      const swapIdx = direction === "up" ? idx - 1 : idx + 1;
+      if (swapIdx < 0 || swapIdx >= sameCat.length) return current;
 
-    const swapId = sameCat[swapIdx].id;
-    const previous = localProducts;
-    const next = localProducts.map((p) => {
-      if (p.id === id) return { ...p, sort_order: sameCat[swapIdx].sort_order };
-      if (p.id === swapId) return { ...p, sort_order: sameCat[idx].sort_order };
-      return p;
+      const swapId = sameCat[swapIdx].id;
+      const next = current.map((p) => {
+        if (p.id === id) return { ...p, sort_order: sameCat[swapIdx].sort_order };
+        if (p.id === swapId) return { ...p, sort_order: sameCat[idx].sort_order };
+        return p;
+      });
+      next.sort((a, b) => a.sort_order - b.sort_order);
+      return next;
     });
-    next.sort((a, b) => a.sort_order - b.sort_order);
-    setLocalProducts(next);
 
-    setPendingId(id);
-    startTransition(async () => {
+    // Queue the server write after any in-flight reorder, so the user
+    // can click as fast as they want without the server seeing
+    // concurrent writes on the same category.
+    queueRef.current = queueRef.current.then(async () => {
       const res = await reorderProduct(id, direction);
-      setPendingId(null);
       if (!res.ok) {
-        setLocalProducts(previous);
+        // A failure mid-chain means the optimistic UI is ahead of
+        // reality. Surface the error; user can refresh to resync.
+        // We do not auto-revert because subsequent queued clicks
+        // have already moved past this state.
         setError(res.error);
       }
     });
@@ -221,7 +226,6 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
               {rows.map((p, i) => {
                 const isFirst = i === 0;
                 const isLast = i === rows.length - 1;
-                const busy = pendingId === p.id;
                 const heroPath = getHeroImage(p);
                 const name = getEnName(p);
                 return (
@@ -263,7 +267,7 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                       <button
                         type="button"
                         onClick={() => onReorder(p.id, "up")}
-                        disabled={isFirst || busy}
+                        disabled={isFirst}
                         aria-label={`Move ${name} up`}
                         className="px-3 py-2 min-w-[44px] min-h-[36px] text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
                       >
@@ -272,7 +276,7 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                       <button
                         type="button"
                         onClick={() => onReorder(p.id, "down")}
-                        disabled={isLast || busy}
+                        disabled={isLast}
                         aria-label={`Move ${name} down`}
                         className="px-3 py-2 min-w-[44px] min-h-[36px] text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
                       >
@@ -300,7 +304,6 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                   {rows.map((p, i) => {
                     const isFirst = i === 0;
                     const isLast = i === rows.length - 1;
-                    const busy = pendingId === p.id;
                     const heroPath = getHeroImage(p);
                     const name = getEnName(p);
                     return (
@@ -313,7 +316,7 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                             <button
                               type="button"
                               onClick={() => onReorder(p.id, "up")}
-                              disabled={isFirst || busy}
+                              disabled={isFirst}
                               aria-label={`Move ${name} up`}
                               className="px-2 py-1 text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
                             >
@@ -322,7 +325,7 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
                             <button
                               type="button"
                               onClick={() => onReorder(p.id, "down")}
-                              disabled={isLast || busy}
+                              disabled={isLast}
                               aria-label={`Move ${name} down`}
                               className="px-2 py-1 text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
                             >
