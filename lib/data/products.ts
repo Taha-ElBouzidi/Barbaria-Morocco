@@ -83,7 +83,11 @@ export async function getProductsByCategory(
     .eq("category_id", catRow.id)
     .eq("status", "published")
     .eq("translations.locale", locale)
+    // hero is the manual "feature first" flag; sort_order is the
+    // admin-managed per-category order (PR #46 added the column +
+    // arrow reorder UI); slug is the final alphabetical tiebreaker.
     .order("hero", { ascending: false })
+    .order("sort_order", { ascending: true })
     .order("slug");
 
   if (error || !data) return [];

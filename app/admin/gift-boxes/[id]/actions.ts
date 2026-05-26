@@ -110,6 +110,9 @@ export async function saveGiftBox(
   const sortedSizes = Array.from(new Set(data.customSizeOptions)).sort(
     (a, b) => a - b
   );
+  // sort_order is managed by the list view's arrow buttons (reorderGiftBox).
+  // We deliberately do NOT write it from the editor save path; otherwise
+  // every edit would clobber the order the admin set in the list.
   const payload: Record<string, unknown> = {
     slug: data.slug,
     category_id: data.categoryId,
@@ -117,7 +120,6 @@ export async function saveGiftBox(
     default_quantity_min: data.defaultQuantityMin,
     lead_time_weeks_min: data.leadTimeWeeksMin,
     lead_time_weeks_max: data.leadTimeWeeksMax,
-    sort_order: data.sortOrder,
     is_customizable: data.isCustomizable,
     updated_by: admin.id,
   };

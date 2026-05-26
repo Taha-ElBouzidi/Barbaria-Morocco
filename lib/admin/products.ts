@@ -62,8 +62,10 @@ export async function listProductsForAdmin(opts?: {
     slug,
     category_id,
     moq,
+    sort_order,
     status,
     updated_at,
+    created_at,
     translations:product_translations ( locale, name ),
     images:product_images ( path, sort_order ),
     category:categories ( slug )
@@ -83,7 +85,14 @@ export async function listProductsForAdmin(opts?: {
     }
   }
 
-  const { data, error } = await q.order("updated_at", { ascending: false });
+  // Sort by category then admin-managed order so the list view groups
+  // category-by-category and within each category respects the order
+  // set via the arrow buttons (see app/admin/products/actions.ts).
+  // created_at is a stable tiebreaker; it pairs with the same ordering
+  // used by reorderProduct's peer fetch so the indices line up.
+  const { data, error } = await q
+    .order("sort_order", { ascending: true })
+    .order("created_at", { ascending: true });
   if (error) throw new Error(`listProductsForAdmin: ${error.message}`);
   return data ?? [];
 }
