@@ -1,8 +1,7 @@
 "use client";
 
-import { useMemo, useState, useTransition } from "react";
+import { useEffect, useMemo, useState, useTransition } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { reorderProduct } from "../actions";
 
@@ -47,13 +46,20 @@ function resolveCategorySlug(p: ProductRow): string {
 }
 
 export default function ProductsList({ products, supabaseUrl }: ProductsListProps) {
-  const router = useRouter();
   const [, startTransition] = useTransition();
   const [active, setActive] = useState<CategorySlug>("cosmetiques");
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [pendingId, setPendingId] = useState<string | null>(null);
   const [error, setError] = useState<string | null>(null);
+
+  // Local copy of the rows so reorder can update them optimistically
+  // without waiting for the server round trip. The action runs in the
+  // background; on failure we revert to the previous order.
+  const [localProducts, setLocalProducts] = useState(products);
+  useEffect(() => {
+    setLocalProducts(products);
+  }, [products]);
 
   function getPublicUrl(path: string) {
     if (path.startsWith("/")) return path;
@@ -79,7 +85,7 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
       cosmetiques: [],
       epicerie_fine: [],
     };
-    for (const p of products) {
+    for (const p of localProducts) {
       const slug = resolveCategorySlug(p) as CategorySlug;
       if (slug !== "cosmetiques" && slug !== "epicerie_fine") continue;
       if (status !== "all" && p.status !== status) continue;
@@ -90,21 +96,44 @@ export default function ProductsList({ products, supabaseUrl }: ProductsListProp
       result[slug].push(p);
     }
     return result;
-  }, [products, search, status]);
+  }, [localProducts, search, status]);
 
   const rows = grouped[active];
 
   const onReorder = (id: string, direction: "up" | "down") => {
     setError(null);
+
+    // Optimistic swap: identify the two affected rows in the active
+    // category, swap their sort_order in localProducts immediately,
+    // then fire the server action in the background. The user sees
+    // the click feel instant; if the server returns ok:false, we
+    // revert to the previous order and show the error.
+    const sameCat = localProducts.filter(
+      (p) => resolveCategorySlug(p) === active
+    );
+    const idx = sameCat.findIndex((p) => p.id === id);
+    if (idx === -1) return;
+    const swapIdx = direction === "up" ? idx - 1 : idx + 1;
+    if (swapIdx < 0 || swapIdx >= sameCat.length) return;
+
+    const swapId = sameCat[swapIdx].id;
+    const previous = localProducts;
+    const next = localProducts.map((p) => {
+      if (p.id === id) return { ...p, sort_order: sameCat[swapIdx].sort_order };
+      if (p.id === swapId) return { ...p, sort_order: sameCat[idx].sort_order };
+      return p;
+    });
+    next.sort((a, b) => a.sort_order - b.sort_order);
+    setLocalProducts(next);
+
     setPendingId(id);
     startTransition(async () => {
       const res = await reorderProduct(id, direction);
       setPendingId(null);
       if (!res.ok) {
+        setLocalProducts(previous);
         setError(res.error);
-        return;
       }
-      router.refresh();
     });
   };
 

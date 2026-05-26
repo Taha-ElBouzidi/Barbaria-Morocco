@@ -1,6 +1,7 @@
 "use server";
 
 import { redirect } from "next/navigation";
+import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import { createServerClient } from "@/lib/supabase/server";
 import { createServiceRoleClient } from "@/lib/supabase/service";
@@ -45,6 +46,13 @@ export async function signInWithPassword(formData: FormData) {
   // Bump last_seen_at
   const service = createServiceRoleClient();
   await service.from("admin_users").update({ last_seen_at: new Date().toISOString() }).eq("id", data.user.id);
+
+  // Bust the admin layout's RSC cache so the next request (which the
+  // redirect below triggers) re-resolves getCurrentAdmin with the new
+  // session. Without this, intermittent reports of "Sign In appears
+  // to do nothing" can happen when Next serves the layout's last
+  // pre-auth RSC payload before the cookies-just-set take effect.
+  revalidatePath("/admin", "layout");
 
   redirect("/admin");
 }
