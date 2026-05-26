@@ -1,10 +1,10 @@
 "use client";
 
-import { useState, useMemo, useTransition } from "react";
-import { useRouter } from "next/navigation";
+import { useState, useMemo, useTransition, useEffect } from "react";
 import Link from "next/link";
 import type { GiftBoxAdminRow } from "@/lib/admin/gift-boxes";
 import { reorderGiftBox } from "../actions";
+import { cn } from "@/lib/utils";
 
 const STATUS_FILTERS = [
   { value: "all", label: "All status" },
@@ -12,50 +12,117 @@ const STATUS_FILTERS = [
   { value: "draft", label: "Draft" },
 ] as const;
 
-const CATEGORY_SECTIONS = [
+const CATEGORY_TABS = [
   { slug: "cosmetiques", label: "Cosmetics" },
   { slug: "epicerie_fine", label: "Fine Épicerie" },
 ] as const;
 
+type CategorySlug = (typeof CATEGORY_TABS)[number]["slug"];
+
 export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
-  const router = useRouter();
+  const [active, setActive] = useState<CategorySlug>("cosmetiques");
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState<(typeof STATUS_FILTERS)[number]["value"]>("all");
   const [pendingId, setPendingId] = useState<string | null>(null);
   const [, startTransition] = useTransition();
   const [error, setError] = useState<string | null>(null);
 
+  // Local copy of the rows so reorder can update them optimistically
+  // without waiting for the server round trip. The action runs in the
+  // background; if it fails, we revert to the previous order.
+  const [localBoxes, setLocalBoxes] = useState(boxes);
+  useEffect(() => {
+    setLocalBoxes(boxes);
+  }, [boxes]);
+
   const grouped = useMemo(() => {
     const s = search.trim().toLowerCase();
-    const result: Record<string, GiftBoxAdminRow[]> = { cosmetiques: [], epicerie_fine: [] };
-    for (const b of boxes) {
+    const result: Record<CategorySlug, GiftBoxAdminRow[]> = {
+      cosmetiques: [],
+      epicerie_fine: [],
+    };
+    for (const b of localBoxes) {
+      const slug = b.categorySlug as CategorySlug;
+      if (slug !== "cosmetiques" && slug !== "epicerie_fine") continue;
       if (status !== "all" && b.status !== status) continue;
       if (s && !b.nameEn.toLowerCase().includes(s) && !b.slug.toLowerCase().includes(s)) continue;
-      if (result[b.categorySlug] !== undefined) {
-        result[b.categorySlug].push(b);
-      }
+      result[slug].push(b);
     }
     return result;
-  }, [boxes, search, status]);
+  }, [localBoxes, search, status]);
 
-  const total = Object.values(grouped).reduce((sum, arr) => sum + arr.length, 0);
+  const rows = grouped[active];
 
   const onReorder = (id: string, direction: "up" | "down") => {
     setError(null);
+
+    // Optimistic swap: identify the two affected boxes by their slugs
+    // within the active category, swap them in localBoxes immediately,
+    // then fire the server action async. The user sees the click feel
+    // instant; the server catches up in the background.
+    const sameCat = localBoxes.filter((b) => b.categorySlug === active);
+    const idx = sameCat.findIndex((b) => b.id === id);
+    if (idx === -1) return;
+    const swapIdx = direction === "up" ? idx - 1 : idx + 1;
+    if (swapIdx < 0 || swapIdx >= sameCat.length) return;
+
+    const swapId = sameCat[swapIdx].id;
+    const previous = localBoxes;
+    const next = localBoxes.map((b) => {
+      if (b.id === id) return { ...b, sortOrder: sameCat[swapIdx].sortOrder };
+      if (b.id === swapId) return { ...b, sortOrder: sameCat[idx].sortOrder };
+      return b;
+    });
+    next.sort((a, b) => a.sortOrder - b.sortOrder);
+    setLocalBoxes(next);
+
     setPendingId(id);
     startTransition(async () => {
       const res = await reorderGiftBox(id, direction);
       setPendingId(null);
       if (!res.ok) {
+        setLocalBoxes(previous);
         setError(res.error);
-        return;
       }
-      router.refresh();
     });
   };
 
+  const totalAcrossTabs = grouped.cosmetiques.length + grouped.epicerie_fine.length;
+
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
+      <div
+        role="tablist"
+        aria-label="Filter by category"
+        className="flex border-b border-bb-line gap-0"
+      >
+        {CATEGORY_TABS.map((tab) => {
+          const count = grouped[tab.slug].length;
+          const isActive = active === tab.slug;
+          return (
+            <button
+              key={tab.slug}
+              id={`gb-tab-${tab.slug}`}
+              type="button"
+              role="tab"
+              aria-selected={isActive}
+              aria-controls={`gb-panel-${tab.slug}`}
+              tabIndex={isActive ? 0 : -1}
+              onClick={() => setActive(tab.slug)}
+              className={cn(
+                "px-6 py-3 font-sans text-[12px] uppercase tracking-[0.18em] border-b-2 -mb-px transition-colors",
+                isActive
+                  ? "border-bb-primary text-bb-primary"
+                  : "border-transparent text-bb-on-surface-variant hover:text-bb-on-surface"
+              )}
+            >
+              {tab.label}
+              <span className="ml-2 text-bb-on-surface-variant text-[10px]">({count})</span>
+            </button>
+          );
+        })}
+      </div>
+
       <div className="flex flex-wrap gap-3 items-center">
         <input
           type="search"
@@ -76,7 +143,7 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
           ))}
         </select>
         <span className="text-[12px] text-bb-on-surface-variant ml-auto">
-          {total} of {boxes.length}
+          {totalAcrossTabs} of {localBoxes.length}
         </span>
       </div>
 
@@ -86,40 +153,136 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
         </p>
       )}
 
-      {CATEGORY_SECTIONS.map((section) => {
-        const rows = grouped[section.slug] ?? [];
-        return (
-          <section key={section.slug} className="space-y-4" aria-label={`${section.label} gift boxes`}>
-            <h2 className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep border-b border-bb-line pb-2">
-              {section.label}
-              <span className="text-bb-on-surface-variant ml-2 text-[10px]">({rows.length})</span>
-            </h2>
+      <div
+        role="tabpanel"
+        id={`gb-panel-${active}`}
+        aria-labelledby={`gb-tab-${active}`}
+        className="space-y-3"
+      >
+        {rows.length === 0 ? (
+          <p className="font-display italic text-bb-on-surface-variant py-6 text-center">
+            No boxes in this category match the current filters.
+          </p>
+        ) : (
+          <>
+            <div className="md:hidden flex flex-col gap-3">
+              {rows.map((b, i) => {
+                const isFirst = i === 0;
+                const isLast = i === rows.length - 1;
+                const busy = pendingId === b.id;
+                return (
+                  <div key={b.id} className="p-4 border border-bb-line bg-bb-bg space-y-2">
+                    <div className="flex items-start justify-between gap-3">
+                      <div className="min-w-0 flex-1">
+                        <Link
+                          href={`/admin/gift-boxes/${b.id}`}
+                          className="font-display text-[16px] text-bb-primary truncate hover:text-bb-secondary-deep transition-colors block"
+                        >
+                          {b.nameEn}
+                        </Link>
+                        <p className="text-[11px] text-bb-on-surface-variant font-mono truncate">{b.slug}</p>
+                      </div>
+                      <span
+                        className={`shrink-0 inline-block px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${
+                          b.status === "published"
+                            ? "bg-bb-secondary/15 text-bb-secondary-deep"
+                            : "bg-bb-bg-mid text-bb-on-surface-variant"
+                        }`}
+                      >
+                        {b.status}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-bb-on-surface-variant">
+                      <span>{b.isCustomizable ? "Customizable" : "Curated"}</span>
+                      <span>·</span>
+                      <span>{b.itemCount} items</span>
+                      <span>·</span>
+                      <span>Min {b.defaultQuantityMin}</span>
+                    </div>
+                    <div className="flex items-center gap-2 pt-1">
+                      <button
+                        type="button"
+                        onClick={() => onReorder(b.id, "up")}
+                        disabled={isFirst || busy}
+                        aria-label={`Move ${b.nameEn} up`}
+                        className="px-3 py-2 min-w-[44px] min-h-[36px] text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+                      >
+                        ↑
+                      </button>
+                      <button
+                        type="button"
+                        onClick={() => onReorder(b.id, "down")}
+                        disabled={isLast || busy}
+                        aria-label={`Move ${b.nameEn} down`}
+                        className="px-3 py-2 min-w-[44px] min-h-[36px] text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+                      >
+                        ↓
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
 
-            {rows.length === 0 ? (
-              <p className="font-display italic text-bb-on-surface-variant py-6 text-center">
-                No boxes in this category match the current filters.
-              </p>
-            ) : (
-              <>
-                <div className="md:hidden flex flex-col gap-3">
+            <div className="hidden md:block overflow-x-auto border border-bb-line bg-bb-bg">
+              <table className="w-full text-[14px]">
+                <thead className="bg-bb-bg-low text-[11px] uppercase tracking-[0.12em] text-bb-on-surface-variant">
+                  <tr>
+                    <th scope="col" className="text-left p-4 w-[100px]">Order</th>
+                    <th scope="col" className="text-left p-4">Name</th>
+                    <th scope="col" className="text-left p-4">Type</th>
+                    <th scope="col" className="text-left p-4">Items</th>
+                    <th scope="col" className="text-left p-4">Min</th>
+                    <th scope="col" className="text-left p-4">Status</th>
+                    <th scope="col" className="text-right p-4 sr-only">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
                   {rows.map((b, i) => {
                     const isFirst = i === 0;
                     const isLast = i === rows.length - 1;
                     const busy = pendingId === b.id;
                     return (
-                      <div key={b.id} className="p-4 border border-bb-line bg-bb-bg space-y-2">
-                        <div className="flex items-start justify-between gap-3">
-                          <div className="min-w-0 flex-1">
-                            <Link
-                              href={`/admin/gift-boxes/${b.id}`}
-                              className="font-display text-[16px] text-bb-primary truncate hover:text-bb-secondary-deep transition-colors block"
+                      <tr key={b.id} className="border-t border-bb-line hover:bg-bb-bg-low transition-colors">
+                        <td className="p-4">
+                          <div className="flex items-center gap-1">
+                            <button
+                              type="button"
+                              onClick={() => onReorder(b.id, "up")}
+                              disabled={isFirst || busy}
+                              aria-label={`Move ${b.nameEn} up`}
+                              className="px-2 py-1 text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
                             >
-                              {b.nameEn}
-                            </Link>
-                            <p className="text-[11px] text-bb-on-surface-variant font-mono truncate">{b.slug}</p>
+                              ↑
+                            </button>
+                            <button
+                              type="button"
+                              onClick={() => onReorder(b.id, "down")}
+                              disabled={isLast || busy}
+                              aria-label={`Move ${b.nameEn} down`}
+                              className="px-2 py-1 text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+                            >
+                              ↓
+                            </button>
                           </div>
+                        </td>
+                        <td className="p-4">
+                          <Link
+                            href={`/admin/gift-boxes/${b.id}`}
+                            className="font-display text-[16px] text-bb-primary hover:text-bb-secondary-deep transition-colors"
+                          >
+                            {b.nameEn}
+                          </Link>
+                          <p className="text-[11px] text-bb-on-surface-variant font-mono mt-0.5">{b.slug}</p>
+                        </td>
+                        <td className="p-4 text-bb-on-surface-variant">
+                          {b.isCustomizable ? "Customizable" : "Curated"}
+                        </td>
+                        <td className="p-4 text-bb-on-surface-variant">{b.itemCount}</td>
+                        <td className="p-4 text-bb-on-surface-variant">{b.defaultQuantityMin}</td>
+                        <td className="p-4">
                           <span
-                            className={`shrink-0 inline-block px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${
+                            className={`inline-block px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${
                               b.status === "published"
                                 ? "bg-bb-secondary/15 text-bb-secondary-deep"
                                 : "bg-bb-bg-mid text-bb-on-surface-variant"
@@ -127,125 +290,24 @@ export default function GiftBoxesList({ boxes }: { boxes: GiftBoxAdminRow[] }) {
                           >
                             {b.status}
                           </span>
-                        </div>
-                        <div className="flex flex-wrap items-center gap-x-3 gap-y-1 text-[11px] text-bb-on-surface-variant">
-                          <span>{b.isCustomizable ? "Customizable" : "Curated"}</span>
-                          <span>·</span>
-                          <span>{b.itemCount} items</span>
-                          <span>·</span>
-                          <span>Min {b.defaultQuantityMin}</span>
-                        </div>
-                        <div className="flex items-center gap-2 pt-1">
-                          <button
-                            type="button"
-                            onClick={() => onReorder(b.id, "up")}
-                            disabled={isFirst || busy}
-                            aria-label={`Move ${b.nameEn} up`}
-                            className="px-3 py-2 min-w-[44px] min-h-[36px] text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
+                        </td>
+                        <td className="p-4 text-right">
+                          <Link
+                            href={`/admin/gift-boxes/${b.id}`}
+                            className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep hover:opacity-70"
                           >
-                            ↑
-                          </button>
-                          <button
-                            type="button"
-                            onClick={() => onReorder(b.id, "down")}
-                            disabled={isLast || busy}
-                            aria-label={`Move ${b.nameEn} down`}
-                            className="px-3 py-2 min-w-[44px] min-h-[36px] text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
-                          >
-                            ↓
-                          </button>
-                        </div>
-                      </div>
+                            Edit
+                          </Link>
+                        </td>
+                      </tr>
                     );
                   })}
-                </div>
-
-                <div className="hidden md:block overflow-x-auto border border-bb-line bg-bb-bg">
-                  <table className="w-full text-[14px]">
-                    <thead className="bg-bb-bg-low text-[11px] uppercase tracking-[0.12em] text-bb-on-surface-variant">
-                      <tr>
-                        <th scope="col" className="text-left p-4 w-[100px]">Order</th>
-                        <th scope="col" className="text-left p-4">Name</th>
-                        <th scope="col" className="text-left p-4">Type</th>
-                        <th scope="col" className="text-left p-4">Items</th>
-                        <th scope="col" className="text-left p-4">Min</th>
-                        <th scope="col" className="text-left p-4">Status</th>
-                        <th scope="col" className="text-right p-4 sr-only">Actions</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {rows.map((b, i) => {
-                        const isFirst = i === 0;
-                        const isLast = i === rows.length - 1;
-                        const busy = pendingId === b.id;
-                        return (
-                          <tr key={b.id} className="border-t border-bb-line hover:bg-bb-bg-low transition-colors">
-                            <td className="p-4">
-                              <div className="flex items-center gap-1">
-                                <button
-                                  type="button"
-                                  onClick={() => onReorder(b.id, "up")}
-                                  disabled={isFirst || busy}
-                                  aria-label={`Move ${b.nameEn} up`}
-                                  className="px-2 py-1 text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
-                                >
-                                  ↑
-                                </button>
-                                <button
-                                  type="button"
-                                  onClick={() => onReorder(b.id, "down")}
-                                  disabled={isLast || busy}
-                                  aria-label={`Move ${b.nameEn} down`}
-                                  className="px-2 py-1 text-bb-on-surface-variant hover:text-bb-primary disabled:opacity-30 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-bb-secondary"
-                                >
-                                  ↓
-                                </button>
-                              </div>
-                            </td>
-                            <td className="p-4">
-                              <Link
-                                href={`/admin/gift-boxes/${b.id}`}
-                                className="font-display text-[16px] text-bb-primary hover:text-bb-secondary-deep transition-colors"
-                              >
-                                {b.nameEn}
-                              </Link>
-                              <p className="text-[11px] text-bb-on-surface-variant font-mono mt-0.5">{b.slug}</p>
-                            </td>
-                            <td className="p-4 text-bb-on-surface-variant">
-                              {b.isCustomizable ? "Customizable" : "Curated"}
-                            </td>
-                            <td className="p-4 text-bb-on-surface-variant">{b.itemCount}</td>
-                            <td className="p-4 text-bb-on-surface-variant">{b.defaultQuantityMin}</td>
-                            <td className="p-4">
-                              <span
-                                className={`inline-block px-2 py-1 text-[10px] uppercase tracking-[0.18em] ${
-                                  b.status === "published"
-                                    ? "bg-bb-secondary/15 text-bb-secondary-deep"
-                                    : "bg-bb-bg-mid text-bb-on-surface-variant"
-                                }`}
-                              >
-                                {b.status}
-                              </span>
-                            </td>
-                            <td className="p-4 text-right">
-                              <Link
-                                href={`/admin/gift-boxes/${b.id}`}
-                                className="font-sans text-[11px] uppercase tracking-[0.18em] text-bb-secondary-deep hover:opacity-70"
-                              >
-                                Edit
-                              </Link>
-                            </td>
-                          </tr>
-                        );
-                      })}
-                    </tbody>
-                  </table>
-                </div>
-              </>
-            )}
-          </section>
-        );
-      })}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+      </div>
     </div>
   );
 }
