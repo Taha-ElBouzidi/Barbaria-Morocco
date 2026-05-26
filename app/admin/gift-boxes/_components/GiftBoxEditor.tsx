@@ -60,7 +60,6 @@ export default function GiftBoxEditor({
         : [...prev, n].sort((a, b) => a - b)
     );
   };
-  const [sortOrder, setSortOrder] = useState(initial?.sortOrder ?? 0);
   const [isCustomizable, setIsCustomizable] = useState(initial?.isCustomizable ?? false);
   const [nameEn, setNameEn] = useState(initial?.translations.en.name ?? "");
   const [taglineEn, setTaglineEn] = useState(initial?.translations.en.tagline ?? "");
@@ -267,19 +266,6 @@ export default function GiftBoxEditor({
               />
             </div>
             <p className={HELP_CLS}>Production lead-time band in weeks, shown publicly on the box page and in the Product schema. Curated boxes default to 4 to 6 weeks; bespoke configurations typically 8 to 10.</p>
-          </div>
-          <div>
-            <label className={labelCls} htmlFor="sortOrder">Display order</label>
-            <input
-              id="sortOrder"
-              name="sortOrder"
-              type="number"
-              min={0}
-              value={sortOrder}
-              onChange={(e) => setSortOrder(parseInt(e.target.value, 10) || 0)}
-              className={inputCls}
-            />
-            <p className={HELP_CLS}>Lower numbers appear first in the catalogue grid.</p>
           </div>
           <div className="sm:col-span-2 flex items-start gap-3">
             {(() => {
