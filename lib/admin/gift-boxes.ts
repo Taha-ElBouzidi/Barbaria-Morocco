@@ -5,46 +5,56 @@ import { z } from "zod";
 // Zod schema
 // ---------------------------------------------------------------------------
 
-export const GiftBoxSaveSchema = z.object({
-  slug: z
-    .string()
-    .min(1)
-    .max(120)
-    .regex(/^[a-z0-9-]+$/, "Slug must be lowercase letters, numbers, and hyphens only"),
-  categoryId: z.string().uuid(),
-  heroImagePath: z.string().nullable().default(null),
-  defaultQuantityMin: z.coerce.number().int().min(1).default(5),
-  // Lead-time band in weeks. Min defaults to 4 (the "curated standard"
-  // band published in the FAQ); bespoke boxes get higher values set
-  // explicitly. DB enforces max >= min via CHECK constraint.
-  leadTimeWeeksMin: z.coerce.number().int().min(1).max(52).default(4),
-  leadTimeWeeksMax: z.coerce.number().int().min(1).max(52).default(6),
-  sortOrder: z.coerce.number().int().min(0).default(0),
-  isCustomizable: z.boolean().default(false),
-  // Size options offered by the wizard for customizable boxes. Each
-  // value is 1..6 (the narrative step ceiling). Curated boxes ignore
-  // this. Defaults to the legacy {3, 5, 6} so existing boxes keep
-  // their current behaviour after the migration ships.
-  customSizeOptions: z
-    .array(z.coerce.number().int().min(1).max(6))
-    .min(1)
-    .max(6)
-    .default([3, 5, 6]),
-  translations: z.object({
-    en: z.object({
-      name: z.string().min(1),
-      tagline: z.string().nullable().default(null),
-      storyIntro: z.string().nullable().default(null),
+export const GiftBoxSaveSchema = z
+  .object({
+    slug: z
+      .string()
+      .min(1)
+      .max(120)
+      .regex(/^[a-z0-9-]+$/, "Slug must be lowercase letters, numbers, and hyphens only"),
+    categoryId: z.string().uuid(),
+    heroImagePath: z.string().nullable().default(null),
+    defaultQuantityMin: z.coerce.number().int().min(1).default(5),
+    // Lead-time band in weeks. Min defaults to 4 (the "curated standard"
+    // band published in the FAQ); bespoke boxes get higher values set
+    // explicitly. DB enforces max >= min via CHECK constraint.
+    leadTimeWeeksMin: z.coerce.number().int().min(1).max(52).default(4),
+    leadTimeWeeksMax: z.coerce.number().int().min(1).max(52).default(6),
+    sortOrder: z.coerce.number().int().min(0).default(0),
+    isCustomizable: z.boolean().default(false),
+    // Size options offered by the wizard for customizable boxes. Each
+    // value is 1..6 (the narrative step ceiling). Curated (non-customizable)
+    // boxes don't render the checkbox UI at all, so the form submits an
+    // empty array; we accept that here and the cross-field refine below
+    // only enforces ≥1 entry when isCustomizable is true. The action
+    // skips writing this column entirely for curated boxes so the DB
+    // value is preserved.
+    customSizeOptions: z
+      .array(z.coerce.number().int().min(1).max(6))
+      .max(6)
+      .default([3, 5, 6]),
+    translations: z.object({
+      en: z.object({
+        name: z.string().min(1),
+        tagline: z.string().nullable().default(null),
+        storyIntro: z.string().nullable().default(null),
+      }),
+      fr: z.object({
+        name: z.string().min(1),
+        tagline: z.string().nullable().default(null),
+        storyIntro: z.string().nullable().default(null),
+      }),
     }),
-    fr: z.object({
-      name: z.string().min(1),
-      tagline: z.string().nullable().default(null),
-      storyIntro: z.string().nullable().default(null),
-    }),
-  }),
-  /** Component product IDs in display order. Empty for customizable boxes. */
-  itemProductIds: z.array(z.string().uuid()).default([]),
-});
+    /** Component product IDs in display order. Empty for customizable boxes. */
+    itemProductIds: z.array(z.string().uuid()).default([]),
+  })
+  .refine(
+    (d) => !d.isCustomizable || d.customSizeOptions.length >= 1,
+    {
+      message: "Customizable boxes need at least one wizard size option.",
+      path: ["customSizeOptions"],
+    }
+  );
 
 export type GiftBoxSaveInput = z.infer<typeof GiftBoxSaveSchema>;
 
